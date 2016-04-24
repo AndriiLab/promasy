@@ -13,16 +13,16 @@ import java.util.List;
 public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	
 	private List<AmountUnitsModel> amUnitList;
-	private Connection con;
+	private final String id = "am_unit_id";
+	private final String table = "amountunits";
 	
 	public AmountUnitsQueries() {
-		con = Database.INSTANCE.getConnection();
 		amUnitList = new LinkedList<AmountUnitsModel>();
 	}
 
 	public void create(AmountUnitsModel object) throws SQLException {
 		String query = "INSERT INTO amountunits(am_unit_desc, created_by, created_date) VALUES (?, ?, ?)";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getAmUnitDesc());
 		prepStmt.setLong(2, object.getCreatedBy());
 		prepStmt.setTimestamp(3, object.getCreatedDate());
@@ -33,7 +33,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	public void retrieve() throws SQLException {
 		amUnitList.clear();
 		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits";
-		Statement selectStmt = con.createStatement();
+		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 
 		while (results.next()) {
@@ -55,7 +55,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 
 	public void update(AmountUnitsModel object) throws SQLException {
 		String query = "UPDATE amountunits SET am_unit_desc=?, modified_by=?, modified_date=?, active=? WHERE am_unit_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getAmUnitDesc());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
@@ -67,7 +67,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 
 	public void delete(AmountUnitsModel object) throws SQLException {
 		String query = "UPDATE amountunits SET modified_by=?, modified_date=?, active=? WHERE am_unit_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setBoolean(3, object.isActive());
@@ -79,4 +79,14 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	public List<AmountUnitsModel> getList() {
 		return Collections.unmodifiableList(amUnitList);
 	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
+	}
+	
+	
 }

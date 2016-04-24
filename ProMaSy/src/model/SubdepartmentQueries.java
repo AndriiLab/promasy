@@ -11,18 +11,18 @@ import java.util.List;
 
 public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 	
-	private Connection con;
 	private List<SubdepartmentModel> subdepList;
+	private final String id = "subdep_id";
+	private final String table = "subdepartments";
 	
 	public SubdepartmentQueries() {
-		con = Database.INSTANCE.getConnection();
 		subdepList = new LinkedList<SubdepartmentModel>();
 	}
 
 	@Override
 	public void create(SubdepartmentModel object) throws SQLException {
 		String query = "INSERT INTO subdepartments(subdep_name, dep_id, created_by, created_date) VALUES (?, ?, ?, ?)";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getSubdepName());
 		prepStmt.setLong(2, object.getDepId());
 		prepStmt.setLong(3, object.getCreatedBy());
@@ -41,7 +41,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 		subdepList.clear();
 		
 		String query = "select subdep_id, subdep_name, dep_id, created_by, created_date, modified_by, modified_date, active from subdepartments where dep_id = ? and active = true";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, reqDepId);
 		ResultSet results = prepStmt.executeQuery();
 
@@ -65,7 +65,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 
 	public void update(SubdepartmentModel object) throws SQLException {
 		String query = "UPDATE subdepartments SET subdep_name=?, modified_by=?, modified_date=? WHERE subdep_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getSubdepName());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
@@ -76,7 +76,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 
 	public void delete(SubdepartmentModel object) throws SQLException {
 		String query = "UPDATE subdepartments SET active=false, modified_by=?, modified_date=? WHERE subdep_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setLong(3, object.getSubdepId());
@@ -86,6 +86,14 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 
 	public List<SubdepartmentModel> getList() {
 		return Collections.unmodifiableList(subdepList);
+	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
 	}
 
 }

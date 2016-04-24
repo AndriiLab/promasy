@@ -11,6 +11,8 @@ import java.util.List;
 public class CPVQueries implements SQLQueries<CPVModel> {
 	
 	private List<CPVModel> cpvList;
+	private final String id = "cpv_code";
+	private final String table = "cpv";
 	
 	public CPVQueries() {
 		cpvList = new LinkedList<CPVModel>();
@@ -68,7 +70,7 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 
 	private static PreparedStatement getCPVRequest(String requestedCpv, boolean sameLvlShow) throws SQLException{
 		int level = 0;
-		Connection con = Database.INSTANCE.getConnection();
+		Connection con = DBConnector.INSTANCE.getConnection();
 		String query = null;
 		
 		//case: empty request
@@ -146,5 +148,13 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 			prepStmt.setString(1, requestedCpv);
 			return prepStmt;
 		}
+	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
 	}
 }

@@ -1,41 +1,14 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
-
-public enum Database {
-	INSTANCE;
+public class Database {
 	
-	private Connection con;
-	
-	public Connection getConnection() {
-		return con;
-	}
-	
-	public void connect(Properties conSet) throws Exception {
-		if (con != null)
-			return;
-
-		String url = "jdbc:postgresql://"+conSet.getProperty("host")+
-				":"+conSet.getProperty("port")+"/"+conSet.getProperty("database");
-
-		con = DriverManager.getConnection(url, conSet);
-		System.out.println("Connected successfully");
-	}
-	
-	public void disconnect() {
-		if (con != null) {
-			try {
-				con.close();
-				System.out.println("Disconnected successfully");
-			} catch (SQLException e) {
-				System.out.println("Can't close connection");
-			}
-		}
-		
-		con = null;
-	}
+	public static final DBConnector DB = DBConnector.INSTANCE;
+	public static final CPVQueries CPV = new CPVQueries();
+	public static final RoleQueries ROLES = new RoleQueries();
+	public static final AmountUnitsQueries AMOUNTUNITS = new AmountUnitsQueries();
+	public static final InstituteQueries INSTITUTES = new InstituteQueries();
+	public static final DepartmentQueries DEPARTMENTS = new DepartmentQueries();
+	public static final SubdepartmentQueries SUBDEPARTMENS = new SubdepartmentQueries();
+	public static final EmployeeQueries EMPLOYEES = new EmployeeQueries();
 	
 }

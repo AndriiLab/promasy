@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,18 +11,18 @@ import java.util.List;
 
 public class InstituteQueries implements SQLQueries<InstituteModel>{
 	
-	private Connection con;
 	private List<InstituteModel> instList;
+	private final String id = "inst_id";
+	private final String table = "institute";
 	
 	
 	public InstituteQueries() {
-		con = Database.INSTANCE.getConnection();
 		instList = new LinkedList<InstituteModel>();
 	}
 
 	public void create(InstituteModel object) throws SQLException {
 		String query = "INSERT INTO institute (inst_name, created_by, created_date) VALUES (?, ?, ?)";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getInstName());
 		prepStmt.setLong(2, object.getCreatedBy());
 		prepStmt.setTimestamp(3, object.getCreatedDate());
@@ -34,7 +33,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 	public void retrieve() throws SQLException {
 		instList.clear();
 		String query = "select inst_id, inst_name, created_by, created_date, modified_by, modified_date, active from institute where active = true";
-		Statement selectStmt = con.createStatement();
+		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 
 		while (results.next()) {
@@ -56,7 +55,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 
 	public void update(InstituteModel object) throws SQLException {
 		String query = "UPDATE institute SET inst_name=?, modified_by=?, modified_date=? WHERE inst_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getInstName());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
@@ -67,7 +66,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 
 	public void delete(InstituteModel object) throws SQLException {
 		String query = "UPDATE institute SET active=false, modified_by=?, modified_date=? WHERE inst_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setLong(3, object.getInstId());
@@ -77,6 +76,14 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 
 	public List<InstituteModel> getList() {
 		return Collections.unmodifiableList(instList);
+	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
 	}
 
 }

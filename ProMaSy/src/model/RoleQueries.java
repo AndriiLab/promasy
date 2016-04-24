@@ -1,6 +1,5 @@
 package model;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,10 +11,10 @@ import java.util.List;
 public class RoleQueries implements SQLQueries<RoleModel>{
 	
 	private List<RoleModel> rolesList;
-	private Connection con;
+	private final String id = "roles_id";
+	private final String table = "roles";
 	
 	public RoleQueries()  {
-		con = Database.INSTANCE.getConnection();
 		rolesList = new LinkedList<RoleModel>();
 	}
 
@@ -29,7 +28,7 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 	public void retrieve() throws SQLException {
 		rolesList.clear();
 		String query = "select roles_id, roles_name, created_by, created_date, modified_by, modified_date, active from roles where active = true";
-		Statement selectStmt = con.createStatement();
+		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 
 		while (results.next()) {
@@ -64,6 +63,14 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 
 	public List<RoleModel> getList() {
 		return Collections.unmodifiableList(rolesList);
+	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
 	}
 
 }

@@ -11,17 +11,17 @@ import java.util.List;
 
 public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	
-	private Connection con;
 	private List<EmployeeModel> empList;
+	private final String id = "emp_id";
+	private final String table = "employees";
 	
 	public EmployeeQueries() {
-		con = Database.INSTANCE.getConnection();
 		empList = new LinkedList<EmployeeModel>();
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {
 		String query = "INSERT INTO employees (emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
@@ -52,7 +52,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 			"LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
 			"INNER JOIN roles ON employees.roles_id = roles.roles_id "+
 			"INNER JOIN institute ON departments.inst_id = institute.inst_id";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		ResultSet results = prepStmt.executeQuery();
 
 		while (results.next()) {
@@ -88,7 +88,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 
 	public void update(EmployeeModel object) throws SQLException {
 		String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=? WHERE emp_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
@@ -108,7 +108,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 
 	public void delete(EmployeeModel object) throws SQLException {
 		String query = "UPDATE employees SET active = false, modified_by=?, modified_date=? WHERE emp_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setLong(3, object.getEmpId());
@@ -119,7 +119,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	public boolean checkLogin(LoginData logindata) throws SQLException{
 		
 		String query = "select emp_id, emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date, modified_by, modified_date from employees where login = ? and password = ? and active = true";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, logindata.getLogin());
 		prepStmt.setString(2, logindata.getPassword());
 		ResultSet results = prepStmt.executeQuery();
@@ -148,4 +148,11 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 		return Collections.unmodifiableList(empList);
 	}
 
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
+	}
 }

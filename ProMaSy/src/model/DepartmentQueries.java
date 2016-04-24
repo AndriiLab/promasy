@@ -11,17 +11,17 @@ import java.util.List;
 
 public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 	
-	private Connection con;
 	private List<DepartmentModel> depList;
+	private final String id = "dep_id";
+	private final String table = "departments";
 	
 	public DepartmentQueries() {
-		con = Database.INSTANCE.getConnection();
 		depList = new LinkedList<DepartmentModel>();
 	}
 
 	public void create(DepartmentModel object) throws SQLException {
 		String query = "INSERT INTO departments(dep_name, inst_id, created_by, created_date) VALUES (?, ?, ?, ?)";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getDepName());
 		prepStmt.setLong(2, object.getInstId());
 		prepStmt.setLong(3, object.getCreatedBy());
@@ -39,7 +39,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 	public void retrieve(long reqInstId) throws SQLException {
 		depList.clear();
 		String query = "select dep_id, dep_name, inst_id, created_by, created_date, modified_by, modified_date, active from departments where inst_id = ? and active = true";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, reqInstId);
 		ResultSet results = prepStmt.executeQuery();
 
@@ -63,7 +63,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 
 	public void update(DepartmentModel object) throws SQLException {
 		String query = "UPDATE departments SET dep_name=?, modified_by=?, modified_date=? WHERE dep_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getDepName());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
@@ -75,7 +75,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 
 	public void delete(DepartmentModel object) throws SQLException {
 		String query = "UPDATE departments SET active=false, modified_by=?, modified_date=? WHERE dep_id=?";
-		PreparedStatement prepStmt = con.prepareStatement(query);
+		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setLong(3, object.getDepId());
@@ -86,6 +86,14 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 
 	public List<DepartmentModel> getList() {
 		return Collections.unmodifiableList(depList);
+	}
+	
+	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+		return checkChanges(cacheModel, table, id);
+	}
+
+	public LastChangesModel getChangedModel() throws SQLException {
+		return getChanged(table, id);
 	}
 
 }
