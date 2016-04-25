@@ -1,6 +1,6 @@
 /**
  * This class makes a base for interface of Promasy. It instantiates all parent frames
- * and dialog boxes. This class also sends commands to Controller class.
+ * and dialog boxes.
  */
 
 package gui;
@@ -36,10 +36,12 @@ public class MainFrame extends JFrame {
 	private CpvPanel cpvPanel;
 	private JTabbedPane tabPane;
 	private StatusPanel statusPanel;
+	private JMenuItem exitItem;
+
 
 	public MainFrame() {
-		// Setting name of the window and its parameters
-		super("Procurement Management System - Система Керування Закупівлями");
+        // Setting name of the window and its parameters
+		super(LabelsLocale.getProperty("mainFrameSuper"));
 		setSize(1000, 700);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -58,7 +60,7 @@ public class MainFrame extends JFrame {
 		statusPanel = new StatusPanel(this);
 		cpvPanel = new CpvPanel();
 		tabPane = new JTabbedPane();
-		tabPane.addTab("Вибір CPV", cpvPanel);
+		tabPane.addTab(LabelsLocale.getProperty("cpvPanelTab"), cpvPanel);
 
 		// creating Menubar
 		setJMenuBar(createMenuBar());
@@ -75,39 +77,33 @@ public class MainFrame extends JFrame {
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 
-		JMenu fileMenu = new JMenu("Файл");
-		JMenuItem printItem = new JMenuItem("Друк");
-		JMenuItem exitItem = new JMenuItem("Вихід");
+		JMenu fileMenu = new JMenu(LabelsLocale.getProperty("fileMenuLabel"));
+		JMenuItem printItem = new JMenuItem(LabelsLocale.getProperty("printItemLabel"));
+		exitItem = new JMenuItem(LabelsLocale.getProperty("exitItemLabel"));
 		fileMenu.add(printItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 
-		JMenu editMenu = new JMenu("Редагувати");
-		JMenuItem editOrgItem = new JMenuItem("організації\\відділи...");
-		JMenuItem editEmpItem = new JMenuItem("користувачів...");
-		JMenuItem addEmpItem = new JMenuItem("Створити користувача...");
+		JMenu editMenu = new JMenu(LabelsLocale.getProperty("editMenuLabel"));
+		JMenuItem editOrgItem = new JMenuItem(LabelsLocale.getProperty("editOrgItemLabel"));
+		JMenuItem editEmpItem = new JMenuItem(LabelsLocale.getProperty("editEmpItemLabel"));
+		JMenuItem addEmpItem = new JMenuItem(LabelsLocale.getProperty("addEmpItemLabel"));
 		editMenu.add(editOrgItem);
 		editMenu.add(editEmpItem);
 		editMenu.add(addEmpItem);
 
-		JMenu settingsMenu = new JMenu("Налаштування");
-		JMenuItem conSettItem = new JMenuItem("Параметри з'єднання...");
+		JMenu settingsMenu = new JMenu(LabelsLocale.getProperty("settingsMenuLabel"));
+		JMenuItem conSettItem = new JMenuItem(LabelsLocale.getProperty("conSettItemLabel"));
 		settingsMenu.add(conSettItem);
 
-		JMenu helpMenu = new JMenu("Допомога");
-		JMenuItem infoItem = new JMenuItem("Про програму...");
+		JMenu helpMenu = new JMenu(LabelsLocale.getProperty("helpMenuLabel"));
+		JMenuItem infoItem = new JMenuItem(LabelsLocale.getProperty("infoItemLabel"));
 		helpMenu.add(infoItem);
 
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(settingsMenu);
 		menuBar.add(helpMenu);
-
-		exitItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-//				closeDialog();
-			}
-		});
 
 		editOrgItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -170,6 +166,9 @@ public class MainFrame extends JFrame {
 	}
 	public JTabbedPane getTabPane() {
 		return tabPane;
+	}
+	public JMenuItem getExitItem() {
+		return exitItem;
 	}
 
 }

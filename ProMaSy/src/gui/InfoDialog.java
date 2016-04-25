@@ -27,7 +27,9 @@ public class InfoDialog extends JDialog {
 		infoPane = new JTextPane();
 		infoPane.setEditable(false);
 		infoPane.setText(
-				"PROcurement MAnagement SYstem\n" + "Система Керування Закупівлями\n" + "\n" + "\tВерсія 0.1\n");
+				"PROcurement MAnagement SYstem\n" +
+				"Система Керування Закупівлями\n" + 
+				"\n\tВерсія 0.3\n");
 
 		okButton = new JButton("OK");
 		okButton.addActionListener(new ActionListener() {

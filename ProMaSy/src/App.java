@@ -8,6 +8,9 @@ import javax.swing.SwingUtilities;
 import controller.Controller;
 import gui.MainFrame;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 public class App {
 
@@ -21,10 +24,10 @@ public class App {
 	}
 
 	public static void runApp() {
-		
+
 		MainFrame mainFrame = new MainFrame();
 		
-		Controller controller = new Controller(mainFrame);
+		new Controller(mainFrame);
 		
 	}
 }

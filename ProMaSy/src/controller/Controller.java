@@ -3,6 +3,8 @@
  */
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -30,6 +32,7 @@ import model.CPVQueries;
 import model.AbstractModel;
 import model.Database;
 import model.DepartmentQueries;
+import model.EmployeeModel;
 import model.EmployeeQueries;
 import model.DepartmentModel;
 import model.InstituteModel;
@@ -56,6 +59,13 @@ public class Controller {
 	public Controller(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		mainFrame.setVisible(false);
+		
+		// adding implementation for closing operation via X-button on window 
+		mainFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				closeDialog();
+			}
+		});
 
 		// loginDialog appears first to MainFrame
 		mainFrame.getLoginDialog().setVisible(true);
@@ -76,16 +86,9 @@ public class Controller {
 				}
 			}
 
-			// if user changed his mind to login call close method
+			// if user changed his mind about login call close method
 			public void loginCancelled(EventObject ev) {
 				close();
-			}
-		});
-
-		// adding implementation for closing operation via X-button on window 
-		mainFrame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				closeDialog();
 			}
 		});
 
@@ -118,9 +121,9 @@ public class Controller {
 				connect();
 			}
 		});
-		// loading used for connection values to ConnectionSetingsDialog
-		mainFrame.getConSettDialog().setDefaults(server, database, schema, portNumber, user, password);
-		// loading used for connection values to Controller
+		// loading connection values to ConnectionSetingsDialog and Controller
+		mainFrame.getConSettDialog().setDefaults(server, database, schema, 
+				portNumber, user, password);
 		setConnectionSettings(server, database, schema,  
 				Integer.toString(portNumber), user, password);
 
@@ -263,6 +266,12 @@ public class Controller {
 				mainFrame.getEditOrgDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 		});
+
+		mainFrame.getExitItem().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				closeDialog();
+			}
+		});
 	}
 
 	// sets connection settings to Properties object 
@@ -311,7 +320,8 @@ public class Controller {
 		model.setActive(false);
 	}
 
-
+	//methods sending requests to DB
+	//GETTERS
 	private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
 		try {
 			Database.CPV.retrieve(cpvRequest, sameLvlShow);
@@ -362,25 +372,8 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-
-	private void createEmployee (EmployeeEvent ev){
-		try {
-			Database.EMPLOYEES.create(ev.getEmployeeModel());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void editEmployee(EmployeeEvent ev) {
-		try {
-			Database.EMPLOYEES.update(ev.getEmployeeModel());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
+	
+	// check user login and pass
 	private boolean checkLogin(LoginData loginData) {
 		try {
 			return Database.EMPLOYEES.checkLogin(loginData);
@@ -390,9 +383,34 @@ public class Controller {
 		}
 		return false;
 	}
+	
+	//CRUD Employees
+	private void createEmployee (EmployeeEvent ev){
+		try {
+			EmployeeModel model = ev.getEmployeeModel();
+			setCreated(model);
+			Database.EMPLOYEES.create(model);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	private void editEmployee(EmployeeEvent ev) {
+		try {
+			EmployeeModel model = ev.getEmployeeModel();
+			setModified(model);
+			Database.EMPLOYEES.update(model);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	//CRUD Institutes
 	private void createInstitute(InstituteModel instModel) {
 		try {
+			setCreated(instModel);
 			Database.INSTITUTES.create(instModel);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -402,6 +420,7 @@ public class Controller {
 
 	private void editInstitute(InstituteModel instModel) {
 		try {
+			setModified(instModel);
 			Database.INSTITUTES.update(instModel);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -412,6 +431,7 @@ public class Controller {
 
 	private void deleteInstitute(InstituteModel instModel) {
 		try {
+			setInactive(instModel);
 			Database.INSTITUTES.delete(instModel);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -419,8 +439,10 @@ public class Controller {
 		}
 	}
 
+	//CRUD Departments
 	private void createDepartment(DepartmentModel model) {
 		try {
+			setCreated(model);
 			Database.DEPARTMENTS.create(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -430,6 +452,7 @@ public class Controller {
 
 	private void editDepartment(DepartmentModel model) {
 		try {
+			setModified(model);
 			Database.DEPARTMENTS.update(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -439,6 +462,7 @@ public class Controller {
 
 	private void deleteDepartment(DepartmentModel model) {
 		try {
+			setInactive(model);
 			Database.DEPARTMENTS.delete(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -446,8 +470,10 @@ public class Controller {
 		}
 	}
 
+	//CRUD Subdepartments
 	protected void createSubdepartment(SubdepartmentModel model) {
 		try {
+			setCreated(model);
 			Database.SUBDEPARTMENS.create(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -457,6 +483,7 @@ public class Controller {
 
 	protected void editSubdepartment(SubdepartmentModel model) {
 		try {
+			setModified(model);
 			Database.SUBDEPARTMENS.update(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -466,6 +493,7 @@ public class Controller {
 
 	protected void deleteSubdepartment(SubdepartmentModel model) {
 		try {
+			setInactive(model);
 			Database.SUBDEPARTMENS.delete(model);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -473,12 +501,14 @@ public class Controller {
 		}
 	}
 
+	//default close method
 	private void close(){
 		Database.DB.disconnect();
 		mainFrame.dispose();
 		System.gc();
 	}
-
+	
+	//but it calls only in this close() method (except close in login dialog)
 	private void closeDialog() {
 		int action = JOptionPane.showConfirmDialog(this.mainFrame, "Ви дійсно хочете вийти з програми?",
 				"Підтвердіть вихід", JOptionPane.OK_CANCEL_OPTION);
@@ -486,5 +516,4 @@ public class Controller {
 			close();
 		}
 	}
-
 }
