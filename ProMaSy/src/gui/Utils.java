@@ -10,9 +10,6 @@ public class Utils {
 		if(url == null){
 			System.err.println("Unable to load icon: "+path);
 		}
-		
-		ImageIcon icon =  new ImageIcon(url);
-		
-		return icon;
+		return new ImageIcon(url);
 	}
 }

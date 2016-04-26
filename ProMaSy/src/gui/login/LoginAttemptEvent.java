@@ -7,7 +7,7 @@ public class LoginAttemptEvent extends EventObject{
 	private String username;
 	private String password;
 	
-	public LoginAttemptEvent(Object source, String username, String password) {
+	LoginAttemptEvent(Object source, String username, String password) {
 		super(source);
 		this.username = username;
 		this.password = password;

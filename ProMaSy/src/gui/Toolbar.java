@@ -31,7 +31,7 @@ public class Toolbar extends JToolBar implements ActionListener {
 
 		if (clicked == testConBtn) {
 			if (btnListener != null) {
-				btnListener.testConEventOccured();
+				btnListener.testConEventOccurred();
 			}
 		}
 

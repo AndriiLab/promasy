@@ -13,7 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -28,7 +28,7 @@ public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogL
 	private EmployeePanel empPanel;
 
 	public CreateEmployeeDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("createEmployeeDialogSuper"), false);
+		super(parent, Labels.getProperty("createNewEmployee"), false);
 		setSize(600, 370);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -36,8 +36,8 @@ public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogL
 		empPanel = new EmployeePanel();
 		empPanel.setEmployeeDialogListener(this);
 
-		okButton = new JButton(LabelsLocale.getProperty("createEmployeeDialogOkBtn"));
-		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
+		okButton = new JButton(Labels.getProperty("createProfile"));
+		cancelButton = new JButton(Labels.getProperty("cancelBtn"));
 
 		layoutControls();
 
@@ -49,37 +49,35 @@ public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogL
 					EmployeeEvent ev = new EmployeeEvent(this, empModel);
 
 					if(empListener != null){
-						empListener.createPersonEventOccured(ev);
+						empListener.createPersonEventOccurred(ev);
 					}
 					setVisible(false);
 				}
 			}
 		});
 		
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				empPanel.clearDialog();
-				setVisible(false);
-			}
-		});
+		cancelButton.addActionListener(e -> {
+            empPanel.clearDialog();
+            setVisible(false);
+        });
 	}
 	
 	@Override
-	public void instSelelectionEventOccured(long instId) {
+	public void instSelectionEventOccurred(long instId) {
 		if(empListener != null){
-			empListener.instSelelectionEventOccured(instId);
+			empListener.instSelectionEventOccurred(instId);
 		}
 	}
 
 	@Override
-	public void depSelelectionEventOccured(long depId) {
+	public void depSelectionEventOccurred(long depId) {
 		if(empListener != null){
-			empListener.depSelelectionEventOccured(depId);
+			empListener.deaSelectionEventOccurred(depId);
 		}
 	}
 
 	@Override
-	public void editPersonEventOccured(EmployeeEvent ev) {
+	public void editPersonEventOccurred(EmployeeEvent ev) {
 		// TODO Auto-generated method stub
 		
 	}

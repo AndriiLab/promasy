@@ -2,10 +2,10 @@ package gui.empedit;
 
 public interface CreateEmployeeDialogListener {
 	
-	public void instSelelectionEventOccured(long instId);
+	void instSelectionEventOccurred(long instId);
 	
-	public void depSelelectionEventOccured(long depId);
+	void deaSelectionEventOccurred(long depId);
 	
-	public void createPersonEventOccured(EmployeeEvent ev);
+	void createPersonEventOccurred(EmployeeEvent ev);
 
 }

@@ -23,14 +23,14 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
 import model.RoleModel;
 import model.SubdepartmentModel;
 
-public class EmployeePanel extends JPanel implements ActionListener{
+class EmployeePanel extends JPanel implements ActionListener{
 
 	private JTextField nameField;
 	private JTextField middleNameField;
@@ -40,19 +40,14 @@ public class EmployeePanel extends JPanel implements ActionListener{
 	private JComboBox<SubdepartmentModel> subdepartmentBox;
 	private JComboBox<RoleModel> roleBox;
 	private EditEmployeeDialogListener empListener;
-	private List<InstituteModel> instDb;
-	private List<DepartmentModel> depDb;
-	private List<SubdepartmentModel> subdepDb;
-	private List<RoleModel> rolesDb;
-	private final DefaultComboBoxModel<InstituteModel> instModel;
-	private final DefaultComboBoxModel<DepartmentModel> depModel;
-	private final DefaultComboBoxModel<SubdepartmentModel> subdepModel;
-	private final DefaultComboBoxModel<RoleModel> roleModel;
 	private JTextField loginField;
 	private JPasswordField passwordField;
 	private JPasswordField repeatPasswordField;
 	private EmployeeModel empModel;
 	private JLabel hint;
+	private final InstituteModel emptyInstituteModel = new InstituteModel();
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
 
 	public EmployeePanel() {
 		
@@ -68,32 +63,32 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		repeatPasswordField.setEditable(false);
 
 		//Set up roles combo box
-		roleModel = new DefaultComboBoxModel<RoleModel>();
-		roleBox = new JComboBox<RoleModel>(roleModel);
+		DefaultComboBoxModel<RoleModel> roleModel = new DefaultComboBoxModel<>();
+		roleBox = new JComboBox<>(roleModel);
 		roleBox.addItem(new RoleModel());
 		roleBox.setEditable(false);
 		roleBox.setPreferredSize(comboBoxDim);
 
 		//Set up institute combo box and edit buttons
-		instModel = new DefaultComboBoxModel<InstituteModel>();
-		instituteBox = new JComboBox<InstituteModel>(instModel);
-		instituteBox.addItem(new InstituteModel());
+		DefaultComboBoxModel<InstituteModel> instModel = new DefaultComboBoxModel<>();
+		instituteBox = new JComboBox<>(instModel);
+		instituteBox.addItem(emptyInstituteModel);
 		instituteBox.setEditable(false);
 		instituteBox.addActionListener(this);
 		instituteBox.setPreferredSize(comboBoxDim);
 
 		//Set up department combo box and edit buttons
-		depModel = new DefaultComboBoxModel<DepartmentModel>();
-		departmentBox = new JComboBox<DepartmentModel>(depModel);
-		departmentBox.addItem(new DepartmentModel());
+		DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
+		departmentBox = new JComboBox<>(depModel);
+		departmentBox.addItem(emptyDepartmentModel);
 		departmentBox.setEditable(false);
 		departmentBox.addActionListener(this);
 		departmentBox.setPreferredSize(comboBoxDim);
 
 		//Set up SubDepartment combo box and edit buttons
-		subdepModel = new DefaultComboBoxModel<SubdepartmentModel>();
-		subdepartmentBox = new JComboBox<SubdepartmentModel>(subdepModel);
-		subdepartmentBox.addItem(new SubdepartmentModel());
+		DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
+		subdepartmentBox = new JComboBox<>(subdepModel);
+		subdepartmentBox.addItem(emptySubdepartmentModel);
 		subdepartmentBox.setEditable(false);
 		subdepartmentBox.setPreferredSize(comboBoxDim);
 
@@ -108,9 +103,9 @@ public class EmployeePanel extends JPanel implements ActionListener{
 			public void keyTyped(KeyEvent e) {
 				repeatPasswordField.setEditable(passwordField.getPassword().length != 0);
 				if(repeatPasswordField.isEditable()){
-					hint.setText(LabelsLocale.getProperty("repeatPassword"));
+					hint.setText(Labels.getProperty("repeatPassword"));
 				} else if (repeatPasswordField.getPassword().length == 0){
-					hint.setText(LabelsLocale.getProperty("repeatPassword"));
+					hint.setText(Labels.getProperty("repeatPassword"));
 				}
 			}
 		});
@@ -120,7 +115,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 				if(repeatPasswordField.getPassword().length > 0){
 					hint.setText(null);
 				} else if (repeatPasswordField.getPassword().length == 0){
-					hint.setText(LabelsLocale.getProperty("repeatPassword"));
+					hint.setText(Labels.getProperty("repeatPassword"));
 				}
 			}
 		});
@@ -136,36 +131,36 @@ public class EmployeePanel extends JPanel implements ActionListener{
 	public EmployeeModel getEmpFromFields() {
 		if (loginField.getText().length() == 0){
 			loginField.setDisabledTextColor(Color.RED);
-			hint.setText(LabelsLocale.getProperty("enterLogin"));
+			hint.setText(Labels.getProperty("enterLogin"));
 			return null;
 		}
 		else if(passwordField.getPassword().length == 0){
 			passwordField.setDisabledTextColor(Color.RED);
-			hint.setText(LabelsLocale.getProperty("enterPassword"));
+			hint.setText(Labels.getProperty("enterPassword"));
 			return null;
 		} 
 		else if (!Arrays.equals(passwordField.getPassword(), repeatPasswordField.getPassword())){
-			hint.setText(LabelsLocale.getProperty("passwordsMismatch"));
+			hint.setText(Labels.getProperty("passwordsMismatch"));
 			return null;
 		}
 		else if (lastNameField.getText().length() < 2){
-			hint.setText(LabelsLocale.getProperty("enterLName"));
+			hint.setText(Labels.getProperty("enterLName"));
 			return null;
 		}
 		else if (nameField.getText().length() < 2){
-			hint.setText(LabelsLocale.getProperty("enterFName"));
+			hint.setText(Labels.getProperty("enterFName"));
 			return null;
 		}
 		else if (instituteBox.getSelectedItem().equals(instituteBox.getItemAt(0))){
-			hint.setText(LabelsLocale.getProperty("enterInstitute"));
+			hint.setText(Labels.getProperty("enterInstitute"));
 			return null;
 		}
 		else if (departmentBox.getSelectedItem().equals(departmentBox.getItemAt(0))){
-			hint.setText(LabelsLocale.getProperty("enterDepartment"));
+			hint.setText(Labels.getProperty("enterDepartment"));
 			return null;
 		}
 		else if (roleBox.getSelectedItem().equals(roleBox.getItemAt(0))){
-			hint.setText(LabelsLocale.getProperty("enterRole"));
+			hint.setText(Labels.getProperty("enterRole"));
 			return null;
 		}
 		else {
@@ -196,31 +191,27 @@ public class EmployeePanel extends JPanel implements ActionListener{
 	}
 
 	public void setRolesData(List<RoleModel> rolesDb) {
-		this.rolesDb = rolesDb;
-		for(int i = 0; i<this.rolesDb.size(); i++){
-			roleBox.addItem(this.rolesDb.get(i));
-		}
+        for (RoleModel aRolesDb : rolesDb) {
+            roleBox.addItem(aRolesDb);
+        }
 	}
 
 	public void setInstData(List<InstituteModel> instDb) {
-		this.instDb = instDb;
-		for(int i = 0; i<this.instDb.size(); i++){
-			instituteBox.addItem(this.instDb.get(i));
-		}
+        for (InstituteModel anInstDb : instDb) {
+            instituteBox.addItem(anInstDb);
+        }
 	}
 
 	public void setDepData(List<DepartmentModel> depDb) {
-		this.depDb = depDb;
-		for(int i = 0; i<this.depDb.size(); i++){
-			departmentBox.addItem(this.depDb.get(i));
-		}
+        for (DepartmentModel aDepDb : depDb) {
+            departmentBox.addItem(aDepDb);
+        }
 	}
 
 	public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-		this.subdepDb = subdepDb;
-		for(int i = 0; i<this.subdepDb.size(); i++){
-			subdepartmentBox.addItem(this.subdepDb.get(i));
-		}
+        for (SubdepartmentModel aSubdepDb : subdepDb) {
+            subdepartmentBox.addItem(aSubdepDb);
+        }
 	}
 
 	public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){
@@ -233,24 +224,24 @@ public class EmployeePanel extends JPanel implements ActionListener{
 
 		if (box == instituteBox){
 			departmentBox.removeAllItems();
-			if (!instituteBox.getSelectedItem().equals(new InstituteModel())){
+			if (!instituteBox.getSelectedItem().equals(emptyInstituteModel)){
 				InstituteModel model = (InstituteModel)instituteBox.getSelectedItem();
 				long instId = model.getInstId();
 				if(empListener != null){
-					empListener.instSelelectionEventOccured(instId);
+					empListener.instSelectionEventOccurred(instId);
 				}
 			}
 		} else if (box == departmentBox){
 			if (box.getSelectedItem() == null){
-				departmentBox.addItem(new DepartmentModel());
+				departmentBox.addItem(emptyDepartmentModel);
 			}
 			subdepartmentBox.removeAllItems();
-			subdepartmentBox.addItem(new SubdepartmentModel());
-			if (!departmentBox.getSelectedItem().equals(new DepartmentModel())){
+			subdepartmentBox.addItem(emptySubdepartmentModel);
+			if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel)){
 				DepartmentModel depModel = (DepartmentModel)departmentBox.getSelectedItem();
 				long depId = depModel.getDepId();
 				if(empListener != null){
-					empListener.depSelelectionEventOccured(depId);
+					empListener.depSelectionEventOccurred(depId);
 				}
 			}
 		}
@@ -277,7 +268,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		if(req != null){
 			for(int i = 0; i<=box.getItemCount(); i++){
 				if(box.getItemAt(i).toString().equals(req)){
-					box.setSelectedIndex(i);;
+					box.setSelectedIndex(i);
 					break;
 				}
 			}
@@ -294,9 +285,9 @@ public class EmployeePanel extends JPanel implements ActionListener{
 
 		int space = 5;
 		Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-		Border employeeBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeEmpBorder"));
-		Border loginBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeLoginBorder"));
-		Border instituteBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeInstituteBorder"));
+		Border employeeBorder = BorderFactory.createTitledBorder(Labels.getProperty("user"));
+		Border loginBorder = BorderFactory.createTitledBorder(Labels.getProperty("loginParameters"));
+		Border instituteBorder = BorderFactory.createTitledBorder(Labels.getProperty("AssociatedOrganization"));
 		Border hintBorder = BorderFactory.createEtchedBorder();
 
 		loginPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, loginBorder));
@@ -318,7 +309,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		loginPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
+		loginPanel.add(new JLabel(Labels.getProperty("userName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -328,7 +319,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		loginPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
+		loginPanel.add(new JLabel(Labels.getProperty("password")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -350,7 +341,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel(LabelsLocale.getProperty("lastName")), gc);
+		employeePanel.add(new JLabel(Labels.getProperty("lastName")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -360,7 +351,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel(LabelsLocale.getProperty("firstName")), gc);
+		employeePanel.add(new JLabel(Labels.getProperty("firstName")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -370,7 +361,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel(LabelsLocale.getProperty("middleName")), gc);
+		employeePanel.add(new JLabel(Labels.getProperty("middleName")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -387,7 +378,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("role")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("role")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -399,7 +390,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("institute")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("institute")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -411,7 +402,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("department")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("department")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -423,7 +414,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("subdepartment")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("subdepartment")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;

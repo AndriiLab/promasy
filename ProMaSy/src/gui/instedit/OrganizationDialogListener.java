@@ -6,26 +6,26 @@ import model.SubdepartmentModel;
 
 public interface OrganizationDialogListener {
 	
-	public void instSelelectionEventOccured(long instId);
+	void instSelectionEventOccurred(long instId);
 	
-	public void depSelelectionEventOccured(long depId);
+	void depSelectionEventOccurred(long depId);
 
-	public void createInstEventOccured(InstituteModel model);
+	void createInstEventOccurred(InstituteModel model);
 
-	public void editInstEventOccured(InstituteModel model);
+	void editInstEventOccurred(InstituteModel model);
 
-	public void deleteInstEventOccured(InstituteModel model);
+	void deleteInstEventOccurred(InstituteModel model);
 
-	public void createDepEventOccured(DepartmentModel model);
+	void createDepEventOccurred(DepartmentModel model);
 
-	public void editDepEventOccured(DepartmentModel model);
+	void editDepEventOccurred(DepartmentModel model);
 	
-	public void deleteDepEventOccured(DepartmentModel model);
+	void deleteDepEventOccurred(DepartmentModel model);
 	
-	public void createSubdepEventOccured(SubdepartmentModel model);
+	void createSubdepEventOccurred(SubdepartmentModel model);
 
-	public void editSubdepEventOccured(SubdepartmentModel model);
+	void editSubdepEventOccurred(SubdepartmentModel model);
 	
-	public void deleteSubdepEventOccured(SubdepartmentModel model);
+	void deleteSubdepEventOccurred(SubdepartmentModel model);
 
 }

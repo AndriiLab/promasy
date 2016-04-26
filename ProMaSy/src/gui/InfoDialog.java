@@ -20,25 +20,17 @@ public class InfoDialog extends JDialog {
 	private JButton okButton;
 
 	public InfoDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("infoDialogSuper"), false);
+		super(parent, Labels.getProperty("aboutSoftware"), false);
 		setSize(300, 200);
 		setLocationRelativeTo(parent);
 
 		infoPane = new JTextPane();
 		infoPane.setEditable(false);
-		infoPane.setText(LabelsLocale.getProperty("infoPaneText"));
+		infoPane.setText(Labels.getProperty("infoPaneText"));
 
-		okButton = new JButton(LabelsLocale.getProperty("okBtn"));
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
+		okButton = new JButton(Labels.getProperty("okBtn"));
+		okButton.addActionListener(e -> setVisible(false));
 
-		layoutControls();
-	}
-
-	private void layoutControls() {
 		JPanel infoPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 

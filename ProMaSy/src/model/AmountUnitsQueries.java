@@ -16,7 +16,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	private final String table = "amountunits";
 	
 	public AmountUnitsQueries() {
-		amUnitList = new LinkedList<AmountUnitsModel>();
+		amUnitList = new LinkedList<>();
 	}
 
 	public void create(AmountUnitsModel object) throws SQLException {
@@ -31,7 +31,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 
 	public void retrieve() throws SQLException {
 		amUnitList.clear();
-		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits";
+		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits WHERE active = TRUE";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 

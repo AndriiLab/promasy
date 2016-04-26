@@ -2,8 +2,8 @@ package gui.empedit;
 
 import model.EmployeeModel;
 
-public interface EmployeeTableListener {
+interface EmployeeTableListener {
 	
-	public void employeeSelectionOccured(EmployeeModel obj);
+	void employeeSelectionOccured(EmployeeModel obj);
 
 }

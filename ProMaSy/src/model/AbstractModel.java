@@ -8,9 +8,9 @@ public abstract class AbstractModel {
 	Timestamp createdDate;
 	long modifiedBy;
 	Timestamp modifiedDate;
-	boolean active;
+	private boolean active;
 	
-	public AbstractModel() {
+	AbstractModel() {
 		this.createdBy = 0;
 		this.createdDate = null;
 		this.modifiedBy = 0;
@@ -18,8 +18,8 @@ public abstract class AbstractModel {
 		this.active = true;
 	}
 	
-	public AbstractModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
-			boolean active) {
+	AbstractModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
+				  boolean active) {
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;

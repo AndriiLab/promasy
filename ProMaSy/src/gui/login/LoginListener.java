@@ -4,8 +4,8 @@ import java.util.EventObject;
 
 public interface LoginListener {
 	
-	public void loginAttemptOccured(LoginAttemptEvent ev);
+	void loginAttemptOccurred(LoginAttemptEvent ev);
 	
-	public void loginCancelled(EventObject ev);
+	void loginCancelled(EventObject ev);
 
 }

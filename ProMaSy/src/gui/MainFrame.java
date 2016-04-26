@@ -8,8 +8,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,11 +35,12 @@ public class MainFrame extends JFrame {
 	private JTabbedPane tabPane;
 	private StatusPanel statusPanel;
 	private JMenuItem exitItem;
+	private AmUnitsDialog amUnitsDialog;
 
 
 	public MainFrame() {
         // Setting name of the window and its parameters
-		super(LabelsLocale.getProperty("mainFrameSuper"));
+		super(Labels.getProperty("mainFrameSuper"));
 		setSize(1000, 700);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -56,11 +55,12 @@ public class MainFrame extends JFrame {
 		editOrgDialog = new OrganizationDialog(this);
 		editEmpDialog = new EditEmployeeDialog(this);
 		addEmpDialog = new CreateEmployeeDialog(this);
+		amUnitsDialog = new AmUnitsDialog(this);
 		infoDialog = new InfoDialog(this);
 		statusPanel = new StatusPanel(this);
 		cpvPanel = new CpvPanel();
 		tabPane = new JTabbedPane();
-		tabPane.addTab(LabelsLocale.getProperty("cpvPanelTab"), cpvPanel);
+		tabPane.addTab(Labels.getProperty("cpvPanelTab"), cpvPanel);
 
 		// creating Menubar
 		setJMenuBar(createMenuBar());
@@ -77,27 +77,29 @@ public class MainFrame extends JFrame {
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 
-		JMenu fileMenu = new JMenu(LabelsLocale.getProperty("fileMenuLabel"));
-		JMenuItem printItem = new JMenuItem(LabelsLocale.getProperty("printItemLabel"));
-		exitItem = new JMenuItem(LabelsLocale.getProperty("exitItemLabel"));
+		JMenu fileMenu = new JMenu(Labels.getProperty("file"));
+		JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
+		exitItem = new JMenuItem(Labels.getProperty("exit"));
 		fileMenu.add(printItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
 
-		JMenu editMenu = new JMenu(LabelsLocale.getProperty("editMenuLabel"));
-		JMenuItem editOrgItem = new JMenuItem(LabelsLocale.getProperty("editOrgItemLabel"));
-		JMenuItem editEmpItem = new JMenuItem(LabelsLocale.getProperty("editEmpItemLabel"));
-		JMenuItem addEmpItem = new JMenuItem(LabelsLocale.getProperty("addEmpItemLabel"));
+		JMenu editMenu = new JMenu(Labels.getProperty("edit"));
+		JMenuItem editOrgItem = new JMenuItem(Labels.getProperty("editOrganizationsDepartmnets"));
+		JMenuItem editEmpItem = new JMenuItem(Labels.getProperty("editEmployees"));
+		JMenuItem addEmpItem = new JMenuItem(Labels.getProperty("addEmployees"));
+		JMenuItem editAmUnitsItem = new JMenuItem(Labels.getProperty("amUnitsDialogSuper")+"...");
 		editMenu.add(editOrgItem);
 		editMenu.add(editEmpItem);
 		editMenu.add(addEmpItem);
+        editMenu.add(editAmUnitsItem);
 
-		JMenu settingsMenu = new JMenu(LabelsLocale.getProperty("settingsMenuLabel"));
-		JMenuItem conSettItem = new JMenuItem(LabelsLocale.getProperty("conSettItemLabel"));
+		JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
+		JMenuItem conSettItem = new JMenuItem(Labels.getProperty("ConnectionWithDBSettings")+"...");
 		settingsMenu.add(conSettItem);
 
-		JMenu helpMenu = new JMenu(LabelsLocale.getProperty("helpMenuLabel"));
-		JMenuItem infoItem = new JMenuItem(LabelsLocale.getProperty("infoItemLabel"));
+		JMenu helpMenu = new JMenu(Labels.getProperty("help"));
+		JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware")+"...");
 		helpMenu.add(infoItem);
 
 		menuBar.add(fileMenu);
@@ -105,35 +107,17 @@ public class MainFrame extends JFrame {
 		menuBar.add(settingsMenu);
 		menuBar.add(helpMenu);
 
-		editOrgItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editOrgDialog.setVisible(true);
-			}
-		});
+		editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
 
-		editEmpItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				editEmpDialog.setVisible(true);
-			}
-		});
+		editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
 
-		addEmpItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addEmpDialog.setVisible(true);
-			}
-		});
+		addEmpItem.addActionListener(e -> addEmpDialog.setVisible(true));
 
-		conSettItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				conSettDialog.setVisible(true);
-			}
-		});
+        editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
 
-		infoItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				infoDialog.setVisible(true);
-			}
-		});
+		conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
+
+		infoItem.addActionListener(e -> infoDialog.setVisible(true));
 
 		return menuBar;
 	}

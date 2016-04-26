@@ -2,8 +2,6 @@ package gui.cpv;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -16,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import gui.Utils;
@@ -40,21 +38,21 @@ public class CpvPanel extends JPanel {
 		JButton homeButton = new JButton();
 		upButton = new JButton();
 		JButton searchButton = new JButton();
-		selectButton = new JButton(LabelsLocale.getProperty("selectButtonLabel"));
+		selectButton = new JButton(Labels.getProperty("selectCode"));
 		
 		//set format for table		
 		table.getColumnModel().getColumn(0).setMaxWidth(150);
 		
-		homeButton.setToolTipText(LabelsLocale.getProperty("homeButtonToolTipText"));
+		homeButton.setToolTipText(Labels.getProperty("goToTopCategory"));
 		homeButton.setIcon(Utils.createIcon("/images/Home16.gif"));
-		upButton.setToolTipText(LabelsLocale.getProperty("upButtonToolTipText"));
+		upButton.setToolTipText(Labels.getProperty("upCategory"));
 		upButton.setIcon(Utils.createIcon("/images/Up16.gif"));
 		upButton.setEnabled(false);
-		searchButton.setToolTipText(LabelsLocale.getProperty("searchButtonToolTipText"));
+		searchButton.setToolTipText(Labels.getProperty("search"));
 		searchButton.setIcon(Utils.createIcon("/images/Find16.gif"));
 		selectButton.setEnabled(false);
 
-		PromptSupport.setPrompt(LabelsLocale.getProperty("searchFieldHint"), searchField);
+		PromptSupport.setPrompt(Labels.getProperty("searchFieldHint"), searchField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, searchField);
         searchField.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
@@ -62,50 +60,42 @@ public class CpvPanel extends JPanel {
 			}
 		});
         
-        homeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				upButton.setEnabled(false);
-				makeCpvQuery("", true);
-				searchField.setText(null);
-			}
-		});
+        homeButton.addActionListener(e -> {
+            upButton.setEnabled(false);
+            makeCpvQuery("", true);
+            searchField.setText(null);
+        });
         
-        upButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		selectButton.setEnabled(false);
-        		String cpvRequest = searchField.getText();
-        		if (cpvRequest.length() > 8) {
-        			cpvRequest = cpvRequest.substring(0, 6);
-        			while (cpvRequest.length()>2 && cpvRequest.endsWith("0")) {
-        				cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
-        			}
-        		}
-        		cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
-        		if (cpvRequest.length() <= 1){
-        			cpvRequest = "";
-        			searchField.setText(null);
-        			upButton.setEnabled(false);
-        		}
-        		searchField.setText(cpvRequest);
-				makeCpvQuery(cpvRequest, false);
-			}
-		});
+        upButton.addActionListener(e -> {
+            selectButton.setEnabled(false);
+            String cpvRequest = searchField.getText();
+            if (cpvRequest.length() > 8) {
+                cpvRequest = cpvRequest.substring(0, 6);
+                while (cpvRequest.length()>2 && cpvRequest.endsWith("0")) {
+                    cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
+                }
+            }
+            cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
+            if (cpvRequest.length() <= 1){
+                cpvRequest = "";
+                searchField.setText(null);
+                upButton.setEnabled(false);
+            }
+            searchField.setText(cpvRequest);
+            makeCpvQuery(cpvRequest, false);
+        });
         
-		searchButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				upButton.setEnabled(false);
-				String cpvRequest = searchField.getText();
-				makeCpvQuery(cpvRequest, true);
-			}
-		});
+		searchButton.addActionListener(e -> {
+            upButton.setEnabled(false);
+            String cpvRequest = searchField.getText();
+            makeCpvQuery(cpvRequest, true);
+        });
 		
-		selectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (searchField.getText().length()==10){
-					System.out.println(searchField.getText());
-				}
-			}
-		});
+		selectButton.addActionListener(e -> {
+            if (searchField.getText().length()==10){
+                System.out.println(searchField.getText());
+            }
+        });
 
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent ev) {
@@ -153,12 +143,12 @@ public class CpvPanel extends JPanel {
 
 	}
 	
-	public void makeCpvQuery(String cpvRequest, boolean sameLvlShow){
+	private void makeCpvQuery(String cpvRequest, boolean sameLvlShow){
 		
 		CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
 
 		if (cpvListener != null) {
-			cpvListener.cpvEventOccured(ev);
+			cpvListener.cpaEventOccurred(ev);
 		}
 	}
 	

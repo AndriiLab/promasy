@@ -15,7 +15,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 	private final String table = "subdepartments";
 	
 	public SubdepartmentQueries() {
-		subdepList = new LinkedList<SubdepartmentModel>();
+		subdepList = new LinkedList<>();
 	}
 
 	@Override

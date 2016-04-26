@@ -1,6 +1,6 @@
 package gui.conset;
 
-import gui.LabelsLocale;
+import gui.Labels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -8,8 +8,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,7 +26,6 @@ public class ConSetDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	private JSpinner portSpinner;
-	private SpinnerNumberModel spinnerModel;
 	private JTextField serverField;
 	private JTextField schemaField;
 	private JTextField dbField;
@@ -37,11 +34,11 @@ public class ConSetDialog extends JDialog {
 	private ConSetListener prefsListener;
 
 	public ConSetDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("conSetDialogSuper"), false);
+		super(parent, Labels.getProperty("ConnectionWithDBSettings"), false);
 
-		okButton = new JButton(LabelsLocale.getProperty("okBtn"));
-		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
-		spinnerModel = new SpinnerNumberModel(5432, 0, 9999, 1);
+		okButton = new JButton(Labels.getProperty("okBtn"));
+		cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(5432, 0, 9999, 1);
 		portSpinner = new JSpinner(spinnerModel);
 		serverField = new JTextField(10);
 		schemaField = new JTextField(10);
@@ -51,32 +48,25 @@ public class ConSetDialog extends JDialog {
 
 		layoutControls();
 
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int portNumber = (Integer) portSpinner.getValue();
-				String server = serverField.getText();
-				String database = dbField.getText();
-				String schema = schemaField.getText();
-				String user = userField.getText();
-				char[] password = passField.getPassword();
+		okButton.addActionListener(e -> {
+			int portNumber = (Integer) portSpinner.getValue();
+			String server = serverField.getText();
+			String database = dbField.getText();
+			String schema = schemaField.getText();
+			String user = userField.getText();
+			char[] password = passField.getPassword();
 
-				setVisible(false);
+			setVisible(false);
 
-				ConSetEvent ev = new ConSetEvent(this, server, database, schema, portNumber, user,
-						new String(password));
+			ConSetEvent ev = new ConSetEvent(this, server, database, schema, portNumber, user,
+					new String(password));
 
-				if (prefsListener != null) {
-					prefsListener.preferencesSetOccured(ev);
-					;
-				}
+			if (prefsListener != null) {
+				prefsListener.preferencesSetOccurred(ev);
 			}
 		});
 
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		});
+		cancelButton.addActionListener(e -> setVisible(false));
 
 		setSize(500, 180);
 		setResizable(false);
@@ -89,7 +79,7 @@ public class ConSetDialog extends JDialog {
 		JPanel buttonsPanel = new JPanel();
 		int space = 5;
 		Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-		Border titleBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("conSetTitleBorderLabel"));
+		Border titleBorder = BorderFactory.createEtchedBorder();
 
 		controlsPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, titleBorder));
 		controlsPanel.setLayout(new GridBagLayout());
@@ -107,7 +97,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("serverLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("serverAddress")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -117,7 +107,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("portLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("port")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -132,7 +122,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("dbNameLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("DBName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -142,7 +132,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("schemaNameLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("schemaName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -154,7 +144,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridy++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("userName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -164,7 +154,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
+		controlsPanel.add(new JLabel(Labels.getProperty("password")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;

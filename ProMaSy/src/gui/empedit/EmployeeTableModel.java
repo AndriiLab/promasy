@@ -4,19 +4,19 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import model.EmployeeModel;
 
-public class EmployeeTableModel extends AbstractTableModel{
+class EmployeeTableModel extends AbstractTableModel{
 
 	private List<EmployeeModel> db;
 
-	private String[] colNames = {LabelsLocale.getProperty("empTableCol1"),
-								    LabelsLocale.getProperty("empTableCol2"),
-                                    LabelsLocale.getProperty("empTableCol3"),
-                                    LabelsLocale.getProperty("empTableCol4"),
-                                    LabelsLocale.getProperty("empTableCol5"),
-                                    LabelsLocale.getProperty("empTableCol6")};
+	private String[] colNames = {Labels.getProperty("shortName"),
+								    Labels.getProperty("institute"),
+                                    Labels.getProperty("department"),
+                                    Labels.getProperty("subdepartment"),
+                                    Labels.getProperty("role"),
+                                    Labels.getProperty("isActive")};
 
 	public EmployeeTableModel() {
 	}
@@ -43,8 +43,7 @@ public class EmployeeTableModel extends AbstractTableModel{
 			model.setActive((boolean)aValue);
 			break;
 		default:
-			return;
-		}
+        }
 	}
 
 	public void setData(List<EmployeeModel> db){

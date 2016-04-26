@@ -15,7 +15,7 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 	private final String table = "cpv";
 	
 	public CPVQueries() {
-		cpvList = new LinkedList<CPVModel>();
+		cpvList = new LinkedList<>();
 	}
 
 	@Override
@@ -71,13 +71,13 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 	private static PreparedStatement getCPVRequest(String requestedCpv, boolean sameLvlShow) throws SQLException{
 		int level = 0;
 		Connection con = DBConnector.INSTANCE.getConnection();
-		String query = null;
+		String query;
 		
 		//case: empty request
 		if (requestedCpv.isEmpty()) {
 			// selecting general Divisions
 			requestedCpv = "__000000-_";
-			
+
 			query = "select cpv_code, cpv_ukr, cpv_eng, cpv_level, terminal from cpv where cpv_code ilike ? and cpv_level > 0 and active = true";
 			PreparedStatement prepStmt = con.prepareStatement(query);
 			prepStmt.setString(1, requestedCpv);

@@ -17,7 +17,7 @@ public class InstituteModel extends AbstractModel {
 	public InstituteModel(long instId, String instName,long createdBy, 
 			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
-		super(instId, createdDate, instId, createdDate, active);
+		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.instId = instId;
 		this.instName = instName;
 	}

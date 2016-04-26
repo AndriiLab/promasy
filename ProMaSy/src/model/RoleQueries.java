@@ -15,7 +15,7 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 	private final String table = "roles";
 	
 	public RoleQueries()  {
-		rolesList = new LinkedList<RoleModel>();
+		rolesList = new LinkedList<>();
 	}
 
 	@Override

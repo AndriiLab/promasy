@@ -10,9 +10,13 @@ public class AmountUnitsModel extends AbstractModel{
 	public AmountUnitsModel(long amUnitId, String amUnitDesc, long createdBy, 
 			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
-		super(amUnitId, createdDate, amUnitId, modifiedDate, active);
+		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.amUnitId = amUnitId;
 		this.amUnitDesc = amUnitDesc;
+	}
+
+	public AmountUnitsModel() {
+		this.amUnitDesc = "";
 	}
 
 	public long getAmUnitId() {

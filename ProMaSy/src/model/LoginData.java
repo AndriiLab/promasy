@@ -134,9 +134,8 @@ public enum LoginData {
 	
 	public String getShortName(){
 		if(empFName != null && empLName != null && empMName != null){
-			String shortName = empLName + " " + empFName.substring(0, 1) + "."
+			return empLName + " " + empFName.substring(0, 1) + "."
 					+ empMName.substring(0, 1)+".";
-			return shortName;
 		}
 		return null;
 	}

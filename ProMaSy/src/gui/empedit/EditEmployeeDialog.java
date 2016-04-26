@@ -3,8 +3,6 @@ package gui.empedit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -30,7 +28,7 @@ public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogLis
 	private EmployeePanel empPanel;
 
 	public EditEmployeeDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("editEmployeeDialogSuper"), false);
+		super(parent, Labels.getProperty("addEmployee"), false);
 		setSize(600, 600);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -38,36 +36,28 @@ public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogLis
 		empPanel = new EmployeePanel();
 		
 		empTablePanel = new EmployeeTablePanel();
-		empTablePanel.setEmployeeTableListener(new EmployeeTableListener() {
-			public void employeeSelectionOccured(EmployeeModel obj) {
-				setEmployee(obj);
-			}
-		});
+		empTablePanel.setEmployeeTableListener(this::setEmployee);
 
-		okButton = new JButton(LabelsLocale.getProperty("editEmployeeDialogSuperOkBtn"));
-		JButton cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
+		okButton = new JButton(Labels.getProperty("changeProfile"));
+		JButton cancelButton = new JButton(Labels.getProperty("cancelBtn"));
 		
 		empPanel.setEmployeeDialogListener(this);
-	
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EmployeeModel empModel = empPanel.getEmpFromFields();
-				if(empModel != null){
-					EmployeeEvent ev = new EmployeeEvent(this, empModel);
-					if(empListener != null){
-						empListener.editPersonEventOccured(ev);
-					}
-					empModel = null;
-					setVisible(false);
+
+		okButton.addActionListener(e -> {
+			EmployeeModel empModel = empPanel.getEmpFromFields();
+			if (empModel != null) {
+				EmployeeEvent ev = new EmployeeEvent(this, empModel);
+				if (empListener != null) {
+					empListener.editPersonEventOccurred(ev);
 				}
-			}
-		});
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				empPanel.clearDialog();
+				empModel = null;
 				setVisible(false);
 			}
 		});
+		cancelButton.addActionListener(e -> {
+            empPanel.clearDialog();
+            setVisible(false);
+        });
 		
 		JPanel buttonsPanel = new JPanel();
 
@@ -92,21 +82,21 @@ public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogLis
 	}
 	
 	@Override
-	public void instSelelectionEventOccured(long instId) {
+	public void instSelectionEventOccurred(long instId) {
 		if(empListener != null){
-			empListener.instSelelectionEventOccured(instId);
+			empListener.instSelectionEventOccurred(instId);
 		}
 	}
 
 	@Override
-	public void depSelelectionEventOccured(long depId) {
+	public void depSelectionEventOccurred(long depId) {
 		if(empListener != null){
-			empListener.depSelelectionEventOccured(depId);
+			empListener.depSelectionEventOccurred(depId);
 		}
 	}
 
 	@Override
-	public void editPersonEventOccured(EmployeeEvent ev) {
+	public void editPersonEventOccurred(EmployeeEvent ev) {
 		// TODO Auto-generated method stub
 		
 	}

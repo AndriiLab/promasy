@@ -1,6 +1,6 @@
 package gui.cpv;
 
-public class CpvInfo {
+class CpvInfo {
 	private String cpvCode;
 	private String cpvUkr;
 	private String cpvEng;

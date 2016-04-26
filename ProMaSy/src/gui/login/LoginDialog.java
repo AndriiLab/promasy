@@ -1,6 +1,6 @@
 package gui.login;
 
-import gui.LabelsLocale;
+import gui.Labels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -26,12 +26,10 @@ public class LoginDialog extends JDialog {
 
 	private JTextField userField;
 	private JPasswordField passwordField;
-	private JButton okButton;
-	private JButton cancelButton;
-	private LoginListener loginListener;
+    private LoginListener loginListener;
 
 	public LoginDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("loginDialogSuper"), false);
+		super(parent, Labels.getProperty("loginDialogSuper"), false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(220, 150);
 		setResizable(false);
@@ -39,8 +37,8 @@ public class LoginDialog extends JDialog {
 
 		userField = new JTextField(10);
 		passwordField = new JPasswordField(10);
-		okButton = new JButton(LabelsLocale.getProperty("loginDialogOkBtn"));
-		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
+        JButton okButton = new JButton(Labels.getProperty("loginOkBtn"));
+        JButton cancelButton = new JButton(Labels.getProperty("cancelBtn"));
 
 		JPanel loginPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
@@ -66,7 +64,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
+		loginPanel.add(new JLabel(Labels.getProperty("userName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -81,7 +79,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
+		loginPanel.add(new JLabel(Labels.getProperty("password")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -110,24 +108,20 @@ public class LoginDialog extends JDialog {
 					LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);
 
 					if (loginListener != null) {
-						loginListener.loginAttemptOccured(ev);
+						loginListener.loginAttemptOccurred(ev);
 					}
-				} else {
-					JOptionPane.showMessageDialog(parent, 
-							LabelsLocale.getProperty("noCredentialsMessage"),
-                            LabelsLocale.getProperty("noCredentialsTitle"),
-							JOptionPane.ERROR_MESSAGE);
-				}
+				} else JOptionPane.showMessageDialog(parent,
+                        Labels.getProperty("noCredentialsMessage"),
+                        Labels.getProperty("noCredentialsTitle"),
+                        JOptionPane.ERROR_MESSAGE);
 			}
 		});
 
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				if (loginListener != null) {
-					loginListener.loginCancelled(ev);
-				}
-			}
-		});
+		cancelButton.addActionListener(ev -> {
+            if (loginListener != null) {
+                loginListener.loginCancelled(ev);
+            }
+        });
 		
 		this.getRootPane().setDefaultButton(okButton);
 	}

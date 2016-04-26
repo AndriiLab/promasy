@@ -11,7 +11,7 @@ import javax.swing.JTable;
 
 import model.EmployeeModel;
 
-public class EmployeeTablePanel extends JPanel {
+class EmployeeTablePanel extends JPanel {
 	
 	private JTable table;
 	private EmployeeTableModel tableModel;

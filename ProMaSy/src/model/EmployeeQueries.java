@@ -15,7 +15,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	private final String table = "employees";
 	
 	public EmployeeQueries() {
-		empList = new LinkedList<EmployeeModel>();
+		empList = new LinkedList<>();
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {

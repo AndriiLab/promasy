@@ -15,7 +15,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 	private final String table = "departments";
 	
 	public DepartmentQueries() {
-		depList = new LinkedList<DepartmentModel>();
+		depList = new LinkedList<>();
 	}
 
 	public void create(DepartmentModel object) throws SQLException {

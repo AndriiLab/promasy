@@ -3,8 +3,6 @@
  */
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -16,12 +14,8 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import gui.Labels;
 import gui.MainFrame;
-import gui.ToolbarListener;
-import gui.conset.ConSetEvent;
-import gui.conset.ConSetListener;
-import gui.cpv.CpvReqEvent;
-import gui.cpv.CpvSearchListener;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialogListener;
 import gui.empedit.EmployeeEvent;
@@ -45,16 +39,16 @@ import model.SubdepartmentModel;
 
 public class Controller {
 
-	Properties conSet;
+	private Properties conSet;
 	CPVQueries cpv;
 	RoleQueries roles;
 	InstituteQueries institutes;
 	DepartmentQueries departments;
 	SubdepartmentQueries subdepartmens;
 	EmployeeQueries employees;
-	MainFrame mainFrame;
-	Preferences prefs;
-	List<InstituteModel> instModelList;
+	private MainFrame mainFrame;
+	private Preferences prefs;
+	private List<InstituteModel> instModelList;
 
 	public Controller(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
@@ -70,15 +64,15 @@ public class Controller {
 		// loginDialog appears first to MainFrame
 		mainFrame.getLoginDialog().setVisible(true);
 		mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
-			public void loginAttemptOccured(LoginAttemptEvent ev) {
+			public void loginAttemptOccurred(LoginAttemptEvent ev) {
 				LoginData.INSTANCE.setLogin(ev.getUsername());
 				LoginData.INSTANCE.setPassword(ev.getPassword());
-				if(checkLogin(LoginData.INSTANCE)){
+				if(checkLogin()){
 					// if login was successful setting MainFrame visible
 					mainFrame.setVisible(true);
 					mainFrame.getLoginDialog().setVisible(false);
 					mainFrame.getStatusPanel().setCurrentUser(LoginData.INSTANCE.getShortName());
-				} else if (!checkLogin(LoginData.INSTANCE)){
+				} else if (!checkLogin()){
 					// if login wasn't successful showing error dialog
 					JOptionPane.showMessageDialog(mainFrame, 
 							"Введені дані не розпізнані.\nПеревірте коректність введених даних.", "Помилка входу",
@@ -105,22 +99,20 @@ public class Controller {
 		int portNumber = prefs.getInt("port", 5432);
 
 		// if user entered new settings for connection to DB - putting them to Prefs
-		mainFrame.getConSettDialog().setPrefsLitener(new ConSetListener() {
-			public void preferencesSetOccured(ConSetEvent e) {
-				prefs.put("server", e.getServer());
-				prefs.put("host", e.getDatabase());
-				prefs.put("schema", e.getSchema());
-				prefs.putInt("port", e.getPortNumber());
-				prefs.put("user", e.getUser());
-				prefs.put("password", e.getPassword());
-				setConnectionSettings(e.getServer(), e.getDatabase(),
-						e.getSchema(), Integer.toString(e.getPortNumber()), e.getUser(), e.getPassword());
+		mainFrame.getConSettDialog().setPrefsLitener(e -> {
+            prefs.put("server", e.getServer());
+            prefs.put("host", e.getDatabase());
+            prefs.put("schema", e.getSchema());
+            prefs.putInt("port", e.getPortNumber());
+            prefs.put("user", e.getUser());
+            prefs.put("password", e.getPassword());
+            setConnectionSettings(e.getServer(), e.getDatabase(),
+                    e.getSchema(), Integer.toString(e.getPortNumber()), e.getUser(), e.getPassword());
 
-				// trying to connect with new settings
-				disconnect();
-				connect();
-			}
-		});
+            // trying to connect with new settings
+            disconnect();
+            connect();
+        });
 		// loading connection values to ConnectionSetingsDialog and Controller
 		mainFrame.getConSettDialog().setDefaults(server, database, schema, 
 				portNumber, user, password);
@@ -144,33 +136,26 @@ public class Controller {
 		mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
 
 		//setting listeners to frames and dialogs
-		mainFrame.getCpvPanel().setCpvListener(new CpvSearchListener() {
-			public void cpvEventOccured(CpvReqEvent ev) {
-				getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());
-				mainFrame.getCpvPanel().refresh();
-			}
-		});
+		mainFrame.getCpvPanel().setCpvListener(ev -> {
+            getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());
+            mainFrame.getCpvPanel().refresh();
+        });
 
-		mainFrame.getToolbar().setToolbarListener(new ToolbarListener() {
-			public void testConEventOccured() {
-				System.out.println("test");
-			}
-
-		});
+		mainFrame.getToolbar().setToolbarListener(() -> System.out.println("test"));
 
 		mainFrame.getEditEmpDialog().setEmployeeDialogListener(new EditEmployeeDialogListener() {
 
-			public void instSelelectionEventOccured(long instId) {
+			public void instSelectionEventOccurred(long instId) {
 				getDepRequest(instId);
 				mainFrame.getEditEmpDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void editPersonEventOccured(EmployeeEvent ev) {
+			public void editPersonEventOccurred(EmployeeEvent ev) {
 				editEmployee(ev);
 
 			}
 
-			public void depSelelectionEventOccured(long depId) {
+			public void depSelectionEventOccurred(long depId) {
 				getSubdepRequest(depId);
 				mainFrame.getEditEmpDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 
@@ -179,34 +164,34 @@ public class Controller {
 		});
 
 		mainFrame.getAddEmpDialog().setEmployeeDialogListener(new CreateEmployeeDialogListener(){
-			public void instSelelectionEventOccured(long instId) {
+			public void instSelectionEventOccurred(long instId) {
 				getDepRequest(instId);
 				mainFrame.getAddEmpDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void depSelelectionEventOccured(long depId) {
+			public void deaSelectionEventOccurred(long depId) {
 				getSubdepRequest(depId);
 				mainFrame.getAddEmpDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 
-			public void createPersonEventOccured(EmployeeEvent ev) {
+			public void createPersonEventOccurred(EmployeeEvent ev) {
 				createEmployee(ev);
 			}
 		});
 
 		mainFrame.getEditOrgDialog().setOrganizationDialogListener(new OrganizationDialogListener() {
 
-			public void instSelelectionEventOccured(long instId) {
+			public void instSelectionEventOccurred(long instId) {
 				getDepRequest(instId);
 				mainFrame.getEditOrgDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void depSelelectionEventOccured(long depId) {
+			public void depSelectionEventOccurred(long depId) {
 				getSubdepRequest(depId);
 				mainFrame.getEditOrgDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 
-			public void createInstEventOccured(InstituteModel instModel) {
+			public void createInstEventOccurred(InstituteModel instModel) {
 				createInstitute(instModel);
 				getInstRequest();
 				instModelList = Database.INSTITUTES.getList();
@@ -214,7 +199,7 @@ public class Controller {
 				mainFrame.getEditEmpDialog().setInstData(instModelList);
 			}
 
-			public void editInstEventOccured(InstituteModel instModel) {
+			public void editInstEventOccurred(InstituteModel instModel) {
 				editInstitute(instModel);
 				getInstRequest();
 				instModelList = Database.INSTITUTES.getList();
@@ -222,7 +207,7 @@ public class Controller {
 				mainFrame.getEditEmpDialog().setInstData(instModelList);
 			}
 
-			public void deleteInstEventOccured(InstituteModel instModel) {
+			public void deleteInstEventOccurred(InstituteModel instModel) {
 				deleteInstitute(instModel);
 				getInstRequest();
 				instModelList = Database.INSTITUTES.getList();
@@ -230,53 +215,49 @@ public class Controller {
 				mainFrame.getEditEmpDialog().setInstData(instModelList);
 			}
 
-			public void createDepEventOccured(DepartmentModel model) {
+			public void createDepEventOccurred(DepartmentModel model) {
 				createDepartment(model);
 				getDepRequest(model.getInstId());
 				mainFrame.getEditOrgDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void editDepEventOccured(DepartmentModel model) {
+			public void editDepEventOccurred(DepartmentModel model) {
 				editDepartment(model);
 				getDepRequest(model.getInstId());
 				mainFrame.getEditOrgDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void deleteDepEventOccured(DepartmentModel model) {
+			public void deleteDepEventOccurred(DepartmentModel model) {
 				deleteDepartment(model);
 				getDepRequest(model.getInstId());
 				mainFrame.getEditOrgDialog().setDepData(Database.DEPARTMENTS.getList());
 			}
 
-			public void createSubdepEventOccured(SubdepartmentModel model) {
+			public void createSubdepEventOccurred(SubdepartmentModel model) {
 				createSubdepartment(model);
 				getSubdepRequest(model.getDepId());
 				mainFrame.getEditOrgDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 
-			public void editSubdepEventOccured(SubdepartmentModel model) {
+			public void editSubdepEventOccurred(SubdepartmentModel model) {
 				editSubdepartment(model);
 				getSubdepRequest(model.getDepId());
 				mainFrame.getEditOrgDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 
-			public void deleteSubdepEventOccured(SubdepartmentModel model) {
+			public void deleteSubdepEventOccurred(SubdepartmentModel model) {
 				deleteSubdepartment(model);
 				getSubdepRequest(model.getDepId());
 				mainFrame.getEditOrgDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
 			}
 		});
 
-		mainFrame.getExitItem().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
-				closeDialog();
-			}
-		});
+		mainFrame.getExitItem().addActionListener(ev -> closeDialog());
 	}
 
 	// sets connection settings to Properties object 
-	public void setConnectionSettings(String host, String database, String schema, 
-			String port, String user, String password) {
+	private void setConnectionSettings(String host, String database, String schema,
+									   String port, String user, String password) {
 		if (conSet == null){
 			conSet = new Properties();
 		}
@@ -289,33 +270,35 @@ public class Controller {
 	}
 
 	//connecting to DB
-	public void connect() {
+	private void connect() {
 		try {
 			Database.DB.connect(conSet);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(mainFrame, "Немає з'єднання з базою даних", "Database Connection Error",
+			JOptionPane.showMessageDialog(mainFrame,
+					Labels.getProperty("NoConnectionToDB"),
+                    Labels.getProperty("DatabaseConnectionError"),
 					JOptionPane.ERROR_MESSAGE);
 			// if can't connect - call ConnectionSettingsDialog
 			mainFrame.getConSettDialog().setVisible(true);
 		}
 	}
 	//disconnecting from DB
-	public void disconnect() {
+	private void disconnect() {
 		Database.DB.disconnect();
 	}
 
 	//general methods for loging modifications in DB entries
-	public <T extends AbstractModel> void setCreated(T model){
+	private <T extends AbstractModel> void setCreated(T model){
 		model.setCreatedBy(LoginData.INSTANCE.getEmpId());
 		model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 	}
 
-	public <T extends AbstractModel> void setModified(T model){
+	private <T extends AbstractModel> void setModified(T model){
 		model.setModifiedBy(LoginData.INSTANCE.getEmpId());
 		model.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 	}
 
-	public <T extends AbstractModel> void setInactive(T model){
+	private <T extends AbstractModel> void setInactive(T model){
 		setModified(model);
 		model.setActive(false);
 	}
@@ -374,9 +357,9 @@ public class Controller {
 	}
 	
 	// check user login and pass
-	private boolean checkLogin(LoginData loginData) {
+	private boolean checkLogin() {
 		try {
-			return Database.EMPLOYEES.checkLogin(loginData);
+			return Database.EMPLOYEES.checkLogin(LoginData.INSTANCE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -471,7 +454,7 @@ public class Controller {
 	}
 
 	//CRUD Subdepartments
-	protected void createSubdepartment(SubdepartmentModel model) {
+	private void createSubdepartment(SubdepartmentModel model) {
 		try {
 			setCreated(model);
 			Database.SUBDEPARTMENS.create(model);
@@ -481,7 +464,7 @@ public class Controller {
 		}
 	}
 
-	protected void editSubdepartment(SubdepartmentModel model) {
+	private void editSubdepartment(SubdepartmentModel model) {
 		try {
 			setModified(model);
 			Database.SUBDEPARTMENS.update(model);
@@ -491,7 +474,7 @@ public class Controller {
 		}
 	}
 
-	protected void deleteSubdepartment(SubdepartmentModel model) {
+	private void deleteSubdepartment(SubdepartmentModel model) {
 		try {
 			setInactive(model);
 			Database.SUBDEPARTMENS.delete(model);
@@ -510,8 +493,10 @@ public class Controller {
 	
 	//but it calls only in this close() method (except close in login dialog)
 	private void closeDialog() {
-		int action = JOptionPane.showConfirmDialog(this.mainFrame, "Ви дійсно хочете вийти з програми?",
-				"Підтвердіть вихід", JOptionPane.OK_CANCEL_OPTION);
+		int action = JOptionPane.showConfirmDialog(this.mainFrame,
+                Labels.getProperty("WantExit"),
+                Labels.getProperty("ConfirmExit"),
+                JOptionPane.OK_CANCEL_OPTION);
 		if (action == JOptionPane.OK_OPTION) {
 			close();
 		}

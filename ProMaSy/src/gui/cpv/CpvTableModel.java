@@ -4,16 +4,16 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import model.CPVModel;
 
-public class CpvTableModel extends AbstractTableModel {
+class CpvTableModel extends AbstractTableModel {
 
 	private List<CPVModel> db;
 
-	private String[] colNames = {LabelsLocale.getProperty("cpvTableModelCol1"),
-									LabelsLocale.getProperty("cpvTableModelCol2"),
-									LabelsLocale.getProperty("cpvTableModelCol3")};
+	private String[] colNames = {Labels.getProperty("CPVCode"),
+									Labels.getProperty("UkrainianName"),
+									Labels.getProperty("EnglishName")};
 
 	public CpvTableModel() {
 	}

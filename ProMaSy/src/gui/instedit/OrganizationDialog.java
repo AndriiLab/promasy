@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import gui.LabelsLocale;
+import gui.Labels;
 import gui.Utils;
 import model.DepartmentModel;
 import model.InstituteModel;
@@ -43,22 +43,19 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 	private JComboBox<DepartmentModel> departmentBox;
 	private JComboBox<SubdepartmentModel> subdepartmentBox;
 	private OrganizationDialogListener orgListener;
-	private List<InstituteModel> instDb;
-	private List<DepartmentModel> depDb;
-	private List<SubdepartmentModel> subdepDb;
-	private final DefaultComboBoxModel<InstituteModel> instModel;
-	private final DefaultComboBoxModel<DepartmentModel> depModel;
-	private final DefaultComboBoxModel<SubdepartmentModel> subdepModel;
 	private String newInstName;
 	private String newDepName;
 	private String newSubdepName;
 	private InstituteModel privateInst;
 	private DepartmentModel privateDep;
 	private SubdepartmentModel privateSybdep;
+	private final InstituteModel emptyInstituteModel = new InstituteModel();
+	private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+	private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
 	
 	
 	public OrganizationDialog(JFrame parent) {
-		super(parent, LabelsLocale.getProperty("orgDialogSuper"), false);
+		super(parent, Labels.getProperty("addEditOrganizationAndDepartments"), false);
 		setSize(610, 200);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -67,109 +64,104 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		Dimension comboBoxDim = new Dimension(400, 25);
 		
 		//Set up institute combo box and edit buttons
-		instModel = new DefaultComboBoxModel<InstituteModel>();
-		instituteBox = new JComboBox<InstituteModel>(instModel);
-		instituteBox.addItem(new InstituteModel());
+		DefaultComboBoxModel<InstituteModel> instModel = new DefaultComboBoxModel<>();
+		instituteBox = new JComboBox<>(instModel);
+		instituteBox.addItem(emptyInstituteModel);
 		instituteBox.setEditable(true);
 		instituteBox.addActionListener(this);
 		instituteBox.setPreferredSize(comboBoxDim);
 		
 		createInstButton = new JButton();
-		createInstButton.setToolTipText(LabelsLocale.getProperty("addInst"));
+		createInstButton.setToolTipText(Labels.getProperty("addInstitute"));
 		createInstButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createInstButton.setPreferredSize(buttonDim);
 		createInstButton.setEnabled(true);
 		editInstButton = new JButton();
-		editInstButton.setToolTipText(LabelsLocale.getProperty("editInst"));
+		editInstButton.setToolTipText(Labels.getProperty("editInstitite"));
 		editInstButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editInstButton.setPreferredSize(buttonDim);
 		editInstButton.setEnabled(true);
 		deleteInstButton = new JButton();
-		deleteInstButton.setToolTipText(LabelsLocale.getProperty("delInst"));
+		deleteInstButton.setToolTipText(Labels.getProperty("delInstitite"));
 		deleteInstButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteInstButton.setPreferredSize(buttonDim);
 		deleteInstButton.setEnabled(true);
 		
 		//Set up department combo box and edit buttons
-		depModel = new DefaultComboBoxModel<DepartmentModel>();
-		departmentBox = new JComboBox<DepartmentModel>(depModel);
-		departmentBox.addItem(new DepartmentModel());
+		DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
+		departmentBox = new JComboBox<>(depModel);
+		departmentBox.addItem(emptyDepartmentModel);
 		departmentBox.setEditable(true);
 		departmentBox.addActionListener(this);
 		departmentBox.setPreferredSize(comboBoxDim);
 		
 		createDepButton = new JButton();
-		createDepButton.setToolTipText(LabelsLocale.getProperty("addDep"));
+		createDepButton.setToolTipText(Labels.getProperty("addDepartment"));
 		createDepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createDepButton.setPreferredSize(buttonDim);
 		createDepButton.setEnabled(true);
 		editDepButton = new JButton();
-		editDepButton.setToolTipText(LabelsLocale.getProperty("editDep"));
+		editDepButton.setToolTipText(Labels.getProperty("editDepartment"));
 		editDepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editDepButton.setPreferredSize(buttonDim);
 		editDepButton.setEnabled(true);
 		deleteDepButton = new JButton();
-		deleteDepButton.setToolTipText(LabelsLocale.getProperty("delDep"));
+		deleteDepButton.setToolTipText(Labels.getProperty("delDepartment"));
 		deleteDepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteDepButton.setPreferredSize(buttonDim);
 		deleteDepButton.setEnabled(true);
 		
 		//Set up SubDepartment combo box and edit buttons
-		subdepModel = new DefaultComboBoxModel<SubdepartmentModel>();
-		subdepartmentBox = new JComboBox<SubdepartmentModel>(subdepModel);
-		subdepartmentBox.addItem(new SubdepartmentModel());
+		DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
+		subdepartmentBox = new JComboBox<>(subdepModel);
+		subdepartmentBox.addItem(emptySubdepartmentModel);
 		subdepartmentBox.setEditable(true);
 		subdepartmentBox.addActionListener(this);
 		subdepartmentBox.setPreferredSize(comboBoxDim);
 		
 		createSubdepButton = new JButton();
-		createSubdepButton.setToolTipText(LabelsLocale.getProperty("addSubdep"));
+		createSubdepButton.setToolTipText(Labels.getProperty("addSubdepartment"));
 		createSubdepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createSubdepButton.setPreferredSize(buttonDim);
 		createSubdepButton.setEnabled(true);
 		editSubdepButton = new JButton();
-		editSubdepButton.setToolTipText(LabelsLocale.getProperty("editSubdep"));
+		editSubdepButton.setToolTipText(Labels.getProperty("editSubdepartment"));
 		editSubdepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editSubdepButton.setPreferredSize(buttonDim);
 		editSubdepButton.setEnabled(true);
 		deleteSubdepButton = new JButton();
-		deleteSubdepButton.setToolTipText(LabelsLocale.getProperty("delSubdep"));
+		deleteSubdepButton.setToolTipText(Labels.getProperty("delSubdepartment"));
 		deleteSubdepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteSubdepButton.setPreferredSize(buttonDim);
 		deleteSubdepButton.setEnabled(true);
 		
-		closeButton = new JButton(LabelsLocale.getProperty("closeBtn"));
+		closeButton = new JButton(Labels.getProperty("closeBtn"));
 
 		layoutControls();
 		
 		editButtonListeners();
 		
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				instituteBox.setSelectedIndex(0);
-				setVisible(false);
-			}
-		});
+		closeButton.addActionListener(e -> {
+            instituteBox.setSelectedIndex(0);
+            setVisible(false);
+        });
 	}
 	
 	public void setInstData(List<InstituteModel> instDb) {
-		this.instDb = instDb;
-		for(int i = 0; i<this.instDb.size(); i++){
-			instituteBox.addItem(this.instDb.get(i));
+		for (InstituteModel anInstDb : instDb) {
+			instituteBox.addItem(anInstDb);
 		}
 	}
 	
 	public void setDepData(List<DepartmentModel> depDb) {
-		this.depDb = depDb;
-		for(int i = 0; i<this.depDb.size(); i++){
-			departmentBox.addItem(this.depDb.get(i));
+		for (DepartmentModel aDepDb : depDb) {
+			departmentBox.addItem(aDepDb);
 		}
 	}
 	
 	public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-		this.subdepDb = subdepDb;
-		for(int i = 0; i<this.subdepDb.size(); i++){
-			subdepartmentBox.addItem(this.subdepDb.get(i));
+		for (SubdepartmentModel aSubdepDb : subdepDb) {
+			subdepartmentBox.addItem(aSubdepDb);
 		}
 	}
 	
@@ -184,11 +176,11 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		if (box == instituteBox){
 			departmentBox.removeAllItems();
 			if(obj instanceof InstituteModel){
-				if (!instituteBox.getSelectedItem().equals(new InstituteModel())){
+				if (!instituteBox.getSelectedItem().equals(emptyInstituteModel)){
 					privateInst = (InstituteModel)instituteBox.getSelectedItem();
 					long instId = privateInst.getInstId();
 					if(orgListener != null){
-						orgListener.instSelelectionEventOccured(instId);
+						orgListener.instSelectionEventOccurred(instId);
 					}
 				}
 			} else if (obj instanceof String){
@@ -200,16 +192,16 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 
 		} else if (box == departmentBox){
 			if (obj == null){
-				departmentBox.addItem(new DepartmentModel());
+				departmentBox.addItem(emptyDepartmentModel);
 			}
 			subdepartmentBox.removeAllItems();
-			subdepartmentBox.addItem(new SubdepartmentModel());
+			subdepartmentBox.addItem(emptySubdepartmentModel);
 			if(obj instanceof DepartmentModel){
-				if (!departmentBox.getSelectedItem().equals(new DepartmentModel())){
+				if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel)){
 					privateDep = (DepartmentModel)departmentBox.getSelectedItem();
 					long depId = privateDep.getDepId();
 					if(orgListener != null){
-						orgListener.depSelelectionEventOccured(depId);
+						orgListener.depSelectionEventOccurred(depId);
 					}
 				}
 			} else if (obj instanceof String){
@@ -220,7 +212,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 			}
 		} else if (box == subdepartmentBox){
 			if(obj instanceof SubdepartmentModel){
-				if (!departmentBox.getSelectedItem().equals(new DepartmentModel())){
+				if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel)){
 					privateSybdep = (SubdepartmentModel)subdepartmentBox.getSelectedItem();
 				}
 			} else if (obj instanceof String){
@@ -257,7 +249,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("institute")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("institute")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -284,7 +276,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("department")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("department")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -311,7 +303,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(LabelsLocale.getProperty("subdepartment")), gc);
+		institutePanel.add(new JLabel(Labels.getProperty("subdepartment")+":"), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -343,126 +335,108 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 	
 	private void editButtonListeners(){
 		
-		createInstButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (newInstName != null){
-					InstituteModel model =  new InstituteModel(newInstName);
-					if(orgListener != null){
-						instituteBox.removeAllItems();
-						orgListener.createInstEventOccured(model);
-					}
-					newInstName = null;
-				}
-			}
-		});
+		createInstButton.addActionListener(e -> {
+            if (newInstName != null){
+                InstituteModel model =  new InstituteModel(newInstName);
+                if(orgListener != null){
+                    instituteBox.removeAllItems();
+                    orgListener.createInstEventOccurred(model);
+                }
+                newInstName = null;
+            }
+        });
 		
-		editInstButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (newInstName != null){
-					privateInst.setInstName(newInstName);
-					if(orgListener != null){
-						instituteBox.removeAllItems();
-						orgListener.editInstEventOccured(privateInst);
-					}
-					newInstName = null;
-					privateInst = null;
-				}
-			}
-		});
+		editInstButton.addActionListener(e -> {
+            if (newInstName != null){
+                privateInst.setInstName(newInstName);
+                if(orgListener != null){
+                    instituteBox.removeAllItems();
+                    orgListener.editInstEventOccurred(privateInst);
+                }
+                newInstName = null;
+                privateInst = null;
+            }
+        });
 		
-		deleteInstButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(privateInst != null){
-					if(orgListener != null){
-						instituteBox.removeAllItems();
-						orgListener.deleteInstEventOccured(privateInst);
-					}
-				}
-				privateInst = null;
-			}
-		});
-		createDepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(privateInst != null){
-					if(newDepName != null){
-						DepartmentModel model =  new DepartmentModel(newDepName,
-								privateInst.getInstId());
-						if(orgListener != null){
-							departmentBox.removeAllItems();
-							orgListener.createDepEventOccured(model);
-						}
-					}
-					newDepName = null;
-				}
-			}
-		});
-		editDepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (newDepName != null){
-					privateDep.setDepName(newDepName);
-					if(orgListener != null){
-						departmentBox.removeAllItems();
-						orgListener.editDepEventOccured(privateDep);
-					}
-					newDepName = null;
-					privateDep = null;
-				}
-			}
-		});
+		deleteInstButton.addActionListener(e -> {
+            if(privateInst != null){
+                if(orgListener != null){
+                    instituteBox.removeAllItems();
+                    orgListener.deleteInstEventOccurred(privateInst);
+                }
+            }
+            privateInst = null;
+        });
+		createDepButton.addActionListener(e -> {
+            if(privateInst != null){
+                if(newDepName != null){
+                    DepartmentModel model =  new DepartmentModel(newDepName,
+                            privateInst.getInstId());
+                    if(orgListener != null){
+                        departmentBox.removeAllItems();
+                        orgListener.createDepEventOccurred(model);
+                    }
+                }
+                newDepName = null;
+            }
+        });
+		editDepButton.addActionListener(e -> {
+            if (newDepName != null){
+                privateDep.setDepName(newDepName);
+                if(orgListener != null){
+                    departmentBox.removeAllItems();
+                    orgListener.editDepEventOccurred(privateDep);
+                }
+                newDepName = null;
+                privateDep = null;
+            }
+        });
 		
-		deleteDepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(privateDep != null){
-					privateDep.setModifiedBy(LoginData.INSTANCE.getEmpId());
-					if(orgListener != null){
-						departmentBox.removeAllItems();
-						orgListener.deleteDepEventOccured(privateDep);
-					}
-				}
-				privateDep = null;
-			}
-		});
+		deleteDepButton.addActionListener(e -> {
+            if(privateDep != null){
+                privateDep.setModifiedBy(LoginData.INSTANCE.getEmpId());
+                if(orgListener != null){
+                    departmentBox.removeAllItems();
+                    orgListener.deleteDepEventOccurred(privateDep);
+                }
+            }
+            privateDep = null;
+        });
 		
-		createSubdepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(privateDep != null){
-					if(newSubdepName != null){
-						SubdepartmentModel model =  new SubdepartmentModel(newSubdepName,
-								privateDep.getDepId());
-						if(orgListener != null){
-							subdepartmentBox.removeAllItems();
-							orgListener.createSubdepEventOccured(model);
-						}
-					}
-					newSubdepName = null;
-				}
-			}
-		});
+		createSubdepButton.addActionListener(e -> {
+            if(privateDep != null){
+                if(newSubdepName != null){
+                    SubdepartmentModel model =  new SubdepartmentModel(newSubdepName,
+                            privateDep.getDepId());
+                    if(orgListener != null){
+                        subdepartmentBox.removeAllItems();
+                        orgListener.createSubdepEventOccurred(model);
+                    }
+                }
+                newSubdepName = null;
+            }
+        });
 		
-		editSubdepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (newSubdepName != null){
-					privateSybdep.setSubdepName(newSubdepName);
-					if(orgListener != null){
-						subdepartmentBox.removeAllItems();
-						orgListener.editSubdepEventOccured(privateSybdep);
-					}
-					newSubdepName = null;
-					privateSybdep = null;
-				}
-			}
-		});
+		editSubdepButton.addActionListener(e -> {
+            if (newSubdepName != null){
+                privateSybdep.setSubdepName(newSubdepName);
+                if(orgListener != null){
+                    subdepartmentBox.removeAllItems();
+                    orgListener.editSubdepEventOccurred(privateSybdep);
+                }
+                newSubdepName = null;
+                privateSybdep = null;
+            }
+        });
 		
-		deleteSubdepButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(privateSybdep != null){
-					if(orgListener != null){
-						subdepartmentBox.removeAllItems();
-						orgListener.deleteSubdepEventOccured(privateSybdep);
-					}
-				}
-				privateDep = null;
-			}
-		});
+		deleteSubdepButton.addActionListener(e -> {
+            if(privateSybdep != null){
+                if(orgListener != null){
+                    subdepartmentBox.removeAllItems();
+                    orgListener.deleteSubdepEventOccurred(privateSybdep);
+                }
+            }
+            privateDep = null;
+        });
 	}
 }

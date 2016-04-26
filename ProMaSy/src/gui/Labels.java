@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 /**
  * Created by A on 26.04.2016.
  */
-public class LabelsLocale {
+public class Labels {
     private static final String FILENAME = "LabelsBundle";
     private static final ResourceBundle LABELS = ResourceBundle.getBundle(FILENAME);
 

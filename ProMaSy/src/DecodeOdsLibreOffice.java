@@ -6,7 +6,7 @@ import org.jopendocument.dom.OOUtils;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
-public class DecodeOdsLibreOffice {
+class DecodeOdsLibreOffice {
 
 	public static void main(String[] args) {
 
@@ -29,8 +29,7 @@ public class DecodeOdsLibreOffice {
 	
 	private static String decodeString(String encoded){
 		byte[] b = encoded.getBytes(Charset.forName("Cp1252"));
-		String decoded = new String(b, Charset.forName("Cp1251") );
-		return decoded;
+		return new String(b, Charset.forName("Cp1251") );
 	}
 
 }

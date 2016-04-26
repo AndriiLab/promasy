@@ -17,7 +17,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 	
 	
 	public InstituteQueries() {
-		instList = new LinkedList<InstituteModel>();
+		instList = new LinkedList<>();
 	}
 
 	public void create(InstituteModel object) throws SQLException {

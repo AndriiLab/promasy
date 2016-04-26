@@ -4,22 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 
-public abstract interface SQLQueries<T> {
+interface SQLQueries<T> {
 	
-	public abstract void create(T object) throws SQLException;
+	void create(T object) throws SQLException;
 
-	public abstract void retrieve() throws SQLException;
+	void retrieve() throws SQLException;
 	
-	public abstract void update(T object) throws SQLException;
+	void update(T object) throws SQLException;
 
-	public abstract void delete (T object) throws SQLException;
+	void delete(T object) throws SQLException;
 	
-	public abstract List<T> getList();
+	List<T> getList();
 	
-	public default boolean checkChanges(LastChangesModel cacheModel, String table, String id) throws SQLException {
+	default boolean checkChanges(LastChangesModel cacheModel, String table, String id) throws SQLException {
 		String query = "SELECT MAX(created_date), MAX(modified_date), COUNT(" + id + ") FROM " + table;
 		Statement selectStmt = DBConnector.INSTANCE.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -29,16 +28,14 @@ public abstract interface SQLQueries<T> {
 		Timestamp lastModified = results.getTimestamp("modified_date");
 		results.close();
 		selectStmt.close();
-		if (cacheModel.getLastModified() == lastModified &&
-			cacheModel.getLastCreated() == lastCreated &&
-			cacheModel.getNumElements() == numElements){
-			return true;
-		} else return false;
+		return cacheModel.getLastModified() == lastModified &&
+				cacheModel.getLastCreated() == lastCreated &&
+				cacheModel.getNumElements() == numElements;
 	}
 
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException;
+	boolean isChanged(LastChangesModel cacheModel) throws SQLException;
 	
-	public default LastChangesModel getChanged(String table, String id) throws SQLException{
+	default LastChangesModel getChanged(String table, String id) throws SQLException{
 		String query = "SELECT MAX(created_date), MAX(modified_date), COUNT(" + id + ") FROM " + table;
 		Statement selectStmt = DBConnector.INSTANCE.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -53,5 +50,5 @@ public abstract interface SQLQueries<T> {
 		return model;
 	}
 	
-	public LastChangesModel getChangedModel() throws SQLException;
+	LastChangesModel getChangedModel() throws SQLException;
 }

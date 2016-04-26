@@ -3,27 +3,24 @@
  * for launching applications based on Swing interface. 
  */
 
-import javax.swing.SwingUtilities;
-
 import controller.Controller;
 import gui.MainFrame;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import javax.swing.*;
 
 
-public class App {
+class App {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				runApp();
 			}
-			
+
 		});
 	}
 
-	public static void runApp() {
+	private static void runApp() {
 
 		MainFrame mainFrame = new MainFrame();
 		
