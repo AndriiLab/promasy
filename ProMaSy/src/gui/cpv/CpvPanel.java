@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import gui.LabelsLocale;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import gui.Utils;
@@ -23,11 +24,8 @@ import model.CPVModel;
 
 public class CpvPanel extends JPanel {
 
-	private JPanel searchPanel;
 	private JTextField searchField;
-	private JButton homeButton;
 	private JButton upButton;
-	private JButton searchButton;
 	private JButton selectButton;
 	private CpvTableModel cpvTableModel;
 	private JTable table;
@@ -37,26 +35,26 @@ public class CpvPanel extends JPanel {
 	public CpvPanel() {
 		cpvTableModel = new CpvTableModel();
 		table = new JTable(cpvTableModel);
-		searchPanel = new JPanel();
+		JPanel searchPanel = new JPanel();
 		searchField = new JTextField(30);
-		homeButton = new JButton();
+		JButton homeButton = new JButton();
 		upButton = new JButton();
-		searchButton = new JButton();
-		selectButton = new JButton("Вибрати код");
+		JButton searchButton = new JButton();
+		selectButton = new JButton(LabelsLocale.getProperty("selectButtonLabel"));
 		
 		//set format for table		
 		table.getColumnModel().getColumn(0).setMaxWidth(150);
 		
-		homeButton.setToolTipText("До початкових категорій");
+		homeButton.setToolTipText(LabelsLocale.getProperty("homeButtonToolTipText"));
 		homeButton.setIcon(Utils.createIcon("/images/Home16.gif"));
-		upButton.setToolTipText("На категорію вище");
+		upButton.setToolTipText(LabelsLocale.getProperty("upButtonToolTipText"));
 		upButton.setIcon(Utils.createIcon("/images/Up16.gif"));
 		upButton.setEnabled(false);
-		searchButton.setToolTipText("Шукати");
+		searchButton.setToolTipText(LabelsLocale.getProperty("searchButtonToolTipText"));
 		searchButton.setIcon(Utils.createIcon("/images/Find16.gif"));
 		selectButton.setEnabled(false);
 
-		PromptSupport.setPrompt("Введіть CPV код/фрагмент коду або категорію", searchField);
+		PromptSupport.setPrompt(LabelsLocale.getProperty("searchFieldHint"), searchField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, searchField);
         searchField.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {

@@ -28,7 +28,7 @@ public class InfoDialog extends JDialog {
 		infoPane.setEditable(false);
 		infoPane.setText(LabelsLocale.getProperty("infoPaneText"));
 
-		okButton = new JButton(LabelsLocale.getProperty("okBtnLabel"));
+		okButton = new JButton(LabelsLocale.getProperty("okBtn"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);

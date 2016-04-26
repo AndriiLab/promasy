@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
+import gui.LabelsLocale;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -24,13 +25,12 @@ import model.SubdepartmentModel;
 public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogListener {
 
 	private JButton okButton;
-	private JButton cancelButton;
 	private EditEmployeeDialogListener empListener;
 	private EmployeeTablePanel empTablePanel;
 	private EmployeePanel empPanel;
 
 	public EditEmployeeDialog(JFrame parent) {
-		super(parent, "Додати співпробітника", false);
+		super(parent, LabelsLocale.getProperty("editEmployeeDialogSuper"), false);
 		setSize(600, 600);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -44,8 +44,8 @@ public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogLis
 			}
 		});
 
-		okButton = new JButton("Змінити профіль");
-		cancelButton = new JButton("Відмінити");
+		okButton = new JButton(LabelsLocale.getProperty("editEmployeeDialogSuperOkBtn"));
+		JButton cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
 		
 		empPanel.setEmployeeDialogListener(this);
 	

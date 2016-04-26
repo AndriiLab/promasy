@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
+import gui.LabelsLocale;
 import gui.Utils;
 import model.DepartmentModel;
 import model.InstituteModel;
@@ -57,7 +58,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 	
 	
 	public OrganizationDialog(JFrame parent) {
-		super(parent, "Додати/змінити організацію та відділи", false);
+		super(parent, LabelsLocale.getProperty("orgDialogSuper"), false);
 		setSize(610, 200);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -74,17 +75,17 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		instituteBox.setPreferredSize(comboBoxDim);
 		
 		createInstButton = new JButton();
-		createInstButton.setToolTipText("Додати організацію");
+		createInstButton.setToolTipText(LabelsLocale.getProperty("addInst"));
 		createInstButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createInstButton.setPreferredSize(buttonDim);
 		createInstButton.setEnabled(true);
 		editInstButton = new JButton();
-		editInstButton.setToolTipText("Редагувати організацію");
+		editInstButton.setToolTipText(LabelsLocale.getProperty("editInst"));
 		editInstButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editInstButton.setPreferredSize(buttonDim);
 		editInstButton.setEnabled(true);
 		deleteInstButton = new JButton();
-		deleteInstButton.setToolTipText("Видалити організацію");
+		deleteInstButton.setToolTipText(LabelsLocale.getProperty("delInst"));
 		deleteInstButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteInstButton.setPreferredSize(buttonDim);
 		deleteInstButton.setEnabled(true);
@@ -98,17 +99,17 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		departmentBox.setPreferredSize(comboBoxDim);
 		
 		createDepButton = new JButton();
-		createDepButton.setToolTipText("Додати відділ");
+		createDepButton.setToolTipText(LabelsLocale.getProperty("addDep"));
 		createDepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createDepButton.setPreferredSize(buttonDim);
 		createDepButton.setEnabled(true);
 		editDepButton = new JButton();
-		editDepButton.setToolTipText("Редагувати відділ");
+		editDepButton.setToolTipText(LabelsLocale.getProperty("editDep"));
 		editDepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editDepButton.setPreferredSize(buttonDim);
 		editDepButton.setEnabled(true);
 		deleteDepButton = new JButton();
-		deleteDepButton.setToolTipText("Видалити відділ");
+		deleteDepButton.setToolTipText(LabelsLocale.getProperty("delDep"));
 		deleteDepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteDepButton.setPreferredSize(buttonDim);
 		deleteDepButton.setEnabled(true);
@@ -122,22 +123,22 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		subdepartmentBox.setPreferredSize(comboBoxDim);
 		
 		createSubdepButton = new JButton();
-		createSubdepButton.setToolTipText("Додати лабораторію");
+		createSubdepButton.setToolTipText(LabelsLocale.getProperty("addSubdep"));
 		createSubdepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
 		createSubdepButton.setPreferredSize(buttonDim);
 		createSubdepButton.setEnabled(true);
 		editSubdepButton = new JButton();
-		editSubdepButton.setToolTipText("Редагувати лабораторію");
+		editSubdepButton.setToolTipText(LabelsLocale.getProperty("editSubdep"));
 		editSubdepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
 		editSubdepButton.setPreferredSize(buttonDim);
 		editSubdepButton.setEnabled(true);
 		deleteSubdepButton = new JButton();
-		deleteSubdepButton.setToolTipText("Видалити лабораторію");
+		deleteSubdepButton.setToolTipText(LabelsLocale.getProperty("delSubdep"));
 		deleteSubdepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
 		deleteSubdepButton.setPreferredSize(buttonDim);
 		deleteSubdepButton.setEnabled(true);
 		
-		closeButton = new JButton("Закрити");
+		closeButton = new JButton(LabelsLocale.getProperty("closeBtn"));
 
 		layoutControls();
 		
@@ -256,7 +257,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Організація: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("institute")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -283,7 +284,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Відділ: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("department")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -310,7 +311,7 @@ public class OrganizationDialog extends JDialog implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Лабораторія: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("subdepartment")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;

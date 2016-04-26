@@ -23,6 +23,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import gui.LabelsLocale;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -107,9 +108,9 @@ public class EmployeePanel extends JPanel implements ActionListener{
 			public void keyTyped(KeyEvent e) {
 				repeatPasswordField.setEditable(passwordField.getPassword().length != 0);
 				if(repeatPasswordField.isEditable()){
-					hint.setText("Повторіть пароль");
+					hint.setText(LabelsLocale.getProperty("repeatPassword"));
 				} else if (repeatPasswordField.getPassword().length == 0){
-					hint.setText("Повторіть пароль");
+					hint.setText(LabelsLocale.getProperty("repeatPassword"));
 				}
 			}
 		});
@@ -119,7 +120,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 				if(repeatPasswordField.getPassword().length > 0){
 					hint.setText(null);
 				} else if (repeatPasswordField.getPassword().length == 0){
-					hint.setText("Повторіть пароль");
+					hint.setText(LabelsLocale.getProperty("repeatPassword"));
 				}
 			}
 		});
@@ -135,36 +136,36 @@ public class EmployeePanel extends JPanel implements ActionListener{
 	public EmployeeModel getEmpFromFields() {
 		if (loginField.getText().length() == 0){
 			loginField.setDisabledTextColor(Color.RED);
-			hint.setText("Введіть логін");
+			hint.setText(LabelsLocale.getProperty("enterLogin"));
 			return null;
 		}
 		else if(passwordField.getPassword().length == 0){
 			passwordField.setDisabledTextColor(Color.RED);
-			hint.setText("Введіть пароль");
+			hint.setText(LabelsLocale.getProperty("enterPassword"));
 			return null;
 		} 
 		else if (!Arrays.equals(passwordField.getPassword(), repeatPasswordField.getPassword())){
-			hint.setText("Паролі не співпадають");
+			hint.setText(LabelsLocale.getProperty("passwordsMismatch"));
 			return null;
 		}
 		else if (lastNameField.getText().length() < 2){
-			hint.setText("Введіть прізвище");
+			hint.setText(LabelsLocale.getProperty("enterLName"));
 			return null;
 		}
 		else if (nameField.getText().length() < 2){
-			hint.setText("Введіть ім'я");
+			hint.setText(LabelsLocale.getProperty("enterFName"));
 			return null;
 		}
 		else if (instituteBox.getSelectedItem().equals(instituteBox.getItemAt(0))){
-			hint.setText("Вкажіть установу");
+			hint.setText(LabelsLocale.getProperty("enterInstitute"));
 			return null;
 		}
 		else if (departmentBox.getSelectedItem().equals(departmentBox.getItemAt(0))){
-			hint.setText("Вкажіть відділ");
+			hint.setText(LabelsLocale.getProperty("enterDepartment"));
 			return null;
 		}
 		else if (roleBox.getSelectedItem().equals(roleBox.getItemAt(0))){
-			hint.setText("Вкажіть посаду");
+			hint.setText(LabelsLocale.getProperty("enterRole"));
 			return null;
 		}
 		else {
@@ -293,9 +294,9 @@ public class EmployeePanel extends JPanel implements ActionListener{
 
 		int space = 5;
 		Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-		Border employeeBorder = BorderFactory.createTitledBorder("Користувач");
-		Border loginBorder = BorderFactory.createTitledBorder("Параметри входу");
-		Border instituteBorder = BorderFactory.createTitledBorder("Належність до організації");
+		Border employeeBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeEmpBorder"));
+		Border loginBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeLoginBorder"));
+		Border instituteBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("editEmployeeInstituteBorder"));
 		Border hintBorder = BorderFactory.createEtchedBorder();
 
 		loginPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, loginBorder));
@@ -317,7 +318,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		loginPanel.add(new JLabel("Логін: "), gc);
+		loginPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -327,7 +328,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		loginPanel.add(new JLabel("Пароль: "), gc);
+		loginPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -349,7 +350,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel("Прізвище: "), gc);
+		employeePanel.add(new JLabel(LabelsLocale.getProperty("lastName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -359,7 +360,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel("Ім'я: "), gc);
+		employeePanel.add(new JLabel(LabelsLocale.getProperty("firstName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -369,7 +370,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		employeePanel.add(new JLabel("По батькові: "), gc);
+		employeePanel.add(new JLabel(LabelsLocale.getProperty("middleName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -386,7 +387,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Посада: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("role")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -398,7 +399,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Організація: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("institute")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -410,7 +411,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Відділ: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("department")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;
@@ -422,7 +423,7 @@ public class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel("Лабораторія: "), gc);
+		institutePanel.add(new JLabel(LabelsLocale.getProperty("subdepartment")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.NORTHWEST;

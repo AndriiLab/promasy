@@ -13,6 +13,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import gui.LabelsLocale;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -27,7 +28,7 @@ public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogL
 	private EmployeePanel empPanel;
 
 	public CreateEmployeeDialog(JFrame parent) {
-		super(parent, "Створити нового співпробітника", false);
+		super(parent, LabelsLocale.getProperty("createEmployeeDialogSuper"), false);
 		setSize(600, 370);
 		setResizable(false);
 		setLocationRelativeTo(parent);
@@ -35,8 +36,8 @@ public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogL
 		empPanel = new EmployeePanel();
 		empPanel.setEmployeeDialogListener(this);
 
-		okButton = new JButton("Створити профіль");
-		cancelButton = new JButton("Відмінити");
+		okButton = new JButton(LabelsLocale.getProperty("createEmployeeDialogOkBtn"));
+		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
 
 		layoutControls();
 

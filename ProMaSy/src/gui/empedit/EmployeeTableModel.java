@@ -4,14 +4,19 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import gui.LabelsLocale;
 import model.EmployeeModel;
 
 public class EmployeeTableModel extends AbstractTableModel{
 
 	private List<EmployeeModel> db;
 
-	private String[] colNames = {"ПІБ", "Інститут", "Відділ", 
-			"Лабораторія", "Роль", "Активний"};
+	private String[] colNames = {LabelsLocale.getProperty("empTableCol1"),
+								    LabelsLocale.getProperty("empTableCol2"),
+                                    LabelsLocale.getProperty("empTableCol3"),
+                                    LabelsLocale.getProperty("empTableCol4"),
+                                    LabelsLocale.getProperty("empTableCol5"),
+                                    LabelsLocale.getProperty("empTableCol6")};
 
 	public EmployeeTableModel() {
 	}

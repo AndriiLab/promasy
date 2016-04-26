@@ -1,5 +1,7 @@
 package gui.conset;
 
+import gui.LabelsLocale;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -35,10 +37,10 @@ public class ConSetDialog extends JDialog {
 	private ConSetListener prefsListener;
 
 	public ConSetDialog(JFrame parent) {
-		super(parent, "Параметри", false);
+		super(parent, LabelsLocale.getProperty("conSetDialogSuper"), false);
 
-		okButton = new JButton("OK");
-		cancelButton = new JButton("Cancel");
+		okButton = new JButton(LabelsLocale.getProperty("okBtn"));
+		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
 		spinnerModel = new SpinnerNumberModel(5432, 0, 9999, 1);
 		portSpinner = new JSpinner(spinnerModel);
 		serverField = new JTextField(10);
@@ -87,7 +89,7 @@ public class ConSetDialog extends JDialog {
 		JPanel buttonsPanel = new JPanel();
 		int space = 5;
 		Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-		Border titleBorder = BorderFactory.createTitledBorder("Параметри з'єднанання з базою даних");
+		Border titleBorder = BorderFactory.createTitledBorder(LabelsLocale.getProperty("conSetTitleBorderLabel"));
 
 		controlsPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, titleBorder));
 		controlsPanel.setLayout(new GridBagLayout());
@@ -105,7 +107,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Адреса сервера: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("serverLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -115,7 +117,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Порт: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("portLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -130,7 +132,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Назва бази даних: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("dbNameLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -140,7 +142,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Назва схеми: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("schemaNameLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -152,7 +154,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridy++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Користувач: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -162,7 +164,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Пароль: "), gc);
+		controlsPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;

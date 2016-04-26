@@ -1,5 +1,7 @@
 package gui.login;
 
+import gui.LabelsLocale;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -29,7 +31,7 @@ public class LoginDialog extends JDialog {
 	private LoginListener loginListener;
 
 	public LoginDialog(JFrame parent) {
-		super(parent, "Вхід в ProMaSy", false);
+		super(parent, LabelsLocale.getProperty("loginDialogSuper"), false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(220, 150);
 		setResizable(false);
@@ -37,8 +39,8 @@ public class LoginDialog extends JDialog {
 
 		userField = new JTextField(10);
 		passwordField = new JPasswordField(10);
-		okButton = new JButton("Вхід");
-		cancelButton = new JButton("Відміна");
+		okButton = new JButton(LabelsLocale.getProperty("loginDialogOkBtn"));
+		cancelButton = new JButton(LabelsLocale.getProperty("cancelBtn"));
 
 		JPanel loginPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
@@ -64,7 +66,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel("Логін: "), gc);
+		loginPanel.add(new JLabel(LabelsLocale.getProperty("userNameLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -79,7 +81,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel("Пароль: "), gc);
+		loginPanel.add(new JLabel(LabelsLocale.getProperty("passwordLabel")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -112,7 +114,8 @@ public class LoginDialog extends JDialog {
 					}
 				} else {
 					JOptionPane.showMessageDialog(parent, 
-							"Введіть дані для входу.", "Помилка вводу даних",
+							LabelsLocale.getProperty("noCredentialsMessage"),
+                            LabelsLocale.getProperty("noCredentialsTitle"),
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
