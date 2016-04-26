@@ -20,18 +20,15 @@ public class InfoDialog extends JDialog {
 	private JButton okButton;
 
 	public InfoDialog(JFrame parent) {
-		super(parent, "Про програму", false);
+		super(parent, LabelsLocale.getProperty("infoDialogSuper"), false);
 		setSize(300, 200);
 		setLocationRelativeTo(parent);
 
 		infoPane = new JTextPane();
 		infoPane.setEditable(false);
-		infoPane.setText(
-				"PROcurement MAnagement SYstem\n" +
-				"Система Керування Закупівлями\n" + 
-				"\n\tВерсія 0.3\n");
+		infoPane.setText(LabelsLocale.getProperty("infoPaneText"));
 
-		okButton = new JButton("OK");
+		okButton = new JButton(LabelsLocale.getProperty("okBtnLabel"));
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
