@@ -15,6 +15,10 @@ public class AmountUnitsModel extends AbstractModel{
 		this.amUnitDesc = amUnitDesc;
 	}
 
+	public AmountUnitsModel(String amUnitDesc) {
+		this.amUnitDesc = amUnitDesc;
+	}
+
 	public AmountUnitsModel() {
 		this.amUnitDesc = "";
 	}

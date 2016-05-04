@@ -15,12 +15,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
+import gui.amunits.AmUnitsDialog;
 import gui.conset.ConSetDialog;
 import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.EditEmployeeDialog;
 import gui.instedit.OrganizationDialog;
 import gui.login.LoginDialog;
 import gui.cpv.CpvPanel;
+import gui.prodsupl.ProdSuplDialog;
 
 public class MainFrame extends JFrame {
 
@@ -36,6 +38,7 @@ public class MainFrame extends JFrame {
 	private StatusPanel statusPanel;
 	private JMenuItem exitItem;
 	private AmUnitsDialog amUnitsDialog;
+	private ProdSuplDialog prodSuplDialog;
 
 
 	public MainFrame() {
@@ -56,6 +59,7 @@ public class MainFrame extends JFrame {
 		editEmpDialog = new EditEmployeeDialog(this);
 		addEmpDialog = new CreateEmployeeDialog(this);
 		amUnitsDialog = new AmUnitsDialog(this);
+		prodSuplDialog = new ProdSuplDialog(this);
 		infoDialog = new InfoDialog(this);
 		statusPanel = new StatusPanel(this);
 		cpvPanel = new CpvPanel();
@@ -71,9 +75,11 @@ public class MainFrame extends JFrame {
 		add(tabPane, BorderLayout.CENTER);
 		add(statusPanel, BorderLayout.SOUTH);
 	}
-	/*
-	 * This method generates menubar
-	 */
+
+
+    /*
+         * This method generates menubar
+         */
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 
@@ -89,10 +95,12 @@ public class MainFrame extends JFrame {
 		JMenuItem editEmpItem = new JMenuItem(Labels.getProperty("editEmployees"));
 		JMenuItem addEmpItem = new JMenuItem(Labels.getProperty("addEmployees"));
 		JMenuItem editAmUnitsItem = new JMenuItem(Labels.getProperty("amUnitsDialogSuper")+"...");
+        JMenuItem editProdSuplItem = new JMenuItem(Labels.getProperty("prodSuplDialogSuper")+"...");
 		editMenu.add(editOrgItem);
 		editMenu.add(editEmpItem);
 		editMenu.add(addEmpItem);
         editMenu.add(editAmUnitsItem);
+        editMenu.add(editProdSuplItem);
 
 		JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
 		JMenuItem conSettItem = new JMenuItem(Labels.getProperty("ConnectionWithDBSettings")+"...");
@@ -114,6 +122,8 @@ public class MainFrame extends JFrame {
 		addEmpItem.addActionListener(e -> addEmpDialog.setVisible(true));
 
         editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
+
+        editProdSuplItem.addActionListener(e -> prodSuplDialog.setVisible(true));
 
 		conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
 
@@ -154,5 +164,10 @@ public class MainFrame extends JFrame {
 	public JMenuItem getExitItem() {
 		return exitItem;
 	}
-
+    public AmUnitsDialog getAmUnitsDialog() {
+        return amUnitsDialog;
+    }
+    public ProdSuplDialog getProdSuplDialog() {
+        return prodSuplDialog;
+    }
 }

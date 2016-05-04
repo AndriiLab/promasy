@@ -20,7 +20,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	}
 
 	public void create(AmountUnitsModel object) throws SQLException {
-		String query = "INSERT INTO amountunits(am_unit_desc, created_by, created_date) VALUES (?, ?, ?)";
+        String query = "INSERT INTO amountunits(am_unit_desc, created_by, created_date) VALUES (?, ?, ?)";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getAmUnitDesc());
 		prepStmt.setLong(2, object.getCreatedBy());

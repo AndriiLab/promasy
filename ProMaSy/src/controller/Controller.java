@@ -14,28 +14,17 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import gui.amunits.AmUnitsDialogListener;
 import gui.Labels;
 import gui.MainFrame;
+import gui.prodsupl.ProdSuplDialogListener;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialogListener;
 import gui.empedit.EmployeeEvent;
 import gui.instedit.OrganizationDialogListener;
 import gui.login.LoginAttemptEvent;
 import gui.login.LoginListener;
-import model.CPVQueries;
-import model.AbstractModel;
-import model.Database;
-import model.DepartmentQueries;
-import model.EmployeeModel;
-import model.EmployeeQueries;
-import model.DepartmentModel;
-import model.InstituteModel;
-import model.InstituteQueries;
-import model.LoginData;
-import model.RoleModel;
-import model.RoleQueries;
-import model.SubdepartmentQueries;
-import model.SubdepartmentModel;
+import model.*;
 
 public class Controller {
 
@@ -125,6 +114,9 @@ public class Controller {
 		getRolesRequest();
 		getInstRequest();
 		getEmployees();
+		getAmUnits();
+		getProd();
+        getSupl();
 		mainFrame.getCpvPanel().setData(Database.CPV.getList());
 		List<RoleModel> rolesModelList = Database.ROLES.getList();
 		mainFrame.getEditEmpDialog().setRolesData(rolesModelList);
@@ -134,6 +126,9 @@ public class Controller {
 		mainFrame.getEditEmpDialog().setInstData(instModelList);
 		mainFrame.getAddEmpDialog().setInstData(instModelList);
 		mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+		mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
+        mainFrame.getProdSuplDialog().setProdData(Database.PRODUCERS.getList());
+        mainFrame.getProdSuplDialog().setSuplData(Database.SUPPLIERS.getList());
 
 		//setting listeners to frames and dialogs
 		mainFrame.getCpvPanel().setCpvListener(ev -> {
@@ -252,6 +247,73 @@ public class Controller {
 			}
 		});
 
+        mainFrame.getAmUnitsDialog().setListener(new AmUnitsDialogListener() {
+            @Override
+            public void createEventOccurred(AmountUnitsModel model) {
+                createAmUnit(model);
+                getAmUnits();
+                mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
+            }
+
+            @Override
+            public void editEventOccurred(AmountUnitsModel model) {
+                editAmUnit(model);
+                getAmUnits();
+                mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
+            }
+
+            @Override
+            public void deleteEventOccurred(AmountUnitsModel model) {
+                deleteAmUnit(model);
+                getAmUnits();
+                mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
+            }
+        });
+
+		mainFrame.getProdSuplDialog().setListener(new ProdSuplDialogListener() {
+            @Override
+            public void createProdEventOccurred(ProducerModel model) {
+                createProd(model);
+                getProd();
+                mainFrame.getProdSuplDialog().setProdData(Database.PRODUCERS.getList());
+            }
+
+            @Override
+            public void editProdEventOccurred(ProducerModel model) {
+                editProd(model);
+                getProd();
+                mainFrame.getProdSuplDialog().setProdData(Database.PRODUCERS.getList());
+            }
+
+            @Override
+            public void deleteProdEventOccurred(ProducerModel model) {
+                deleteProd(model);
+                getProd();
+                mainFrame.getProdSuplDialog().setProdData(Database.PRODUCERS.getList());
+            }
+
+            @Override
+            public void createSuplEventOccurred(SupplierModel model) {
+                createSupl(model);
+                getSupl();
+                mainFrame.getProdSuplDialog().setSuplData(Database.SUPPLIERS.getList());
+            }
+
+            @Override
+            public void editSuplEventOccurred(SupplierModel model) {
+                editSupl(model);
+                getSupl();
+                mainFrame.getProdSuplDialog().setSuplData(Database.SUPPLIERS.getList());
+            }
+
+            @Override
+            public void deleteSuplEventOccurred(SupplierModel model) {
+                deleteSupl(model);
+                getSupl();
+                mainFrame.getProdSuplDialog().setSuplData(Database.SUPPLIERS.getList());
+            }
+        });
+
 		mainFrame.getExitItem().addActionListener(ev -> closeDialog());
 	}
 
@@ -355,6 +417,31 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
+
+	private void getAmUnits() {
+		try {
+			Database.AMOUNTUNITS.retrieve();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+    private void getProd(){
+        try {
+            Database.PRODUCERS.retrieve();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getSupl(){
+        try {
+            Database.SUPPLIERS.retrieve();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	// check user login and pass
 	private boolean checkLogin() {
@@ -483,6 +570,87 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
+
+    private void createAmUnit (AmountUnitsModel model) {
+        setCreated(model);
+        try {
+            Database.AMOUNTUNITS.create(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editAmUnit (AmountUnitsModel model) {
+        setModified(model);
+        try {
+            Database.AMOUNTUNITS.update(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteAmUnit (AmountUnitsModel model) {
+        setInactive(model);
+        try {
+            Database.AMOUNTUNITS.delete(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createProd(ProducerModel model){
+        setCreated(model);
+        try {
+            Database.PRODUCERS.create(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editProd(ProducerModel model){
+        setModified(model);
+        try {
+            Database.PRODUCERS.update(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteProd(ProducerModel model){
+        setInactive(model);
+        try {
+            Database.PRODUCERS.delete(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createSupl(SupplierModel model){
+        setCreated(model);
+        try {
+            Database.SUPPLIERS.create(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editSupl(SupplierModel model){
+        setModified(model);
+        try {
+            Database.SUPPLIERS.update(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteSupl(SupplierModel model){
+        setInactive(model);
+        try {
+            Database.SUPPLIERS.delete(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 	//default close method
 	private void close(){

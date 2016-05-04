@@ -1,26 +1,35 @@
-package gui;
+package gui.amunits;
 
+import gui.Labels;
+import gui.Utils;
 import model.AmountUnitsModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by laban on 26.04.2016.
  */
-public class AmUnitsDialog extends JDialog {
+public class AmUnitsDialog extends JDialog implements ActionListener {
     private JButton okButton;
     private JButton createAmUnit;
     private JButton editAmUnit;
     private JButton deleteAmUnit;
     private JComboBox<AmountUnitsModel> amUnitBox;
     private final AmountUnitsModel emptyModel = new AmountUnitsModel();
+    private AmUnitsDialogListener listener;
+    private AmountUnitsModel privateModel;
+    private String newName;
 
     public AmUnitsDialog(JFrame parent) {
         super(parent, Labels.getProperty("amUnitsDialogSuper"), false);
         setSize(300, 150);
         setLocationRelativeTo(parent);
+
+        privateModel = emptyModel;
 
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
@@ -29,6 +38,8 @@ public class AmUnitsDialog extends JDialog {
         amUnitBox = new JComboBox<>(amUnitModel);
         amUnitBox.addItem(emptyModel);
         amUnitBox.setPreferredSize(comboBoxDim);
+        amUnitBox.setEditable(true);
+        amUnitBox.addActionListener(this);
 
         createAmUnit = new JButton();
         createAmUnit.setToolTipText(Labels.getProperty("addAmUnit"));
@@ -51,37 +62,62 @@ public class AmUnitsDialog extends JDialog {
         layoutControls();
 
         createAmUnit.addActionListener(e -> {
-            if(amUnitBox.getSelectedItem() instanceof String){
-                String newAmUnit = (String) amUnitBox.getSelectedItem();
-                System.out.println(newAmUnit);
+            if (newName != null &&  !newName.equals("") && privateModel.equals(emptyModel)) {
+                AmountUnitsModel model = new AmountUnitsModel(newName);
+                if (listener != null) {
+                    amUnitBox.removeAllItems();
+                    amUnitBox.addItem(emptyModel);
+                    listener.createEventOccurred(model);
+                }
             }
+            privateModel = emptyModel;
+            newName = null;
         });
 
         editAmUnit.addActionListener(e -> {
-            if(amUnitBox.getSelectedItem() instanceof AmountUnitsModel) {
-                AmountUnitsModel model = (AmountUnitsModel) amUnitBox.getSelectedItem();
-                if (!model.equals(emptyModel)) {
-                    System.out.println(model.getAmUnitDesc());
+            if (newName != null && !newName.equals("") && !privateModel.equals(emptyModel)) {
+                if (listener != null) {
+                    amUnitBox.removeAllItems();
+                    amUnitBox.addItem(emptyModel);
+                    privateModel.setAmUnitDesc(newName);
+                    listener.editEventOccurred(privateModel);
                 }
             }
+            privateModel = emptyModel;
+            newName = null;
         });
 
         deleteAmUnit.addActionListener(e -> {
-            if(amUnitBox.getSelectedItem() instanceof AmountUnitsModel){
-                AmountUnitsModel model = (AmountUnitsModel) amUnitBox.getSelectedItem();
-                if (!model.equals(emptyModel)) {
-                    System.out.println(model.getAmUnitDesc()+" will be deleted");
-                }
+            if (!privateModel.equals(emptyModel) && listener != null) {
+                amUnitBox.removeAllItems();
+                amUnitBox.addItem(emptyModel);
+                listener.deleteEventOccurred(privateModel);
             }
+            privateModel = emptyModel;
+            newName = null;
         });
 
         okButton.addActionListener(e -> setVisible(false));
     }
 
-    public void setData(java.util.List<AmountUnitsModel> amUnitDb){
-        for (AmountUnitsModel amUnitModel : amUnitDb){
+    public void setData(java.util.List<AmountUnitsModel> amUnitDb) {
+        for (AmountUnitsModel amUnitModel : amUnitDb) {
             amUnitBox.addItem(amUnitModel);
         }
+    }
+
+    public void setListener(AmUnitsDialogListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object item = ((JComboBox)e.getSource()).getSelectedItem();
+            if(item instanceof AmountUnitsModel && !item.equals(emptyModel)){
+                privateModel = (AmountUnitsModel) item;
+            } else if (item instanceof String && !item.equals(null)){
+                newName = (String) item;
+            }
     }
 
     private void layoutControls() {

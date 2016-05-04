@@ -112,7 +112,7 @@ create table producers (
 create table suppliers (
 	supplier_id bigint not null DEFAULT id_gen() CONSTRAINT suppliers_pk PRIMARY KEY,
 	supplier_name varchar(30) not null, -- Назва постачальника
-	supplier_tel varchar(15) not null, -- Телефон постачальника
+	supplier_tel varchar(20) not null, -- Телефон постачальника
 	supplier_comments varchar(500), -- Можливі коментарі до постачальника
 	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
 	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення

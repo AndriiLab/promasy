@@ -18,6 +18,14 @@ public class ProducerModel extends AbstractModel{
         this.brandName = brandName;
     }
 
+    public ProducerModel(String brandName){
+        this.brandName = brandName;
+    }
+
+    public ProducerModel(){
+
+    }
+
     public long getBrandId() {
         return brandId;
     }
@@ -32,5 +40,9 @@ public class ProducerModel extends AbstractModel{
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    public String toString(){
+        return brandName;
     }
 }

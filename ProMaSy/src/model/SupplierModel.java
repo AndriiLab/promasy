@@ -21,6 +21,17 @@ public class SupplierModel extends AbstractModel {
         this.supplierComments = supplierComments;
     }
 
+    public SupplierModel(String supplierName, String supplierTel,
+                         String supplierComments){
+        this.supplierName = supplierName;
+        this.supplierTel = supplierTel;
+        this.supplierComments = supplierComments;
+    }
+
+    public SupplierModel(){
+
+    }
+
     public long getSupplierId() {
         return supplierId;
     }
@@ -51,5 +62,10 @@ public class SupplierModel extends AbstractModel {
 
     public void setSupplierComments(String supplierComments) {
         this.supplierComments = supplierComments;
+    }
+
+    @Override
+    public String toString() {
+        return supplierName;
     }
 }
