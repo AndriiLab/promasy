@@ -1,4 +1,4 @@
-create schema inst_db;
+CREATE SCHEMA inst_db;
 SET SCHEMA 'inst_db';
 
 -- ALTER TABLE institute ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
@@ -6,16 +6,16 @@ SET SCHEMA 'inst_db';
 /* function modified from
 http://rob.conery.io/2014/05/29/a-better-id-generator-for-postgresql */
 
-create sequence id_seq;
+CREATE SEQUENCE id_seq;
 
-CREATE OR REPLACE FUNCTION id_gen(OUT result bigint) AS $$
+CREATE OR REPLACE FUNCTION id_gen(OUT result BIGINT) AS $$
 DECLARE
-    our_epoch bigint := 1314220021721;
-    seq_id bigint;
-    now_millis bigint;
+    our_epoch BIGINT := 1314220021721;
+    seq_id BIGINT;
+    now_millis BIGINT;
     -- the id of this DB shard, must be set for each
     -- schema shard you have - you could pass this as a parameter too
-    shard_id bigint := 1;
+    shard_id BIGINT := 1;
 BEGIN
     SELECT nextval('id_seq') % 1024 INTO seq_id;
 
@@ -27,167 +27,180 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 -- Визначення посад та прав доступу
-create table roles (
-	roles_id bigint not null DEFAULT id_gen() CONSTRAINT roles_pk PRIMARY KEY,
-	roles_name varchar(100) not null, -- Посада
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
+CREATE TABLE roles (
+	roles_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT roles_pk PRIMARY KEY,
+	roles_name VARCHAR(100) NOT NULL, -- Посада
+	created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+	created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Дата створення
+	modified_by BIGINT, -- Модифіковано користувачем з ІН
 	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+	active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Повна назва інституту/-тів. Використовується в документах
-create table institute (
-	inst_id bigint not null DEFAULT id_gen() CONSTRAINT institute_pk PRIMARY KEY,
-	inst_name varchar(100) not null, --Повна назва інститутів
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP,
-	modified_by bigint,
+CREATE TABLE institute (
+	inst_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT institute_pk PRIMARY KEY,
+	inst_name VARCHAR(100) NOT NULL, --Повна назва інститутів
+	created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+	created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	modified_by BIGINT,
 	modified_date TIMESTAMP,
-	active boolean not null DEFAULT true
+	active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Повні назви відділів. Використовується в документах
-create table departments (
+CREATE TABLE departments (
 	dep_id bigint not null DEFAULT id_gen() CONSTRAINT departments_pk PRIMARY KEY,
-	dep_name varchar(100) not null, --Повна назва відділів
-	inst_id bigint not null REFERENCES institute (inst_id),
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+	dep_name VARCHAR(100) NOT NULL, --Повна назва відділів
+	inst_id BIGINT NOT NULL REFERENCES institute (inst_id),
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Повні назви лабораторій або підвідділів. Використовується в документах
-create table subdepartments (
-	subdep_id bigint not null DEFAULT id_gen() CONSTRAINT subdepartments_pk PRIMARY KEY,
-	subdep_name varchar(100) not null, --Повна назва робочих груп
-	dep_id bigint not null references departments (dep_id),
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE subdepartments (
+	subdep_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT subdepartments_pk PRIMARY KEY,
+	subdep_name VARCHAR(100) NOT NULL, --Повна назва робочих груп
+	dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- cpv коди з розшифровкою на двох мовах
-create table cpv (
-	cpv_code char(10) not null CONSTRAINT cpv_pk PRIMARY KEY, -- Код у форматі XXXXX000-Y
-	cpv_ukr varchar(200) not null, -- Розшифровка українською
-	cpv_eng varchar(200) not null, -- Розшифровка англійською
-	cpv_level int not null, -- Рівень категорії відносно початкової
-	terminal boolean not null, -- Чи є кінцевою ланкою в категорї
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE cpv (
+	cpv_code CHAR(10) NOT NULL CONSTRAINT cpv_pk PRIMARY KEY, -- Код у форматі XXXXX000-Y
+	cpv_ukr VARCHAR(200) NOT NULL, -- Розшифровка українською
+	cpv_eng VARCHAR(200) NOT NULL, -- Розшифровка англійською
+	cpv_level INT NOT NULL, -- Рівень категорії відносно початкової
+	terminal BOOLEAN NOT NULL, -- Чи є кінцевою ланкою в категорї
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Одинці, в яких вимірюється замовлення (кг, пакет, шт., л і т.п.)
-create table amountunits (
-	am_unit_id bigint not null DEFAULT id_gen() CONSTRAINT amountunits_pk PRIMARY KEY,
-	am_unit_desc varchar(100) not null, -- Одиниця (кг, пакет, шт., л і т.п.)
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE amountunits (
+	am_unit_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT amountunits_pk PRIMARY KEY,
+	am_unit_desc VARCHAR(100) NOT NULL, -- Одиниця (кг, пакет, шт., л і т.п.)
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Фірми-виробники продукції
-create table producers (
-	brand_id bigint not null DEFAULT id_gen() CONSTRAINT producers_pk PRIMARY KEY,
-	brand_name varchar(30) not null, -- Назва виробника
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE producers (
+	brand_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT producers_pk PRIMARY KEY,
+	brand_name VARCHAR(30) NOT NULL, -- Назва виробника
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Фірми-постачальники продукції
-create table suppliers (
-	supplier_id bigint not null DEFAULT id_gen() CONSTRAINT suppliers_pk PRIMARY KEY,
-	supplier_name varchar(30) not null, -- Назва постачальника
-	supplier_tel varchar(20) not null, -- Телефон постачальника
-	supplier_comments varchar(500), -- Можливі коментарі до постачальника
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE suppliers (
+	supplier_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT suppliers_pk PRIMARY KEY,
+	supplier_name VARCHAR(30) NOT NULL, -- Назва постачальника
+	supplier_tel VARCHAR(20) NOT NULL, -- Телефон постачальника
+	supplier_comments VARCHAR(500), -- Можливі коментарі до постачальника
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 /* Зв'язок між постачальниками та 
 виробниками для пропозицій постачальників*/
-create table prod_suppliers (
-	supplier_id bigint not null references suppliers (supplier_id),
-	brand_id bigint not null references producers (brand_id),
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true,
-	PRIMARY KEY (supplier_id, brand_id)
+CREATE TABLE prod_suppliers (
+	supplier_id BIGINT NOT NULL REFERENCES suppliers (supplier_id),
+	brand_id BIGINT NOT NULL REFERENCES producers (brand_id),
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (supplier_id, brand_id)
 );
 
 --  Дані про користувачів
-create table employees (
-	emp_id bigint not null DEFAULT id_gen(),
-	emp_fname varchar(30) not null, -- Ім'я
-	emp_mname varchar(30), -- По-батькові
-	emp_lname varchar(30) not null, -- Прізвище співробітника
-	dep_id bigint not null references departments (dep_id),
-	subdep_id bigint,
-	roles_id bigint not null references roles (roles_id),
-	login varchar(20) not null,
-	password varchar(20) not null,
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true,
-	PRIMARY KEY (emp_id, login)
+CREATE TABLE employees (
+	emp_id BIGINT NOT NULL DEFAULT id_gen(),
+	emp_fname VARCHAR(30) NOT NULL, -- Ім'я
+	emp_mname VARCHAR(30), -- По-батькові
+	emp_lname VARCHAR(30) NOT NULL, -- Прізвище співробітника
+	dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
+	subdep_id BIGINT,
+	roles_id BIGINT NOT NULL REFERENCES roles (roles_id),
+	login varchar(20) NOT NULL,
+	password varchar(20) NOT NULL,
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  UNIQUE (emp_id, login)
 );
 
 -- Дані про теми та їх фінансування
-create table finance (
-	tema_id bigint not null DEFAULT id_gen() CONSTRAINT finance_pk PRIMARY KEY,
-	tema_number varchar(30), -- Номер теми
-	tema_name varchar(100) not null, -- Назва теми
-	tema_amount money not null, -- Об'єм фінансування
-	dep_id bigint not null references departments (dep_id),
-	emp_id bigint not null references employees (emp_id), -- Керівник теми
-	starts_on date, -- Початок теми
-	due_to date, -- Кінцева дата теми
-	created_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+CREATE TABLE finance (
+	order_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT finance_pk PRIMARY KEY,
+	order_number VARCHAR(30), -- Номер теми
+	order_name VARCHAR(100) NOT NULL, -- Назва теми
+	order_amount DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
+	starts_on DATE, -- Початок теми
+	due_to DATE, -- Кінцева дата теми
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+
+-- Дані про відповідність теми та її фінансування відділам
+CREATE TABLE finance_dep (
+	order_id BIGINT NOT NULL REFERENCES finance(order_id),
+  dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
+  emp_id BIGINT NOT NULL REFERENCES employees (emp_id), -- Керівник теми
+	order_amount DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (order_id, dep_id)
 );
 
 -- Дані про замовлення
-create table bids (
-	bid_id bigint not null DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
-	emp_id bigint not null references employees (emp_id), -- ІН, хто створив заявку
-	brand_id bigint references producers (brand_id), -- Можливий виробник
-	cat_num varchar(30), -- Можливий каталожний номер
-	bid_desc varchar(500) not null, -- Опис заявки
-	cpv_code varchar(10) not null references cpv(cpv_code) , -- СРВ код
-	one_price money not null, -- Вартість одиниці
-	amount INT not null, -- Кількість одиниць
-	am_unit_id bigint not null references amountunits(am_unit_id), -- Розмірність одиниць
-	tema_id bigint not null references finance (tema_id), -- Номер теми фінансування
-	supplier_id bigint references suppliers (supplier_id), -- Можливий постачальник
-	received boolean not null, -- Чи був отриманий товар складом
+CREATE TABLE bids (
+	bid_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
+	emp_id BIGINT NOT NULL REFERENCES employees (emp_id), -- ІН, хто створив заявку
+	brand_id BIGINT REFERENCES producers (brand_id), -- Можливий виробник
+	cat_num VARCHAR(30), -- Можливий каталожний номер
+	bid_desc VARCHAR(500) NOT NULL, -- Опис заявки
+	cpv_code VARCHAR(10) NOT NULL REFERENCES cpv(cpv_code) , -- СРВ код
+	one_price DECIMAL(19, 4) NOT NULL, -- Вартість одиниці
+	amount INT NOT NULL, -- Кількість одиниць
+	am_unit_id BIGINT NOT NULL REFERENCES amountunits(am_unit_id), -- Розмірність одиниць
+	order_id BIGINT NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
+	supplier_id BIGINT REFERENCES suppliers (supplier_id), -- Можливий постачальник
+	received BOOLEAN NOT NULL, -- Чи був отриманий товар складом
 	date_received TIMESTAMP, -- Дата отримання складом
-	ccreated_by bigint not null DEFAULT 1000000000000, -- Створено користувачем з ІН
-	created_date TIMESTAMP not null DEFAULT CURRENT_TIMESTAMP, -- Дата створення
-	modified_by bigint, -- Модифіковано користувачем з ІН
-	modified_date TIMESTAMP, -- Дата модифікації
-	active boolean not null DEFAULT true
+  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by BIGINT,
+  modified_date TIMESTAMP,
+  active BOOLEAN NOT NULL DEFAULT TRUE
 );

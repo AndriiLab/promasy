@@ -16,7 +16,7 @@ class EmployeeTablePanel extends JPanel {
 	private JTable table;
 	private EmployeeTableModel tableModel;
 	private EmployeeTableListener listener;
-	
+
 	public EmployeeTablePanel() {
 		tableModel = new EmployeeTableModel();
 		table = new JTable(tableModel);
@@ -45,12 +45,10 @@ class EmployeeTablePanel extends JPanel {
 		tableModel.setData(db);
 	}
 	
-	public void refresh(){
-		tableModel.fireTableDataChanged();
-	}
-	
 	public void setEmployeeTableListener(EmployeeTableListener lisntener){
 		this.listener = lisntener;
 	}
-
+	public EmployeeTableModel getTableModel() {
+		return tableModel;
+	}
 }

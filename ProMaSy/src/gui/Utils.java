@@ -2,7 +2,7 @@ package gui;
 
 import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 public class Utils {
 	public static ImageIcon createIcon(String path){
@@ -12,4 +12,15 @@ public class Utils {
 		}
 		return new ImageIcon(url);
 	}
+
+    public static void setBoxFromModel(JComboBox box, String req){
+        if(req != null){
+            for(int i = 0; i<=box.getItemCount(); i++){
+                if(box.getItemAt(i).toString().equals(req)){
+                    box.setSelectedIndex(i);
+                    break;
+                }
+            }
+        }
+    }
 }

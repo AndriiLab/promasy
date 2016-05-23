@@ -126,6 +126,10 @@ public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogLis
 		this.empListener = empListener;
 
 	}
+
+    public void refresh(){
+        empTablePanel.getTableModel().fireTableDataChanged();
+    }
 	
 	private void setEmployee(EmployeeModel obj){
 		empPanel.setEmployee(obj);

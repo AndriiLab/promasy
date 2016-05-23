@@ -54,36 +54,68 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		ResultSet results = prepStmt.executeQuery();
 
-		while (results.next()) {
-			long empId = results.getLong("emp_id");
-			String empFName = results.getString("emp_fname");
-			String empMName = results.getString("emp_mname");
-			String empLName = results.getString("emp_lname");
-			long instId = results.getLong("inst_id");
-			String instName = results.getString("inst_name");
-			long depId = results.getLong("dep_id");
-			String depName = results.getString("dep_name");
-			long subdepId = results.getLong("subdep_id");
-			String subdepName = results.getString("subdep_name");
-			long roleId = results.getLong("roles_id");
-			String roleName = results.getString("roles_name");
-			String login = results.getString("login");
-			String password = results.getString("password");
-			long createdBy = results.getLong("created_by");
-			Timestamp createdDate = results.getTimestamp("created_date");
-			long modifiedBy = results.getLong("modified_by");
-			Timestamp modifiedDate = results.getTimestamp("modified_date");
-			boolean active = results.getBoolean("active");
+        loadResultsToList(results);
 
-			EmployeeModel empModel = new EmployeeModel(empId, empFName, empMName, empLName, 
-					instId, instName, depId, depName, subdepId, subdepName, roleId, 
-					roleName, login, password, createdBy, createdDate, modifiedBy, 
-					modifiedDate, active);
-			empList.add(empModel);
-		}
 		results.close();
 		prepStmt.close();
 	}
+
+    public void retrieve(long departmentId) throws SQLException {
+        empList.clear();
+        String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "departments.inst_id, institute.inst_name, "+
+                "employees.dep_id, departments.dep_name, "+
+                "employees.subdep_id, subdepartments.subdep_name, "+
+                "employees.roles_id, roles.roles_name, "+
+                "employees.login, employees.password, "+
+                "employees.created_by, employees.created_date, "+
+                "employees.modified_by, employees.modified_date, "+
+                "employees.active "+
+                "FROM employees "+
+                "INNER JOIN departments ON employees.dep_id = departments.dep_id "+
+                "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
+                "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
+                "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
+                "WHERE employees.dep_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+
+        loadResultsToList(results);
+
+        results.close();
+        prepStmt.close();
+    }
+
+    private void loadResultsToList(ResultSet results) throws SQLException {
+        while (results.next()) {
+            long empId = results.getLong("emp_id");
+            String empFName = results.getString("emp_fname");
+            String empMName = results.getString("emp_mname");
+            String empLName = results.getString("emp_lname");
+            long instId = results.getLong("inst_id");
+            String instName = results.getString("inst_name");
+            long depId = results.getLong("dep_id");
+            String depName = results.getString("dep_name");
+            long subdepId = results.getLong("subdep_id");
+            String subdepName = results.getString("subdep_name");
+            long roleId = results.getLong("roles_id");
+            String roleName = results.getString("roles_name");
+            String login = results.getString("login");
+            String password = results.getString("password");
+            long createdBy = results.getLong("created_by");
+            Timestamp createdDate = results.getTimestamp("created_date");
+            long modifiedBy = results.getLong("modified_by");
+            Timestamp modifiedDate = results.getTimestamp("modified_date");
+            boolean active = results.getBoolean("active");
+
+            EmployeeModel empModel = new EmployeeModel(empId, empFName, empMName, empLName,
+                    instId, instName, depId, depName, subdepId, subdepName, roleId,
+                    roleName, login, password, createdBy, createdDate, modifiedBy,
+                    modifiedDate, active);
+            empList.add(empModel);
+        }
+    }
 
 	public void update(EmployeeModel object) throws SQLException {
 		String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=? WHERE emp_id=?";
@@ -117,7 +149,13 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	
 	public boolean checkLogin(LoginData logindata) throws SQLException{
 		
-		String query = "select emp_id, emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date, modified_by, modified_date from employees where login = ? and password = ? and active = true";
+		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
+				"departments.inst_id, employees.dep_id, employees.subdep_id, employees.roles_id, employees.login, " +
+                "employees.password, employees.created_by, employees.created_date, employees.modified_by, " +
+                "employees.modified_date " +
+                "FROM employees " +
+                "INNER JOIN departments ON employees.dep_id = departments.dep_id " +
+                "WHERE employees.login = ? AND employees.password = ? AND employees.active = true";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, logindata.getLogin());
 		prepStmt.setString(2, logindata.getPassword());
@@ -127,6 +165,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 			logindata.setEmpFName(results.getString("emp_fname"));
 			logindata.setEmpMName(results.getString("emp_mname"));
 			logindata.setEmpLName(results.getString("emp_lname"));
+            logindata.setInstId(results.getLong("inst_id"));
 			logindata.setDepId(results.getLong("dep_id"));
 			logindata.setSubdepId(results.getLong("subdep_id"));
 			logindata.setRoleId(results.getLong("roles_id"));

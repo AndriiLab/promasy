@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import gui.amunits.AmUnitsDialogListener;
 import gui.Labels;
 import gui.MainFrame;
+import gui.finance.FinancePanelListener;
 import gui.prodsupl.ProdSuplDialogListener;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialogListener;
@@ -61,6 +62,10 @@ public class Controller {
 					mainFrame.setVisible(true);
 					mainFrame.getLoginDialog().setVisible(false);
 					mainFrame.getStatusPanel().setCurrentUser(LoginData.INSTANCE.getShortName());
+                    //post login requests to DB
+                    //setting to FinancePanel departments data relative to login person
+                    getDepRequest(LoginData.INSTANCE.getInstId());
+                    mainFrame.getFinancePanel().setDepartmentBoxData(Database.DEPARTMENTS.getList());
 				} else if (!checkLogin()){
 					// if login wasn't successful showing error dialog
 					JOptionPane.showMessageDialog(mainFrame, 
@@ -117,6 +122,8 @@ public class Controller {
 		getAmUnits();
 		getProd();
         getSupl();
+		getFinances();
+		getDepartmentFinances(0);
 		mainFrame.getCpvPanel().setData(Database.CPV.getList());
 		List<RoleModel> rolesModelList = Database.ROLES.getList();
 		mainFrame.getEditEmpDialog().setRolesData(rolesModelList);
@@ -125,10 +132,12 @@ public class Controller {
 		mainFrame.getEditOrgDialog().setInstData(instModelList);
 		mainFrame.getEditEmpDialog().setInstData(instModelList);
 		mainFrame.getAddEmpDialog().setInstData(instModelList);
-		mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+        mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
 		mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
         mainFrame.getProdSuplDialog().setProdData(Database.PRODUCERS.getList());
         mainFrame.getProdSuplDialog().setSuplData(Database.SUPPLIERS.getList());
+		mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+		mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
 
 		//setting listeners to frames and dialogs
 		mainFrame.getCpvPanel().setCpvListener(ev -> {
@@ -147,13 +156,13 @@ public class Controller {
 
 			public void editPersonEventOccurred(EmployeeEvent ev) {
 				editEmployee(ev);
-
+                mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+                mainFrame.getEditEmpDialog().refresh();
 			}
 
 			public void depSelectionEventOccurred(long depId) {
 				getSubdepRequest(depId);
 				mainFrame.getEditEmpDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
-
 			}
 
 		});
@@ -314,10 +323,75 @@ public class Controller {
             }
         });
 
+        mainFrame.getFinancePanel().setFinancePanelListener(new FinancePanelListener() {
+            @Override
+            public void createOrderEventOccurred(FinanceModel model) {
+				createFinance(model);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+            }
+
+            @Override
+            public void editOrderEventOccurred(FinanceModel model) {
+                editFinance(model);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+            }
+
+            @Override
+            public void deleteOrderEventOccurred(FinanceModel model) {
+                deleteFinance(model);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+
+            }
+
+            @Override
+            public void departmentSelectionEventOccurred(long departmentId) {
+                getEmployees(departmentId);
+                mainFrame.getFinancePanel().setEmployeeBoxData(Database.EMPLOYEES.getList());
+            }
+
+			@Override
+			public void orderSelectionEventOccurred(long orderId) {
+				getDepartmentFinances(orderId);
+				mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
+				mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
+			}
+
+			@Override
+            public void createDepOrderEventOccurred(FinanceDepartmentModel model) {
+                createDepartmentFinances(model);
+                getDepartmentFinances(model.getOrderId());
+                mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
+                mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
+
+            }
+
+            @Override
+            public void editDepOrderEventOccurred(FinanceDepartmentModel model) {
+                editDepartmentFinances(model);
+                getDepartmentFinances(model.getOrderId());
+                mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
+                mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
+            }
+
+            @Override
+            public void deleteDepOrderEventOccurred(FinanceDepartmentModel model) {
+                deleteDepartmentFinances(model);
+                getDepartmentFinances(model.getOrderId());
+                mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
+                mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
+            }
+        });
+
 		mainFrame.getExitItem().addActionListener(ev -> closeDialog());
 	}
 
-	// sets connection settings to Properties object 
+    // sets connection settings to Properties object
 	private void setConnectionSettings(String host, String database, String schema,
 									   String port, String user, String password) {
 		if (conSet == null){
@@ -392,6 +466,15 @@ public class Controller {
 		}
 	}
 
+    private void getEmployees(long depId) {
+        try {
+            Database.EMPLOYEES.retrieve(depId);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 	private void getInstRequest() {
 		try {
 			Database.INSTITUTES.retrieve();
@@ -438,6 +521,22 @@ public class Controller {
     private void getSupl(){
         try {
             Database.SUPPLIERS.retrieve();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getFinances() {
+        try {
+            Database.FINANCES.retrieve();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDepartmentFinances(long orderId){
+        try {
+            Database.DEPARTMENT_FINANCES.retrieve(orderId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -647,6 +746,60 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUPPLIERS.delete(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createFinance(FinanceModel model){
+        setCreated(model);
+        try {
+            Database.FINANCES.create(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editFinance(FinanceModel model){
+        setModified(model);
+        try {
+            Database.FINANCES.update(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteFinance(FinanceModel model){
+        setInactive(model);
+        try {
+            Database.FINANCES.delete(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createDepartmentFinances(FinanceDepartmentModel model){
+        try {
+            setCreated(model);
+            Database.DEPARTMENT_FINANCES.create(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void editDepartmentFinances(FinanceDepartmentModel model){
+        try {
+            setModified(model);
+            Database.DEPARTMENT_FINANCES.update(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteDepartmentFinances(FinanceDepartmentModel model){
+        try {
+            setInactive(model);
+            Database.DEPARTMENT_FINANCES.delete(model);
         } catch (SQLException e) {
             e.printStackTrace();
         }

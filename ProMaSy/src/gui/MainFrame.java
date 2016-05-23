@@ -19,6 +19,7 @@ import gui.amunits.AmUnitsDialog;
 import gui.conset.ConSetDialog;
 import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.EditEmployeeDialog;
+import gui.finance.FinancePanel;
 import gui.instedit.OrganizationDialog;
 import gui.login.LoginDialog;
 import gui.cpv.CpvPanel;
@@ -39,9 +40,9 @@ public class MainFrame extends JFrame {
 	private JMenuItem exitItem;
 	private AmUnitsDialog amUnitsDialog;
 	private ProdSuplDialog prodSuplDialog;
+	private FinancePanel financePanel;
 
-
-	public MainFrame() {
+    public MainFrame() {
         // Setting name of the window and its parameters
 		super(Labels.getProperty("mainFrameSuper"));
 		setSize(1000, 700);
@@ -63,7 +64,10 @@ public class MainFrame extends JFrame {
 		infoDialog = new InfoDialog(this);
 		statusPanel = new StatusPanel(this);
 		cpvPanel = new CpvPanel();
+        financePanel = new FinancePanel(this);
 		tabPane = new JTabbedPane();
+
+        tabPane.addTab(Labels.getProperty("finances"), financePanel);
 		tabPane.addTab(Labels.getProperty("cpvPanelTab"), cpvPanel);
 
 		// creating Menubar
@@ -169,5 +173,8 @@ public class MainFrame extends JFrame {
     }
     public ProdSuplDialog getProdSuplDialog() {
         return prodSuplDialog;
+    }
+    public FinancePanel getFinancePanel() {
+        return financePanel;
     }
 }

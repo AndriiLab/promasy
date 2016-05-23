@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import gui.Labels;
+import gui.Utils;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
@@ -257,22 +258,11 @@ class EmployeePanel extends JPanel implements ActionListener{
 		//TODO unsecure pass
 		passwordField.setText(empModel.getPassword());
 		repeatPasswordField.setText(empModel.getPassword());
-		setBoxFromModel(roleBox, empModel.getRoleName());
-		setBoxFromModel(instituteBox, empModel.getInstName());
-		setBoxFromModel(departmentBox, empModel.getDepName());
-		setBoxFromModel(subdepartmentBox, empModel.getSubdepName());
+		Utils.setBoxFromModel(roleBox, empModel.getRoleName());
+		Utils.setBoxFromModel(instituteBox, empModel.getInstName());
+		Utils.setBoxFromModel(departmentBox, empModel.getDepName());
+		Utils.setBoxFromModel(subdepartmentBox, empModel.getSubdepName());
 
-	}
-
-	private static void setBoxFromModel(JComboBox box, String req){
-		if(req != null){
-			for(int i = 0; i<=box.getItemCount(); i++){
-				if(box.getItemAt(i).toString().equals(req)){
-					box.setSelectedIndex(i);
-					break;
-				}
-			}
-		}
 	}
 
 	private void layoutControls() {
