@@ -30,12 +30,6 @@ import model.*;
 public class Controller {
 
 	private Properties conSet;
-	CPVQueries cpv;
-	RoleQueries roles;
-	InstituteQueries institutes;
-	DepartmentQueries departments;
-	SubdepartmentQueries subdepartmens;
-	EmployeeQueries employees;
 	private MainFrame mainFrame;
 	private Preferences prefs;
 	private List<InstituteModel> instModelList;
@@ -55,21 +49,19 @@ public class Controller {
 		mainFrame.getLoginDialog().setVisible(true);
 		mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
 			public void loginAttemptOccurred(LoginAttemptEvent ev) {
-				LoginData.INSTANCE.setLogin(ev.getUsername());
-				LoginData.INSTANCE.setPassword(ev.getPassword());
-				if(checkLogin()){
+				if(checkLogin(ev.getUsername(), ev.getPassword())){
 					// if login was successful setting MainFrame visible
 					mainFrame.setVisible(true);
 					mainFrame.getLoginDialog().setVisible(false);
-					mainFrame.getStatusPanel().setCurrentUser(LoginData.INSTANCE.getShortName());
+					mainFrame.getStatusPanel().setCurrentUser(LoginData.getInstance().getShortName());
                     //post login requests to DB
                     //setting to FinancePanel departments data relative to login person
-                    getDepRequest(LoginData.INSTANCE.getInstId());
+                    getDepRequest(LoginData.getInstance().getInstId());
                     mainFrame.getFinancePanel().setDepartmentBoxData(Database.DEPARTMENTS.getList());
-				} else if (!checkLogin()){
+				} else if (!checkLogin(ev.getUsername(), ev.getPassword())){
 					// if login wasn't successful showing error dialog
 					JOptionPane.showMessageDialog(mainFrame, 
-							"Введені дані не розпізнані.\nПеревірте коректність введених даних.", "Помилка входу",
+							Labels.getProperty("wrongCredentialsPlsCheck"), Labels.getProperty("loginError"),
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}
@@ -425,12 +417,12 @@ public class Controller {
 
 	//general methods for loging modifications in DB entries
 	private <T extends AbstractModel> void setCreated(T model){
-		model.setCreatedBy(LoginData.INSTANCE.getEmpId());
+		model.setCreatedBy(LoginData.getInstance().getEmpId());
 		model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 	}
 
 	private <T extends AbstractModel> void setModified(T model){
-		model.setModifiedBy(LoginData.INSTANCE.getEmpId());
+		model.setModifiedBy(LoginData.getInstance().getEmpId());
 		model.setModifiedDate(new Timestamp(System.currentTimeMillis()));
 	}
 
@@ -543,9 +535,9 @@ public class Controller {
     }
 	
 	// check user login and pass
-	private boolean checkLogin() {
+	private boolean checkLogin(String username, String password) {
 		try {
-			return Database.EMPLOYEES.checkLogin(LoginData.INSTANCE);
+			return Database.EMPLOYEES.checkLogin(username, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -809,7 +801,6 @@ public class Controller {
 	private void close(){
 		Database.DB.disconnect();
 		mainFrame.dispose();
-		System.gc();
 	}
 	
 	//but it calls only in this close() method (except close in login dialog)

@@ -12,8 +12,8 @@ import java.util.List;
 public class FinanceQueries implements SQLQueries<FinanceModel> {
 
     private List<FinanceModel> financeModelList;
-    private final String id = "order_id";
-    private final String table = "finance";
+    private static final String id = "order_id";
+    private static final String table = "finance";
 
     public FinanceQueries(){
         financeModelList = new LinkedList<>();

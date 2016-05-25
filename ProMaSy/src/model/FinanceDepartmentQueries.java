@@ -12,8 +12,8 @@ import java.util.List;
 public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentModel> {
 
     private List<FinanceDepartmentModel> financeDepartmentModelList;
-    private final String id = "order_id";
-    private final String table = "finance_dep";
+    private static final String id = "order_id";
+    private static final String table = "finance_dep";
 
     public FinanceDepartmentQueries(){
         financeDepartmentModelList = new LinkedList<>();

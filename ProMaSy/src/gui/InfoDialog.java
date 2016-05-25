@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,19 +14,17 @@ import javax.swing.JTextPane;
 import javax.swing.border.Border;
 
 public class InfoDialog extends JDialog {
-	private JTextPane infoPane;
-	private JButton okButton;
 
-	public InfoDialog(JFrame parent) {
+    public InfoDialog(JFrame parent) {
 		super(parent, Labels.getProperty("aboutSoftware"), false);
 		setSize(300, 200);
 		setLocationRelativeTo(parent);
 
-		infoPane = new JTextPane();
+        JTextPane infoPane = new JTextPane();
 		infoPane.setEditable(false);
 		infoPane.setText(Labels.getProperty("infoPaneText"));
 
-		okButton = new JButton(Labels.getProperty("okBtn"));
+        JButton okButton = new JButton(Labels.getProperty("okBtn"));
 		okButton.addActionListener(e -> setVisible(false));
 
 		JPanel infoPanel = new JPanel();

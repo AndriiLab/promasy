@@ -12,8 +12,8 @@ import java.util.List;
 public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	
 	private List<AmountUnitsModel> amUnitList;
-	private final String id = "am_unit_id";
-	private final String table = "amountunits";
+	private static final String id = "am_unit_id";
+	private static final String table = "amountunits";
 	
 	public AmountUnitsQueries() {
 		amUnitList = new LinkedList<>();
@@ -44,9 +44,9 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 			Timestamp modifiedDate = results.getTimestamp("modified_date");
 			boolean active = results.getBoolean("active");
 			
-			AmountUnitsModel amUnintsModel = new AmountUnitsModel(amUnitId, amUnitDesc, 
+			AmountUnitsModel amUnitsModel = new AmountUnitsModel(amUnitId, amUnitDesc,
 					createdBy, createdDate, modifiedBy, modifiedDate, active);
-			amUnitList.add(amUnintsModel);
+			amUnitList.add(amUnitsModel);
 		}
 		results.close();
 		selectStmt.close();

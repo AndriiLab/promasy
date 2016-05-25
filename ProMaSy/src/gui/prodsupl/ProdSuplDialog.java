@@ -207,14 +207,12 @@ public class ProdSuplDialog extends JDialog implements ActionListener {
         this.listener = listener;
     }
 
-    public boolean isSuplDataValid() {
+    private boolean isSuplDataValid() {
         newSuplTel = telField.getText();
-        if (newSuplName != null
+        return newSuplName != null
                 && !newSuplName.equals("")
                 && newSuplTel != null
-                && !newSuplTel.equals("")) {
-            return true;
-        } else return false;
+                && !newSuplTel.equals("");
     }
 
     @Override

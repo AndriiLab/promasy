@@ -12,8 +12,8 @@ import java.util.List;
 public class InstituteQueries implements SQLQueries<InstituteModel>{
 	
 	private List<InstituteModel> instList;
-	private final String id = "inst_id";
-	private final String table = "institute";
+	private static final String id = "inst_id";
+	private static final String table = "institute";
 	
 	
 	public InstituteQueries() {

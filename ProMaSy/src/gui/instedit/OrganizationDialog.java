@@ -24,7 +24,6 @@ import gui.Labels;
 import gui.Utils;
 import model.DepartmentModel;
 import model.InstituteModel;
-import model.LoginData;
 import model.SubdepartmentModel;
 
 public class OrganizationDialog extends JDialog implements ActionListener {

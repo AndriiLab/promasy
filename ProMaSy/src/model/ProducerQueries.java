@@ -11,8 +11,8 @@ import java.util.List;
 public class ProducerQueries implements SQLQueries<ProducerModel> {
 
     private List<ProducerModel> prodList;
-    private final String id = "brand_id";
-    private final String table = "producers";
+    private static final String id = "brand_id";
+    private static final String table = "producers";
 
     public ProducerQueries() {
         prodList = new LinkedList<>();

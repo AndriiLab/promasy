@@ -11,8 +11,8 @@ import java.util.List;
 public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 	
 	private List<SubdepartmentModel> subdepList;
-	private final String id = "subdep_id";
-	private final String table = "subdepartments";
+	private static final String id = "subdep_id";
+	private static final String table = "subdepartments";
 	
 	public SubdepartmentQueries() {
 		subdepList = new LinkedList<>();

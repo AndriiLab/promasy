@@ -11,8 +11,8 @@ import java.util.List;
 public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	
 	private List<EmployeeModel> empList;
-	private final String id = "emp_id";
-	private final String table = "employees";
+	private static final String id = "emp_id";
+	private static final String table = "employees";
 	
 	public EmployeeQueries() {
 		empList = new LinkedList<>();
@@ -147,7 +147,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 		prepStmt.close();
 	}
 	
-	public boolean checkLogin(LoginData logindata) throws SQLException{
+	public boolean checkLogin(String username, String password) throws SQLException{
 		
 		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
 				"departments.inst_id, employees.dep_id, employees.subdep_id, employees.roles_id, employees.login, " +
@@ -157,22 +157,11 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
                 "INNER JOIN departments ON employees.dep_id = departments.dep_id " +
                 "WHERE employees.login = ? AND employees.password = ? AND employees.active = true";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
-		prepStmt.setString(1, logindata.getLogin());
-		prepStmt.setString(2, logindata.getPassword());
+		prepStmt.setString(1, username);
+		prepStmt.setString(2, password);
 		ResultSet results = prepStmt.executeQuery();
 		if (results.next()) {
-			logindata.setEmpId(results.getLong("emp_id"));
-			logindata.setEmpFName(results.getString("emp_fname"));
-			logindata.setEmpMName(results.getString("emp_mname"));
-			logindata.setEmpLName(results.getString("emp_lname"));
-            logindata.setInstId(results.getLong("inst_id"));
-			logindata.setDepId(results.getLong("dep_id"));
-			logindata.setSubdepId(results.getLong("subdep_id"));
-			logindata.setRoleId(results.getLong("roles_id"));
-			logindata.setCreatedBy(results.getLong("created_by"));
-			logindata.setCreatedDate(results.getTimestamp("created_date"));
-			logindata.setModifiedBy(results.getLong("modified_by"));
-			logindata.setModifiedDate(results.getTimestamp("modified_date"));
+			LoginData.getInstance(results.getLong("emp_id"), results.getString("emp_fname"), results.getString("emp_mname"), results.getString("emp_lname"), results.getLong("inst_id"), results.getLong("dep_id"), results.getLong("subdep_id"), results.getLong("roles_id"), username, password, results.getLong("created_by"),results.getTimestamp("created_date"),results.getLong("modified_by"), results.getTimestamp("modified_date"));
 			results.close();
 			prepStmt.close();
 			return true;

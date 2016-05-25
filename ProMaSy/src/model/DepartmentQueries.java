@@ -11,8 +11,8 @@ import java.util.List;
 public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 	
 	private List<DepartmentModel> depList;
-	private final String id = "dep_id";
-	private final String table = "departments";
+	private static final String id = "dep_id";
+	private static final String table = "departments";
 	
 	public DepartmentQueries() {
 		depList = new LinkedList<>();

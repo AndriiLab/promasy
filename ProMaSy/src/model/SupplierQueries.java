@@ -11,8 +11,8 @@ import java.util.List;
 public class SupplierQueries implements SQLQueries<SupplierModel> {
 
     private List<SupplierModel> suplList;
-    private final String id = "supplier_id";
-    private final String table = "suppliers";
+    private static final String id = "supplier_id";
+    private static final String table = "suppliers";
 
     public SupplierQueries() {
         suplList = new LinkedList<>();

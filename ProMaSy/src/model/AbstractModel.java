@@ -39,8 +39,8 @@ public abstract class AbstractModel {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Timestamp crearedDate) {
-		this.createdDate = crearedDate;
+	public void setCreatedDate(Timestamp createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	public long getModifiedBy() {

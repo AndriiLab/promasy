@@ -1,6 +1,5 @@
 package gui.finance;
 
-import model.DepartmentModel;
 import model.FinanceDepartmentModel;
 import model.FinanceModel;
 

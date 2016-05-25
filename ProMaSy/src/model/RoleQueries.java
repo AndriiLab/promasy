@@ -11,8 +11,8 @@ import java.util.List;
 public class RoleQueries implements SQLQueries<RoleModel>{
 	
 	private List<RoleModel> rolesList;
-	private final String id = "roles_id";
-	private final String table = "roles";
+	private static final String id = "roles_id";
+	private static final String table = "roles";
 	
 	public RoleQueries()  {
 		rolesList = new LinkedList<>();

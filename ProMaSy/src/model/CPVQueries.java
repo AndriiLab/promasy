@@ -11,8 +11,8 @@ import java.util.List;
 public class CPVQueries implements SQLQueries<CPVModel> {
 	
 	private List<CPVModel> cpvList;
-	private final String id = "cpv_code";
-	private final String table = "cpv";
+	private static final String id = "cpv_code";
+	private static final String table = "cpv";
 	
 	public CPVQueries() {
 		cpvList = new LinkedList<>();
