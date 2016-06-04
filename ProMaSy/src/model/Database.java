@@ -13,4 +13,5 @@ public class Database {
     public static final SupplierQueries SUPPLIERS = new SupplierQueries();
     public static final FinanceQueries FINANCES = new FinanceQueries();
     public static final FinanceDepartmentQueries DEPARTMENT_FINANCES = new FinanceDepartmentQueries();
+    public static final BidsQueries BIDS =  new BidsQueries();
 }

@@ -53,29 +53,22 @@ public class BidsQueries implements SQLQueries<BidModel>{
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         ResultSet results = prepStmt.executeQuery();
 
-        while (results.next()) {
-            long bidId = results.getLong("bid_id");
-            long empId = results.getLong("emp_id");
-            long brandId = results.getLong("brand_id");
-            String catNum = results.getString("cat_num");
-            String bidDesc = results.getString("bid_desc");
-            String cpvCode = results.getString("cpv_code");
-            BigDecimal onePrice = results.getBigDecimal("one_price");
-            int amount = results.getInt("amount");
-            long amUnitId = results.getLong("am_unit_id");
-            long orderId = results.getLong("order_id");
-            long supplierId = results.getLong("supplier_id");
-            boolean received = results.getBoolean("received");
-            Timestamp dateReceived = results.getTimestamp("date_received");
-            long createdBy = results.getLong("created_by");
-            Timestamp createdDate = results.getTimestamp("created_date");
-            long modifiedBy = results.getLong("modified_by");
-            Timestamp modifiedDate = results.getTimestamp("modified_date");
-            boolean active = results.getBoolean("active");
+        getResults(results);
 
-            BidModel model = new BidModel(createdBy, createdDate, modifiedBy, modifiedDate, active, bidId, empId, brandId, catNum, bidDesc, cpvCode, onePrice, amount, amUnitId, orderId, supplierId, received, dateReceived);
-            bidsList.add(model);
-        }
+        results.close();
+        prepStmt.close();
+    }
+
+    public void retrieve(long departmentId, long orderId) throws SQLException {
+        bidsList.clear();
+        String query = "SELECT bids.bid_id, bids.emp_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date FROM bids INNER JOIN employees ON employees.emp_id = bids.emp_id WHERE bids.active = TRUE AND bids.order_id = ? AND employees.dep_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, orderId);
+        prepStmt.setLong(2, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+
+        getResults(results);
+
         results.close();
         prepStmt.close();
     }
@@ -128,4 +121,31 @@ public class BidsQueries implements SQLQueries<BidModel>{
     public LastChangesModel getChangedModel() throws SQLException {
         return getChanged(table, id);
     }
+
+    private void getResults(ResultSet results) throws SQLException {
+        while (results.next()) {
+            long bidId = results.getLong("bid_id");
+            long empId = results.getLong("emp_id");
+            long brandId = results.getLong("brand_id");
+            String catNum = results.getString("cat_num");
+            String bidDesc = results.getString("bid_desc");
+            String cpvCode = results.getString("cpv_code");
+            BigDecimal onePrice = results.getBigDecimal("one_price");
+            int amount = results.getInt("amount");
+            long amUnitId = results.getLong("am_unit_id");
+            long orderId = results.getLong("order_id");
+            long supplierId = results.getLong("supplier_id");
+            boolean received = results.getBoolean("received");
+            Timestamp dateReceived = results.getTimestamp("date_received");
+            long createdBy = results.getLong("created_by");
+            Timestamp createdDate = results.getTimestamp("created_date");
+            long modifiedBy = results.getLong("modified_by");
+            Timestamp modifiedDate = results.getTimestamp("modified_date");
+            boolean active = results.getBoolean("active");
+
+            BidModel model = new BidModel(createdBy, createdDate, modifiedBy, modifiedDate, active, bidId, empId, brandId, catNum, bidDesc, cpvCode, onePrice, amount, amUnitId, orderId, supplierId, received, dateReceived);
+            bidsList.add(model);
+        }
+    }
+
 }

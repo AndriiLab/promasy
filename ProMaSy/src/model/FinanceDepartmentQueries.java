@@ -38,12 +38,13 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
     @Override
     public void retrieve() throws SQLException {
         financeDepartmentModelList.clear();
-        String query = "SELECT finance_dep.order_id, finance_dep.dep_id, departments.dep_name, " +
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
                     "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                     "finance_dep.order_amount, finance_dep.created_by, " +
                     "finance_dep.created_date, finance_dep.modified_by, " +
                     "finance_dep.modified_date, finance_dep.active " +
                 "FROM finance_dep " +
+                "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
                 "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
                 "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.active = TRUE";
         Statement selectStmt = Database.DB.getConnection().createStatement();
@@ -55,19 +56,42 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
         selectStmt.close();
     }
 
-    public void retrieve(long orderID) throws SQLException {
+    public void retrieveByOrderID(long orderID) throws SQLException {
         financeDepartmentModelList.clear();
-        String query = "SELECT finance_dep.order_id, finance_dep.dep_id, departments.dep_name, " +
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
                 "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                 "finance_dep.order_amount, finance_dep.created_by, " +
                 "finance_dep.created_date, finance_dep.modified_by, " +
                 "finance_dep.modified_date, finance_dep.active " +
                 "FROM finance_dep " +
+                "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
                 "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
                 "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.order_id = ? " +
                 "AND finance_dep.active = TRUE";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, orderID);
+        ResultSet results = prepStmt.executeQuery();
+
+        getResults (results);
+
+        results.close();
+        prepStmt.close();
+    }
+
+    public void retrieveByDepartmentID(long departmentId) throws SQLException {
+        financeDepartmentModelList.clear();
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
+                "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
+                "finance_dep.order_amount, finance_dep.created_by, " +
+                "finance_dep.created_date, finance_dep.modified_by, " +
+                "finance_dep.modified_date, finance_dep.active " +
+                "FROM finance_dep " +
+                "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
+                "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
+                "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.dep_id = ? " +
+                "AND finance_dep.active = TRUE";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
         ResultSet results = prepStmt.executeQuery();
 
         getResults (results);
@@ -130,6 +154,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
             Timestamp modifiedDate = results.getTimestamp("modified_date");
             boolean active = results.getBoolean("active");
             long orderId = results.getLong("order_id");
+            String orderName =  results.getString("order_name");
             long depId = results.getLong("dep_id");
             String depName = results.getString("dep_name");
             long empId = results.getLong("emp_id");
@@ -141,7 +166,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
 //            TODO
 //            BigDecimal leftAmount = results.getBigDecimal("");
 
-            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, depId, depName, empId, empName, totalAmount, null);
+            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, null);
             financeDepartmentModelList.add(financeDepartmentModel);
         }
     }

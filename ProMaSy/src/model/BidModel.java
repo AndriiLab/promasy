@@ -39,6 +39,10 @@ public class BidModel extends AbstractModel{
         this.dateReceived = dateReceived;
     }
 
+    public BidModel() {
+
+    }
+
     public long getBidId() {
         return bidId;
     }

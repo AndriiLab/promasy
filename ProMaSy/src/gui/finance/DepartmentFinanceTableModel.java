@@ -15,7 +15,8 @@ public class DepartmentFinanceTableModel extends AbstractTableModel {
     private String[] colNames = {Labels.getProperty("department"),
             Labels.getProperty("manager"),
             Labels.getProperty("financeAmount"),
-            Labels.getProperty("financeLeft")
+            Labels.getProperty("financeLeft"),
+            "model"
     };
 
     public DepartmentFinanceTableModel(){
@@ -37,7 +38,7 @@ public class DepartmentFinanceTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -45,13 +46,15 @@ public class DepartmentFinanceTableModel extends AbstractTableModel {
         FinanceDepartmentModel model = db.get(rowIndex);
         switch (columnIndex){
             case 0:
-                return model;
+                return model.getDepName();
             case 1:
                 return model.getEmpName();
             case 2:
                 return model.getTotalAmount();
             case 3:
                 return model.getLeftAmount();
+            case 4:
+                return model;
         }
         return null;
     }

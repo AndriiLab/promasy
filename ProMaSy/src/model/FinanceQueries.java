@@ -66,6 +66,7 @@ public class FinanceQueries implements SQLQueries<FinanceModel> {
         selectStmt.close();
     }
 
+
     @Override
     public void update(FinanceModel object) throws SQLException {
         String query = "UPDATE finance\n" +
@@ -112,4 +113,5 @@ public class FinanceQueries implements SQLQueries<FinanceModel> {
     public LastChangesModel getChangedModel() throws SQLException {
         return getChanged(table, id);
     }
+
 }

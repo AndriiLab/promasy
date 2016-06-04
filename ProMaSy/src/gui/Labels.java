@@ -13,4 +13,13 @@ public class Labels {
         return LABELS.getString(key);
     }
 
+    public static String withColon(final String key) {
+        return getProperty(key) + ": ";
+    }
+
+    public static String withSpaceBefore(final String key) {
+        return " "+getProperty(key);
+    }
 }
+
+

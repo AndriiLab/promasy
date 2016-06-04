@@ -16,165 +16,197 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
 import gui.amunits.AmUnitsDialog;
+import gui.bids.BidsListPanel;
 import gui.conset.ConSetDialog;
+import gui.cpv.CpvDialog;
 import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.EditEmployeeDialog;
 import gui.finance.FinancePanel;
 import gui.instedit.OrganizationDialog;
 import gui.login.LoginDialog;
-import gui.cpv.CpvPanel;
-import gui.prodsupl.ProdSuplDialog;
+import gui.prodsupl.ProducerDialog;
+import gui.prodsupl.SupplierDialog;
 
 public class MainFrame extends JFrame {
 
-	private LoginDialog loginDialog;
-	private Toolbar toolbar;
-	private ConSetDialog conSettDialog;
-	private OrganizationDialog editOrgDialog;
-	private EditEmployeeDialog editEmpDialog;
-	private CreateEmployeeDialog addEmpDialog;
-	private InfoDialog infoDialog;
-	private CpvPanel cpvPanel;
-	private JTabbedPane tabPane;
-	private StatusPanel statusPanel;
-	private JMenuItem exitItem;
-	private AmUnitsDialog amUnitsDialog;
-	private ProdSuplDialog prodSuplDialog;
-	private FinancePanel financePanel;
+    private LoginDialog loginDialog;
+    private Toolbar toolbar;
+    private ConSetDialog conSettDialog;
+    private OrganizationDialog editOrgDialog;
+    private EditEmployeeDialog editEmpDialog;
+    private CreateEmployeeDialog addEmpDialog;
+    private InfoDialog infoDialog;
+    private CpvDialog cpvDialog;
+    private JTabbedPane tabPane;
+    private StatusPanel statusPanel;
+    private JMenuItem exitItem;
+    private AmUnitsDialog amUnitsDialog;
+    private ProducerDialog producerDialog;
+    private SupplierDialog supplierDialog;
+    private FinancePanel financePanel;
+    private BidsListPanel bidsListPanel;
 
     public MainFrame() {
         // Setting name of the window and its parameters
-		super(Labels.getProperty("mainFrameSuper"));
-		setSize(1000, 700);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        super(Labels.getProperty("mainFrameSuper"));
+        setSize(1000, 700);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		// set location relative to the screen center
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        // set location relative to the screen center
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
-		//initializing variables
-		loginDialog = new LoginDialog(this);
-		toolbar = new Toolbar();
-		conSettDialog = new ConSetDialog(this);
-		editOrgDialog = new OrganizationDialog(this);
-		editEmpDialog = new EditEmployeeDialog(this);
-		addEmpDialog = new CreateEmployeeDialog(this);
-		amUnitsDialog = new AmUnitsDialog(this);
-		prodSuplDialog = new ProdSuplDialog(this);
-		infoDialog = new InfoDialog(this);
-		statusPanel = new StatusPanel(this);
-		cpvPanel = new CpvPanel();
+        //initializing variables
+        loginDialog = new LoginDialog(this);
+        toolbar = new Toolbar();
+        conSettDialog = new ConSetDialog(this);
+        editOrgDialog = new OrganizationDialog(this);
+        editEmpDialog = new EditEmployeeDialog(this);
+        addEmpDialog = new CreateEmployeeDialog(this);
+        amUnitsDialog = new AmUnitsDialog(this);
+        producerDialog = new ProducerDialog(this);
+        supplierDialog = new SupplierDialog(this);
+        infoDialog = new InfoDialog(this);
+        statusPanel = new StatusPanel(this);
+        cpvDialog = new CpvDialog(this);
         financePanel = new FinancePanel(this);
-		tabPane = new JTabbedPane();
+        tabPane = new JTabbedPane();
+        bidsListPanel = new BidsListPanel(this);
 
+        tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
-		tabPane.addTab(Labels.getProperty("cpvPanelTab"), cpvPanel);
 
-		// creating Menubar
-		setJMenuBar(createMenuBar());
+        // creating Menubar
+        setJMenuBar(createMenuBar());
 
-		// setting layout and formating frames on mainframe
-		setLayout(new BorderLayout());
-		add(toolbar, BorderLayout.PAGE_START);
-		add(tabPane, BorderLayout.CENTER);
-		add(statusPanel, BorderLayout.SOUTH);
-	}
+        // setting layout and formating frames on mainframe
+        setLayout(new BorderLayout());
+        add(toolbar, BorderLayout.PAGE_START);
+        add(tabPane, BorderLayout.CENTER);
+        add(statusPanel, BorderLayout.SOUTH);
+    }
 
 
     /*
-         * This method generates menubar
-         */
-	private JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
+     * This method generates menubar
+     */
+    private JMenuBar createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
 
-		JMenu fileMenu = new JMenu(Labels.getProperty("file"));
-		JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
-		exitItem = new JMenuItem(Labels.getProperty("exit"));
-		fileMenu.add(printItem);
-		fileMenu.addSeparator();
-		fileMenu.add(exitItem);
+        JMenu fileMenu = new JMenu(Labels.getProperty("file"));
+        JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
+        exitItem = new JMenuItem(Labels.getProperty("exit"));
+        fileMenu.add(printItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
 
-		JMenu editMenu = new JMenu(Labels.getProperty("edit"));
-		JMenuItem editOrgItem = new JMenuItem(Labels.getProperty("editOrganizationsDepartmnets"));
-		JMenuItem editEmpItem = new JMenuItem(Labels.getProperty("editEmployees"));
-		JMenuItem addEmpItem = new JMenuItem(Labels.getProperty("addEmployees"));
-		JMenuItem editAmUnitsItem = new JMenuItem(Labels.getProperty("amUnitsDialogSuper")+"...");
-        JMenuItem editProdSuplItem = new JMenuItem(Labels.getProperty("prodSuplDialogSuper")+"...");
-		editMenu.add(editOrgItem);
-		editMenu.add(editEmpItem);
-		editMenu.add(addEmpItem);
+        JMenu editMenu = new JMenu(Labels.getProperty("edit"));
+        JMenuItem editOrgItem = new JMenuItem(Labels.getProperty("editOrganizationsDepartmnets"));
+        JMenuItem editEmpItem = new JMenuItem(Labels.getProperty("editEmployees"));
+        JMenuItem addEmpItem = new JMenuItem(Labels.getProperty("addEmployees"));
+        JMenuItem editAmUnitsItem = new JMenuItem(Labels.getProperty("amUnitsDialogSuper") + "...");
+        JMenuItem editProdItem = new JMenuItem(Labels.getProperty("prodDialogSuper") + "...");
+        JMenuItem editSuplItem = new JMenuItem(Labels.getProperty("suplDialogSuper") + "...");
+        editMenu.add(editOrgItem);
+        editMenu.add(editEmpItem);
+        editMenu.add(addEmpItem);
         editMenu.add(editAmUnitsItem);
-        editMenu.add(editProdSuplItem);
+        editMenu.add(editProdItem);
+        editMenu.add(editSuplItem);
 
-		JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-		JMenuItem conSettItem = new JMenuItem(Labels.getProperty("ConnectionWithDBSettings")+"...");
-		settingsMenu.add(conSettItem);
+        JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
+        JMenuItem conSettItem = new JMenuItem(Labels.getProperty("ConnectionWithDBSettings") + "...");
+        settingsMenu.add(conSettItem);
 
-		JMenu helpMenu = new JMenu(Labels.getProperty("help"));
-		JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware")+"...");
-		helpMenu.add(infoItem);
+        JMenu helpMenu = new JMenu(Labels.getProperty("help"));
+        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware") + "...");
+        helpMenu.add(infoItem);
 
-		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
-		menuBar.add(settingsMenu);
-		menuBar.add(helpMenu);
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+        menuBar.add(settingsMenu);
+        menuBar.add(helpMenu);
 
-		editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
+        editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
 
-		editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
+        editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
 
-		addEmpItem.addActionListener(e -> addEmpDialog.setVisible(true));
+        addEmpItem.addActionListener(e -> addEmpDialog.setVisible(true));
 
         editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
 
-        editProdSuplItem.addActionListener(e -> prodSuplDialog.setVisible(true));
+        editProdItem.addActionListener(e -> producerDialog.setVisible(true));
 
-		conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
+        editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
 
-		infoItem.addActionListener(e -> infoDialog.setVisible(true));
+        conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
 
-		return menuBar;
-	}
-	public LoginDialog getLoginDialog() {
-		return loginDialog;
-	}
-	public StatusPanel getStatusPanel() {
-		return statusPanel;
-	}
-	public ConSetDialog getConSettDialog() {
-		return conSettDialog;
-	}
-	public OrganizationDialog getEditOrgDialog() {
-		return editOrgDialog;
-	}
-	public EditEmployeeDialog getEditEmpDialog() {
-		return editEmpDialog;
-	}
-	public CreateEmployeeDialog getAddEmpDialog() {
-		return addEmpDialog;
-	}
-	public CpvPanel getCpvPanel() {
-		return cpvPanel;
-	}
-	public Toolbar getToolbar() {
-		return toolbar;
-	}
-	public InfoDialog getInfoDialog() {
-		return infoDialog;
-	}
-	public JTabbedPane getTabPane() {
-		return tabPane;
-	}
-	public JMenuItem getExitItem() {
-		return exitItem;
-	}
+        infoItem.addActionListener(e -> infoDialog.setVisible(true));
+
+        return menuBar;
+    }
+
+    public LoginDialog getLoginDialog() {
+        return loginDialog;
+    }
+
+    public StatusPanel getStatusPanel() {
+        return statusPanel;
+    }
+
+    public ConSetDialog getConSettDialog() {
+        return conSettDialog;
+    }
+
+    public OrganizationDialog getEditOrgDialog() {
+        return editOrgDialog;
+    }
+
+    public EditEmployeeDialog getEditEmpDialog() {
+        return editEmpDialog;
+    }
+
+    public CreateEmployeeDialog getAddEmpDialog() {
+        return addEmpDialog;
+    }
+
+    public CpvDialog getCpvDialog() {
+        return cpvDialog;
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    public InfoDialog getInfoDialog() {
+        return infoDialog;
+    }
+
+    public JTabbedPane getTabPane() {
+        return tabPane;
+    }
+
+    public JMenuItem getExitItem() {
+        return exitItem;
+    }
+
     public AmUnitsDialog getAmUnitsDialog() {
         return amUnitsDialog;
     }
-    public ProdSuplDialog getProdSuplDialog() {
-        return prodSuplDialog;
-    }
+
     public FinancePanel getFinancePanel() {
         return financePanel;
+    }
+
+    public BidsListPanel getBidsListPanel() {
+        return bidsListPanel;
+    }
+
+    public ProducerDialog getProducerDialog() {
+        return producerDialog;
+    }
+
+    public SupplierDialog getSupplierDialog() {
+        return supplierDialog;
     }
 }

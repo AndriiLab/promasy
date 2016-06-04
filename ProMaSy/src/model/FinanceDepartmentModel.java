@@ -8,6 +8,7 @@ import java.sql.Timestamp;
  */
 public class FinanceDepartmentModel extends AbstractModel {
     private long orderId;
+    private String orderName;
     private long depId;
     private String depName;
     private long empId;
@@ -15,9 +16,10 @@ public class FinanceDepartmentModel extends AbstractModel {
     private BigDecimal totalAmount;
     private BigDecimal leftAmount;
 
-    public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
+    public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderName, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
         super(createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderId = orderId;
+        this.orderName = orderName;
         this.depId = depId;
         this.depName = depName;
         this.empId = empId;
@@ -93,8 +95,16 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.leftAmount = leftAmount;
     }
 
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
     @Override
     public String toString() {
-        return depName;
+        return orderName;
     }
 }

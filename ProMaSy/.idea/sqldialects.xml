@@ -2,6 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/model/AmountUnitsQueries.java" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/model/BidsQueries.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/model/CPVQueries.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/model/DepartmentQueries.java" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/model/EmployeeQueries.java" dialect="PostgreSQL" />

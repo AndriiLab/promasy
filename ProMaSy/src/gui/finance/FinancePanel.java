@@ -164,6 +164,7 @@ public class FinancePanel extends JPanel {
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
         depFinanceTable = new JTable(departmentFinanceTableModel);
         depFinanceTable.getColumnModel().getColumn(0).setMinWidth(230);
+        depFinanceTable.getColumnModel().removeColumn(depFinanceTable.getColumnModel().getColumn(4));
         depFinanceTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent ev) {
@@ -171,7 +172,7 @@ public class FinancePanel extends JPanel {
                 depFinanceTable.getSelectionModel().setSelectionInterval(row, row);
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
-                    selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getValueAt(row, 0);
+                    selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 4);
                     if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                         Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepName());
                         Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getEmpName());
@@ -373,6 +374,7 @@ public class FinancePanel extends JPanel {
 
         JPanel addOrderPanel = new JPanel();
         addOrderPanel.setLayout(new GridBagLayout());
+        addOrderPanel.setBorder(BorderFactory.createEtchedBorder());
 
         JPanel addOrderButtonPanel = new JPanel();
         addOrderButtonPanel.setLayout(new FlowLayout());
@@ -448,6 +450,7 @@ public class FinancePanel extends JPanel {
 
         JPanel addDepOrderPanel = new JPanel();
         addDepOrderPanel.setLayout(new GridBagLayout());
+        addDepOrderPanel.setBorder(BorderFactory.createEtchedBorder());
 
         JPanel addDepOrderButtonPanel = new JPanel();
         addDepOrderButtonPanel.setLayout(new FlowLayout());
