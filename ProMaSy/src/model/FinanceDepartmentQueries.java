@@ -2,21 +2,15 @@ package model;
 
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by laban on 05.05.2016.
  */
-public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentModel> {
-
-    private List<FinanceDepartmentModel> financeDepartmentModelList;
-    private static final String id = "order_id";
-    private static final String table = "finance_dep";
+public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel> {
 
     public FinanceDepartmentQueries(){
-        financeDepartmentModelList = new LinkedList<>();
+        id = "order_id";
+        table = "finance_dep";
     }
 
     @Override
@@ -37,7 +31,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
 
     @Override
     public void retrieve() throws SQLException {
-        financeDepartmentModelList.clear();
+        list.clear();
         String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
                     "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                     "finance_dep.order_amount, finance_dep.created_by, " +
@@ -57,7 +51,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
     }
 
     public void retrieveByOrderID(long orderID) throws SQLException {
-        financeDepartmentModelList.clear();
+        list.clear();
         String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
                 "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                 "finance_dep.order_amount, finance_dep.created_by, " +
@@ -79,7 +73,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
     }
 
     public void retrieveByDepartmentID(long departmentId) throws SQLException {
-        financeDepartmentModelList.clear();
+        list.clear();
         String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
                 "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                 "finance_dep.order_amount, finance_dep.created_by, " +
@@ -131,21 +125,6 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
         prepStmt.close();
     }
 
-    @Override
-    public List<FinanceDepartmentModel> getList() {
-        return Collections.unmodifiableList(financeDepartmentModelList);
-    }
-
-    @Override
-    public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-        return checkChanges(cacheModel, table, id);
-    }
-
-    @Override
-    public LastChangesModel getChangedModel() throws SQLException {
-        return getChanged(table, id);
-    }
-
     private void getResults(ResultSet results) throws SQLException {
         while (results.next()) {
             long createdBy = results.getLong("created_by");
@@ -167,7 +146,7 @@ public class FinanceDepartmentQueries implements SQLQueries<FinanceDepartmentMod
 //            BigDecimal leftAmount = results.getBigDecimal("");
 
             FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, null);
-            financeDepartmentModelList.add(financeDepartmentModel);
+            list.add(financeDepartmentModel);
         }
     }
 

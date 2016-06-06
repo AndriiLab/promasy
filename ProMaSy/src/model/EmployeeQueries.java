@@ -4,18 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class EmployeeQueries implements SQLQueries<EmployeeModel>{
-	
-	private List<EmployeeModel> empList;
-	private static final String id = "emp_id";
-	private static final String table = "employees";
-	
+public class EmployeeQueries extends SQLQueries<EmployeeModel>{
+
 	public EmployeeQueries() {
-		empList = new LinkedList<>();
+		id = "emp_id";
+		table = "employees";
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {
@@ -36,7 +30,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	}
 
 	public void retrieve() throws SQLException {
-		empList.clear();
+		list.clear();
 		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+ 
 				"departments.inst_id, institute.inst_name, "+
 				"employees.dep_id, departments.dep_name, "+
@@ -61,7 +55,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 	}
 
     public void retrieve(long departmentId) throws SQLException {
-        empList.clear();
+        list.clear();
         String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
                 "departments.inst_id, institute.inst_name, "+
                 "employees.dep_id, departments.dep_name, "+
@@ -113,7 +107,7 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
                     instId, instName, depId, depName, subdepId, subdepName, roleId,
                     roleName, login, password, createdBy, createdDate, modifiedBy,
                     modifiedDate, active);
-            empList.add(empModel);
+            list.add(empModel);
         }
     }
 
@@ -169,17 +163,5 @@ public class EmployeeQueries implements SQLQueries<EmployeeModel>{
 		results.close();
 		prepStmt.close();
 		return false;
-	}
-
-	public List<EmployeeModel> getList() {
-		return Collections.unmodifiableList(empList);
-	}
-
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
 	}
 }

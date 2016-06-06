@@ -1,7 +1,5 @@
 package gui.bids;
 
-import model.DepartmentModel;
-
 /**
  * Created by laban on 26.05.2016.
  */

@@ -2,21 +2,15 @@ package model;
 
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by laban on 05.05.2016.
  */
-public class FinanceQueries implements SQLQueries<FinanceModel> {
-
-    private List<FinanceModel> financeModelList;
-    private static final String id = "order_id";
-    private static final String table = "finance";
+public class FinanceQueries extends SQLQueries<FinanceModel> {
 
     public FinanceQueries(){
-        financeModelList = new LinkedList<>();
+        id = "order_id";
+        table = "finance";
     }
 
     @Override
@@ -39,7 +33,7 @@ public class FinanceQueries implements SQLQueries<FinanceModel> {
 
     @Override
     public void retrieve() throws SQLException {
-        financeModelList.clear();
+        list.clear();
         String query = "SELECT order_id, order_number, order_name, order_amount, starts_on, due_to, created_by, created_date, modified_by, modified_date, active FROM finance WHERE active = TRUE";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
@@ -60,7 +54,7 @@ public class FinanceQueries implements SQLQueries<FinanceModel> {
             boolean active = results.getBoolean("active");
 
             FinanceModel financeModel = new FinanceModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderNumber, orderName, totalAmount, null, startDate, endDate);
-            financeModelList.add(financeModel);
+            list.add(financeModel);
         }
         results.close();
         selectStmt.close();
@@ -97,21 +91,6 @@ public class FinanceQueries implements SQLQueries<FinanceModel> {
         prepStmt.setLong(3, object.getOrderId());
         prepStmt.executeUpdate();
         prepStmt.close();
-    }
-
-    @Override
-    public List<FinanceModel> getList() {
-        return Collections.unmodifiableList(financeModelList);
-    }
-
-    @Override
-    public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-        return checkChanges(cacheModel, table, id);
-    }
-
-    @Override
-    public LastChangesModel getChangedModel() throws SQLException {
-        return getChanged(table, id);
     }
 
 }

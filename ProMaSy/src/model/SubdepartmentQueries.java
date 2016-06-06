@@ -4,18 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
-	
-	private List<SubdepartmentModel> subdepList;
-	private static final String id = "subdep_id";
-	private static final String table = "subdepartments";
-	
+public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
+
 	public SubdepartmentQueries() {
-		subdepList = new LinkedList<>();
+		id = "subdep_id";
+		table = "subdepartments";
 	}
 
 	@Override
@@ -37,7 +31,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 	}
 	
 	public void retrieve(long reqDepId) throws SQLException {
-		subdepList.clear();
+		list.clear();
 		
 		String query = "select subdep_id, subdep_name, dep_id, created_by, created_date, modified_by, modified_date, active from subdepartments where dep_id = ? and active = true";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
@@ -56,7 +50,7 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 
 			SubdepartmentModel subdepModel = new SubdepartmentModel(subdepId, subdepName, 
 					depId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-			subdepList.add(subdepModel);
+			list.add(subdepModel);
 		}
 		results.close();
 		prepStmt.close();
@@ -82,17 +76,4 @@ public class SubdepartmentQueries implements SQLQueries<SubdepartmentModel>{
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
-
-	public List<SubdepartmentModel> getList() {
-		return Collections.unmodifiableList(subdepList);
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
-	}
-
 }

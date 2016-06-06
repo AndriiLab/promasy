@@ -4,18 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class DepartmentQueries implements SQLQueries<DepartmentModel>{
-	
-	private List<DepartmentModel> depList;
-	private static final String id = "dep_id";
-	private static final String table = "departments";
-	
+public class DepartmentQueries extends SQLQueries<DepartmentModel>{
+
 	public DepartmentQueries() {
-		depList = new LinkedList<>();
+		id = "dep_id";
+		table = "departments";
 	}
 
 	public void create(DepartmentModel object) throws SQLException {
@@ -36,7 +30,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 	}
 
 	public void retrieve(long reqInstId) throws SQLException {
-		depList.clear();
+		list.clear();
 		String query = "select dep_id, dep_name, inst_id, created_by, created_date, modified_by, modified_date, active from departments where inst_id = ? and active = true";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, reqInstId);
@@ -54,7 +48,7 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 
 			DepartmentModel depModel = new DepartmentModel(depId, depName, instId, createdBy, 
 					createdDate, modifiedBy, modifiedDate, active);
-			depList.add(depModel);
+			list.add(depModel);
 		}
 		results.close();
 		prepStmt.close();
@@ -81,18 +75,6 @@ public class DepartmentQueries implements SQLQueries<DepartmentModel>{
 		prepStmt.executeUpdate();
 		prepStmt.close();
 		
-	}
-
-	public List<DepartmentModel> getList() {
-		return Collections.unmodifiableList(depList);
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
 	}
 
 }

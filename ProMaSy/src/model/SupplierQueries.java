@@ -1,21 +1,15 @@
 package model;
 
 import java.sql.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by laban on 26.04.2016.
  */
-public class SupplierQueries implements SQLQueries<SupplierModel> {
-
-    private List<SupplierModel> suplList;
-    private static final String id = "supplier_id";
-    private static final String table = "suppliers";
+public class SupplierQueries extends SQLQueries<SupplierModel> {
 
     public SupplierQueries() {
-        suplList = new LinkedList<>();
+        id = "supplier_id";
+        table = "suppliers";
     }
 
     @Override
@@ -33,7 +27,7 @@ public class SupplierQueries implements SQLQueries<SupplierModel> {
 
     @Override
     public void retrieve() throws SQLException {
-        suplList.clear();
+        list.clear();
         String query = "SELECT supplier_id, supplier_name, supplier_tel, supplier_comments, created_by, created_date, modified_by, modified_date, active FROM suppliers WHERE active = TRUE";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
@@ -51,7 +45,7 @@ public class SupplierQueries implements SQLQueries<SupplierModel> {
 
             SupplierModel model = new SupplierModel(createdBy, createdDate, modifiedBy, modifiedDate, active,
                     suplId, suplName, suplTel, suplDesc);
-            suplList.add(model);
+            list.add(model);
         }
         results.close();
         selectStmt.close();
@@ -82,20 +76,5 @@ public class SupplierQueries implements SQLQueries<SupplierModel> {
         prepStmt.setLong(4, object.getSupplierId());
         prepStmt.executeUpdate();
         prepStmt.close();
-    }
-
-    @Override
-    public List<SupplierModel> getList() {
-        return Collections.unmodifiableList(suplList);
-    }
-
-    @Override
-    public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-        return checkChanges(cacheModel, table, id);
-    }
-
-    @Override
-    public LastChangesModel getChangedModel() throws SQLException {
-        return getChanged(table, id);
     }
 }

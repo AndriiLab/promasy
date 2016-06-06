@@ -5,23 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by AL on 25.05.2016.
  */
-public class BidsQueries implements SQLQueries<BidModel>{
-
-    private List<BidModel> bidsList;
-    private static final String id = "bid_id";
-    private static final String table = "bids";
+public class BidsQueries extends SQLQueries<BidModel>{
 
     public BidsQueries (){
-        bidsList = new LinkedList<>();
+        id = "bid_id";
+        table = "bids";
     }
-
 
     @Override
     public void create(BidModel object) throws SQLException {
@@ -48,7 +41,7 @@ public class BidsQueries implements SQLQueries<BidModel>{
 
     @Override
     public void retrieve() throws SQLException {
-        bidsList.clear();
+        list.clear();
         String query = "SELECT bid_id, emp_id, brand_id, cat_num, bid_desc, cpv_code, one_price, amount, am_unit_id, order_id, supplier_id, received, date_received, created_by, created_date, modified_by, modified_date FROM bids WHERE active = TRUE";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         ResultSet results = prepStmt.executeQuery();
@@ -60,7 +53,7 @@ public class BidsQueries implements SQLQueries<BidModel>{
     }
 
     public void retrieve(long departmentId, long orderId) throws SQLException {
-        bidsList.clear();
+        list.clear();
         String query = "SELECT bids.bid_id, bids.emp_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date FROM bids INNER JOIN employees ON employees.emp_id = bids.emp_id WHERE bids.active = TRUE AND bids.order_id = ? AND employees.dep_id = ?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, orderId);
@@ -107,21 +100,6 @@ public class BidsQueries implements SQLQueries<BidModel>{
         prepStmt.close();
     }
 
-    @Override
-    public List<BidModel> getList() {
-        return Collections.unmodifiableList(bidsList);
-    }
-
-    @Override
-    public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-        return checkChanges(cacheModel, table, id);
-    }
-
-    @Override
-    public LastChangesModel getChangedModel() throws SQLException {
-        return getChanged(table, id);
-    }
-
     private void getResults(ResultSet results) throws SQLException {
         while (results.next()) {
             long bidId = results.getLong("bid_id");
@@ -144,7 +122,7 @@ public class BidsQueries implements SQLQueries<BidModel>{
             boolean active = results.getBoolean("active");
 
             BidModel model = new BidModel(createdBy, createdDate, modifiedBy, modifiedDate, active, bidId, empId, brandId, catNum, bidDesc, cpvCode, onePrice, amount, amUnitId, orderId, supplierId, received, dateReceived);
-            bidsList.add(model);
+            list.add(model);
         }
     }
 

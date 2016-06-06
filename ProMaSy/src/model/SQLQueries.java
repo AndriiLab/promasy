@@ -4,21 +4,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
-interface SQLQueries<T> {
-	
-	void create(T object) throws SQLException;
+abstract class SQLQueries<T> {
 
-	void retrieve() throws SQLException;
-	
-	void update(T object) throws SQLException;
+    List<T> list = new LinkedList<>();
+    String id;
+    String table;
 
-	void delete(T object) throws SQLException;
-	
-	List<T> getList();
-	
-	default boolean checkChanges(LastChangesModel cacheModel, String table, String id) throws SQLException {
+	abstract void create(T object) throws SQLException;
+    abstract void retrieve() throws SQLException;
+    abstract void update(T object) throws SQLException;
+    abstract void delete(T object) throws SQLException;
+	public List<T> getList() {
+        return Collections.unmodifiableList(list);
+    }
+
+    //TODO implement cache system
+	boolean checkChanges(LastChangesModel cacheModel, String table, String id) throws SQLException {
 		String query = "SELECT MAX(created_date), MAX(modified_date), COUNT(" + id + ") FROM " + table;
 		Statement selectStmt = DBConnector.INSTANCE.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -33,9 +38,11 @@ interface SQLQueries<T> {
 				cacheModel.getNumElements() == numElements;
 	}
 
-	boolean isChanged(LastChangesModel cacheModel) throws SQLException;
-	
-	default LastChangesModel getChanged(String table, String id) throws SQLException{
+    boolean isChanged(LastChangesModel cacheModel) throws SQLException {
+        return checkChanges(cacheModel, table, id);
+    }
+
+    LastChangesModel getChangedModel() throws SQLException{
 		String query = "SELECT MAX(created_date), MAX(modified_date), COUNT(" + id + ") FROM " + table;
 		Statement selectStmt = DBConnector.INSTANCE.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -49,6 +56,4 @@ interface SQLQueries<T> {
 		
 		return model;
 	}
-	
-	LastChangesModel getChangedModel() throws SQLException;
 }

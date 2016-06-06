@@ -4,18 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class CPVQueries implements SQLQueries<CPVModel> {
-	
-	private List<CPVModel> cpvList;
-	private static final String id = "cpv_code";
-	private static final String table = "cpv";
-	
+public class CPVQueries extends SQLQueries<CPVModel> {
+
 	public CPVQueries() {
-		cpvList = new LinkedList<>();
+		id = "cpv_code";
+		table = "cpv";
 	}
 
 	@Override
@@ -31,7 +25,7 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 	}
 	
 	public void retrieve(String request, boolean sameLvlShow) throws SQLException {
-		cpvList.clear();
+		list.clear();
 		
 		PreparedStatement prepStmt = getCPVRequest(request, sameLvlShow);
 		ResultSet results = prepStmt.executeQuery();
@@ -44,7 +38,7 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 			boolean cpvTerminal = results.getBoolean("terminal");
 
 			CPVModel cpvModel = new CPVModel(cpvId, cpvUkr, cpvEng, cpvLevel, cpvTerminal);
-			cpvList.add(cpvModel);
+			list.add(cpvModel);
 		}
 		results.close();
 		prepStmt.close();
@@ -62,10 +56,6 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 	public void delete(CPVModel object) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public List<CPVModel> getList() {
-		return Collections.unmodifiableList(cpvList);
 	}
 
 	private static PreparedStatement getCPVRequest(String requestedCpv, boolean sameLvlShow) throws SQLException{
@@ -148,13 +138,5 @@ public class CPVQueries implements SQLQueries<CPVModel> {
 			prepStmt.setString(1, requestedCpv);
 			return prepStmt;
 		}
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
 	}
 }

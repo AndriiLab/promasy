@@ -7,7 +7,6 @@ import model.SupplierModel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Created by laban on 04.06.2016.

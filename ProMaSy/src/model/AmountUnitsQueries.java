@@ -5,18 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
-	
-	private List<AmountUnitsModel> amUnitList;
-	private static final String id = "am_unit_id";
-	private static final String table = "amountunits";
-	
+public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
+
 	public AmountUnitsQueries() {
-		amUnitList = new LinkedList<>();
+        id = "am_unit_id";
+        table = "amountunits";
 	}
 
 	public void create(AmountUnitsModel object) throws SQLException {
@@ -30,7 +24,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 	}
 
 	public void retrieve() throws SQLException {
-		amUnitList.clear();
+		list.clear();
 		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits WHERE active = TRUE";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -46,7 +40,7 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 			
 			AmountUnitsModel amUnitsModel = new AmountUnitsModel(amUnitId, amUnitDesc,
 					createdBy, createdDate, modifiedBy, modifiedDate, active);
-			amUnitList.add(amUnitsModel);
+			list.add(amUnitsModel);
 		}
 		results.close();
 		selectStmt.close();
@@ -75,17 +69,4 @@ public class AmountUnitsQueries implements SQLQueries<AmountUnitsModel>{
 		prepStmt.close();
 	}
 
-	public List<AmountUnitsModel> getList() {
-		return Collections.unmodifiableList(amUnitList);
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
-	}
-	
-	
 }

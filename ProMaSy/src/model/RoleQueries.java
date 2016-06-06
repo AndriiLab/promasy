@@ -4,18 +4,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class RoleQueries implements SQLQueries<RoleModel>{
-	
-	private List<RoleModel> rolesList;
-	private static final String id = "roles_id";
-	private static final String table = "roles";
-	
+public class RoleQueries extends SQLQueries<RoleModel>{
+
 	public RoleQueries()  {
-		rolesList = new LinkedList<>();
+		id = "roles_id";
+		table = "roles";
 	}
 
 	@Override
@@ -23,10 +17,9 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 		// TODO Auto-generated method stub
 		
 	}
-	
 
 	public void retrieve() throws SQLException {
-		rolesList.clear();
+		list.clear();
 		String query = "select roles_id, roles_name, created_by, created_date, modified_by, modified_date, active from roles where active = true";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -42,7 +35,7 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 
 			RoleModel rolesModel = new RoleModel(rolesId, rolesName, createdBy, 
 					createdDate, modifiedBy, modifiedDate, active);
-			rolesList.add(rolesModel);
+			list.add(rolesModel);
 		}
 		results.close();
 		selectStmt.close();
@@ -59,18 +52,6 @@ public class RoleQueries implements SQLQueries<RoleModel>{
 	public void delete(RoleModel object) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public List<RoleModel> getList() {
-		return Collections.unmodifiableList(rolesList);
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
 	}
 
 }

@@ -5,19 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
-public class InstituteQueries implements SQLQueries<InstituteModel>{
-	
-	private List<InstituteModel> instList;
-	private static final String id = "inst_id";
-	private static final String table = "institute";
-	
+public class InstituteQueries extends SQLQueries<InstituteModel>{
 	
 	public InstituteQueries() {
-		instList = new LinkedList<>();
+		id = "inst_id";
+		table = "institute";
 	}
 
 	public void create(InstituteModel object) throws SQLException {
@@ -31,7 +24,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 	}
 
 	public void retrieve() throws SQLException {
-		instList.clear();
+		list.clear();
 		String query = "select inst_id, inst_name, created_by, created_date, modified_by, modified_date, active from institute where active = true";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
@@ -47,7 +40,7 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 
 			InstituteModel instModel = new InstituteModel(instId, instName, createdBy, createdDate, modifiedBy,
 					modifiedDate, active);
-			instList.add(instModel);
+			list.add(instModel);
 		}
 		results.close();
 		selectStmt.close();
@@ -72,18 +65,6 @@ public class InstituteQueries implements SQLQueries<InstituteModel>{
 		prepStmt.setLong(3, object.getInstId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
-	}
-
-	public List<InstituteModel> getList() {
-		return Collections.unmodifiableList(instList);
-	}
-	
-	public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-		return checkChanges(cacheModel, table, id);
-	}
-
-	public LastChangesModel getChangedModel() throws SQLException {
-		return getChanged(table, id);
 	}
 
 }

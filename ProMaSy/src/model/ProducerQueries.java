@@ -1,21 +1,15 @@
 package model;
 
 import java.sql.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by laban on 26.04.2016.
  */
-public class ProducerQueries implements SQLQueries<ProducerModel> {
-
-    private List<ProducerModel> prodList;
-    private static final String id = "brand_id";
-    private static final String table = "producers";
+public class ProducerQueries extends SQLQueries<ProducerModel> {
 
     public ProducerQueries() {
-        prodList = new LinkedList<>();
+        id = "brand_id";
+        table = "producers";
     }
 
     @Override
@@ -31,7 +25,7 @@ public class ProducerQueries implements SQLQueries<ProducerModel> {
 
     @Override
     public void retrieve() throws SQLException {
-        prodList.clear();
+        list.clear();
         String query = "SELECT brand_id, brand_name, created_by, created_date, modified_by,modified_date, active FROM producers WHERE active = TRUE";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
@@ -46,7 +40,7 @@ public class ProducerQueries implements SQLQueries<ProducerModel> {
             boolean active = results.getBoolean("active");
 
            ProducerModel model = new ProducerModel(createdBy, createdDate, modifiedBy, modifiedDate, active,prodId, prodDesc);
-            prodList.add(model);
+            list.add(model);
         }
         results.close();
         selectStmt.close();
@@ -77,18 +71,4 @@ public class ProducerQueries implements SQLQueries<ProducerModel> {
         prepStmt.close();
     }
 
-    @Override
-    public List<ProducerModel> getList()  {
-        return Collections.unmodifiableList(prodList);
-    }
-
-    @Override
-    public boolean isChanged(LastChangesModel cacheModel) throws SQLException {
-        return checkChanges(cacheModel, table, id);
-    }
-
-    @Override
-    public LastChangesModel getChangedModel() throws SQLException {
-        return getChanged(table, id);
-    }
 }
