@@ -8,7 +8,6 @@ import java.sql.Timestamp;
  * Created by laban on 04.05.2016.
  */
 public class FinanceModel extends AbstractModel {
-    private long orderId;
     private String orderNumber;
     private String orderName;
     private BigDecimal totalAmount;
@@ -17,8 +16,7 @@ public class FinanceModel extends AbstractModel {
     private Date endDate;
 
     public FinanceModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderNumber, String orderName, BigDecimal totalAmount, BigDecimal leftAmount, Date startDate, Date endDate) {
-        super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.orderId = orderId;
+        super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderNumber = orderNumber;
         this.orderName = orderName;
         this.totalAmount = totalAmount;
@@ -37,14 +35,6 @@ public class FinanceModel extends AbstractModel {
 
     public FinanceModel() {
 
-    }
-
-    public long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
     }
 
     public String getOrderNumber() {

@@ -3,12 +3,11 @@ package model;
 import java.sql.Timestamp;
 
 public class SubdepartmentModel extends AbstractModel {
-	private long subdepId;
 	private String subdepName;
 	private long depId;
 	
 	public SubdepartmentModel() {
-		this.subdepName = "";
+
 	}
 	
 	public SubdepartmentModel(String subdepName, long depId) {
@@ -18,18 +17,9 @@ public class SubdepartmentModel extends AbstractModel {
 	
 	public SubdepartmentModel(long subdepId, String subdepName, long depId, long createdBy, Timestamp createdDate,
 			long modifiedBy, Timestamp modifiedDate, boolean active) {
-		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.subdepId = subdepId;
+		super(subdepId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.subdepName = subdepName;
 		this.depId = depId;
-	}
-
-	public long getSubdepId() {
-		return subdepId;
-	}
-
-	public void setSubdepId(long subdepId) {
-		this.subdepId = subdepId;
 	}
 
 	public String getSubdepName() {

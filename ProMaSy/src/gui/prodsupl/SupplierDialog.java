@@ -28,7 +28,7 @@ public class SupplierDialog extends JDialog {
 
     public SupplierDialog(JFrame parent) {
         super(parent, Labels.getProperty("suplDialogSuper"), false);
-        setSize(280, 250);
+        setSize(350, 250);
         setLocationRelativeTo(parent);
 
         Dimension buttonDim = new Dimension(25, 25);
@@ -176,6 +176,11 @@ public class SupplierDialog extends JDialog {
         gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        supplPanel.add(new JLabel(Labels.withColon("name")), gc);
+
+        gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         supplPanel.add(suplBox, gc);
@@ -196,14 +201,28 @@ public class SupplierDialog extends JDialog {
         supplPanel.add(deleteSupl, gc);
 
         ///////Next row///////////
-        gc.gridx = 0;
         gc.gridy++;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        supplPanel.add(new JLabel(Labels.withColon("phone")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         supplPanel.add(telField, gc);
 
         ///////Next row///////////
-        gc.gridx = 0;
         gc.gridy++;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.NORTHEAST;
+        gc.insets = smallPadding;
+        supplPanel.add(new JLabel(Labels.withColon("contacts")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         supplPanel.add(new JScrollPane(commentsPane), gc);
 

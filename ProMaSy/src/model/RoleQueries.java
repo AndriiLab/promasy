@@ -8,8 +8,7 @@ import java.sql.Timestamp;
 public class RoleQueries extends SQLQueries<RoleModel>{
 
 	public RoleQueries()  {
-		id = "roles_id";
-		table = "roles";
+		super("roles_id", "roles");
 	}
 
 	@Override

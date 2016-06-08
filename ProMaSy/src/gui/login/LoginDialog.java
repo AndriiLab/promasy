@@ -64,7 +64,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel(Labels.getProperty("userName")), gc);
+		loginPanel.add(new JLabel(Labels.withColon("userName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -79,7 +79,7 @@ public class LoginDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		loginPanel.add(new JLabel(Labels.getProperty("password")), gc);
+		loginPanel.add(new JLabel(Labels.withColon("password")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;

@@ -3,7 +3,6 @@ package model;
 import java.sql.Timestamp;
 
 public class DepartmentModel extends AbstractModel {
-	private long depId;
 	private String depName;
 	private long instId;
 	
@@ -18,18 +17,9 @@ public class DepartmentModel extends AbstractModel {
 	
 	public DepartmentModel(long depId, String depName, long instId, long createdBy, Timestamp createdDate,
 			long modifiedBy, Timestamp modifiedDate, boolean active) {
-		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.depId = depId;
+		super(depId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.depName = depName;
 		this.instId = instId;
-	}
-	
-	public long getDepId() {
-		return depId;
-	}
-	
-	public void setDepId(long depId) {
-		this.depId = depId;
 	}
 	
 	public String getDepName() {
@@ -46,37 +36,6 @@ public class DepartmentModel extends AbstractModel {
 	
 	public void setInstId(long instId) {
 		this.instId = instId;
-	}
-	
-	public long getCreatedBy() {
-		return createdBy;
-	}
-	
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
-	
-	public Timestamp getCreatedDate() {
-		return createdDate;
-	}
-	
-	public void setCreatedDate(Timestamp createdDate) {
-		this.createdDate = createdDate;
-	}
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-	
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-	
-	public Timestamp getModifiedDate() {
-		return modifiedDate;
-	}
-	
-	public void setModifiedDate(Timestamp modifiedDate) {
-		this.modifiedDate = modifiedDate;
 	}
 	
 	public String toString(){

@@ -25,6 +25,6 @@ public class StatusPanel extends JPanel{
 	}
 		
 		public void setCurrentUser(String user){
-			currentUser.setText(Labels.getProperty("currentUser")+" "+ user);
+			currentUser.setText(Labels.withColon("currentUser")+" "+ user);
 		}
 }

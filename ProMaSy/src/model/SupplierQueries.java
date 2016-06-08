@@ -8,8 +8,7 @@ import java.sql.*;
 public class SupplierQueries extends SQLQueries<SupplierModel> {
 
     public SupplierQueries() {
-        id = "supplier_id";
-        table = "suppliers";
+        super("supplier_id", "suppliers");
     }
 
     @Override
@@ -61,7 +60,7 @@ public class SupplierQueries extends SQLQueries<SupplierModel> {
         prepStmt.setLong(4, object.getModifiedBy());
         prepStmt.setTimestamp(5, object.getModifiedDate());
         prepStmt.setBoolean(6, object.isActive());
-        prepStmt.setLong(7, object.getSupplierId());
+        prepStmt.setLong(7, object.getModelId());
         prepStmt.executeUpdate();
         prepStmt.close();
     }
@@ -73,7 +72,7 @@ public class SupplierQueries extends SQLQueries<SupplierModel> {
         prepStmt.setLong(1, object.getModifiedBy());
         prepStmt.setTimestamp(2, object.getModifiedDate());
         prepStmt.setBoolean(3, object.isActive());
-        prepStmt.setLong(4, object.getSupplierId());
+        prepStmt.setLong(4, object.getModelId());
         prepStmt.executeUpdate();
         prepStmt.close();
     }

@@ -7,7 +7,6 @@ import java.sql.Timestamp;
  * Created by laban on 04.05.2016.
  */
 public class FinanceDepartmentModel extends AbstractModel {
-    private long orderId;
     private String orderName;
     private long depId;
     private String depName;
@@ -17,8 +16,7 @@ public class FinanceDepartmentModel extends AbstractModel {
     private BigDecimal leftAmount;
 
     public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderName, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
-        super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.orderId = orderId;
+        super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderName = orderName;
         this.depId = depId;
         this.depName = depName;
@@ -29,7 +27,7 @@ public class FinanceDepartmentModel extends AbstractModel {
     }
 
     public FinanceDepartmentModel(long orderId, long depId, long empId, BigDecimal totalAmount) {
-        this.orderId = orderId;
+        setModelId(orderId);
         this.depId = depId;
         this.empId = empId;
         this.totalAmount = totalAmount;
@@ -37,14 +35,6 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     public FinanceDepartmentModel() {
 
-    }
-
-    public long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
     }
 
     public long getDepId() {

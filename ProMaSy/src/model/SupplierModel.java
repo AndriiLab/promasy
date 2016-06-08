@@ -6,7 +6,6 @@ import java.sql.Timestamp;
  * Created by laban on 26.04.2016.
  */
 public class SupplierModel extends AbstractModel {
-    private long supplierId;
     private String supplierName;
     private String supplierTel;
     private String supplierComments;
@@ -14,8 +13,7 @@ public class SupplierModel extends AbstractModel {
     public SupplierModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
                          boolean active, long supplierId, String supplierName, String supplierTel,
                          String supplierComments) {
-        super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.supplierId = supplierId;
+        super(supplierId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.supplierName = supplierName;
         this.supplierTel = supplierTel;
         this.supplierComments = supplierComments;
@@ -30,14 +28,6 @@ public class SupplierModel extends AbstractModel {
 
     public SupplierModel(){
 
-    }
-
-    public long getSupplierId() {
-        return supplierId;
-    }
-
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {

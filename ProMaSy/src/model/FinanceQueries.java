@@ -9,8 +9,7 @@ import java.sql.*;
 public class FinanceQueries extends SQLQueries<FinanceModel> {
 
     public FinanceQueries(){
-        id = "order_id";
-        table = "finance";
+        super("order_id", "finance");
     }
 
     @Override
@@ -75,7 +74,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         prepStmt.setDate(5, object.getEndDate());
         prepStmt.setLong(6, object.getModifiedBy());
         prepStmt.setTimestamp(7, object.getModifiedDate());
-        prepStmt.setLong(8, object.getOrderId());
+        prepStmt.setLong(8, object.getModelId());
         prepStmt.executeUpdate();
         prepStmt.close();
     }
@@ -88,7 +87,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, object.getModifiedBy());
         prepStmt.setTimestamp(2, object.getModifiedDate());
-        prepStmt.setLong(3, object.getOrderId());
+        prepStmt.setLong(3, object.getModelId());
         prepStmt.executeUpdate();
         prepStmt.close();
     }

@@ -9,6 +9,7 @@ public class CPVModel extends AbstractModel {
 
 	public CPVModel(String cpvId, String cpvUkr, String cpvEng, 
 			int cpvLevel, boolean cpvTerminal) {
+		//WARNING no super method
 		this.cpvId = cpvId;
 		this.cpvUkr = cpvUkr;
 		this.cpvEng = cpvEng;

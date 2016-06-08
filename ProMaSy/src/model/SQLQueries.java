@@ -11,10 +11,15 @@ import java.util.List;
 abstract class SQLQueries<T> {
 
     List<T> list = new LinkedList<>();
-    String id;
-    String table;
+    private String id;
+    private String table;
 
-	abstract void create(T object) throws SQLException;
+    SQLQueries(String id, String table) {
+        this.id = id;
+        this.table = table;
+    }
+
+    abstract void create(T object) throws SQLException;
     abstract void retrieve() throws SQLException;
     abstract void update(T object) throws SQLException;
     abstract void delete(T object) throws SQLException;

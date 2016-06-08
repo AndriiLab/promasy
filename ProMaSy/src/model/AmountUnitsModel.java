@@ -4,14 +4,12 @@ import java.sql.Timestamp;
 
 public class AmountUnitsModel extends AbstractModel{
 	
-	private long amUnitId;
 	private String amUnitDesc;
 	
 	public AmountUnitsModel(long amUnitId, String amUnitDesc, long createdBy, 
 			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
-		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.amUnitId = amUnitId;
+		super(amUnitId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.amUnitDesc = amUnitDesc;
 	}
 
@@ -20,15 +18,7 @@ public class AmountUnitsModel extends AbstractModel{
 	}
 
 	public AmountUnitsModel() {
-		this.amUnitDesc = "";
-	}
 
-	public long getAmUnitId() {
-		return amUnitId;
-	}
-
-	public void setAmUnitId(long amUnitId) {
-		this.amUnitId = amUnitId;
 	}
 
 	public String getAmUnitDesc() {

@@ -123,7 +123,7 @@ public class ProducerDialog extends JDialog {
 
         int space = 5;
         Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-        Border prodBorder = BorderFactory.createTitledBorder(Labels.getProperty("prodBorder"));
+        Border prodBorder = BorderFactory.createTitledBorder(Labels.getProperty("producer"));
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
         prodPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, prodBorder));

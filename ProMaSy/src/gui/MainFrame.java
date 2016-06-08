@@ -101,12 +101,12 @@ public class MainFrame extends JFrame {
         fileMenu.add(exitItem);
 
         JMenu editMenu = new JMenu(Labels.getProperty("edit"));
-        JMenuItem editOrgItem = new JMenuItem(Labels.getProperty("editOrganizationsDepartmnets"));
-        JMenuItem editEmpItem = new JMenuItem(Labels.getProperty("editEmployees"));
-        JMenuItem addEmpItem = new JMenuItem(Labels.getProperty("addEmployees"));
-        JMenuItem editAmUnitsItem = new JMenuItem(Labels.getProperty("amUnitsDialogSuper") + "...");
-        JMenuItem editProdItem = new JMenuItem(Labels.getProperty("prodDialogSuper") + "...");
-        JMenuItem editSuplItem = new JMenuItem(Labels.getProperty("suplDialogSuper") + "...");
+        JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
+        JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
+        JMenuItem addEmpItem = new JMenuItem(Labels.withThreeDots("addEmployees"));
+        JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"));
+        JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"));
+        JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
         editMenu.add(editOrgItem);
         editMenu.add(editEmpItem);
         editMenu.add(addEmpItem);
@@ -115,11 +115,11 @@ public class MainFrame extends JFrame {
         editMenu.add(editSuplItem);
 
         JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-        JMenuItem conSettItem = new JMenuItem(Labels.getProperty("ConnectionWithDBSettings") + "...");
+        JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
         settingsMenu.add(conSettItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
-        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware") + "...");
+        JMenuItem infoItem = new JMenuItem(Labels.withThreeDots("aboutSoftware"));
         helpMenu.add(infoItem);
 
         menuBar.add(fileMenu);

@@ -8,8 +8,7 @@ import java.sql.Timestamp;
 public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 
 	public EmployeeQueries() {
-		id = "emp_id";
-		table = "employees";
+		super("emp_id", "employees");
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {
@@ -125,7 +124,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setLong(9, object.getModifiedBy());
 		prepStmt.setTimestamp(10, object.getModifiedDate());
 		prepStmt.setBoolean(11, object.isActive());
-		prepStmt.setLong(12, object.getEmpId());
+		prepStmt.setLong(12, object.getModelId());
 		System.out.println(prepStmt);
 		prepStmt.executeUpdate();
 		prepStmt.close();
@@ -136,7 +135,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
-		prepStmt.setLong(3, object.getEmpId());
+		prepStmt.setLong(3, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}

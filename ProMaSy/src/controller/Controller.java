@@ -147,7 +147,10 @@ public class Controller {
             mainFrame.getCpvDialog().refresh();
         });
 
-        mainFrame.getToolbar().setToolbarListener(() -> System.out.println("test"));
+        mainFrame.getToolbar().setToolbarListener(() -> {
+            //TODO
+            System.out.println("test for 'print' button");
+        });
 
         mainFrame.getEditEmpDialog().setEmployeeDialogListener(new EditEmployeeDialogListener() {
 
@@ -267,6 +270,7 @@ public class Controller {
                 createAmUnit(model);
                 getAmUnits();
                 mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
+                mainFrame.getBidsListPanel().getCreateBidDialog().setAmUnitsBoxData(Database.AMOUNTUNITS.getList());
             }
 
             @Override
@@ -290,6 +294,7 @@ public class Controller {
                 createProd(model);
                 getProd();
                 mainFrame.getProducerDialog().setProdData(Database.PRODUCERS.getList());
+                mainFrame.getBidsListPanel().getCreateBidDialog().setProducerBoxData(Database.PRODUCERS.getList());
             }
 
             @Override
@@ -313,6 +318,7 @@ public class Controller {
                 createSupl(model);
                 getSupl();
                 mainFrame.getSupplierDialog().setSuplData(Database.SUPPLIERS.getList());
+                mainFrame.getBidsListPanel().getCreateBidDialog().setSupplierBoxData(Database.SUPPLIERS.getList());
             }
 
             @Override
@@ -371,7 +377,7 @@ public class Controller {
             @Override
             public void createDepOrderEventOccurred(FinanceDepartmentModel model) {
                 createDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getOrderId());
+                getDepartmentFinancesByOrder(model.getModelId());
                 mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
                 mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
 
@@ -380,7 +386,7 @@ public class Controller {
             @Override
             public void editDepOrderEventOccurred(FinanceDepartmentModel model) {
                 editDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getOrderId());
+                getDepartmentFinancesByOrder(model.getModelId());
                 mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
                 mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
             }
@@ -388,7 +394,7 @@ public class Controller {
             @Override
             public void deleteDepOrderEventOccurred(FinanceDepartmentModel model) {
                 deleteDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getOrderId());
+                getDepartmentFinancesByOrder(model.getModelId());
                 mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
                 mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
             }
@@ -414,6 +420,15 @@ public class Controller {
             public void departmentSelectionEventOccurred(long depId) {
                 getDepartmentFinancesByDepartment(depId);
                 mainFrame.getBidsListPanel().getCreateBidDialog().setFinanceDepartmentBoxData(Database.DEPARTMENT_FINANCES.getList());
+            }
+
+            @Override
+            public void bidCreateEventOccurred(BidModel model) {
+                setCreated(model);
+                createBid(model);
+                getBids();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
             }
         });
 

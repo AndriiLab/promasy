@@ -7,6 +7,8 @@ import model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
@@ -25,10 +27,13 @@ public class BidsListPanel extends JPanel {
     private final BidModel emptyBidModel = new BidModel();
     private BidsListPanelListener listener;
     private CreateBidDialog createBidDialog;
+    private BidModel selectedBidModel;
 
     public BidsListPanel (MainFrame parent){
 
         Dimension buttonDim = new Dimension(25, 25);
+
+        selectedBidModel = emptyBidModel;
 
         createBidDialog = new CreateBidDialog(parent);
 
@@ -44,6 +49,13 @@ public class BidsListPanel extends JPanel {
         editBidButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
         editBidButton.setPreferredSize(buttonDim);
         editBidButton.setEnabled(true);
+        editBidButton.addActionListener(e -> {
+                    if (!selectedBidModel.equals(emptyBidModel)) {
+                        createBidDialog.loadToDialog(selectedBidModel);
+                    }
+                    selectedBidModel = emptyBidModel;
+                }
+        );
 
         deleteBidButton = new JButton();
         deleteBidButton.setToolTipText(Labels.getProperty("deleteBid"));
@@ -58,7 +70,7 @@ public class BidsListPanel extends JPanel {
             if(financeDepartmentBox.getSelectedItem() != null) {
                 FinanceDepartmentModel selectedFinanceModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                 if (!selectedFinanceModel.equals(emptyFinanceDepartmentModel)) {
-                    listener.financeDepartmentSelectionEventOccurred(selectedFinanceModel.getDepId(), selectedFinanceModel.getOrderId());
+                    listener.financeDepartmentSelectionEventOccurred(selectedFinanceModel.getDepId(), selectedFinanceModel.getModelId());
                 }
             }
         });
@@ -69,14 +81,25 @@ public class BidsListPanel extends JPanel {
         departmentBox.addActionListener(e -> {
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
-            DepartmentModel selctedModel = (DepartmentModel) departmentBox.getSelectedItem();
-            if(!selctedModel.equals(emptyDepartmentModel)){
-                listener.departmentSelectionEventOccurred(selctedModel.getDepId());
+            DepartmentModel selectedDepModel = (DepartmentModel) departmentBox.getSelectedItem();
+            if(!selectedDepModel.equals(emptyDepartmentModel)){
+                listener.departmentSelectionEventOccurred(selectedDepModel.getModelId());
             }
         });
 
         bidsTableModel = new BidsTableModel();
         bidsTable = new JTable(bidsTableModel);
+        bidsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent ev) {
+                int row = bidsTable.rowAtPoint(ev.getPoint());
+                bidsTable.getSelectionModel().setSelectionInterval(row, row);
+
+                if (ev.getButton() == MouseEvent.BUTTON1) {
+                    selectedBidModel = (BidModel) bidsTable.getValueAt(row, 0);
+                    }
+                }
+        });
 
         createLayout();
 
@@ -88,7 +111,6 @@ public class BidsListPanel extends JPanel {
             departmentBox.addItem(model);
             createBidDialog.addToDepartmentBox(model);
         }
-
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db){
@@ -143,4 +165,5 @@ public class BidsListPanel extends JPanel {
         add(panel, BorderLayout.NORTH);
         add(new JScrollPane(bidsTable), BorderLayout.CENTER);
     }
+
 }

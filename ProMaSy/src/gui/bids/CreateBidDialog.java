@@ -36,16 +36,22 @@ public class CreateBidDialog extends JDialog {
     private JTextPane descriptionPane;
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
+    private final ProducerModel emptyProducerModel =  new ProducerModel();
+    private final SupplierModel emptySupplierModel = new SupplierModel();
+    private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
+    private BidModel createdBidModel;
     private JLabel totalPriceLabel;
     private CreateBidDialogListener listener;
+    private MainFrame parent;
 
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), false);
+        this.parent = parent;
         setSize(330, 470);
         setResizable(false);
         setLocationRelativeTo(parent);
 
-        totalPriceLabel = new JLabel("0"+Labels.withSpaceBefore("uah"));
+        totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
 
         Dimension preferredFieldDim = new Dimension(235, 25);
@@ -62,18 +68,12 @@ public class CreateBidDialog extends JDialog {
 
         producerBox = new JComboBox<>();
         producerBox.setPreferredSize(preferredFieldDim);
-        ProducerModel emptyProducerModel = new ProducerModel();
-        producerBox.addItem(emptyProducerModel);
 
         supplierBox = new JComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
-        SupplierModel emptySupplierModel = new SupplierModel();
-        supplierBox.addItem(emptySupplierModel);
 
         amUntisBox = new JComboBox<>();
         amUntisBox.setPreferredSize(preferredFieldDim);
-        AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
-        amUntisBox.addItem(emptyAmountUnitsModel);
 
         Dimension buttonDim = new Dimension(25, 25);
 
@@ -122,9 +122,9 @@ public class CreateBidDialog extends JDialog {
         departmentBox.addActionListener(e -> {
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
-            DepartmentModel selctedModel = (DepartmentModel) departmentBox.getSelectedItem();
-            if(!selctedModel.equals(emptyDepartmentModel)){
-                listener.departmentSelectionEventOccurred(selctedModel.getDepId());
+            DepartmentModel selectedModel = (DepartmentModel) departmentBox.getSelectedItem();
+            if (!selectedModel.equals(emptyDepartmentModel)) {
+                listener.departmentSelectionEventOccurred(selectedModel.getModelId());
             }
         });
 
@@ -148,8 +148,10 @@ public class CreateBidDialog extends JDialog {
 
 
         okButton.addActionListener(e -> {
-                    //TODO create bid
-                    setVisible(false);
+                    if (checkFields() && listener != null) {
+                        listener.bidCreateEventOccurred(createdBidModel);
+                        setVisible(false);
+                    }
                 }
         );
 
@@ -159,15 +161,18 @@ public class CreateBidDialog extends JDialog {
 
     private void calculateTotalPrice() {
         if (!oneUnitPriceField.getText().isEmpty() && !amountField.getText().isEmpty()) {
-            //TODO check numbers validity
-            BigDecimal onePrice = new BigDecimal(oneUnitPriceField.getText());
-            BigDecimal amount = new BigDecimal(amountField.getText());
-            totalPriceLabel.setText(onePrice.multiply(amount) + Labels.withSpaceBefore("uah"));
-        } else totalPriceLabel.setText("0"+Labels.withSpaceBefore("uah"));
-}
+            try {
+                BigDecimal onePrice = new BigDecimal(oneUnitPriceField.getText());
+                BigDecimal amount = new BigDecimal(amountField.getText());
+                totalPriceLabel.setText(onePrice.multiply(amount) + Labels.withSpaceBefore("uah"));
+            } catch (NumberFormatException ex) {
+                totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
+            }
+        } else totalPriceLabel.setText("0" + Labels.withSpaceBefore("uah"));
+    }
 
-    public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db){
-        for(FinanceDepartmentModel model : db){
+    public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
+        for (FinanceDepartmentModel model : db) {
             financeDepartmentBox.addItem(model);
         }
     }
@@ -176,30 +181,128 @@ public class CreateBidDialog extends JDialog {
         departmentBox.addItem(model);
     }
 
-    void setProducerBoxData(List<ProducerModel> db) {
+    public void setProducerBoxData(List<ProducerModel> db) {
+        producerBox.removeAllItems();
+        producerBox.addItem(emptyProducerModel);
         for (ProducerModel model : db) {
             producerBox.addItem(model);
         }
+        producerBox.repaint();
     }
 
-    void setSupplierBoxData(List<SupplierModel> db) {
+    public void setSupplierBoxData(List<SupplierModel> db) {
+        supplierBox.removeAllItems();
+        supplierBox.addItem(emptySupplierModel);
         for (SupplierModel model : db) {
             supplierBox.addItem(model);
         }
+        supplierBox.repaint();
     }
 
-    void setAmUnitsBoxData(List<AmountUnitsModel> db) {
+    public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
+        amUntisBox.removeAllItems();
+        amUntisBox.addItem(emptyAmountUnitsModel);
         for (AmountUnitsModel model : db) {
             amUntisBox.addItem(model);
         }
+        amUntisBox.repaint();
     }
 
-    public void setCreateBidDialogListener(CreateBidDialogListener listener){
+    private boolean checkFields() {
+        DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
+        if (selectedDepartmentModel.equals(emptyDepartmentModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            return false;
+        }
+        FinanceDepartmentModel selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
+        if (selectedFinanceDepartmentModel.equals(emptyFinanceDepartmentModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("order"));
+            return false;
+        }
+        ProducerModel selectedProducerModel = (ProducerModel) producerBox.getSelectedItem();
+        String selectedCatNum = catNumberField.getText();
+        String selectedCPV = cpvField.getText();
+        if (selectedCPV.isEmpty()){
+            Utils.emptyFieldError(parent, Labels.getProperty("CPVCode"));
+            return false;
+        } else if (selectedCPV.length() != 10){
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("wrongFormatCPV"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        String selectedDescription = descriptionPane.getText();
+        if (selectedDescription.isEmpty()){
+            Utils.emptyFieldError(parent, Labels.getProperty("description"));
+            return false;
+        }
+        SupplierModel selectedSupplierModel = (SupplierModel) supplierBox.getSelectedItem();
+        AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUntisBox.getSelectedItem();
+        if (selectedAmountUnitsModel.equals(emptyAmountUnitsModel)){
+            Utils.emptyFieldError(parent, Labels.getProperty("packing"));
+            return false;
+        }
+        String amountString = amountField.getText();
+        if (amountString.isEmpty()){
+            Utils.emptyFieldError(parent, Labels.getProperty("amount"));
+            return false;
+        }
+
+        int amount;
+        try {
+            amount = Integer.parseInt(amountString);
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("wrongFormatAmount"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String onePriceString = oneUnitPriceField.getText();
+        if (onePriceString.equals("")){
+            Utils.emptyFieldError(parent, Labels.getProperty("oneUnitPrice"));
+            return false;
+        }
+
+        BigDecimal onePrice;
+        try {
+            onePrice = new BigDecimal(onePriceString);
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("wrongFormatOnePrice"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId());
+        return true;
+    }
+
+    public void setCreateBidDialogListener(CreateBidDialogListener listener) {
         this.listener = listener;
     }
 
     public void setCPVField(String cpvCode) {
         cpvField.setText(cpvCode);
+    }
+
+    void loadToDialog(BidModel model){
+        createdBidModel = model;
+        setVisible(true);
+        Utils.setBoxFromModel(departmentBox, createdBidModel.getDepId());
+        Utils.setBoxFromModel(financeDepartmentBox, createdBidModel.getOrderId());
+        Utils.setBoxFromModel(producerBox, createdBidModel.getBrandId());
+        cpvField.setText(createdBidModel.getCpvCode());
+        catNumberField.setText(createdBidModel.getCatNum());
+        descriptionPane.setText(model.getBidDesc());
+        Utils.setBoxFromModel(supplierBox, createdBidModel.getSupplierId());
+        Utils.setBoxFromModel(amUntisBox, createdBidModel.getAmUnitId());
+        amountField.setText(Integer.toString(createdBidModel.getAmount()));
+        oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
+        calculateTotalPrice();
     }
 
     private void createLayout() {
@@ -258,7 +361,7 @@ public class CreateBidDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("prodBorder")), gc);
+        createBidPanel.add(new JLabel(Labels.withColon("producer")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

@@ -116,7 +116,7 @@ public class FinancePanel extends JPanel {
                         financeAmountField.setText(selectedFinanceModel.getTotalAmount().toString());
                         startDatePicker.setDate(selectedFinanceModel.getStartDate());
                         endDatePicker.setDate(selectedFinanceModel.getEndDate());
-                        selectedOrder = selectedFinanceModel.getOrderId();
+                        selectedOrder = selectedFinanceModel.getModelId();
                         if (selectedOrder != 0) {
                             listener.orderSelectionEventOccurred(selectedOrder);
                         }
@@ -130,7 +130,7 @@ public class FinancePanel extends JPanel {
         departmentBox.addItem(emptyDepartmentModel);
         departmentBox.addActionListener(e -> {
             if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel) && listener != null) {
-                listener.departmentSelectionEventOccurred(((DepartmentModel) departmentBox.getSelectedItem()).getDepId());
+                listener.departmentSelectionEventOccurred(((DepartmentModel) departmentBox.getSelectedItem()).getModelId());
             } else if (departmentBox.getSelectedItem().equals(emptyDepartmentModel)) {
                 employeeBox.removeAllItems();
                 employeeBox.addItem(emptyEmployeeModel);
@@ -174,8 +174,8 @@ public class FinancePanel extends JPanel {
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 4);
                     if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
-                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepName());
-                        Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getEmpName());
+                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepId());
+                        Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getEmpId());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().toString());
                     }
                 }
@@ -217,7 +217,7 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment.getDepId(), selectedEmployee.getEmpId(), depFinanceAmount);
+                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment.getModelId(), selectedEmployee.getModelId(), depFinanceAmount);
                 listener.createDepOrderEventOccurred(model);
             }
             clearDepFinPanel();
@@ -226,8 +226,8 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                 if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                    selectedDepFinModel.setDepId(selectedDepartment.getDepId());
-                    selectedDepFinModel.setEmpId(selectedEmployee.getEmpId());
+                    selectedDepFinModel.setDepId(selectedDepartment.getModelId());
+                    selectedDepFinModel.setEmpId(selectedEmployee.getModelId());
                     selectedDepFinModel.setTotalAmount(depFinanceAmount);
                     listener.editDepOrderEventOccurred(selectedDepFinModel);
                 }
@@ -266,13 +266,6 @@ public class FinancePanel extends JPanel {
         selectedEmployee = emptyEmployeeModel;
     }
 
-    private void emptyFieldError(String fieldName) {
-        JOptionPane.showMessageDialog(parent,
-                Labels.getProperty("enterDataIntoField") + " \"" + fieldName + "\"",
-                Labels.getProperty("fieldCannotBeEmpty") + " \"" + fieldName + "\"",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
     private boolean checkFinanceInput() {
         orderNumber = orderNumberField.getText();
         orderName = orderNameField.getText();
@@ -280,7 +273,7 @@ public class FinancePanel extends JPanel {
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());
         String financeAmountText = financeAmountField.getText();
         if (orderName.length() < 1) {
-            emptyFieldError(Labels.getProperty("orderName"));
+            Utils.emptyFieldError(parent, Labels.getProperty("orderName"));
             return false;
         } else if (startDate.after(endDate)) {
             JOptionPane.showMessageDialog(parent,
@@ -289,7 +282,7 @@ public class FinancePanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
             return false;
         } else if (financeAmountText.length() < 1) {
-            emptyFieldError(Labels.getProperty("financeAmount"));
+            Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
             return false;
         }
         try {
@@ -297,7 +290,7 @@ public class FinancePanel extends JPanel {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberFormatException"),
-                    Labels.getProperty("financeAmountErr"),
+                    Labels.getProperty("fieldErr"),
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -309,13 +302,13 @@ public class FinancePanel extends JPanel {
         selectedEmployee = (EmployeeModel) employeeBox.getSelectedItem();
         String inpDepFinanceAmount = financeDepAmountField.getText();
         if (selectedDepartment.equals(emptyDepartmentModel)) {
-            emptyFieldError(Labels.getProperty("department"));
+            Utils.emptyFieldError(parent, Labels.getProperty("department"));
             return false;
         } else if (selectedEmployee.equals(emptyEmployeeModel)) {
-            emptyFieldError(Labels.getProperty("manager"));
+            Utils.emptyFieldError(parent, Labels.getProperty("manager"));
             return false;
         } else if (inpDepFinanceAmount.length() < 1) {
-            emptyFieldError(Labels.getProperty("financeAmount"));
+            Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
             return false;
         }
         try {
@@ -323,7 +316,7 @@ public class FinancePanel extends JPanel {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberFormatException"),
-                    Labels.getProperty("financeAmountErr"),
+                    Labels.getProperty("fieldErr"),
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }

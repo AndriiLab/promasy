@@ -8,8 +8,7 @@ import java.sql.Timestamp;
 public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
 
 	public SubdepartmentQueries() {
-		id = "subdep_id";
-		table = "subdepartments";
+		super("subdep_id", "subdepartments");
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
 		prepStmt.setString(1, object.getSubdepName());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
-		prepStmt.setLong(4, object.getSubdepId());
+		prepStmt.setLong(4, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
@@ -72,7 +71,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
-		prepStmt.setLong(3, object.getSubdepId());
+		prepStmt.setLong(3, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}

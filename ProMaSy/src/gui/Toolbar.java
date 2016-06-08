@@ -8,18 +8,18 @@ import javax.swing.JToolBar;
 
 public class Toolbar extends JToolBar implements ActionListener {
 
-	private JButton testConBtn;
+	private JButton printBtn;
 	private ToolbarListener btnListener;
 
 	public Toolbar() {
 		setFloatable(false);
-		testConBtn = new JButton();
-		testConBtn.setToolTipText("Тест з'єднання");
-		testConBtn.setIcon(Utils.createIcon("/images/TipOfTheDay16.gif"));
+		printBtn = new JButton();
+		printBtn.setToolTipText(Labels.getProperty("print"));
+		printBtn.setIcon(Utils.createIcon("/images/Print16.gif"));
 
-		testConBtn.addActionListener(this);
+		printBtn.addActionListener(this);
 
-		add(testConBtn);
+		add(printBtn);
 	}
 
 	public void setToolbarListener(ToolbarListener listener) {
@@ -29,9 +29,9 @@ public class Toolbar extends JToolBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton clicked = (JButton) e.getSource();
 
-		if (clicked == testConBtn) {
+		if (clicked == printBtn) {
 			if (btnListener != null) {
-				btnListener.testConEventOccurred();
+				btnListener.printEventOccurred();
 			}
 		}
 

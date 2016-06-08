@@ -8,8 +8,7 @@ import java.sql.SQLException;
 public class CPVQueries extends SQLQueries<CPVModel> {
 
 	public CPVQueries() {
-		id = "cpv_code";
-		table = "cpv";
+		super("cpv_code", "cpv");
 	}
 
 	@Override

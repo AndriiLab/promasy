@@ -181,7 +181,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
             if (obj instanceof InstituteModel) {
                 if (!instituteBox.getSelectedItem().equals(emptyInstituteModel)) {
                     privateInstModel = (InstituteModel) instituteBox.getSelectedItem();
-                    long instId = privateInstModel.getInstId();
+                    long instId = privateInstModel.getModelId();
                     if (orgListener != null) {
                         orgListener.instSelectionEventOccurred(instId);
                     }
@@ -202,7 +202,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
             if (obj instanceof DepartmentModel) {
                 if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel)) {
                     privateDepModel = (DepartmentModel) departmentBox.getSelectedItem();
-                    long depId = privateDepModel.getDepId();
+                    long depId = privateDepModel.getModelId();
                     if (orgListener != null) {
                         orgListener.depSelectionEventOccurred(depId);
                     }
@@ -378,7 +378,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                     && privateDepModel.equals(emptyDepartmentModel)
                     && newDepName != null) {
                 DepartmentModel model = new DepartmentModel(newDepName,
-                        privateInstModel.getInstId());
+                        privateInstModel.getModelId());
                 if (orgListener != null) {
                     departmentBox.removeAllItems();
                     departmentBox.addItem(emptyDepartmentModel);
@@ -415,7 +415,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                     && privateSybdepModel.equals(emptySubdepartmentModel)
                     && newSubdepName != null) {
                 SubdepartmentModel model = new SubdepartmentModel(newSubdepName,
-                        privateDepModel.getDepId());
+                        privateDepModel.getModelId());
                 if (orgListener != null) {
                     subdepartmentBox.removeAllItems();
                     subdepartmentBox.addItem(emptySubdepartmentModel);

@@ -9,8 +9,7 @@ import java.sql.Timestamp;
 public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
 
 	public AmountUnitsQueries() {
-        id = "am_unit_id";
-        table = "amountunits";
+        super("am_unit_id", "amountunits");
 	}
 
 	public void create(AmountUnitsModel object) throws SQLException {
@@ -53,7 +52,7 @@ public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
 		prepStmt.setBoolean(4, object.isActive());
-		prepStmt.setLong(5, object.getAmUnitId());
+		prepStmt.setLong(5, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
@@ -64,7 +63,7 @@ public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
 		prepStmt.setBoolean(3, object.isActive());
-		prepStmt.setLong(4, object.getAmUnitId());
+		prepStmt.setLong(4, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}

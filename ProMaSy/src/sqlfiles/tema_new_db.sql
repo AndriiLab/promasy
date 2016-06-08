@@ -186,7 +186,7 @@ CREATE TABLE finance_dep (
 -- Дані про замовлення
 CREATE TABLE bids (
 	bid_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
-	emp_id BIGINT NOT NULL REFERENCES employees (emp_id), -- ІН, хто створив заявку
+	dep_id BIGINT NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
 	brand_id BIGINT REFERENCES producers (brand_id), -- Можливий виробник
 	cat_num VARCHAR(30), -- Можливий каталожний номер
 	bid_desc VARCHAR(500) NOT NULL, -- Опис заявки

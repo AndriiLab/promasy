@@ -3,7 +3,6 @@ package model;
 import java.sql.Timestamp;
 
 public class InstituteModel extends AbstractModel {
-	private long instId;
 	private String instName;
 	
 	public InstituteModel() {
@@ -17,17 +16,8 @@ public class InstituteModel extends AbstractModel {
 	public InstituteModel(long instId, String instName,long createdBy, 
 			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
-		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.instId = instId;
+		super(instId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.instName = instName;
-	}
-
-	public long getInstId() {
-		return instId;
-	}
-
-	public void setInstId(long instId) {
-		this.instId = instId;
 	}
 
 	public String getInstName() {

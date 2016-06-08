@@ -3,7 +3,6 @@ package model;
 import java.sql.Timestamp;
 
 public class EmployeeModel extends AbstractModel {
-	private long empId;
 	private String empFName;
 	private String empMName;
 	private String empLName;
@@ -38,8 +37,7 @@ public class EmployeeModel extends AbstractModel {
 			long depId, String depName, long subdepId, String subdepName, long roleId, String roleName, String login,
 			String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
-		super(createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.empId = empId;
+		super(empId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.empFName = empFName;
 		this.empMName = empMName;
 		this.empLName = empLName;
@@ -53,14 +51,6 @@ public class EmployeeModel extends AbstractModel {
 		this.roleName = roleName;
 		this.login = login;
 		this.password = password;
-	}
-
-	public long getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(long empId) {
-		this.empId = empId;
 	}
 
 	public String getEmpFName() {

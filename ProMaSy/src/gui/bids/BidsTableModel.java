@@ -5,6 +5,7 @@ import model.BidModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -50,15 +51,14 @@ public class BidsTableModel extends AbstractTableModel {
         BidModel model = db.get(rowIndex);
         switch (columnIndex){
             case 0:
-                return model.getBidDesc();
+                return model;
             case 1:
                 //TODO approprivate function to "date modified"
                 return model.getCreatedDate();
             case 2:
                 return model.isReceived();
             case 3:
-                // TODO get supplier name
-                return model.getSupplierId();
+                return model.getSupplierName();
             case 4:
                 return model.getAmount();
             case 5:
@@ -69,5 +69,27 @@ public class BidsTableModel extends AbstractTableModel {
         }
 
         return null;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex){
+            case 0:
+                return String.class;
+            case 1:
+                return Date.class;
+            case 2:
+                return Boolean.class;
+            case 3:
+                return String.class;
+            case 4:
+                return Integer.class;
+            case 5:
+                return BigDecimal.class;
+            case 6:
+                return BigDecimal.class;
+            default:
+                return null;
+        }
     }
 }

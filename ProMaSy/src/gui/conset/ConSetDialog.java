@@ -97,7 +97,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("serverAddress")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("serverAddress")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -107,7 +107,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("port")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("port")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -122,7 +122,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("DBName")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("DBName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -132,7 +132,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("schemaName")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("schemaName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -144,7 +144,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridy++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("userName")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("userName")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;
@@ -154,7 +154,7 @@ public class ConSetDialog extends JDialog {
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel(Labels.getProperty("password")), gc);
+		controlsPanel.add(new JLabel(Labels.withColon("password")), gc);
 
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.WEST;

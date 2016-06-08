@@ -9,8 +9,7 @@ import java.sql.*;
 public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel> {
 
     public FinanceDepartmentQueries(){
-        id = "order_id";
-        table = "finance_dep";
+        super("order_id", "finance_dep");
     }
 
     @Override
@@ -18,7 +17,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         String query = "INSERT INTO finance_dep(order_id, dep_id, emp_id, order_amount, created_by, created_date, active)\n" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
-        prepStmt.setLong(1, object.getOrderId());
+        prepStmt.setLong(1, object.getModelId());
         prepStmt.setLong(2, object.getDepId());
         prepStmt.setLong(3, object.getEmpId());
         prepStmt.setBigDecimal(4, object.getTotalAmount());
@@ -105,7 +104,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         prepStmt.setLong(3, object.getModifiedBy());
         prepStmt.setTimestamp(4, object.getModifiedDate());
         prepStmt.setBoolean(5, object.isActive());
-        prepStmt.setLong(6, object.getOrderId());
+        prepStmt.setLong(6, object.getModelId());
         prepStmt.setLong(7, object.getDepId());
         prepStmt.executeUpdate();
         prepStmt.close();
@@ -119,7 +118,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         prepStmt.setLong(1, object.getModifiedBy());
         prepStmt.setTimestamp(2, object.getModifiedDate());
         prepStmt.setBoolean(3, object.isActive());
-        prepStmt.setLong(4, object.getOrderId());
+        prepStmt.setLong(4, object.getModelId());
         prepStmt.setLong(5, object.getDepId());
         prepStmt.executeUpdate();
         prepStmt.close();

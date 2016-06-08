@@ -4,10 +4,11 @@ import java.sql.Timestamp;
 
 public abstract class AbstractModel {
 
-	long createdBy;
-	Timestamp createdDate;
-	long modifiedBy;
-	Timestamp modifiedDate;
+    private long modelId;
+	private long createdBy;
+	private Timestamp createdDate;
+	private long modifiedBy;
+	private Timestamp modifiedDate;
 	private boolean active;
 	
 	AbstractModel() {
@@ -18,8 +19,9 @@ public abstract class AbstractModel {
 		this.active = true;
 	}
 	
-	AbstractModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
+	AbstractModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 				  boolean active) {
+        this.modelId = modelId;
 		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 		this.modifiedBy = modifiedBy;
@@ -27,7 +29,15 @@ public abstract class AbstractModel {
 		this.active = active;
 	}
 
-	public long getCreatedBy() {
+    public long getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(long modelId) {
+        this.modelId = modelId;
+    }
+
+    public long getCreatedBy() {
 		return createdBy;
 	}
 

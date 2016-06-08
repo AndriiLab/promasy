@@ -8,8 +8,7 @@ import java.sql.Timestamp;
 public class DepartmentQueries extends SQLQueries<DepartmentModel>{
 
 	public DepartmentQueries() {
-		id = "dep_id";
-		table = "departments";
+		super("dep_id", "departments");
 	}
 
 	public void create(DepartmentModel object) throws SQLException {
@@ -60,7 +59,7 @@ public class DepartmentQueries extends SQLQueries<DepartmentModel>{
 		prepStmt.setString(1, object.getDepName());
 		prepStmt.setLong(2, object.getModifiedBy());
 		prepStmt.setTimestamp(3, object.getModifiedDate());
-		prepStmt.setLong(4, object.getDepId());
+		prepStmt.setLong(4, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 		
@@ -71,7 +70,7 @@ public class DepartmentQueries extends SQLQueries<DepartmentModel>{
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, object.getModifiedBy());
 		prepStmt.setTimestamp(2, object.getModifiedDate());
-		prepStmt.setLong(3, object.getDepId());
+		prepStmt.setLong(3, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 		

@@ -170,9 +170,9 @@ class EmployeePanel extends JPanel implements ActionListener{
 			empModel.setEmpFName(nameField.getText());
 			empModel.setEmpMName(middleNameField.getText());
 			empModel.setEmpLName(lastNameField.getText());
-			empModel.setDepId(((DepartmentModel) departmentBox.getSelectedItem()).getDepId());
-			empModel.setSubdepId(((SubdepartmentModel) subdepartmentBox.getSelectedItem()).getSubdepId());
-			empModel.setRoleId(((RoleModel) roleBox.getSelectedItem()).getRolesId());
+			empModel.setDepId(((DepartmentModel) departmentBox.getSelectedItem()).getModelId());
+			empModel.setSubdepId(((SubdepartmentModel) subdepartmentBox.getSelectedItem()).getModelId());
+			empModel.setRoleId(((RoleModel) roleBox.getSelectedItem()).getModelId());
 			empModel.setLogin(loginField.getText());
 			empModel.setPassword(new String(passwordField.getPassword()));
 			clearDialog();
@@ -227,7 +227,7 @@ class EmployeePanel extends JPanel implements ActionListener{
 			departmentBox.removeAllItems();
 			if (!instituteBox.getSelectedItem().equals(emptyInstituteModel)){
 				InstituteModel model = (InstituteModel)instituteBox.getSelectedItem();
-				long instId = model.getInstId();
+				long instId = model.getModelId();
 				if(empListener != null){
 					empListener.instSelectionEventOccurred(instId);
 				}
@@ -240,7 +240,7 @@ class EmployeePanel extends JPanel implements ActionListener{
 			subdepartmentBox.addItem(emptySubdepartmentModel);
 			if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel)){
 				DepartmentModel depModel = (DepartmentModel)departmentBox.getSelectedItem();
-				long depId = depModel.getDepId();
+				long depId = depModel.getModelId();
 				if(empListener != null){
 					empListener.depSelectionEventOccurred(depId);
 				}
@@ -258,10 +258,10 @@ class EmployeePanel extends JPanel implements ActionListener{
 		//TODO unsecure pass
 		passwordField.setText(empModel.getPassword());
 		repeatPasswordField.setText(empModel.getPassword());
-		Utils.setBoxFromModel(roleBox, empModel.getRoleName());
-		Utils.setBoxFromModel(instituteBox, empModel.getInstName());
-		Utils.setBoxFromModel(departmentBox, empModel.getDepName());
-		Utils.setBoxFromModel(subdepartmentBox, empModel.getSubdepName());
+		Utils.setBoxFromModel(roleBox, empModel.getRoleId());
+		Utils.setBoxFromModel(instituteBox, empModel.getInstId());
+		Utils.setBoxFromModel(departmentBox, empModel.getDepId());
+		Utils.setBoxFromModel(subdepartmentBox, empModel.getSubdepId());
 
 	}
 
@@ -368,18 +368,6 @@ class EmployeePanel extends JPanel implements ActionListener{
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.EAST;
 		gc.insets = smallPadding;
-		institutePanel.add(new JLabel(Labels.getProperty("role")+":"), gc);
-
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.NORTHWEST;
-		gc.insets = smallPadding;
-		institutePanel.add(roleBox, gc);
-
-		////// Next row//////
-		gc.gridy++;
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.EAST;
-		gc.insets = smallPadding;
 		institutePanel.add(new JLabel(Labels.getProperty("institute")+":"), gc);
 
 		gc.gridx++;
@@ -410,6 +398,18 @@ class EmployeePanel extends JPanel implements ActionListener{
 		gc.anchor = GridBagConstraints.NORTHWEST;
 		gc.insets = smallPadding;
 		institutePanel.add(subdepartmentBox, gc);
+
+        ////// Next row//////
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        institutePanel.add(new JLabel(Labels.getProperty("role")+":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHWEST;
+        gc.insets = smallPadding;
+        institutePanel.add(roleBox, gc);
 		
 		hintPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		hintPanel.add(hint);

@@ -20,6 +20,10 @@ public class Labels {
     public static String withSpaceBefore(final String key) {
         return " "+getProperty(key);
     }
+
+    public static String withThreeDots(final String key) {
+        return getProperty(key) + "...";
+    }
 }
 
 
