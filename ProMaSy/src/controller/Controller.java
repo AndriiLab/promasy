@@ -413,6 +413,15 @@ public class Controller {
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();
             }
+
+            @Override
+            public void bidDeleteEventOccurred(BidModel model) {
+                setInactive(model);
+                deleteBid(model);
+                getBids();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+            }
         });
 
         mainFrame.getBidsListPanel().getCreateBidDialog().setCreateBidDialogListener(new CreateBidDialogListener() {
@@ -426,6 +435,15 @@ public class Controller {
             public void bidCreateEventOccurred(BidModel model) {
                 setCreated(model);
                 createBid(model);
+                getBids();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+            }
+
+            @Override
+            public void bidEditEventOccurred(BidModel model) {
+                setModified(model);
+                editBid(model);
                 getBids();
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();

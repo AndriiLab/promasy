@@ -7,6 +7,6 @@ import model.BidModel;
  */
 public interface CreateBidDialogListener {
     void departmentSelectionEventOccurred(long depId);
-
-    void bidCreateEventOccurred(BidModel createdBidModel);
+    void bidCreateEventOccurred(BidModel model);
+    void bidEditEventOccurred(BidModel model);
 }

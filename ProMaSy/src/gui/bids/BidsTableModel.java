@@ -21,7 +21,8 @@ public class BidsTableModel extends AbstractTableModel {
                                     Labels.getProperty("supplier"),
                                     Labels.getProperty("amount"),
                                     Labels.getProperty("oneUnitPrice"),
-                                    Labels.getProperty("totalPrice")};
+                                    Labels.getProperty("totalPrice"),
+                                    Labels.getProperty("user")};
 
     public BidsTableModel(){
 
@@ -43,7 +44,7 @@ public class BidsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -66,6 +67,8 @@ public class BidsTableModel extends AbstractTableModel {
             case 6:
                 //could be slow
                 return (model.getOnePrice().multiply(new BigDecimal(model.getAmount())));
+            case 7:
+                return model.getCreatedBy();
         }
 
         return null;
@@ -88,6 +91,8 @@ public class BidsTableModel extends AbstractTableModel {
                 return BigDecimal.class;
             case 6:
                 return BigDecimal.class;
+            case 7:
+                return String.class;
             default:
                 return null;
         }

@@ -10,6 +10,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -39,17 +41,21 @@ public class CreateBidDialog extends JDialog {
     private final ProducerModel emptyProducerModel =  new ProducerModel();
     private final SupplierModel emptySupplierModel = new SupplierModel();
     private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
+    private final BidModel emptyBidModel = new BidModel();
     private BidModel createdBidModel;
     private JLabel totalPriceLabel;
     private CreateBidDialogListener listener;
     private MainFrame parent;
 
-    public CreateBidDialog(MainFrame parent) {
+    CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), false);
         this.parent = parent;
         setSize(330, 470);
         setResizable(false);
         setLocationRelativeTo(parent);
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        createdBidModel = emptyBidModel;
 
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
@@ -149,14 +155,43 @@ public class CreateBidDialog extends JDialog {
 
         okButton.addActionListener(e -> {
                     if (checkFields() && listener != null) {
-                        listener.bidCreateEventOccurred(createdBidModel);
-                        setVisible(false);
+                        if (createdBidModel.getModelId() == 0) {
+                            listener.bidCreateEventOccurred(createdBidModel);
+                        } else {
+                            listener.bidEditEventOccurred(createdBidModel);
+                        }
                     }
+                    clearFieldsAndSetTitle();
                 }
         );
 
-        cancelButton.addActionListener(e -> setVisible(false));
+        cancelButton.addActionListener(e -> clearFieldsAndSetTitle());
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                clearFieldsAndSetTitle();
+            }
+        });
+
+    }
+
+    private void clearFieldsAndSetTitle(){
+        createdBidModel = emptyBidModel;
+        setVisible(false);
+        departmentBox.setSelectedIndex(0);
+        financeDepartmentBox.setSelectedIndex(0);
+        producerBox.setSelectedIndex(0);
+        cpvField.setText("");
+        catNumberField.setText("");
+        descriptionPane.setText("");
+        supplierBox.setSelectedIndex(0);
+        amUntisBox.setSelectedIndex(0);
+        amountField.setText("");
+        oneUnitPriceField.setText("");
+        calculateTotalPrice();
+        setTitle(Labels.getProperty("createBid"));
+        okButton.setText(Labels.getProperty("createBid"));
     }
 
     private void calculateTotalPrice() {
@@ -276,8 +311,21 @@ public class CreateBidDialog extends JDialog {
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        if(createdBidModel == emptyBidModel) {
+            createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId());
 
-        createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId());
+        } else {
+            createdBidModel.setDepId(selectedDepartmentModel.getModelId());
+            createdBidModel.setBrandId(selectedProducerModel.getModelId());
+            createdBidModel.setCatNum(selectedCatNum);
+            createdBidModel.setBidDesc(selectedDescription);
+            createdBidModel.setCpvCode(selectedCPV);
+            createdBidModel.setOnePrice(onePrice);
+            createdBidModel.setAmount(amount);
+            createdBidModel.setAmUnitId(selectedAmountUnitsModel.getModelId());
+            createdBidModel.setOrderId(selectedFinanceDepartmentModel.getModelId());
+            createdBidModel.setSupplierId(selectedSupplierModel.getModelId());
+        }
         return true;
     }
 
@@ -290,6 +338,8 @@ public class CreateBidDialog extends JDialog {
     }
 
     void loadToDialog(BidModel model){
+        setTitle(Labels.getProperty("editBid"));
+        okButton.setText(Labels.getProperty("editBid"));
         createdBidModel = model;
         setVisible(true);
         Utils.setBoxFromModel(departmentBox, createdBidModel.getDepId());
