@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by laban on 04.05.2016.
  */
-public class DepartmentFinanceTableModel extends AbstractTableModel {
+class DepartmentFinanceTableModel extends AbstractTableModel {
 
     private List<FinanceDepartmentModel> db;
     private String[] colNames = {Labels.getProperty("department"),

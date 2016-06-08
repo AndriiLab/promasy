@@ -33,7 +33,7 @@ public abstract class AbstractModel {
         return modelId;
     }
 
-    public void setModelId(long modelId) {
+    void setModelId(long modelId) {
         this.modelId = modelId;
     }
 

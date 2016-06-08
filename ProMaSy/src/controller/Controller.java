@@ -90,7 +90,7 @@ public class Controller {
         int portNumber = prefs.getInt("port", 5432);
 
         // if user entered new settings for connection to DB - putting them to Prefs
-        mainFrame.getConSettDialog().setPrefsLitener(e -> {
+        mainFrame.getConSettDialog().setPrefsListener(e -> {
             prefs.put("server", e.getServer());
             prefs.put("host", e.getDatabase());
             prefs.put("schema", e.getSchema());
@@ -503,7 +503,7 @@ public class Controller {
         model.setActive(false);
     }
 
-    //methods sending requests to DB
+    //methods requesting the DB
     //GETTERS
     private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
         try {
@@ -767,6 +767,7 @@ public class Controller {
         }
     }
 
+    //CRUD Amount and Units
     private void createAmUnit(AmountUnitsModel model) {
         setCreated(model);
         try {
@@ -794,6 +795,7 @@ public class Controller {
         }
     }
 
+    //CRUD Producers
     private void createProd(ProducerModel model) {
         setCreated(model);
         try {
@@ -821,6 +823,7 @@ public class Controller {
         }
     }
 
+    //CRUD Suppliers
     private void createSupl(SupplierModel model) {
         setCreated(model);
         try {
@@ -848,6 +851,7 @@ public class Controller {
         }
     }
 
+    //CRUD Finances
     private void createFinance(FinanceModel model) {
         setCreated(model);
         try {
@@ -874,7 +878,7 @@ public class Controller {
             e.printStackTrace();
         }
     }
-
+    //CRUD Department Finances
     private void createDepartmentFinances(FinanceDepartmentModel model) {
         setCreated(model);
         try {
@@ -902,6 +906,7 @@ public class Controller {
         }
     }
 
+    //CRUD Bids
     private void createBid(BidModel model) {
         setCreated(model);
         try {

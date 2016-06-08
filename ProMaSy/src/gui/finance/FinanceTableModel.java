@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by laban on 04.05.2016.
  */
-public class FinanceTableModel extends AbstractTableModel {
+class FinanceTableModel extends AbstractTableModel {
 
     private List<FinanceModel> db;
 

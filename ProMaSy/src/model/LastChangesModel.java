@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Timestamp;
 
-public class LastChangesModel {
+class LastChangesModel {
 	private int numElements;
 	private Timestamp lastCreated;
 	private Timestamp lastModified;

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by laban on 26.05.2016.
  */
-public class BidsTableModel extends AbstractTableModel {
+class BidsTableModel extends AbstractTableModel {
 
     private List<BidModel> db;
 
@@ -22,7 +22,7 @@ public class BidsTableModel extends AbstractTableModel {
                                     Labels.getProperty("amount"),
                                     Labels.getProperty("oneUnitPrice"),
                                     Labels.getProperty("totalPrice"),
-                                    Labels.getProperty("user")};
+                                    Labels.getProperty("customer")};
 
     public BidsTableModel(){
 
@@ -54,7 +54,7 @@ public class BidsTableModel extends AbstractTableModel {
             case 0:
                 return model;
             case 1:
-                //TODO approprivate function to "date modified"
+                //TODO appropriate function to "date modified"
                 return model.getCreatedDate();
             case 2:
                 return model.isReceived();
@@ -68,7 +68,7 @@ public class BidsTableModel extends AbstractTableModel {
                 //could be slow
                 return (model.getOnePrice().multiply(new BigDecimal(model.getAmount())));
             case 7:
-                return model.getCreatedBy();
+                return model.getCustormerName();
         }
 
         return null;

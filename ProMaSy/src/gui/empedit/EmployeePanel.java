@@ -255,7 +255,7 @@ class EmployeePanel extends JPanel implements ActionListener{
 		middleNameField.setText(empModel.getEmpMName());
 		lastNameField.setText(empModel.getEmpLName());
 		loginField.setText(empModel.getLogin());
-		//TODO unsecure pass
+		//TODO not secure pass handling
 		passwordField.setText(empModel.getPassword());
 		repeatPasswordField.setText(empModel.getPassword());
 		Utils.setBoxFromModel(roleBox, empModel.getRoleId());

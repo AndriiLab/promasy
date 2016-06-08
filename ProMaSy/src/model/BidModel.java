@@ -9,42 +9,40 @@ import java.sql.Timestamp;
 public class BidModel extends AbstractModel{
 
     private long depId;
-    private String depName;
     private long brandId;
-    private String brandName;
     private String catNum;
     private String bidDesc;
     private String cpvCode;
     private BigDecimal onePrice;
     private int amount;
     private long amUnitId;
-    private String amUnitName;
     private long orderId;
-    private String orderName;
     private long supplierId;
     private String supplierName;
     private boolean received;
     private Timestamp dateReceived;
+    private String createdFName;
+    private String createdMName;
+    private String createdLName;
 
-    public BidModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long bidId, long depId, String depName, long brandId, String brandName, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long orderId, String orderName, long supplierId, String supplierName, boolean received, Timestamp dateReceived) {
-        super(bidId, createdBy, createdDate, modifiedBy, modifiedDate, active);
+    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, long brandId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long orderId, long supplierId, String supplierName, boolean received, Timestamp dateReceived, String createdFName, String createdMName, String createdLName) {
+        super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.depId = depId;
-        this.depName = depName;
         this.brandId = brandId;
-        this.brandName = brandName;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
         this.cpvCode = cpvCode;
         this.onePrice = onePrice;
         this.amount = amount;
         this.amUnitId = amUnitId;
-        this.amUnitName = amUnitName;
         this.orderId = orderId;
-        this.orderName = orderName;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.received = received;
         this.dateReceived = dateReceived;
+        this.createdFName = createdFName;
+        this.createdMName = createdMName;
+        this.createdLName = createdLName;
     }
 
     public BidModel(long depId, long brandId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long orderId, long supplierId) {
@@ -152,14 +150,6 @@ public class BidModel extends AbstractModel{
         this.dateReceived = dateReceived;
     }
 
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
     public long getDepId() {
         return depId;
     }
@@ -168,40 +158,48 @@ public class BidModel extends AbstractModel{
         this.depId = depId;
     }
 
-    public String getDepName() {
-        return depName;
+    public String getCreatedFName() {
+        return createdFName;
     }
 
-    public void setDepName(String depName) {
-        this.depName = depName;
+    public void setCreatedFName(String createdFName) {
+        this.createdFName = createdFName;
     }
 
-    public String getBrandName() {
-        return brandName;
+    public String getCreatedMName() {
+        return createdMName;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
+    public void setCreatedMName(String createdMName) {
+        this.createdMName = createdMName;
     }
 
-    public String getAmUnitName() {
-        return amUnitName;
+    public String getCreatedLName() {
+        return createdLName;
     }
 
-    public void setAmUnitName(String amUnitName) {
-        this.amUnitName = amUnitName;
+    public void setCreatedLName(String createdLName) {
+        this.createdLName = createdLName;
     }
 
-    public String getOrderName() {
-        return orderName;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     @Override
     public String toString() {
         return bidDesc;
+    }
+
+    public Object getCustormerName() {
+        if(createdFName != null && createdLName != null && createdMName != null){
+            return createdLName + " " + createdFName.substring(0, 1) + "."
+                    + createdMName.substring(0, 1)+".";
+        }
+        return null;
     }
 }

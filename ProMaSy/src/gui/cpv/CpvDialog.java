@@ -110,14 +110,14 @@ public class CpvDialog extends JDialog {
 
 				if (ev.getButton() == MouseEvent.BUTTON1) {
 					upButton.setEnabled(true);
-					CPVModel curentCpvModel = (CPVModel) cpvTableModel.getValueAt(row, 1);
-					String cpvRequest = curentCpvModel.getCpvId();
-					boolean isTerminal = curentCpvModel.isCpvTerminal();
-					searchField.setText(cpvRequest+" "+curentCpvModel.getCpvUkr());
+					CPVModel selectedCpvModel = (CPVModel) cpvTableModel.getValueAt(row, 1);
+					String cpvRequest = selectedCpvModel.getCpvId();
+					boolean isTerminal = selectedCpvModel.isCpvTerminal();
+					searchField.setText(cpvRequest+" "+selectedCpvModel.getCpvUkr());
 					if(!isTerminal){
 						makeCpvQuery(cpvRequest, false);
 					}
-					selectButton.setEnabled(isTerminal || curentCpvModel.getCpvLevel()>3);
+					selectButton.setEnabled(isTerminal || selectedCpvModel.getCpvLevel()>3);
 				}
 			}
 

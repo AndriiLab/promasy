@@ -12,7 +12,7 @@ import javax.swing.*;
 class App {
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> runApp());
+		SwingUtilities.invokeLater(App::runApp);
 	}
 
 	private static void runApp() {

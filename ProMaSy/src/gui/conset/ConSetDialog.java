@@ -175,7 +175,7 @@ public class ConSetDialog extends JDialog {
 		add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
-	public void setPrefsLitener(ConSetListener prefsListener) {
+	public void setPrefsListener(ConSetListener prefsListener) {
 		this.prefsListener = prefsListener;
 	}
 

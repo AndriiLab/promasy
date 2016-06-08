@@ -24,7 +24,7 @@ public class CreateBidDialog extends JDialog {
     private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
     private JComboBox<ProducerModel> producerBox;
     private JComboBox<SupplierModel> supplierBox;
-    private JComboBox<AmountUnitsModel> amUntisBox;
+    private JComboBox<AmountUnitsModel> amUnitsBox;
     private JButton addProducerButton;
     private JButton addSupplierButton;
     private JButton searchCPVButton;
@@ -78,8 +78,8 @@ public class CreateBidDialog extends JDialog {
         supplierBox = new JComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
 
-        amUntisBox = new JComboBox<>();
-        amUntisBox.setPreferredSize(preferredFieldDim);
+        amUnitsBox = new JComboBox<>();
+        amUnitsBox.setPreferredSize(preferredFieldDim);
 
         Dimension buttonDim = new Dimension(25, 25);
 
@@ -186,7 +186,7 @@ public class CreateBidDialog extends JDialog {
         catNumberField.setText("");
         descriptionPane.setText("");
         supplierBox.setSelectedIndex(0);
-        amUntisBox.setSelectedIndex(0);
+        amUnitsBox.setSelectedIndex(0);
         amountField.setText("");
         oneUnitPriceField.setText("");
         calculateTotalPrice();
@@ -235,12 +235,12 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
-        amUntisBox.removeAllItems();
-        amUntisBox.addItem(emptyAmountUnitsModel);
+        amUnitsBox.removeAllItems();
+        amUnitsBox.addItem(emptyAmountUnitsModel);
         for (AmountUnitsModel model : db) {
-            amUntisBox.addItem(model);
+            amUnitsBox.addItem(model);
         }
-        amUntisBox.repaint();
+        amUnitsBox.repaint();
     }
 
     private boolean checkFields() {
@@ -273,7 +273,7 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         SupplierModel selectedSupplierModel = (SupplierModel) supplierBox.getSelectedItem();
-        AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUntisBox.getSelectedItem();
+        AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUnitsBox.getSelectedItem();
         if (selectedAmountUnitsModel.equals(emptyAmountUnitsModel)){
             Utils.emptyFieldError(parent, Labels.getProperty("packing"));
             return false;
@@ -349,7 +349,7 @@ public class CreateBidDialog extends JDialog {
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());
         Utils.setBoxFromModel(supplierBox, createdBidModel.getSupplierId());
-        Utils.setBoxFromModel(amUntisBox, createdBidModel.getAmUnitId());
+        Utils.setBoxFromModel(amUnitsBox, createdBidModel.getAmUnitId());
         amountField.setText(Integer.toString(createdBidModel.getAmount()));
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
         calculateTotalPrice();
@@ -505,7 +505,7 @@ public class CreateBidDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        createBidPanel.add(amUntisBox, gc);
+        createBidPanel.add(amUnitsBox, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
