@@ -1,6 +1,7 @@
 package gui.conset;
 
 import gui.Labels;
+import model.ConnectionSettingsModel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -58,11 +59,11 @@ public class ConSetDialog extends JDialog {
 
 			setVisible(false);
 
-			ConSetEvent ev = new ConSetEvent(this, server, database, schema, portNumber, user,
+			ConnectionSettingsModel model = new ConnectionSettingsModel(server, database, schema, portNumber, user,
 					new String(password));
 
 			if (prefsListener != null) {
-				prefsListener.preferencesSetOccurred(ev);
+				prefsListener.preferencesSetOccurred(model);
 			}
 		});
 

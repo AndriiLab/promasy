@@ -42,7 +42,6 @@ public class BidsListPanel extends JPanel {
         createBidButton.setIcon(Utils.createIcon("/images/Add16.gif"));
         createBidButton.setPreferredSize(buttonDim);
         createBidButton.setEnabled(true);
-        createBidButton.addActionListener(e -> createBidDialog.setVisible(true));
 
         editBidButton = new JButton();
         editBidButton.setToolTipText(Labels.getProperty("editBid"));
@@ -68,6 +67,8 @@ public class BidsListPanel extends JPanel {
         bidsTable = new JTable(bidsTableModel);
 
         createLayout();
+
+        createBidButton.addActionListener(e -> createBidDialog.setVisible(true));
 
         editBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(emptyBidModel)) {

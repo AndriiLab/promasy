@@ -155,7 +155,7 @@ public class CpvDialog extends JDialog {
 		CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
 
 		if (cpvListener != null) {
-			cpvListener.cpaEventOccurred(ev);
+			cpvListener.cpvEventOccurred(ev);
 		}
 	}
 	

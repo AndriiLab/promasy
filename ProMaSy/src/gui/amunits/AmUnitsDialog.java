@@ -30,6 +30,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
         setLocationRelativeTo(parent);
 
         privateModel = emptyModel;
+        newName = "";
 
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
@@ -62,7 +63,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
         layoutControls();
 
         createAmUnit.addActionListener(e -> {
-            if (newName != null &&  !newName.equals("") && privateModel.equals(emptyModel)) {
+            if (!newName.equals("") && privateModel.equals(emptyModel)) {
                 AmountUnitsModel model = new AmountUnitsModel(newName);
                 if (listener != null) {
                     amUnitBox.removeAllItems();
@@ -71,11 +72,11 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                 }
             }
             privateModel = emptyModel;
-            newName = null;
+            newName = "";
         });
 
         editAmUnit.addActionListener(e -> {
-            if (newName != null && !newName.equals("") && !privateModel.equals(emptyModel)) {
+            if (!newName.equals("") && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     amUnitBox.removeAllItems();
                     amUnitBox.addItem(emptyModel);
@@ -84,7 +85,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                 }
             }
             privateModel = emptyModel;
-            newName = null;
+            newName = "";
         });
 
         deleteAmUnit.addActionListener(e -> {
@@ -94,7 +95,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                 listener.deleteEventOccurred(privateModel);
             }
             privateModel = emptyModel;
-            newName = null;
+            newName = "";
         });
 
         okButton.addActionListener(e -> setVisible(false));
@@ -115,7 +116,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
         Object item = ((JComboBox)e.getSource()).getSelectedItem();
             if(item instanceof AmountUnitsModel && !item.equals(emptyModel)){
                 privateModel = (AmountUnitsModel) item;
-            } else if (item instanceof String && !item.equals(null)){
+            } else if (item instanceof String && !item.equals("")){
                 newName = (String) item;
             }
     }

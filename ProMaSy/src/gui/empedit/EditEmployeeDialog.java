@@ -3,137 +3,123 @@ package gui.empedit;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.*;
 
 import gui.Labels;
+import gui.Utils;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
 import model.RoleModel;
 import model.SubdepartmentModel;
 
-public class EditEmployeeDialog extends JDialog implements EditEmployeeDialogListener {
+public class EditEmployeeDialog extends JDialog {
 
-    private JButton okButton;
-    private EditEmployeeDialogListener empListener;
-    private EmployeeTablePanel empTablePanel;
-    private EmployeePanel empPanel;
+    private EditEmployeeDialogListener listener;
+    private CreateEmployeeDialog createEmployeeDialog;
+    private JTable table;
+    private EmployeeTableModel tableModel;
+    private EmployeeModel selectedModel;
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
 
     public EditEmployeeDialog(JFrame parent) {
         super(parent, Labels.getProperty("addEmployee"), false);
-        setSize(600, 600);
+        setSize(600, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
+        createEmployeeDialog = new CreateEmployeeDialog(parent);
 
-        empPanel = new EmployeePanel();
+        Dimension buttonDim = new Dimension(25, 25);
 
-        empTablePanel = new EmployeeTablePanel();
-        empTablePanel.setEmployeeTableListener(this::setEmployee);
+        JButton createEmployeeButton = new JButton();
+        createEmployeeButton.setToolTipText(Labels.getProperty("createNewEmployee"));
+        createEmployeeButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createEmployeeButton.setPreferredSize(buttonDim);
+        createEmployeeButton.setEnabled(true);
 
-        okButton = new JButton(Labels.getProperty("changeProfile"));
-        JButton cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+        JButton editEmployeeButton = new JButton();
+        editEmployeeButton.setToolTipText(Labels.getProperty("editEmployee"));
+        editEmployeeButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editEmployeeButton.setPreferredSize(buttonDim);
+        editEmployeeButton.setEnabled(true);
 
-        empPanel.setEmployeeDialogListener(this);
+        JButton deleteEmployeeButton = new JButton();
+        deleteEmployeeButton.setToolTipText(Labels.getProperty("deleteEmployee"));
+        deleteEmployeeButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteEmployeeButton.setPreferredSize(buttonDim);
+        deleteEmployeeButton.setEnabled(true);
 
-        okButton.addActionListener(e -> {
-            EmployeeModel empModel = empPanel.getEmpFromFields();
-            if (empModel != null) {
-                EmployeeEvent ev = new EmployeeEvent(this, empModel);
-                if (empListener != null) {
-                    empListener.editPersonEventOccurred(ev);
-                }
-                empModel = null;
-                setVisible(false);
-            }
-        });
-        cancelButton.addActionListener(e -> {
-            empPanel.clearDialog();
-            setVisible(false);
-        });
+        selectedModel =  emptyEmployeeModel;
 
-        JPanel buttonsPanel = new JPanel();
+        tableModel = new EmployeeTableModel();
+        table = new JTable(tableModel);
 
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        JButton closeButton = new JButton(Labels.getProperty("closeBtn"));
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, empPanel,
-                new JScrollPane(empTablePanel));
+        JPanel topButtonsPanel = new JPanel();
+        JPanel downButtonsPanel = new JPanel();
 
-        splitPane.setDividerLocation(300);
-        splitPane.setEnabled(false);
+        topButtonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        topButtonsPanel.setBorder(BorderFactory.createEtchedBorder());
+        topButtonsPanel.add(createEmployeeButton);
+        topButtonsPanel.add(editEmployeeButton);
+        topButtonsPanel.add(deleteEmployeeButton);
 
-        Dimension btnSize = okButton.getPreferredSize();
-        cancelButton.setPreferredSize(btnSize);
-
-        buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(okButton);
-        buttonsPanel.add(cancelButton);
+        downButtonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
+        downButtonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        downButtonsPanel.add(closeButton);
 
         setLayout(new BorderLayout());
-        add(splitPane, BorderLayout.CENTER);
-        add(buttonsPanel, BorderLayout.SOUTH);
-    }
+        add(topButtonsPanel, BorderLayout.NORTH);
+        add(new JScrollPane(table), BorderLayout.CENTER);
+        add(downButtonsPanel, BorderLayout.SOUTH);
 
-    @Override
-    public void instSelectionEventOccurred(long instId) {
-        if(empListener != null){
-            empListener.instSelectionEventOccurred(instId);
-        }
-    }
+        createEmployeeButton.addActionListener(e -> createEmployeeDialog.setVisible(true));
+        editEmployeeButton.addActionListener(e -> {
+            if (!selectedModel.equals(emptyEmployeeModel)){
+                createEmployeeDialog.setEmployeeModel(selectedModel);
+            }
+        });
 
-    @Override
-    public void depSelectionEventOccurred(long depId) {
-        if(empListener != null){
-            empListener.depSelectionEventOccurred(depId);
-        }
-    }
+        deleteEmployeeButton.addActionListener(e -> {
+            if (!selectedModel.equals(emptyEmployeeModel)) {
+                listener.deleteEmployeeEventOccurred(selectedModel);
+            }
+        });
 
-    @Override
-    public void editPersonEventOccurred(EmployeeEvent ev) {
-        // TODO Auto-generated method stub
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent ev) {
+                int row = table.rowAtPoint(ev.getPoint());
+                table.getSelectionModel().setSelectionInterval(row, row);
 
-    }
+                if (ev.getButton() == MouseEvent.BUTTON1) {
+                   selectedModel = (EmployeeModel) table.getValueAt(row, 0);
+                }
+            }
+        });
 
-
-    public void setRolesData(List<RoleModel> rolesDb) {
-        empPanel.setRolesData(rolesDb);
-    }
-
-    public void setInstData(List<InstituteModel> instDb) {
-        empPanel.setInstData(instDb);
-    }
-
-    public void setDepData(List<DepartmentModel> depDb) {
-        empPanel.setDepData(depDb);
-    }
-
-    public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-        empPanel.setSubdepData(subdepDb);
+        closeButton.addActionListener(e -> setVisible(false));
     }
 
     public void setEmpTableData(List<EmployeeModel> db){
-        empTablePanel.setData(db);
+        tableModel.setData(db);
     }
 
     public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){
-        this.empListener = empListener;
-
+        this.listener = empListener;
     }
 
     public void refresh(){
-        empTablePanel.getTableModel().fireTableDataChanged();
+        tableModel.fireTableDataChanged();
     }
 
-    private void setEmployee(EmployeeModel obj){
-        empPanel.setEmployee(obj);
-        okButton.setEnabled(true);
+    public CreateEmployeeDialog getCreateEmployeeDialog(){
+        return createEmployeeDialog;
     }
 
 }

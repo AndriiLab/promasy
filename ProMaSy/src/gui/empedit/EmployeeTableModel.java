@@ -34,18 +34,6 @@ class EmployeeTableModel extends AbstractTableModel{
 		}
 	}
 
-	public void setValueAt(Object aValue, int row, int col) {
-
-		if (db == null) return;
-		EmployeeModel model = db.get(row);
-		switch (col) {
-		case 5:
-			model.setActive((boolean)aValue);
-			break;
-		default:
-        }
-	}
-
 	public void setData(List<EmployeeModel> db){
 		this.db = db;
 	}

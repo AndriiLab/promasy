@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 
-	public EmployeeQueries() {
+	EmployeeQueries() {
 		super("emp_id", "employees");
 	}
 	
@@ -125,7 +125,6 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setTimestamp(10, object.getModifiedDate());
 		prepStmt.setBoolean(11, object.isActive());
 		prepStmt.setLong(12, object.getModelId());
-		System.out.println(prepStmt);
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}

@@ -1,11 +1,10 @@
 package gui.empedit;
 
-public interface CreateEmployeeDialogListener {
-	
-	void instSelectionEventOccurred(long instId);
-	
-	void deaSelectionEventOccurred(long depId);
-	
-	void createPersonEventOccurred(EmployeeEvent ev);
+import model.EmployeeModel;
 
+public interface CreateEmployeeDialogListener {
+	void instSelectionEventOccurred(long instId);
+	void depSelectionEventOccurred(long depId);
+	void createEmployeeEventOccurred(EmployeeModel model);
+	void editEmployeeEventOccurred(EmployeeModel model);
 }

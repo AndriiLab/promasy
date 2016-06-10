@@ -7,6 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Deque;
 import java.util.EventObject;
 import java.util.List;
 import java.util.Properties;
@@ -21,8 +22,6 @@ import gui.bids.BidsListPanelListener;
 import gui.bids.CreateBidDialogListener;
 import gui.finance.FinancePanelListener;
 import gui.empedit.CreateEmployeeDialogListener;
-import gui.empedit.EditEmployeeDialogListener;
-import gui.empedit.EmployeeEvent;
 import gui.instedit.OrganizationDialogListener;
 import gui.login.LoginAttemptEvent;
 import gui.login.LoginListener;
@@ -104,7 +103,7 @@ public class Controller {
             disconnect();
             connect();
         });
-        // loading connection values to ConnectionSetingsDialog and Controller
+        // loading connection values to ConnectionSettingsDialog and Controller
         mainFrame.getConSettDialog().setDefaults(server, database, schema,
                 portNumber, user, password);
         setConnectionSettings(server, database, schema,
@@ -123,14 +122,11 @@ public class Controller {
         getBids();
         getDepartmentFinancesByOrder(0);
         mainFrame.getCpvDialog().setData(Database.CPV.getList());
-        List<RoleModel> rolesModelList = Database.ROLES.getList();
-        mainFrame.getEditEmpDialog().setRolesData(rolesModelList);
-        mainFrame.getAddEmpDialog().setRolesData(rolesModelList);
         instModelList = Database.INSTITUTES.getList();
         mainFrame.getEditOrgDialog().setInstData(instModelList);
-        mainFrame.getEditEmpDialog().setInstData(instModelList);
-        mainFrame.getAddEmpDialog().setInstData(instModelList);
+        mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(instModelList);
         mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+        mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setRolesData(Database.ROLES.getList());
         mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
         mainFrame.getProducerDialog().setProdData(Database.PRODUCERS.getList());
         mainFrame.getSupplierDialog().setSuplData(Database.SUPPLIERS.getList());
@@ -152,39 +148,44 @@ public class Controller {
             System.out.println("test for 'print' button");
         });
 
-        mainFrame.getEditEmpDialog().setEmployeeDialogListener(new EditEmployeeDialogListener() {
+        mainFrame.getEditEmpDialog().setEmployeeDialogListener(model -> {
+            deleteEmployee(model);
+            getEmployees();
+            mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+            mainFrame.getEditEmpDialog().refresh();
+        });
 
+        mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
             public void instSelectionEventOccurred(long instId) {
                 getDepartments(instId);
-                mainFrame.getEditEmpDialog().setDepData(Database.DEPARTMENTS.getList());
-            }
-
-            public void editPersonEventOccurred(EmployeeEvent ev) {
-                editEmployee(ev);
-                mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
-                mainFrame.getEditEmpDialog().refresh();
+                mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setDepData(Database.DEPARTMENTS.getList());
             }
 
             public void depSelectionEventOccurred(long depId) {
                 getSubdepRequest(depId);
-                mainFrame.getEditEmpDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
+                mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
             }
 
-        });
-
-        mainFrame.getAddEmpDialog().setEmployeeDialogListener(new CreateEmployeeDialogListener() {
-            public void instSelectionEventOccurred(long instId) {
-                getDepartments(instId);
-                mainFrame.getAddEmpDialog().setDepData(Database.DEPARTMENTS.getList());
+            @Override
+            public void createEmployeeEventOccurred(EmployeeModel model) {
+                setCreated(model);
+                createEmployee(model);
+                getEmployees();
+                mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+                mainFrame.getEditEmpDialog().refresh();
             }
 
-            public void deaSelectionEventOccurred(long depId) {
-                getSubdepRequest(depId);
-                mainFrame.getAddEmpDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
+            @Override
+            public void editEmployeeEventOccurred(EmployeeModel model) {
+                setModified(model);
+                editEmployee(model);
+                getEmployees();
+                mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
+                mainFrame.getEditEmpDialog().refresh();
             }
 
-            public void createPersonEventOccurred(EmployeeEvent ev) {
-                createEmployee(ev);
+            public void createPersonEventOccurred(EmployeeModel model) {
+                createEmployee(model);
                 getEmployees();
                 mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
                 mainFrame.getEditEmpDialog().refresh();
@@ -208,7 +209,7 @@ public class Controller {
                 getInstRequest();
                 instModelList = Database.INSTITUTES.getList();
                 mainFrame.getEditOrgDialog().setInstData(instModelList);
-                mainFrame.getEditEmpDialog().setInstData(instModelList);
+                mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(instModelList);
             }
 
             public void editInstEventOccurred(InstituteModel instModel) {
@@ -216,7 +217,7 @@ public class Controller {
                 getInstRequest();
                 instModelList = Database.INSTITUTES.getList();
                 mainFrame.getEditOrgDialog().setInstData(instModelList);
-                mainFrame.getEditEmpDialog().setInstData(instModelList);
+                mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(instModelList);
             }
 
             public void deleteInstEventOccurred(InstituteModel instModel) {
@@ -224,7 +225,7 @@ public class Controller {
                 getInstRequest();
                 instModelList = Database.INSTITUTES.getList();
                 mainFrame.getEditOrgDialog().setInstData(instModelList);
-                mainFrame.getEditEmpDialog().setInstData(instModelList);
+                mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(instModelList);
             }
 
             public void createDepEventOccurred(DepartmentModel model) {
@@ -651,8 +652,7 @@ public class Controller {
     }
 
     //CRUD Employees
-    private void createEmployee(EmployeeEvent ev) {
-        EmployeeModel model = ev.getEmployeeModel();
+    private void createEmployee(EmployeeModel model) {
         setCreated(model);
         try {
             Database.EMPLOYEES.create(model);
@@ -662,11 +662,20 @@ public class Controller {
         }
     }
 
-    private void editEmployee(EmployeeEvent ev) {
-        EmployeeModel model = ev.getEmployeeModel();
+    private void editEmployee(EmployeeModel model) {
         setModified(model);
         try {
             Database.EMPLOYEES.update(model);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteEmployee(EmployeeModel model) {
+        setInactive(model);
+        try {
+            Database.EMPLOYEES.delete(model);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

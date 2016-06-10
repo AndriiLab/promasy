@@ -1,123 +1,432 @@
 package gui.empedit;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 import gui.Labels;
+import gui.Utils;
 import model.DepartmentModel;
 import model.EmployeeModel;
 import model.InstituteModel;
 import model.RoleModel;
 import model.SubdepartmentModel;
 
-public class CreateEmployeeDialog extends JDialog implements EditEmployeeDialogListener{
+public class CreateEmployeeDialog extends JDialog {
 
-	private JButton okButton;
-	private JButton cancelButton;
-	private CreateEmployeeDialogListener empListener;
-	private EmployeePanel empPanel;
+    private JButton okButton;
+    private JButton cancelButton;
+    private JFrame parent;
+    private CreateEmployeeDialogListener listener;
+    private JTextField nameField;
+    private JTextField middleNameField;
+    private JTextField lastNameField;
+    private JComboBox<InstituteModel> instituteBox;
+    private JComboBox<DepartmentModel> departmentBox;
+    private JComboBox<SubdepartmentModel> subdepartmentBox;
+    private JComboBox<RoleModel> roleBox;
+    private JTextField loginField;
+    private JPasswordField passwordField;
+    private JPasswordField repeatPasswordField;
+    private EmployeeModel currentEmployeeModel;
+    private final RoleModel emptyRoleModel = new RoleModel();
+    private final InstituteModel emptyInstituteModel = new InstituteModel();
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
 
-	public CreateEmployeeDialog(JFrame parent) {
-		super(parent, Labels.getProperty("createNewEmployee"), false);
-		setSize(600, 370);
-		setResizable(false);
-		setLocationRelativeTo(parent);
-		
-		empPanel = new EmployeePanel();
-		empPanel.setEmployeeDialogListener(this);
+    public CreateEmployeeDialog(JFrame parent) {
+        super(parent, Labels.getProperty("createNewEmployee"), false);
+        this.parent = parent;
+        setSize(600, 330);
+        setResizable(false);
+        setLocationRelativeTo(parent);
+        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
-		okButton = new JButton(Labels.getProperty("createProfile"));
-		cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+        currentEmployeeModel = emptyEmployeeModel;
 
-		layoutControls();
+        Dimension comboBoxDim = new Dimension(400, 25);
 
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EmployeeModel empModel = empPanel.createEmpFromFields();
-				if(empModel != null){
+        nameField = new JTextField(10);
+        middleNameField = new JTextField(10);
+        lastNameField = new JTextField(10);
 
-					EmployeeEvent ev = new EmployeeEvent(this, empModel);
+        loginField = new JTextField(10);
+        passwordField = new JPasswordField(12);
+        repeatPasswordField = new JPasswordField(12);
 
-					if(empListener != null){
-						empListener.createPersonEventOccurred(ev);
-					}
-					setVisible(false);
-				}
-			}
-		});
-		
-		cancelButton.addActionListener(e -> {
-            empPanel.clearDialog();
-            setVisible(false);
+        //Set up roles combo box
+        DefaultComboBoxModel<RoleModel> roleModel = new DefaultComboBoxModel<>();
+        roleBox = new JComboBox<>(roleModel);
+        roleBox.addItem(emptyRoleModel);
+        roleBox.setEditable(false);
+        roleBox.setPreferredSize(comboBoxDim);
+
+        //Set up institute combo box and edit buttons
+        DefaultComboBoxModel<InstituteModel> instModel = new DefaultComboBoxModel<>();
+        instituteBox = new JComboBox<>(instModel);
+        instituteBox.addItem(emptyInstituteModel);
+        instituteBox.setEditable(false);
+        instituteBox.setPreferredSize(comboBoxDim);
+
+        //Set up department combo box and edit buttons
+        DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
+        departmentBox = new JComboBox<>(depModel);
+        departmentBox.addItem(emptyDepartmentModel);
+        departmentBox.setEditable(false);
+        departmentBox.setPreferredSize(comboBoxDim);
+
+        //Set up SubDepartment combo box and edit buttons
+        DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
+        subdepartmentBox = new JComboBox<>(subdepModel);
+        subdepartmentBox.addItem(emptySubdepartmentModel);
+        subdepartmentBox.setEditable(false);
+        subdepartmentBox.setPreferredSize(comboBoxDim);
+
+        okButton = new JButton(Labels.getProperty("createProfile"));
+        cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+
+        layoutControls();
+
+        instituteBox.addActionListener(e -> {
+            departmentBox.removeAllItems();
+            InstituteModel selectedItem = (InstituteModel) instituteBox.getSelectedItem();
+            if (!selectedItem.equals(emptyInstituteModel) && listener != null) {
+                    listener.instSelectionEventOccurred(selectedItem.getModelId());
+                }
         });
-	}
-	
-	@Override
-	public void instSelectionEventOccurred(long instId) {
-		if(empListener != null){
-			empListener.instSelectionEventOccurred(instId);
-		}
-	}
 
-	@Override
-	public void depSelectionEventOccurred(long depId) {
-		if(empListener != null){
-			empListener.deaSelectionEventOccurred(depId);
-		}
-	}
+        departmentBox.addActionListener(e -> {
+            if (departmentBox.getSelectedItem() == null) {
+                departmentBox.addItem(emptyDepartmentModel);
+            }
+            subdepartmentBox.removeAllItems();
+            subdepartmentBox.addItem(emptySubdepartmentModel);
+            DepartmentModel selectedItem = (DepartmentModel) departmentBox.getSelectedItem();
+            if (!selectedItem.equals(emptyDepartmentModel) && listener != null) {
+                listener.depSelectionEventOccurred(selectedItem.getModelId());
+            }
+        });
 
-	@Override
-	public void editPersonEventOccurred(EmployeeEvent ev) {
-		// TODO Auto-generated method stub
-		
-	}
+        okButton.addActionListener(e -> {
+            if (isValidFields() && listener != null) {
+                if (currentEmployeeModel.getModelId() == 0) {
+                    listener.createEmployeeEventOccurred(currentEmployeeModel);
+                } else {
+                    listener.editEmployeeEventOccurred(currentEmployeeModel);
+                }
+                clearDialog();
+            }
+        });
 
-	public void setRolesData(List<RoleModel> rolesDb) {
-		empPanel.setRolesData(rolesDb);
-	}
+        cancelButton.addActionListener(e -> clearDialog());
 
-	public void setInstData(List<InstituteModel> instDb) {
-		empPanel.setInstData(instDb);
-	}
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                clearDialog();
+            }
+        });
 
-	public void setDepData(List<DepartmentModel> depDb) {
-		empPanel.setDepData(depDb);
-	}
+    }
 
-	public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-		empPanel.setSubdepData(subdepDb);
-	}
+    private void clearDialog() {
+        setVisible(false);
+        currentEmployeeModel = emptyEmployeeModel;
+        setTitle(Labels.getProperty("createNewEmployee"));
+        okButton.setText(Labels.getProperty("createProfile"));
+        nameField.setText("");
+        middleNameField.setText("");
+        lastNameField.setText("");
+        instituteBox.setSelectedIndex(0);
+        roleBox.setSelectedItem("");
+        loginField.setText("");
+        passwordField.setText("");
+        repeatPasswordField.setText("");
+        roleBox.setSelectedIndex(0);
+        instituteBox.setSelectedIndex(0);
+    }
 
-	public void setEmployeeDialogListener(CreateEmployeeDialogListener empListener){
-		this.empListener = empListener;
+    private boolean isValidFields() {
+        String lastName = lastNameField.getText();
+        if (lastName.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("lastName"));
+            return false;
+        }
+        String firstName = nameField.getText();
+        if (firstName.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("firstName"));
+            return false;
+        }
+        String middleName = middleNameField.getText();
+        if (middleName.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("middleName"));
+            return false;
+        }
+        String login = loginField.getText();
+        if (login.length() == 0) {
+            loginField.setDisabledTextColor(Color.RED);
+            Utils.emptyFieldError(parent, Labels.getProperty("userName"));
+            return false;
+        }
+        //TODO not secure pass handling
+        String password = new String(passwordField.getPassword());
+        if (password.length() == 0) {
+            passwordField.setDisabledTextColor(Color.RED);
+            Utils.emptyFieldError(parent, Labels.getProperty("password"));
+            return false;
+        }
+        String repeatPassword = new String(repeatPasswordField.getPassword());
+        if (!password.equals(repeatPassword)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("password"));
+            return false;
+        }
+        InstituteModel instituteModel = (InstituteModel) instituteBox.getSelectedItem();
+        if (instituteModel.equals(emptyInstituteModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("institute"));
+            return false;
+        }
+        DepartmentModel departmentModel = (DepartmentModel) departmentBox.getSelectedItem();
+        if (departmentModel.equals(emptyDepartmentModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            return false;
+        }
+        SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
+        RoleModel roleModel = (RoleModel) roleBox.getSelectedItem();
+        if (roleModel.equals(emptyRoleModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("role"));
+            return false;
+        } else {
+            if (currentEmployeeModel == emptyEmployeeModel) {
+                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getModelId(), login, password);
+            } else {
+                currentEmployeeModel.setEmpFName(firstName);
+                currentEmployeeModel.setEmpMName(middleName);
+                currentEmployeeModel.setEmpLName(lastName);
+                currentEmployeeModel.setDepId(departmentModel.getModelId());
+                currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
+                currentEmployeeModel.setRoleId(roleModel.getModelId());
+                currentEmployeeModel.setLogin(login);
+                currentEmployeeModel.setPassword(password);
+            }
+            return true;
+        }
+    }
 
-	}
+    void setEmployeeModel(EmployeeModel model) {
+        this.currentEmployeeModel = model;
+        nameField.setText(currentEmployeeModel.getEmpFName());
+        middleNameField.setText(currentEmployeeModel.getEmpMName());
+        lastNameField.setText(currentEmployeeModel.getEmpLName());
+        loginField.setText(currentEmployeeModel.getLogin());
+        //TODO not secure pass handling
+        passwordField.setText(currentEmployeeModel.getPassword());
+        repeatPasswordField.setText(currentEmployeeModel.getPassword());
+        Utils.setBoxFromModel(roleBox, currentEmployeeModel.getRoleId());
+        Utils.setBoxFromModel(instituteBox, currentEmployeeModel.getInstId());
+        Utils.setBoxFromModel(departmentBox, currentEmployeeModel.getDepId());
+        Utils.setBoxFromModel(subdepartmentBox, currentEmployeeModel.getSubdepId());
+        setTitle(Labels.getProperty("editEmployee"));
+        okButton.setText(Labels.getProperty("editEmployee"));
+        setVisible(true);
+    }
 
-	private void layoutControls() {
-		JPanel buttonsPanel = new JPanel();
+    public void setRolesData(List<RoleModel> rolesDb) {
+        for (RoleModel aRolesDb : rolesDb) {
+            roleBox.addItem(aRolesDb);
+        }
+    }
 
-		buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
+    public void setInstData(List<InstituteModel> instDb) {
+        for (InstituteModel anInstDb : instDb) {
+            instituteBox.addItem(anInstDb);
+        }
+    }
 
-		Dimension btnSize = okButton.getPreferredSize();
-		cancelButton.setPreferredSize(btnSize);
+    public void setDepData(List<DepartmentModel> depDb) {
+        for (DepartmentModel aDepDb : depDb) {
+            departmentBox.addItem(aDepDb);
+        }
+    }
 
-		buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		buttonsPanel.add(okButton);
-		buttonsPanel.add(cancelButton);
+    public void setSubdepData(List<SubdepartmentModel> subdepDb) {
+        for (SubdepartmentModel aSubdepDb : subdepDb) {
+            subdepartmentBox.addItem(aSubdepDb);
+        }
+    }
 
-		setLayout(new BorderLayout());
-		add(empPanel, BorderLayout.CENTER);
-		add(buttonsPanel, BorderLayout.SOUTH);
-	}
+    public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
+        this.listener = listener;
 
+    }
+
+    private void layoutControls() {
+        JPanel buttonsPanel = new JPanel();
+
+        JPanel loginPanel = new JPanel();
+        JPanel employeePanel = new JPanel();
+        JPanel newEmployeePanel = new JPanel();
+
+        JPanel institutePanel = new JPanel();
+
+        int space = 5;
+        Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
+        Border employeeBorder = BorderFactory.createTitledBorder(Labels.getProperty("user"));
+        Border loginBorder = BorderFactory.createTitledBorder(Labels.getProperty("loginParameters"));
+        Border instituteBorder = BorderFactory.createTitledBorder(Labels.getProperty("AssociatedOrganization"));
+
+        loginPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, loginBorder));
+        employeePanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, employeeBorder));
+        institutePanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, instituteBorder));
+
+        Insets smallPadding = new Insets(1, 0, 1, 5);
+        Insets largePadding = new Insets(1, 0, 1, 15);
+        Insets noPadding = new Insets(1, 0, 1, 0);
+
+        loginPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gc = new GridBagConstraints();
+
+        ////// First row//////
+        gc.gridy = 0;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        loginPanel.add(new JLabel(Labels.getProperty("userName")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        loginPanel.add(loginField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        loginPanel.add(new JLabel(Labels.getProperty("password")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        loginPanel.add(passwordField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = noPadding;
+        loginPanel.add(repeatPasswordField, gc);
+
+        employeePanel.setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
+
+        ////// First row//////
+        gc.gridy = 0;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        employeePanel.add(new JLabel(Labels.getProperty("lastName") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        employeePanel.add(lastNameField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        employeePanel.add(new JLabel(Labels.getProperty("firstName") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        employeePanel.add(nameField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        employeePanel.add(new JLabel(Labels.getProperty("middleName") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = noPadding;
+        employeePanel.add(middleNameField, gc);
+
+        institutePanel.setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
+
+        ////// First row//////
+        gc.gridy = 0;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        institutePanel.add(new JLabel(Labels.getProperty("institute") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        institutePanel.add(instituteBox, gc);
+
+        ////// Next row//////
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        institutePanel.add(new JLabel(Labels.getProperty("department") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHWEST;
+        gc.insets = smallPadding;
+        institutePanel.add(departmentBox, gc);
+
+        ////// Next row//////
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        institutePanel.add(new JLabel(Labels.getProperty("subdepartment") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHWEST;
+        gc.insets = smallPadding;
+        institutePanel.add(subdepartmentBox, gc);
+
+        ////// Next row//////
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        institutePanel.add(new JLabel(Labels.getProperty("role") + ":"), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHWEST;
+        gc.insets = smallPadding;
+        institutePanel.add(roleBox, gc);
+
+        newEmployeePanel.setLayout(new BorderLayout());
+        newEmployeePanel.add(loginPanel, BorderLayout.NORTH);
+        newEmployeePanel.add(institutePanel, BorderLayout.CENTER);
+
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
+
+        Dimension btnSize = okButton.getPreferredSize();
+        cancelButton.setPreferredSize(btnSize);
+
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(okButton);
+        buttonsPanel.add(cancelButton);
+
+        setLayout(new BorderLayout());
+        add(employeePanel, BorderLayout.NORTH);
+        add(newEmployeePanel, BorderLayout.CENTER);
+        add(buttonsPanel, BorderLayout.SOUTH);
+    }
 }

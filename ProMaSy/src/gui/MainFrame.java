@@ -19,7 +19,6 @@ import gui.amunits.AmUnitsDialog;
 import gui.bids.BidsListPanel;
 import gui.conset.ConSetDialog;
 import gui.cpv.CpvDialog;
-import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.EditEmployeeDialog;
 import gui.finance.FinancePanel;
 import gui.instedit.OrganizationDialog;
@@ -34,7 +33,6 @@ public class MainFrame extends JFrame {
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
-    private CreateEmployeeDialog addEmpDialog;
     private InfoDialog infoDialog;
     private CpvDialog cpvDialog;
     private JTabbedPane tabPane;
@@ -62,7 +60,6 @@ public class MainFrame extends JFrame {
         conSettDialog = new ConSetDialog(this);
         editOrgDialog = new OrganizationDialog(this);
         editEmpDialog = new EditEmployeeDialog(this);
-        addEmpDialog = new CreateEmployeeDialog(this);
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
         supplierDialog = new SupplierDialog(this);
@@ -102,14 +99,12 @@ public class MainFrame extends JFrame {
 
         JMenu editMenu = new JMenu(Labels.getProperty("edit"));
         JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
-        JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
-        JMenuItem addEmpItem = new JMenuItem(Labels.withThreeDots("addEmployees"));
+        JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployee"));
         JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"));
         JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"));
         JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
         editMenu.add(editOrgItem);
         editMenu.add(editEmpItem);
-        editMenu.add(addEmpItem);
         editMenu.add(editAmUnitsItem);
         editMenu.add(editProdItem);
         editMenu.add(editSuplItem);
@@ -130,8 +125,6 @@ public class MainFrame extends JFrame {
         editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
 
         editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
-
-        addEmpItem.addActionListener(e -> addEmpDialog.setVisible(true));
 
         editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
 
@@ -164,10 +157,6 @@ public class MainFrame extends JFrame {
 
     public EditEmployeeDialog getEditEmpDialog() {
         return editEmpDialog;
-    }
-
-    public CreateEmployeeDialog getAddEmpDialog() {
-        return addEmpDialog;
     }
 
     public CpvDialog getCpvDialog() {

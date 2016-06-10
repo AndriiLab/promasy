@@ -1,7 +1,9 @@
 package gui.conset;
 
+import model.ConnectionSettingsModel;
+
 public interface ConSetListener {
 
-	void preferencesSetOccurred(ConSetEvent e);
+	void preferencesSetOccurred(ConnectionSettingsModel model);
 
 }
