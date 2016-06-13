@@ -1,10 +1,9 @@
 package gui.empedit;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -98,10 +97,9 @@ public class CreateEmployeeDialog extends JDialog {
             departmentBox.removeAllItems();
             InstituteModel selectedItem = (InstituteModel) instituteBox.getSelectedItem();
             if (!selectedItem.equals(emptyInstituteModel) && listener != null) {
-                    listener.instSelectionEventOccurred(selectedItem.getModelId());
-                }
+                listener.instSelectionEventOccurred(selectedItem.getModelId());
+            }
         });
-
         departmentBox.addActionListener(e -> {
             if (departmentBox.getSelectedItem() == null) {
                 departmentBox.addItem(emptyDepartmentModel);
@@ -113,7 +111,6 @@ public class CreateEmployeeDialog extends JDialog {
                 listener.depSelectionEventOccurred(selectedItem.getModelId());
             }
         });
-
         okButton.addActionListener(e -> {
             if (isValidFields() && listener != null) {
                 if (currentEmployeeModel.getModelId() == 0) {
@@ -124,7 +121,6 @@ public class CreateEmployeeDialog extends JDialog {
                 clearDialog();
             }
         });
-
         cancelButton.addActionListener(e -> clearDialog());
 
         addWindowListener(new WindowAdapter() {
@@ -133,7 +129,6 @@ public class CreateEmployeeDialog extends JDialog {
                 clearDialog();
             }
         });
-
     }
 
     private void clearDialog() {
@@ -175,18 +170,6 @@ public class CreateEmployeeDialog extends JDialog {
             Utils.emptyFieldError(parent, Labels.getProperty("userName"));
             return false;
         }
-        //TODO not secure pass handling
-        String password = new String(passwordField.getPassword());
-        if (password.length() == 0) {
-            passwordField.setDisabledTextColor(Color.RED);
-            Utils.emptyFieldError(parent, Labels.getProperty("password"));
-            return false;
-        }
-        String repeatPassword = new String(repeatPasswordField.getPassword());
-        if (!password.equals(repeatPassword)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("password"));
-            return false;
-        }
         InstituteModel instituteModel = (InstituteModel) instituteBox.getSelectedItem();
         if (instituteModel.equals(emptyInstituteModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("institute"));
@@ -202,22 +185,43 @@ public class CreateEmployeeDialog extends JDialog {
         if (roleModel.equals(emptyRoleModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("role"));
             return false;
-        } else {
-            if (currentEmployeeModel == emptyEmployeeModel) {
-                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getModelId(), login, password);
-            } else {
-                currentEmployeeModel.setEmpFName(firstName);
-                currentEmployeeModel.setEmpMName(middleName);
-                currentEmployeeModel.setEmpLName(lastName);
-                currentEmployeeModel.setDepId(departmentModel.getModelId());
-                currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
-                currentEmployeeModel.setRoleId(roleModel.getModelId());
-                currentEmployeeModel.setLogin(login);
-                currentEmployeeModel.setPassword(password);
-            }
-            return true;
         }
+        char[] password = passwordField.getPassword();
+        char[] repeatPassword = repeatPasswordField.getPassword();
+        // Generating new salt in case of creation of new user or password change for old user
+        if (currentEmployeeModel == emptyEmployeeModel || password.length > 0 || repeatPassword.length > 0) {
+            long salt = Utils.makeSalt();
+            if (password.length == 0) {
+                passwordField.setDisabledTextColor(Color.RED);
+                Utils.emptyFieldError(parent, Labels.getProperty("password"));
+                return false;
+            }
+            if (!Arrays.equals(password, repeatPassword)) {
+                Utils.emptyFieldError(parent, Labels.getProperty("password"));
+                return false;
+            }
+            String pass = Utils.makePass(password, salt);
+            // if model empty create new user
+            if (currentEmployeeModel == emptyEmployeeModel) {
+                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getModelId(), login, pass, salt);
+                return true;
+            } else {
+                // else - update existing
+                currentEmployeeModel.setSalt(salt);
+                currentEmployeeModel.setPassword(pass);
+            }
+        }
+        // executes when all fields ok, but we don't want to change the pass
+        currentEmployeeModel.setEmpFName(firstName);
+        currentEmployeeModel.setEmpMName(middleName);
+        currentEmployeeModel.setEmpLName(lastName);
+        currentEmployeeModel.setDepId(departmentModel.getModelId());
+        currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
+        currentEmployeeModel.setRoleId(roleModel.getModelId());
+        currentEmployeeModel.setLogin(login);
+        return true;
     }
+
 
     void setEmployeeModel(EmployeeModel model) {
         this.currentEmployeeModel = model;
@@ -225,9 +229,6 @@ public class CreateEmployeeDialog extends JDialog {
         middleNameField.setText(currentEmployeeModel.getEmpMName());
         lastNameField.setText(currentEmployeeModel.getEmpLName());
         loginField.setText(currentEmployeeModel.getLogin());
-        //TODO not secure pass handling
-        passwordField.setText(currentEmployeeModel.getPassword());
-        repeatPasswordField.setText(currentEmployeeModel.getPassword());
         Utils.setBoxFromModel(roleBox, currentEmployeeModel.getRoleId());
         Utils.setBoxFromModel(instituteBox, currentEmployeeModel.getInstId());
         Utils.setBoxFromModel(departmentBox, currentEmployeeModel.getDepId());

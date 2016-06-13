@@ -1,7 +1,5 @@
 package model;
 
-import java.util.EventObject;
-
 public class ConnectionSettingsModel {
 	private String server;
 	private String database;
@@ -10,10 +8,7 @@ public class ConnectionSettingsModel {
 	private String user;
 	private String password;
 
-	public ConnectionSettingsModel() {
-
-	}
-	public ConnectionSettingsModel(String server, String database, String schema, int portNumber, String user,
+    public ConnectionSettingsModel(String server, String database, String schema, int portNumber, String user,
 								   String password) {
 		this.server = server;
 		this.schema = schema;

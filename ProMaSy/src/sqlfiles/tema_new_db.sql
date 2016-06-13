@@ -144,12 +144,13 @@ CREATE TABLE employees (
 	subdep_id BIGINT,
 	roles_id BIGINT NOT NULL REFERENCES roles (roles_id),
 	login varchar(20) NOT NULL,
-	password varchar(20) NOT NULL,
+	password varchar(64) NOT NULL,
   created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by BIGINT,
   modified_date TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT TRUE,
+  salt bigint NOT NULL,
   UNIQUE (emp_id, login)
 );
 

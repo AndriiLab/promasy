@@ -81,7 +81,7 @@ public class SupplierDialog extends JDialog {
                     telField.setText("");
                     commentsPane.setText("");
                 }
-            } else if (item instanceof String && !item.equals(null)) {
+            } else if (item instanceof String && item != null) {
                 newSuplName = (String) item;
             }
         });

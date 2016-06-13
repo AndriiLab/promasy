@@ -16,13 +16,14 @@ public class EmployeeModel extends AbstractModel {
 	private String roleName;
 	private String login;
 	private String password;
+	private long salt;
 	
 	public EmployeeModel() {
 	}
 	
 	public EmployeeModel(String empFName, String empMName, 
 			String empLName, long depId, long subdepId, 
-			long roleId, String login, String password) {
+			long roleId, String login, String password, long salt) {
 		this.empFName = empFName;
 		this.empMName = empMName;
 		this.empLName = empLName;
@@ -31,11 +32,12 @@ public class EmployeeModel extends AbstractModel {
 		this.roleId = roleId;
 		this.login = login;
 		this.password = password;
+		this.salt = salt;
 	}
 	
 	public EmployeeModel(long empId, String empFName, String empMName, String empLName, long instId, String instName,
 			long depId, String depName, long subdepId, String subdepName, long roleId, String roleName, String login,
-			String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
+			String password, long salt, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
 		super(empId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.empFName = empFName;
@@ -51,6 +53,7 @@ public class EmployeeModel extends AbstractModel {
 		this.roleName = roleName;
 		this.login = login;
 		this.password = password;
+        this.salt = salt;
 	}
 
 	public String getEmpFName() {
@@ -156,12 +159,20 @@ public class EmployeeModel extends AbstractModel {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	
-	public String toString() {
+
+    public long getSalt() {
+        return salt;
+    }
+
+    public void setSalt(long salt) {
+        this.salt = salt;
+    }
+
+    public String toString() {
 		if(empFName != null && empLName != null && empMName != null){
 			return empLName + " " + empFName.substring(0, 1) + "."
 					+ empMName.substring(0, 1)+".";
 		}
-		return null;
+		return "";
 	}
 }

@@ -15,11 +15,9 @@ public class Toolbar extends JToolBar implements ActionListener {
 		setFloatable(false);
 		printBtn = new JButton();
 		printBtn.setToolTipText(Labels.getProperty("print"));
-		printBtn.setIcon(Utils.createIcon("/images/Print16.gif"));
-
-		printBtn.addActionListener(this);
-
+		printBtn.setIcon(Utils.createIcon("/images/Prnt16.gif"));
 		add(printBtn);
+        printBtn.addActionListener(this);
 	}
 
 	public void setToolbarListener(ToolbarListener listener) {

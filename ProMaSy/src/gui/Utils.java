@@ -3,14 +3,20 @@ package gui;
 import model.AbstractModel;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.swing.*;
+import javax.xml.bind.DatatypeConverter;
 
 public class Utils {
 	public static ImageIcon createIcon(String path){
 		URL url = System.class.getResource(path);
 		if(url == null){
-			System.err.println("Unable to load icon: "+path);
+            return createIcon("images/Applet16.gif");
 		}
 		return new ImageIcon(url);
 	}
@@ -31,5 +37,22 @@ public class Utils {
                 Labels.getProperty("enterDataIntoField") + " \"" + fieldName + "\"",
                 Labels.getProperty("fieldCannotBeEmpty") + " \"" + fieldName + "\"",
                 JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static long makeSalt(){
+        return new SecureRandom().nextLong();
+    }
+
+    public static String makePass(char[] pass, long salt) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(new String(pass).getBytes(StandardCharsets.UTF_8));
+            md.update(ByteBuffer.allocate(Long.BYTES).putLong(salt).array());
+            return DatatypeConverter.printHexBinary(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            //Bad practice
+            e.printStackTrace();
+            return "";
+        }
     }
 }

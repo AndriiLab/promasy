@@ -1,15 +1,10 @@
 package gui.login;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import gui.Labels;
+import gui.Utils;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,9 +22,12 @@ public class LoginDialog extends JDialog {
 	private JTextField userField;
 	private JPasswordField passwordField;
     private LoginListener loginListener;
+    private JFrame parent;
+    private long salt;
 
 	public LoginDialog(JFrame parent) {
 		super(parent, Labels.getProperty("loginDialogSuper"), false);
+        this.parent = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(220, 150);
 		setResizable(false);
@@ -96,37 +94,44 @@ public class LoginDialog extends JDialog {
 
 		// Add subpanels to dialog
 		setLayout(new BorderLayout());
-		add(loginPanel, BorderLayout.CENTER);
-		add(buttonsPanel, BorderLayout.SOUTH);
+        add(loginPanel, BorderLayout.CENTER);
+        add(buttonsPanel, BorderLayout.SOUTH);
 
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String username = userField.getText();
-				String passw = new String(passwordField.getPassword());
-				
-				if (username.length() > 0 && passw.length() > 0) {
-					LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);
-
-					if (loginListener != null) {
-						loginListener.loginAttemptOccurred(ev);
-					}
-				} else JOptionPane.showMessageDialog(parent,
-                        Labels.getProperty("noCredentialsMessage"),
-                        Labels.getProperty("noCredentialsTitle"),
-                        JOptionPane.ERROR_MESSAGE);
-			}
-		});
+        okButton.addActionListener(e -> {
+            String username = userField.getText();
+            if (username.length() > 0 && loginListener != null) {
+                loginListener.usernameEntered(username);
+                String passw = Utils.makePass(passwordField.getPassword(), salt);
+                if (salt != 0 && passw.length() > 0 && loginListener != null) {
+                    LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);
+                    loginListener.loginAttemptOccurred(ev);
+                } else if (salt != 0 || passw.length() > 0) {
+                    showLoginError();
+                }
+            } else showLoginError();
+        });
 
 		cancelButton.addActionListener(ev -> {
             if (loginListener != null) {
-                loginListener.loginCancelled(ev);
+                loginListener.loginCancelled();
             }
         });
 		
 		this.getRootPane().setDefaultButton(okButton);
 	}
 
-	public void setLoginListener(LoginListener loginListener) {
+    public void setSalt(long salt) {
+        this.salt = salt;
+    }
+
+    public void setLoginListener(LoginListener loginListener) {
 		this.loginListener = loginListener;
 	}
+
+    public void showLoginError(){
+        JOptionPane.showMessageDialog(parent,
+                Labels.getProperty("noCredentialsMessage"),
+                Labels.getProperty("noCredentialsTitle"),
+                JOptionPane.ERROR_MESSAGE);
+    }
 }

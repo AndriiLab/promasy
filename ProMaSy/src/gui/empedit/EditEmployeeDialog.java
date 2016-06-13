@@ -11,11 +11,7 @@ import javax.swing.*;
 
 import gui.Labels;
 import gui.Utils;
-import model.DepartmentModel;
 import model.EmployeeModel;
-import model.InstituteModel;
-import model.RoleModel;
-import model.SubdepartmentModel;
 
 public class EditEmployeeDialog extends JDialog {
 

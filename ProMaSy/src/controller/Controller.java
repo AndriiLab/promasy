@@ -7,8 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Deque;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Properties;
 import java.util.prefs.Preferences;
@@ -50,6 +48,11 @@ public class Controller {
         // loginDialog appears first to MainFrame
         mainFrame.getLoginDialog().setVisible(true);
         mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
+            @Override
+            public void usernameEntered(String username) {
+                mainFrame.getLoginDialog().setSalt(getSalt(username));
+            }
+
             public void loginAttemptOccurred(LoginAttemptEvent ev) {
                 if (checkLogin(ev.getUsername(), ev.getPassword())) {
                     // if login was successful setting MainFrame visible
@@ -71,7 +74,7 @@ public class Controller {
             }
 
             // if user changed his mind about login call close method
-            public void loginCancelled(EventObject ev) {
+            public void loginCancelled() {
                 close();
             }
         });
@@ -179,13 +182,6 @@ public class Controller {
             public void editEmployeeEventOccurred(EmployeeModel model) {
                 setModified(model);
                 editEmployee(model);
-                getEmployees();
-                mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
-                mainFrame.getEditEmpDialog().refresh();
-            }
-
-            public void createPersonEventOccurred(EmployeeModel model) {
-                createEmployee(model);
                 getEmployees();
                 mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
                 mainFrame.getEditEmpDialog().refresh();
@@ -537,6 +533,16 @@ public class Controller {
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private long getSalt(String login){
+        try {
+            return Database.EMPLOYEES.getSalt(login);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //bad practice
+            return 0;
         }
     }
 

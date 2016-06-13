@@ -11,18 +11,10 @@ public class CpvReqEvent extends EventObject {
 		this.cpvRequest = cpvRequest;
 		this.sameLvlShow = sameLvlShow;
 	}
-
 	public String getCpvRequest() {
 		return cpvRequest;
 	}
-	
 	public boolean isSameLvlShow(){
 		return sameLvlShow;
 	}
-
-	public void setCpvRequest(String cpvRequest, boolean sameLvlShow) {
-		this.cpvRequest = cpvRequest;
-		this.sameLvlShow = sameLvlShow;
-	}
-
 }

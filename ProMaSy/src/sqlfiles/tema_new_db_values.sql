@@ -18,7 +18,7 @@ VALUES
 ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
 
 SET SCHEMA 'inst_db';
-CREATE OR REPLACE FUNCTION check_login (user TEXT, pass TEXT) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE FUNCTION check_login ("user" TEXT, pass TEXT) RETURNS BOOLEAN AS $$
 DECLARE exists BOOLEAN;
 BEGIN
 	SELECT (password = $2) INTO exists

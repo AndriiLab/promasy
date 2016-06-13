@@ -12,7 +12,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {
-		String query = "INSERT INTO employees (emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO employees (emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date, salt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
@@ -24,6 +24,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setString(8, object.getPassword());
 		prepStmt.setLong(9, object.getCreatedBy());
 		prepStmt.setTimestamp(10, object.getCreatedDate());
+		prepStmt.setLong(11, object.getSalt());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
@@ -38,7 +39,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 				"employees.login, employees.password, "+
 				"employees.created_by, employees.created_date, "+
 				"employees.modified_by, employees.modified_date, "+
-				"employees.active "+
+				"employees.active, employees.salt "+
 			"FROM employees "+
 			"INNER JOIN departments ON employees.dep_id = departments.dep_id "+
 			"LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
@@ -63,7 +64,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
                 "employees.login, employees.password, "+
                 "employees.created_by, employees.created_date, "+
                 "employees.modified_by, employees.modified_date, "+
-                "employees.active "+
+                "employees.active, employees.salt "+
                 "FROM employees "+
                 "INNER JOIN departments ON employees.dep_id = departments.dep_id "+
                 "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
@@ -96,6 +97,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
             String roleName = results.getString("roles_name");
             String login = results.getString("login");
             String password = results.getString("password");
+			long salt = results.getLong("salt");
             long createdBy = results.getLong("created_by");
             Timestamp createdDate = results.getTimestamp("created_date");
             long modifiedBy = results.getLong("modified_by");
@@ -104,14 +106,14 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 
             EmployeeModel empModel = new EmployeeModel(empId, empFName, empMName, empLName,
                     instId, instName, depId, depName, subdepId, subdepName, roleId,
-                    roleName, login, password, createdBy, createdDate, modifiedBy,
+                    roleName, login, password, salt, createdBy, createdDate, modifiedBy,
                     modifiedDate, active);
             list.add(empModel);
         }
     }
 
 	public void update(EmployeeModel object) throws SQLException {
-		String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=? WHERE emp_id=?";
+		String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=?, salt=? WHERE emp_id=?";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
@@ -124,7 +126,8 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setLong(9, object.getModifiedBy());
 		prepStmt.setTimestamp(10, object.getModifiedDate());
 		prepStmt.setBoolean(11, object.isActive());
-		prepStmt.setLong(12, object.getModelId());
+        prepStmt.setLong(12, object.getSalt());
+		prepStmt.setLong(13, object.getModelId());
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
@@ -138,9 +141,19 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.executeUpdate();
 		prepStmt.close();
 	}
+
+    public long getSalt(String username) throws SQLException {
+        String query = "SELECT employees.salt FROM employees WHERE employees.login = ? AND employees.active = true";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setString(1, username);
+        ResultSet results = prepStmt.executeQuery();
+        if (results.next()) {
+            return results.getLong("salt");
+        }
+        return 0;
+    }
 	
 	public boolean checkLogin(String username, String password) throws SQLException{
-		
 		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
 				"departments.inst_id, employees.dep_id, employees.subdep_id, employees.roles_id, employees.login, " +
                 "employees.password, employees.created_by, employees.created_date, employees.modified_by, " +
