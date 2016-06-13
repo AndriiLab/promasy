@@ -8,6 +8,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -43,6 +45,7 @@ public class MainFrame extends JFrame {
     private SupplierDialog supplierDialog;
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
+    private LoggerDialog loggerDialog;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -69,6 +72,7 @@ public class MainFrame extends JFrame {
         financePanel = new FinancePanel(this);
         tabPane = new JTabbedPane();
         bidsListPanel = new BidsListPanel(this);
+        loggerDialog = new LoggerDialog(this);
 
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
@@ -81,6 +85,12 @@ public class MainFrame extends JFrame {
         add(toolbar, BorderLayout.PAGE_START);
         add(tabPane, BorderLayout.CENTER);
         add(statusPanel, BorderLayout.SOUTH);
+        statusPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                loggerDialog.setVisible(true);
+            }
+        });
     }
 
 
@@ -197,5 +207,9 @@ public class MainFrame extends JFrame {
 
     public SupplierDialog getSupplierDialog() {
         return supplierDialog;
+    }
+
+    public LoggerDialog getLoggerDialog() {
+        return loggerDialog;
     }
 }

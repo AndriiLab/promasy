@@ -2,17 +2,25 @@ package gui;
 
 import model.AbstractModel;
 
+import java.awt.*;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
 
 public class Utils {
+    public static final Color GREEN = new Color(0, 153, 51);
+    public static final Color RED = new Color(204, 0, 0);
+
+    public static Timestamp getCurrentTime(){
+        return new Timestamp(System.currentTimeMillis());
+    }
 	public static ImageIcon createIcon(String path){
 		URL url = System.class.getResource(path);
 		if(url == null){

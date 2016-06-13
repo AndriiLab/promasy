@@ -3,16 +3,17 @@
  */
 package controller;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.Labels;
 import gui.MainFrame;
@@ -45,7 +46,7 @@ public class Controller {
             }
         });
 
-        // loginDialog appears first to MainFrame
+        // loginDialog appears first, right before the MainFrame
         mainFrame.getLoginDialog().setVisible(true);
         mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
             @Override
@@ -58,7 +59,7 @@ public class Controller {
                     // if login was successful setting MainFrame visible
                     mainFrame.setVisible(true);
                     mainFrame.getLoginDialog().setVisible(false);
-                    mainFrame.getStatusPanel().setCurrentUser(LoginData.getInstance().getShortName());
+                    mainFrame.getStatusPanel().setCurrentUserLabel(LoginData.getInstance().getShortName());
                     //post login requests to DB
                     //setting to FinancePanel departments data relative to login person
                     getDepartments(LoginData.getInstance().getInstId());
@@ -450,6 +451,15 @@ public class Controller {
         mainFrame.getExitItem().addActionListener(ev -> closeDialog());
     }
 
+    private void logEvent(String message, Color color){
+        mainFrame.getStatusPanel().setStatus(message, color);
+        mainFrame.getLoggerDialog().addToLog(message, color);
+    }
+
+    private void extendedErrorLog(String message){
+        mainFrame.getLoggerDialog().addToLog(message, Utils.RED);
+    }
+
 
     // sets connection settings to Properties object
     private void setConnectionSettings(String host, String database, String schema,
@@ -469,7 +479,10 @@ public class Controller {
     private void connect() {
         try {
             Database.DB.connect(conSet);
+            logEvent(Labels.getProperty("connectedToDB"), Utils.GREEN);
         } catch (Exception e) {
+            e.printStackTrace();
+            logEvent(Labels.getProperty("NoConnectionToDB"), Utils.RED);
             JOptionPane.showMessageDialog(mainFrame,
                     Labels.getProperty("NoConnectionToDB"),
                     Labels.getProperty("DatabaseConnectionError"),
@@ -487,12 +500,12 @@ public class Controller {
     //general methods for loging modifications in DB entries
     private <T extends AbstractModel> void setCreated(T model) {
         model.setCreatedBy(LoginData.getInstance().getEmpId());
-        model.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        model.setCreatedDate(Utils.getCurrentTime());
     }
 
     private <T extends AbstractModel> void setModified(T model) {
         model.setModifiedBy(LoginData.getInstance().getEmpId());
-        model.setModifiedDate(new Timestamp(System.currentTimeMillis()));
+        model.setModifiedDate(Utils.getCurrentTime());
     }
 
     private <T extends AbstractModel> void setInactive(T model) {
@@ -505,8 +518,11 @@ public class Controller {
     private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
         try {
             Database.CPV.retrieve(cpvRequest, sameLvlShow);
-        } catch (SQLException e1) {
-            e1.printStackTrace();
+            logEvent(Labels.withColon("cpvRequest")+cpvRequest+Labels.withSpaceBefore("success"), Utils.GREEN);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logEvent(Labels.withColon("cpvRequest")+cpvRequest+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -515,6 +531,8 @@ public class Controller {
             Database.ROLES.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("role")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -522,8 +540,9 @@ public class Controller {
         try {
             Database.EMPLOYEES.retrieve();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -531,8 +550,9 @@ public class Controller {
         try {
             Database.EMPLOYEES.retrieve(depId);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+" dep id: "+depId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -541,7 +561,8 @@ public class Controller {
             return Database.EMPLOYEES.getSalt(login);
         } catch (SQLException e) {
             e.printStackTrace();
-            //bad practice
+            logEvent("Salt retrieval error with login: "+login, Utils.RED);
+            extendedErrorLog(e.toString());
             return 0;
         }
     }
@@ -551,6 +572,8 @@ public class Controller {
             Database.INSTITUTES.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("institute")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -558,8 +581,9 @@ public class Controller {
         try {
             Database.DEPARTMENTS.retrieve(instId);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("department")+" inst id: "+instId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -567,8 +591,9 @@ public class Controller {
         try {
             Database.SUBDEPARTMENS.retrieve(depId);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("subdepartment")+" dep id: "+depId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -576,8 +601,9 @@ public class Controller {
         try {
             Database.AMOUNTUNITS.retrieve();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("amount")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -586,6 +612,8 @@ public class Controller {
             Database.PRODUCERS.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("producer")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -594,6 +622,8 @@ public class Controller {
             Database.SUPPLIERS.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("suplBorder")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -602,6 +632,8 @@ public class Controller {
             Database.FINANCES.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("finances")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -610,6 +642,8 @@ public class Controller {
             Database.DEPARTMENT_FINANCES.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -619,6 +653,8 @@ public class Controller {
             Database.DEPARTMENT_FINANCES.retrieveByOrderID(orderId);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+" order Id: "+orderId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -627,6 +663,8 @@ public class Controller {
             Database.DEPARTMENT_FINANCES.retrieveByDepartmentID(departmentId);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+" department Id: "+departmentId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -635,8 +673,9 @@ public class Controller {
         try {
             return Database.EMPLOYEES.checkLogin(username, password);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+" :"+username+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
         return false;
     }
@@ -646,6 +685,8 @@ public class Controller {
             Database.BIDS.retrieve();
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("bids")+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -654,6 +695,8 @@ public class Controller {
             Database.BIDS.retrieve(departmentId, orderId);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("bids")+" order ID: "+orderId+" department ID: "+departmentId+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -662,9 +705,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.EMPLOYEES.create(model);
+            logEvent(Labels.withColon("createNewEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("createNewEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -672,9 +717,11 @@ public class Controller {
         setModified(model);
         try {
             Database.EMPLOYEES.update(model);
+            logEvent(Labels.withColon("editEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("editEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -682,9 +729,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.EMPLOYEES.delete(model);
+            logEvent(Labels.withColon("deleteEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("deleteEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -693,9 +742,11 @@ public class Controller {
         setCreated(instModel);
         try {
             Database.INSTITUTES.create(instModel);
+            logEvent(Labels.withColon("addInstitute")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("addInstitute")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -703,9 +754,11 @@ public class Controller {
         setModified(instModel);
         try {
             Database.INSTITUTES.update(instModel);
+            logEvent(Labels.withColon("editInstitite")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("editInstitite")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
 
     }
@@ -714,9 +767,11 @@ public class Controller {
         setInactive(instModel);
         try {
             Database.INSTITUTES.delete(instModel);
+            logEvent(Labels.withColon("delInstitite")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("delInstitite")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -725,9 +780,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.DEPARTMENTS.create(model);
+            logEvent(Labels.withColon("addDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("addDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -735,9 +792,11 @@ public class Controller {
         setModified(model);
         try {
             Database.DEPARTMENTS.update(model);
+            logEvent(Labels.withColon("editDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("editDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -745,9 +804,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.DEPARTMENTS.delete(model);
+            logEvent(Labels.withColon("delDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("delDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -756,9 +817,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.SUBDEPARTMENS.create(model);
+            logEvent(Labels.withColon("addSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("addSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -766,9 +829,11 @@ public class Controller {
         setModified(model);
         try {
             Database.SUBDEPARTMENS.update(model);
+            logEvent(Labels.withColon("editSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("editSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -776,9 +841,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUBDEPARTMENS.delete(model);
+            logEvent(Labels.withColon("delSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logEvent(Labels.withColon("delSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -787,8 +854,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.AMOUNTUNITS.create(model);
+            logEvent(Labels.withColon("addAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("addAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -796,8 +866,11 @@ public class Controller {
         setModified(model);
         try {
             Database.AMOUNTUNITS.update(model);
+            logEvent(Labels.withColon("editAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -805,8 +878,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.AMOUNTUNITS.delete(model);
+            logEvent(Labels.withColon("delAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("delAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -815,8 +891,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.PRODUCERS.create(model);
+            logEvent(Labels.withColon("addProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("addProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -824,8 +903,11 @@ public class Controller {
         setModified(model);
         try {
             Database.PRODUCERS.update(model);
+            logEvent(Labels.withColon("editProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -833,8 +915,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.PRODUCERS.delete(model);
+            logEvent(Labels.withColon("delProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("delProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -843,8 +928,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.SUPPLIERS.create(model);
+            logEvent(Labels.withColon("addSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("addSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -852,8 +940,11 @@ public class Controller {
         setModified(model);
         try {
             Database.SUPPLIERS.update(model);
+            logEvent(Labels.withColon("editSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -861,8 +952,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUPPLIERS.delete(model);
+            logEvent(Labels.withColon("delSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("delSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -871,8 +965,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.FINANCES.create(model);
+            logEvent(Labels.withColon("createOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("createOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -880,8 +977,11 @@ public class Controller {
         setModified(model);
         try {
             Database.FINANCES.update(model);
+            logEvent(Labels.withColon("editOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -889,8 +989,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.FINANCES.delete(model);
+            logEvent(Labels.withColon("deleteOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("deleteOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
     //CRUD Department Finances
@@ -898,8 +1001,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.DEPARTMENT_FINANCES.create(model);
+            logEvent(Labels.withColon("addDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("addDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -907,8 +1013,11 @@ public class Controller {
         setModified(model);
         try {
             Database.DEPARTMENT_FINANCES.update(model);
+            logEvent(Labels.withColon("editDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -916,8 +1025,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.DEPARTMENT_FINANCES.delete(model);
+            logEvent(Labels.withColon("deleteDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("deleteDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -926,8 +1038,11 @@ public class Controller {
         setCreated(model);
         try {
             Database.BIDS.create(model);
+            logEvent(Labels.withColon("createBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("createBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -935,8 +1050,11 @@ public class Controller {
         setModified(model);
         try {
             Database.BIDS.update(model);
+            logEvent(Labels.withColon("editBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("editBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 
@@ -944,8 +1062,11 @@ public class Controller {
         setInactive(model);
         try {
             Database.BIDS.delete(model);
+            logEvent(Labels.withColon("deleteBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
+            logEvent(Labels.withColon("deleteBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
+            extendedErrorLog(e.toString());
         }
     }
 

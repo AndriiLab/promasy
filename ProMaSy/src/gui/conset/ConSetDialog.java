@@ -167,8 +167,7 @@ public class ConSetDialog extends JDialog {
 		buttonsPanel.add(okButton, gc);
 		buttonsPanel.add(cancelButton, gc);
 
-		Dimension btnSize = cancelButton.getPreferredSize();
-		okButton.setPreferredSize(btnSize);
+		okButton.setPreferredSize(cancelButton.getPreferredSize());
 
 		// Add subpanels to dialog
 		setLayout(new BorderLayout());
