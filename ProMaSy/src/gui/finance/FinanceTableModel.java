@@ -1,10 +1,12 @@
 package gui.finance;
 
 import gui.Labels;
+import gui.Utils;
 import model.FinanceModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.List;
 
@@ -53,9 +55,15 @@ class FinanceTableModel extends AbstractTableModel {
             case 1:
                 return model;
             case 2:
-                return model.getTotalAmount();
+                BigDecimal totalAmount = model.getTotalAmount();
+                if (totalAmount == null){
+                    return Utils.ZERO_VALUE;
+                } else return totalAmount.setScale(2, RoundingMode.CEILING);
             case 3:
-                return model.getLeftAmount();
+                BigDecimal leftAmount = model.getLeftAmount();
+                if (leftAmount == null){
+                    return Utils.ZERO_VALUE;
+                } else return leftAmount.setScale(2, RoundingMode.CEILING);
             case 4:
                 return model.getStartDate();
             case 5:

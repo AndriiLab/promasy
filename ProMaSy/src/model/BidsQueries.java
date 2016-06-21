@@ -1,10 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 /**
  * Created by AL on 25.05.2016.
@@ -51,12 +48,25 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt.close();
     }
 
+    public void retrieve(long departmentId) throws SQLException {
+        list.clear();
+        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE AND bids.dep_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+
+        getResults(results);
+
+        results.close();
+        prepStmt.close();
+    }
+
     public void retrieve(long departmentId, long orderId) throws SQLException {
         list.clear();
-        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE AND bids.order_id = ? AND employees.dep_id = ?";
+        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE AND bids.dep_id = ? AND bids.order_id = ?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
-        prepStmt.setLong(1, orderId);
-        prepStmt.setLong(2, departmentId);
+        prepStmt.setLong(1, departmentId);
+        prepStmt.setLong(2, orderId);
         ResultSet results = prepStmt.executeQuery();
 
         getResults(results);
@@ -129,4 +139,42 @@ public class BidsQueries extends SQLQueries<BidModel>{
         }
     }
 
+    public BigDecimal getSum() throws SQLException {
+        String query = "SELECT sum(one_price*amount) FROM bids WHERE active = TRUE";
+        Statement selectStmt = Database.DB.getConnection().createStatement();
+        ResultSet results = selectStmt.executeQuery(query);
+        results.next();
+        BigDecimal sum = results.getBigDecimal("sum");
+        if (sum == null){
+            return BigDecimal.ZERO;
+        }
+        return sum;
+    }
+
+    public BigDecimal getSum(long departmentId) throws SQLException {
+        String query = "SELECT sum(one_price*amount) FROM bids WHERE active = TRUE AND dep_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+        results.next();
+        BigDecimal sum = results.getBigDecimal("sum");
+        if (sum == null){
+            return BigDecimal.ZERO;
+        }
+        return sum;
+    }
+
+    public BigDecimal getSum(long departmentId, long orderId) throws SQLException {
+        String query = "SELECT sum(one_price*amount) FROM bids WHERE active = TRUE AND dep_id = ? AND order_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
+        prepStmt.setLong(2, orderId);
+        ResultSet results = prepStmt.executeQuery();
+        results.next();
+        BigDecimal sum = results.getBigDecimal("sum");
+        if (sum == null){
+            return BigDecimal.ZERO;
+        }
+        return sum;
+    }
 }

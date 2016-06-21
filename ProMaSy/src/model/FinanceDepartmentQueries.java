@@ -141,10 +141,9 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
             String empLName = results.getString("emp_lname");
             String empName = getName(empFName, empMName, empLName);
             BigDecimal totalAmount = results.getBigDecimal("order_amount");
-//            TODO
-//            BigDecimal leftAmount = results.getBigDecimal("");
+            BigDecimal leftAmount = FinanceQueries.financeLeft(orderId, depId, totalAmount);
 
-            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, null);
+            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, leftAmount);
             list.add(financeDepartmentModel);
         }
     }
@@ -157,7 +156,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         else if (empFName != null && empLName != null){
             return empLName + " " + empFName.substring(0, 1) + ".";
         }
-        else if (empFName != null){
+        else if (empLName != null){
             return empLName;
         }
         return null;

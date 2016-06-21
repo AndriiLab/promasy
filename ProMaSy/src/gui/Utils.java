@@ -3,6 +3,7 @@ package gui;
 import model.AbstractModel;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +18,8 @@ import javax.xml.bind.DatatypeConverter;
 public class Utils {
     public static final Color GREEN = new Color(0, 153, 51);
     public static final Color RED = new Color(204, 0, 0);
+
+    public static final BigDecimal ZERO_VALUE = BigDecimal.valueOf(0.00);
 
     public static Timestamp getCurrentTime(){
         return new Timestamp(System.currentTimeMillis());
@@ -44,6 +47,13 @@ public class Utils {
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("enterDataIntoField") + " \"" + fieldName + "\"",
                 Labels.getProperty("fieldCannotBeEmpty") + " \"" + fieldName + "\"",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void wrongFormatError(JFrame parent, String fieldName, String hints) {
+        JOptionPane.showMessageDialog(parent,
+                Labels.getProperty("wrongFormat")+ " \"" + fieldName + "\"\n" + Labels.getProperty("checkInput") + "\"\n" + hints,
+                Labels.getProperty("fieldErr"),
                 JOptionPane.ERROR_MESSAGE);
     }
 

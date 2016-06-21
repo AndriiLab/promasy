@@ -6,6 +6,8 @@ package controller;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
@@ -49,7 +51,6 @@ public class Controller {
         // loginDialog appears first, right before the MainFrame
         mainFrame.getLoginDialog().setVisible(true);
         mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
-            @Override
             public void usernameEntered(String username) {
                 mainFrame.getLoginDialog().setSalt(getSalt(username));
             }
@@ -113,7 +114,7 @@ public class Controller {
         setConnectionSettings(server, database, schema,
                 Integer.toString(portNumber), user, password);
 
-        //connecting with DB and loading default data to frames and dialogs
+        //connecting with DB and loading default data into models
         connect();
         getCpvRequest("", true);
         getRolesRequest();
@@ -125,10 +126,10 @@ public class Controller {
         getFinances();
         getBids();
         getDepartmentFinancesByOrder(0);
+        //showing loaded data in view
         mainFrame.getCpvDialog().setData(Database.CPV.getList());
-        instModelList = Database.INSTITUTES.getList();
-        mainFrame.getEditOrgDialog().setInstData(instModelList);
-        mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(instModelList);
+        mainFrame.getEditOrgDialog().setInstData(Database.INSTITUTES.getList());
+        mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(Database.INSTITUTES.getList());
         mainFrame.getEditEmpDialog().setEmpTableData(Database.EMPLOYEES.getList());
         mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setRolesData(Database.ROLES.getList());
         mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
@@ -140,6 +141,7 @@ public class Controller {
         mainFrame.getBidsListPanel().setProducerBoxData(Database.PRODUCERS.getList());
         mainFrame.getBidsListPanel().setSupplierBoxData(Database.SUPPLIERS.getList());
         mainFrame.getBidsListPanel().setAmUnitsBoxData(Database.AMOUNTUNITS.getList());
+        mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
 
         //setting listeners to frames and dialogs
         mainFrame.getCpvDialog().setCpvListener(ev -> {
@@ -148,7 +150,7 @@ public class Controller {
         });
 
         mainFrame.getToolbar().setToolbarListener(() -> {
-            //TODO
+            //TODO print function
             System.out.println("test for 'print' button");
         });
 
@@ -170,7 +172,6 @@ public class Controller {
                 mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setSubdepData(Database.SUBDEPARTMENS.getList());
             }
 
-            @Override
             public void createEmployeeEventOccurred(EmployeeModel model) {
                 setCreated(model);
                 createEmployee(model);
@@ -179,7 +180,6 @@ public class Controller {
                 mainFrame.getEditEmpDialog().refresh();
             }
 
-            @Override
             public void editEmployeeEventOccurred(EmployeeModel model) {
                 setModified(model);
                 editEmployee(model);
@@ -263,7 +263,6 @@ public class Controller {
         });
 
         mainFrame.getAmUnitsDialog().setListener(new AmUnitsDialogListener() {
-            @Override
             public void createEventOccurred(AmountUnitsModel model) {
                 createAmUnit(model);
                 getAmUnits();
@@ -271,14 +270,12 @@ public class Controller {
                 mainFrame.getBidsListPanel().getCreateBidDialog().setAmUnitsBoxData(Database.AMOUNTUNITS.getList());
             }
 
-            @Override
             public void editEventOccurred(AmountUnitsModel model) {
                 editAmUnit(model);
                 getAmUnits();
                 mainFrame.getAmUnitsDialog().setData(Database.AMOUNTUNITS.getList());
             }
 
-            @Override
             public void deleteEventOccurred(AmountUnitsModel model) {
                 deleteAmUnit(model);
                 getAmUnits();
@@ -287,7 +284,6 @@ public class Controller {
         });
 
         mainFrame.getProducerDialog().setListener(new ProducerDialogListener() {
-            @Override
             public void createProdEventOccurred(ProducerModel model) {
                 createProd(model);
                 getProd();
@@ -295,14 +291,12 @@ public class Controller {
                 mainFrame.getBidsListPanel().getCreateBidDialog().setProducerBoxData(Database.PRODUCERS.getList());
             }
 
-            @Override
             public void editProdEventOccurred(ProducerModel model) {
                 editProd(model);
                 getProd();
                 mainFrame.getProducerDialog().setProdData(Database.PRODUCERS.getList());
             }
 
-            @Override
             public void deleteProdEventOccurred(ProducerModel model) {
                 deleteProd(model);
                 getProd();
@@ -311,7 +305,6 @@ public class Controller {
         });
 
         mainFrame.getSupplierDialog().setListener(new SupplierDialogListener() {
-            @Override
             public void createSuplEventOccurred(SupplierModel model) {
                 createSupl(model);
                 getSupl();
@@ -319,14 +312,12 @@ public class Controller {
                 mainFrame.getBidsListPanel().getCreateBidDialog().setSupplierBoxData(Database.SUPPLIERS.getList());
             }
 
-            @Override
             public void editSuplEventOccurred(SupplierModel model) {
                 editSupl(model);
                 getSupl();
                 mainFrame.getSupplierDialog().setSuplData(Database.SUPPLIERS.getList());
             }
 
-            @Override
             public void deleteSuplEventOccurred(SupplierModel model) {
                 deleteSupl(model);
                 getSupl();
@@ -334,7 +325,6 @@ public class Controller {
             }
         });
         mainFrame.getFinancePanel().setFinancePanelListener(new FinancePanelListener() {
-            @Override
             public void createOrderEventOccurred(FinanceModel model) {
                 createFinance(model);
                 getFinances();
@@ -342,7 +332,6 @@ public class Controller {
                 mainFrame.getFinancePanel().refreshFinanceTable();
             }
 
-            @Override
             public void editOrderEventOccurred(FinanceModel model) {
                 editFinance(model);
                 getFinances();
@@ -350,7 +339,6 @@ public class Controller {
                 mainFrame.getFinancePanel().refreshFinanceTable();
             }
 
-            @Override
             public void deleteOrderEventOccurred(FinanceModel model) {
                 deleteFinance(model);
                 getFinances();
@@ -359,20 +347,17 @@ public class Controller {
 
             }
 
-            @Override
             public void departmentSelectionEventOccurred(long departmentId) {
                 getEmployees(departmentId);
                 mainFrame.getFinancePanel().setEmployeeBoxData(Database.EMPLOYEES.getList());
             }
 
-            @Override
             public void orderSelectionEventOccurred(long orderId) {
                 getDepartmentFinancesByOrder(orderId);
                 mainFrame.getFinancePanel().setDepartmentFinanceTableData(Database.DEPARTMENT_FINANCES.getList());
                 mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
             }
 
-            @Override
             public void createDepOrderEventOccurred(FinanceDepartmentModel model) {
                 createDepartmentFinances(model);
                 getDepartmentFinancesByOrder(model.getModelId());
@@ -381,7 +366,6 @@ public class Controller {
 
             }
 
-            @Override
             public void editDepOrderEventOccurred(FinanceDepartmentModel model) {
                 editDepartmentFinances(model);
                 getDepartmentFinancesByOrder(model.getModelId());
@@ -389,7 +373,6 @@ public class Controller {
                 mainFrame.getFinancePanel().refreshDepartmentFinanceTable();
             }
 
-            @Override
             public void deleteDepOrderEventOccurred(FinanceDepartmentModel model) {
                 deleteDepartmentFinances(model);
                 getDepartmentFinancesByOrder(model.getModelId());
@@ -399,65 +382,171 @@ public class Controller {
         });
 
         mainFrame.getBidsListPanel().setBidsListPanelListener(new BidsListPanelListener() {
-            @Override
             public void departmentSelectionEventOccurred(long departmentId) {
                 getDepartmentFinancesByDepartment(departmentId);
+                getBids(departmentId);
                 mainFrame.getBidsListPanel().setFinanceDepartmentBoxData(Database.DEPARTMENT_FINANCES.getList());
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId));
             }
 
-            @Override
             public void financeDepartmentSelectionEventOccurred(long departmentId, long orderId) {
                 getBids(departmentId, orderId);
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId, orderId));
             }
 
-            @Override
             public void bidDeleteEventOccurred(BidModel model) {
                 setInactive(model);
                 deleteBid(model);
                 getBids();
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
+            }
+
+            @Override
+            public void bidDeleteEventOccurred(BidModel model, long departmentId) {
+                setInactive(model);
+                deleteBid(model);
+                getBids(departmentId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId));
+            }
+
+            @Override
+            public void bidDeleteEventOccurred(BidModel model, long departmentId, long orderId) {
+                setInactive(model);
+                deleteBid(model);
+                getBids(departmentId , orderId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId, orderId));
+            }
+
+            public void selectAllDepartmentsBidsEventOccurred() {
+                getBids();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
+            }
+
+            public void selectAllOrdersBidsEventOccurred(long departmentId) {
+                getBids(departmentId);
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId));
             }
         });
 
         mainFrame.getBidsListPanel().getCreateBidDialog().setCreateBidDialogListener(new CreateBidDialogListener() {
-            @Override
             public void departmentSelectionEventOccurred(long depId) {
                 getDepartmentFinancesByDepartment(depId);
                 mainFrame.getBidsListPanel().getCreateBidDialog().setFinanceDepartmentBoxData(Database.DEPARTMENT_FINANCES.getList());
             }
 
-            @Override
             public void bidCreateEventOccurred(BidModel model) {
                 setCreated(model);
                 createBid(model);
                 getBids();
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
             }
 
             @Override
+            public void bidCreateEventOccurred(BidModel model, long departmentId) {
+                setCreated(model);
+                createBid(model);
+                getBids(departmentId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId));
+            }
+
+            @Override
+            public void bidCreateEventOccurred(BidModel model, long departmentId, long orderId) {
+                setCreated(model);
+                createBid(model);
+                getBids(departmentId, orderId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId, orderId));
+            }
+
             public void bidEditEventOccurred(BidModel model) {
                 setModified(model);
                 editBid(model);
                 getBids();
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
                 mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
                 mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
+            }
+
+            @Override
+            public void bidEditEventOccurred(BidModel model, long departmentId) {
+                setModified(model);
+                editBid(model);
+                getBids(departmentId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId));
+            }
+
+            @Override
+            public void bidEditEventOccurred(BidModel model, long departmentId, long orderId) {
+                setModified(model);
+                editBid(model);
+                getBids(departmentId, orderId);
+                getFinances();
+                mainFrame.getFinancePanel().setFinanceTableData(Database.FINANCES.getList());
+                mainFrame.getFinancePanel().refreshFinanceTable();
+                mainFrame.getBidsListPanel().setBidsTableData(Database.BIDS.getList());
+                mainFrame.getBidsListPanel().refreshBidsTableData();
+                mainFrame.getBidsListPanel().setSumLabel(getBidsSum(departmentId, orderId));
             }
         });
 
         mainFrame.getExitItem().addActionListener(ev -> closeDialog());
     }
 
-    private void logEvent(String message, Color color){
+    private void logEvent(String message, Color color) {
         mainFrame.getStatusPanel().setStatus(message, color);
         mainFrame.getLoggerDialog().addToLog(message, color);
     }
 
-    private void extendedErrorLog(String message){
+    private void errorLogEvent(Exception exception, String message) {
+        exception.printStackTrace();
+        mainFrame.getStatusPanel().setStatus(message, Utils.RED);
         mainFrame.getLoggerDialog().addToLog(message, Utils.RED);
+        mainFrame.getLoggerDialog().addToLog(exception.toString(), Utils.RED);
     }
 
 
@@ -497,7 +586,7 @@ public class Controller {
         Database.DB.disconnect();
     }
 
-    //general methods for loging modifications in DB entries
+    //general methods for modifications in DB entries
     private <T extends AbstractModel> void setCreated(T model) {
         model.setCreatedBy(LoginData.getInstance().getEmpId());
         model.setCreatedDate(Utils.getCurrentTime());
@@ -518,11 +607,9 @@ public class Controller {
     private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
         try {
             Database.CPV.retrieve(cpvRequest, sameLvlShow);
-            logEvent(Labels.withColon("cpvRequest")+cpvRequest+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("cpvRequest")+cpvRequest+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -530,9 +617,7 @@ public class Controller {
         try {
             Database.ROLES.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("role")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -540,9 +625,7 @@ public class Controller {
         try {
             Database.EMPLOYEES.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -550,19 +633,15 @@ public class Controller {
         try {
             Database.EMPLOYEES.retrieve(depId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+" dep id: "+depId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " dep id: " + depId + Labels.withSpaceBefore("error"));
         }
     }
 
-    private long getSalt(String login){
+    private long getSalt(String login) {
         try {
             return Database.EMPLOYEES.getSalt(login);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent("Salt retrieval error with login: "+login, Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, "Salt retrieval error with login: " + login);
             return 0;
         }
     }
@@ -571,9 +650,7 @@ public class Controller {
         try {
             Database.INSTITUTES.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("institute")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("institute") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -581,9 +658,7 @@ public class Controller {
         try {
             Database.DEPARTMENTS.retrieve(instId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("department")+" inst id: "+instId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("department") + " inst id: " + instId + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -591,9 +666,7 @@ public class Controller {
         try {
             Database.SUBDEPARTMENS.retrieve(depId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("subdepartment")+" dep id: "+depId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("subdepartment") + " dep id: " + depId + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -601,9 +674,7 @@ public class Controller {
         try {
             Database.AMOUNTUNITS.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("amount")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("amount") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -611,9 +682,7 @@ public class Controller {
         try {
             Database.PRODUCERS.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("producer")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("producer") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -621,9 +690,7 @@ public class Controller {
         try {
             Database.SUPPLIERS.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("suplBorder")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("suplBorder") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -631,9 +698,7 @@ public class Controller {
         try {
             Database.FINANCES.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("finances")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -641,20 +706,15 @@ public class Controller {
         try {
             Database.DEPARTMENT_FINANCES.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + Labels.withSpaceBefore("error"));
         }
     }
-
 
     private void getDepartmentFinancesByOrder(long orderId) {
         try {
             Database.DEPARTMENT_FINANCES.retrieveByOrderID(orderId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+" order Id: "+orderId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: " + orderId + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -662,9 +722,7 @@ public class Controller {
         try {
             Database.DEPARTMENT_FINANCES.retrieveByDepartmentID(departmentId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("departmentFinances")+" department Id: "+departmentId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " department Id: " + departmentId + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -673,20 +731,24 @@ public class Controller {
         try {
             return Database.EMPLOYEES.checkLogin(username, password);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("user")+" :"+username+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " :" + username + Labels.withSpaceBefore("error"));
+            return false;
         }
-        return false;
     }
 
     private void getBids() {
         try {
             Database.BIDS.retrieve();
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("bids")+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void getBids(long departmentId) {
+        try {
+            Database.BIDS.retrieve(departmentId);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -694,10 +756,35 @@ public class Controller {
         try {
             Database.BIDS.retrieve(departmentId, orderId);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("request")+Labels.withSpaceBefore("bids")+" order ID: "+orderId+" department ID: "+departmentId+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("bids") + " order ID: " + orderId + " department ID: " + departmentId + Labels.withSpaceBefore("error"));
         }
+    }
+
+    private BigDecimal getBidsSum() {
+        try {
+            return Database.BIDS.getSum();
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2") + Labels.withSpaceBefore("error"));
+        }
+        return BigDecimal.ZERO;
+    }
+
+    private BigDecimal getBidsSum(long departmentId) {
+        try {
+            return Database.BIDS.getSum(departmentId);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2") + Labels.withSpaceBefore("error"));
+        }
+        return BigDecimal.ZERO;
+    }
+
+    private BigDecimal getBidsSum(long departmentId, long orderId) {
+        try {
+            return Database.BIDS.getSum(departmentId, orderId);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2") + Labels.withSpaceBefore("error"));
+        }
+        return BigDecimal.ZERO;
     }
 
     //CRUD Employees
@@ -705,11 +792,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.EMPLOYEES.create(model);
-            logEvent(Labels.withColon("createNewEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("createNewEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -717,11 +802,9 @@ public class Controller {
         setModified(model);
         try {
             Database.EMPLOYEES.update(model);
-            logEvent(Labels.withColon("editEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -729,11 +812,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.EMPLOYEES.delete(model);
-            logEvent(Labels.withColon("deleteEmployee")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("deleteEmployee")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -742,11 +823,9 @@ public class Controller {
         setCreated(instModel);
         try {
             Database.INSTITUTES.create(instModel);
-            logEvent(Labels.withColon("addInstitute")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addInstitute")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -754,11 +833,9 @@ public class Controller {
         setModified(instModel);
         try {
             Database.INSTITUTES.update(instModel);
-            logEvent(Labels.withColon("editInstitite")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editInstitite")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
         }
 
     }
@@ -767,11 +844,9 @@ public class Controller {
         setInactive(instModel);
         try {
             Database.INSTITUTES.delete(instModel);
-            logEvent(Labels.withColon("delInstitite")+instModel.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delInstitite")+instModel.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -780,11 +855,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.DEPARTMENTS.create(model);
-            logEvent(Labels.withColon("addDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -792,11 +865,9 @@ public class Controller {
         setModified(model);
         try {
             Database.DEPARTMENTS.update(model);
-            logEvent(Labels.withColon("editDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -804,11 +875,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.DEPARTMENTS.delete(model);
-            logEvent(Labels.withColon("delDepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delDepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -817,11 +886,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.SUBDEPARTMENS.create(model);
-            logEvent(Labels.withColon("addSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -829,11 +896,9 @@ public class Controller {
         setModified(model);
         try {
             Database.SUBDEPARTMENS.update(model);
-            logEvent(Labels.withColon("editSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -841,11 +906,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUBDEPARTMENS.delete(model);
-            logEvent(Labels.withColon("delSubdepartment")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delSubdepartment")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -854,11 +917,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.AMOUNTUNITS.create(model);
-            logEvent(Labels.withColon("addAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -866,11 +927,9 @@ public class Controller {
         setModified(model);
         try {
             Database.AMOUNTUNITS.update(model);
-            logEvent(Labels.withColon("editAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -878,11 +937,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.AMOUNTUNITS.delete(model);
-            logEvent(Labels.withColon("delAmUnit")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delAmUnit")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -891,11 +948,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.PRODUCERS.create(model);
-            logEvent(Labels.withColon("addProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -903,11 +958,9 @@ public class Controller {
         setModified(model);
         try {
             Database.PRODUCERS.update(model);
-            logEvent(Labels.withColon("editProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -915,11 +968,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.PRODUCERS.delete(model);
-            logEvent(Labels.withColon("delProd")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delProd")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -928,11 +979,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.SUPPLIERS.create(model);
-            logEvent(Labels.withColon("addSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -940,11 +989,9 @@ public class Controller {
         setModified(model);
         try {
             Database.SUPPLIERS.update(model);
-            logEvent(Labels.withColon("editSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -952,11 +999,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUPPLIERS.delete(model);
-            logEvent(Labels.withColon("delSupl")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("delSupl")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -965,11 +1010,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.FINANCES.create(model);
-            logEvent(Labels.withColon("createOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("createOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -977,11 +1020,9 @@ public class Controller {
         setModified(model);
         try {
             Database.FINANCES.update(model);
-            logEvent(Labels.withColon("editOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -989,23 +1030,20 @@ public class Controller {
         setInactive(model);
         try {
             Database.FINANCES.delete(model);
-            logEvent(Labels.withColon("deleteOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("deleteOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
+
     //CRUD Department Finances
     private void createDepartmentFinances(FinanceDepartmentModel model) {
         setCreated(model);
         try {
             Database.DEPARTMENT_FINANCES.create(model);
-            logEvent(Labels.withColon("addDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("addDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1013,11 +1051,9 @@ public class Controller {
         setModified(model);
         try {
             Database.DEPARTMENT_FINANCES.update(model);
-            logEvent(Labels.withColon("editDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1025,11 +1061,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.DEPARTMENT_FINANCES.delete(model);
-            logEvent(Labels.withColon("deleteDepOrder")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("deleteDepOrder")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1038,11 +1072,9 @@ public class Controller {
         setCreated(model);
         try {
             Database.BIDS.create(model);
-            logEvent(Labels.withColon("createBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("createBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1050,11 +1082,9 @@ public class Controller {
         setModified(model);
         try {
             Database.BIDS.update(model);
-            logEvent(Labels.withColon("editBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("editBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1062,11 +1092,9 @@ public class Controller {
         setInactive(model);
         try {
             Database.BIDS.delete(model);
-            logEvent(Labels.withColon("deleteBid")+model.toString()+Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
-            e.printStackTrace();
-            logEvent(Labels.withColon("deleteBid")+model.toString()+Labels.withSpaceBefore("error"), Utils.RED);
-            extendedErrorLog(e.toString());
+            errorLogEvent(e, Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 

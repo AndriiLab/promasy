@@ -19,7 +19,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
                 "            due_to, created_by, created_date)\n" +
                 "    VALUES ( ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
-        prepStmt.setString(1, object.getOrderNumber());
+        prepStmt.setInt(1, object.getOrderNumber());
         prepStmt.setString(2, object.getOrderName());
         prepStmt.setBigDecimal(3, object.getTotalAmount());
         prepStmt.setDate(4, object.getStartDate());
@@ -33,17 +33,16 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
     @Override
     public void retrieve() throws SQLException {
         list.clear();
-        String query = "SELECT order_id, order_number, order_name, order_amount, starts_on, due_to, created_by, created_date, modified_by, modified_date, active FROM finance WHERE active = TRUE";
+        String query = "SELECT order_id, order_number, order_name, order_amount, starts_on, due_to, created_by, created_date, modified_by, modified_date, active FROM finance WHERE active = TRUE ORDER BY order_number ASC";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
 
         while (results.next()) {
             long orderId = results.getLong("order_id");
-            String orderNumber = results.getString("order_number");
+            int orderNumber = results.getInt("order_number");
             String orderName = results.getString("order_name");
             BigDecimal totalAmount = results.getBigDecimal("order_amount");
-//            TODO
-//            BigDecimal leftAmount = results.getBigDecimal("");
+            BigDecimal leftAmount = financeLeft(orderId, totalAmount);
             Date startDate = results.getDate("starts_on");
             Date endDate = results.getDate("due_to");
             long createdBy = results.getLong("created_by");
@@ -52,7 +51,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
             Timestamp modifiedDate = results.getTimestamp("modified_date");
             boolean active = results.getBoolean("active");
 
-            FinanceModel financeModel = new FinanceModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderNumber, orderName, totalAmount, null, startDate, endDate);
+            FinanceModel financeModel = new FinanceModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderNumber, orderName, totalAmount, leftAmount, startDate, endDate);
             list.add(financeModel);
         }
         results.close();
@@ -67,7 +66,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
                 "       due_to=?, modified_by=?, modified_date=?\n" +
                 " WHERE order_id=?\n";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
-        prepStmt.setString(1, object.getOrderNumber());
+        prepStmt.setInt(1, object.getOrderNumber());
         prepStmt.setString(2, object.getOrderName());
         prepStmt.setBigDecimal(3, object.getTotalAmount());
         prepStmt.setDate(4, object.getStartDate());
@@ -92,4 +91,33 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         prepStmt.close();
     }
 
+    private static BigDecimal financeLeft(long orderId, BigDecimal totalAmount) throws SQLException {
+        String query = "SELECT ? - sum(one_price*amount) AS finance_left FROM bids WHERE active = TRUE AND order_id = ?";
+        try(PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query)){
+            prepStmt.setBigDecimal(1, totalAmount);
+            prepStmt.setLong(2, orderId);
+            return getFinanceLeftResults(prepStmt, totalAmount);
+        }
+    }
+
+    static BigDecimal financeLeft(long orderId, long depId, BigDecimal totalAmount) throws SQLException {
+        String query = "SELECT ? - sum(one_price*amount) AS finance_left FROM bids WHERE active = TRUE AND order_id = ? AND dep_id = ?";
+        try(PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query)){
+            prepStmt.setBigDecimal(1, totalAmount);
+            prepStmt.setLong(2, orderId);
+            prepStmt.setLong(3, depId);
+            return getFinanceLeftResults(prepStmt, totalAmount);
+        }
+    }
+
+    private static BigDecimal getFinanceLeftResults(PreparedStatement prepStmt, BigDecimal totalAmount) throws SQLException {
+        try (ResultSet results = prepStmt.executeQuery()){
+            results.next();
+            BigDecimal leftAmount = results.getBigDecimal("finance_left");
+            if (leftAmount == null){
+                return totalAmount;
+            }
+            return results.getBigDecimal("finance_left");
+        }
+    }
 }

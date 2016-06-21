@@ -157,9 +157,9 @@ CREATE TABLE employees (
 -- Дані про теми та їх фінансування
 CREATE TABLE finance (
 	order_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT finance_pk PRIMARY KEY,
-	order_number VARCHAR(30), -- Номер теми
+	order_number INT, -- Номер теми
 	order_name VARCHAR(100) NOT NULL, -- Назва теми
-	order_amount DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
+	order_amount DECIMAL(19, 4), -- Об'єм фінансування
 	starts_on DATE, -- Початок теми
 	due_to DATE, -- Кінцева дата теми
   created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
@@ -188,7 +188,7 @@ CREATE TABLE finance_dep (
 CREATE TABLE bids (
 	bid_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
 	dep_id BIGINT NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
-	brand_id BIGINT REFERENCES producers (brand_id), -- Можливий виробник
+	brand_id BIGINT, -- Можливий виробник
 	cat_num VARCHAR(30), -- Можливий каталожний номер
 	bid_desc VARCHAR(500) NOT NULL, -- Опис заявки
 	cpv_code VARCHAR(10) NOT NULL REFERENCES cpv(cpv_code) , -- СРВ код
@@ -196,7 +196,7 @@ CREATE TABLE bids (
 	amount INT NOT NULL, -- Кількість одиниць
 	am_unit_id BIGINT NOT NULL REFERENCES amountunits(am_unit_id), -- Розмірність одиниць
 	order_id BIGINT NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
-	supplier_id BIGINT REFERENCES suppliers (supplier_id), -- Можливий постачальник
+	supplier_id BIGINT, -- Можливий постачальник
 	received BOOLEAN NOT NULL, -- Чи був отриманий товар складом
 	date_received TIMESTAMP, -- Дата отримання складом
   created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН

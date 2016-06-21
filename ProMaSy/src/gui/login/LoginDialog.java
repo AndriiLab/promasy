@@ -1,6 +1,5 @@
 package gui.login;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import gui.Labels;
 import gui.Utils;
 
@@ -36,7 +35,7 @@ public class LoginDialog extends JDialog {
 		userField = new JTextField(10);
 		passwordField = new JPasswordField(10);
         JButton okButton = new JButton(Labels.getProperty("loginOkBtn"));
-        JButton cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+        JButton cancelButton = new JButton(Labels.getProperty("cancel"));
 
 		JPanel loginPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
@@ -128,7 +127,7 @@ public class LoginDialog extends JDialog {
 		this.loginListener = loginListener;
 	}
 
-    public void showLoginError(){
+    private void showLoginError(){
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("noCredentialsMessage"),
                 Labels.getProperty("noCredentialsTitle"),

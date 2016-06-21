@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Year;
@@ -46,7 +47,7 @@ public class FinancePanel extends JPanel {
     private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private FinancePanelListener listener;
     private JFrame parent;
-    private String orderNumber;
+    private int orderNumber;
     private String orderName;
     private Date startDate;
     private Date endDate;
@@ -111,9 +112,9 @@ public class FinancePanel extends JPanel {
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 1);
                     if (!selectedFinanceModel.equals(emptyFinanceModel)) {
-                        orderNumberField.setText(selectedFinanceModel.getOrderNumber());
+                        orderNumberField.setText(String.valueOf(selectedFinanceModel.getOrderNumber()));
                         orderNameField.setText(selectedFinanceModel.getOrderName());
-                        financeAmountField.setText(selectedFinanceModel.getTotalAmount().toString());
+                        financeAmountField.setText(selectedFinanceModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                         startDatePicker.setDate(selectedFinanceModel.getStartDate());
                         endDatePicker.setDate(selectedFinanceModel.getEndDate());
                         selectedOrder = selectedFinanceModel.getModelId();
@@ -251,7 +252,7 @@ public class FinancePanel extends JPanel {
         financeAmountField.setText("");
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
-        orderNumber = "";
+        orderNumber = 0;
         orderName = "";
         startDate = null;
         endDate = null;
@@ -267,7 +268,12 @@ public class FinancePanel extends JPanel {
     }
 
     private boolean checkFinanceInput() {
-        orderNumber = orderNumberField.getText();
+        try {
+            orderNumber = Integer.parseInt(orderNumberField.getText());
+        } catch (NumberFormatException e) {
+            Utils.wrongFormatError(parent, Labels.getProperty("orderNumber"), Labels.getProperty("integersOnly"));
+            return false;
+        }
         orderName = orderNameField.getText();
         startDate = new java.sql.Date(startDatePicker.getDate().getTime());
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());

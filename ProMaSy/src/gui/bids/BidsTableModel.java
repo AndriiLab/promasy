@@ -5,6 +5,7 @@ import model.BidModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.List;
 
@@ -63,10 +64,10 @@ class BidsTableModel extends AbstractTableModel {
             case 4:
                 return model.getAmount();
             case 5:
-                return model.getOnePrice();
+                return model.getOnePrice().setScale(2, RoundingMode.CEILING);
             case 6:
                 //could be slow
-                return (model.getOnePrice().multiply(new BigDecimal(model.getAmount())));
+                return (model.getOnePrice().multiply(new BigDecimal(model.getAmount()))).setScale(2, RoundingMode.CEILING);
             case 7:
                 return model.getCustormerName();
         }

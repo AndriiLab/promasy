@@ -89,7 +89,7 @@ public class CreateEmployeeDialog extends JDialog {
         subdepartmentBox.setPreferredSize(comboBoxDim);
 
         okButton = new JButton(Labels.getProperty("createProfile"));
-        cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+        cancelButton = new JButton(Labels.getProperty("cancel"));
 
         layoutControls();
 

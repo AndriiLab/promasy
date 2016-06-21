@@ -8,14 +8,14 @@ import java.sql.Timestamp;
  * Created by laban on 04.05.2016.
  */
 public class FinanceModel extends AbstractModel {
-    private String orderNumber;
+    private int orderNumber;
     private String orderName;
     private BigDecimal totalAmount;
     private BigDecimal leftAmount;
     private Date startDate;
     private Date endDate;
 
-    public FinanceModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderNumber, String orderName, BigDecimal totalAmount, BigDecimal leftAmount, Date startDate, Date endDate) {
+    public FinanceModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, int orderNumber, String orderName, BigDecimal totalAmount, BigDecimal leftAmount, Date startDate, Date endDate) {
         super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderNumber = orderNumber;
         this.orderName = orderName;
@@ -25,7 +25,7 @@ public class FinanceModel extends AbstractModel {
         this.endDate = endDate;
     }
 
-    public FinanceModel(String orderNumber, String orderName, BigDecimal totalAmount, Date startDate, Date endDate) {
+    public FinanceModel(int orderNumber, String orderName, BigDecimal totalAmount, Date startDate, Date endDate) {
         this.orderNumber = orderNumber;
         this.orderName = orderName;
         this.totalAmount = totalAmount;
@@ -37,11 +37,11 @@ public class FinanceModel extends AbstractModel {
 
     }
 
-    public String getOrderNumber() {
+    public int getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(String orderNumber) {
+    public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 

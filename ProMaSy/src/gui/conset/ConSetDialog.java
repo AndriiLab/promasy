@@ -4,7 +4,6 @@ import gui.Labels;
 import model.ConnectionSettingsModel;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,7 +37,7 @@ public class ConSetDialog extends JDialog {
 		super(parent, Labels.getProperty("ConnectionWithDBSettings"), false);
 
 		okButton = new JButton(Labels.getProperty("okBtn"));
-		cancelButton = new JButton(Labels.getProperty("cancelBtn"));
+		cancelButton = new JButton(Labels.getProperty("cancel"));
 		SpinnerNumberModel spinnerModel = new SpinnerNumberModel(5432, 0, 9999, 1);
 		portSpinner = new JSpinner(spinnerModel);
 		serverField = new JTextField(10);
