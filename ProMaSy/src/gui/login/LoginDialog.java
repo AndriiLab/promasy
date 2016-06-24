@@ -3,30 +3,23 @@ package gui.login;
 import gui.Labels;
 import gui.Utils;
 
-import java.awt.*;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoginDialog extends JDialog {
 
 	private JTextField userField;
 	private JPasswordField passwordField;
-    private LoginListener loginListener;
-    private JFrame parent;
-    private long salt;
+	private LoginListener loginListener;
+	private JFrame parent;
+	private long salt;
 
 	public LoginDialog(JFrame parent) {
 		super(parent, Labels.getProperty("loginDialogSuper"), false);
-        this.parent = parent;
+		this.parent = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setSize(220, 150);
 		setResizable(false);
@@ -34,8 +27,8 @@ public class LoginDialog extends JDialog {
 
 		userField = new JTextField(10);
 		passwordField = new JPasswordField(10);
-        JButton okButton = new JButton(Labels.getProperty("loginOkBtn"));
-        JButton cancelButton = new JButton(Labels.getProperty("cancel"));
+		JButton okButton = new JButton(Labels.getProperty("loginOkBtn"));
+		JButton cancelButton = new JButton(Labels.getProperty("cancel"));
 
 		JPanel loginPanel = new JPanel();
 		JPanel buttonsPanel = new JPanel();
@@ -93,44 +86,51 @@ public class LoginDialog extends JDialog {
 
 		// Add subpanels to dialog
 		setLayout(new BorderLayout());
-        add(loginPanel, BorderLayout.CENTER);
-        add(buttonsPanel, BorderLayout.SOUTH);
+		add(loginPanel, BorderLayout.CENTER);
+		add(buttonsPanel, BorderLayout.SOUTH);
 
-        okButton.addActionListener(e -> {
-            String username = userField.getText();
-            if (username.length() > 0 && loginListener != null) {
-                loginListener.usernameEntered(username);
-                String passw = Utils.makePass(passwordField.getPassword(), salt);
-                if (salt != 0 && passw.length() > 0 && loginListener != null) {
-                    LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);
-                    loginListener.loginAttemptOccurred(ev);
-                } else if (salt != 0 || passw.length() > 0) {
-                    showLoginError();
-                }
-            } else showLoginError();
-        });
+		okButton.addActionListener(e -> {
+			String username = userField.getText();
+			if (username.length() > 0 && loginListener != null) {
+				loginListener.usernameEntered(username);
+				String passw = Utils.makePass(passwordField.getPassword(), salt);
+				if (salt != 0 && passw.length() > 0 && loginListener != null) {
+					LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);
+					loginListener.loginAttemptOccurred(ev);
+				} else if (salt != 0 || passw.length() > 0) {
+					showLoginError();
+				}
+			} else
+				showLoginError();
+		});
 
 		cancelButton.addActionListener(ev -> {
-            if (loginListener != null) {
-                loginListener.loginCancelled();
-            }
-        });
-		
+			if (loginListener != null) {
+				loginListener.loginCancelled();
+			}
+		});
+
 		this.getRootPane().setDefaultButton(okButton);
+		
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				if (loginListener != null) {
+					loginListener.loginCancelled();
+				}
+			}
+		});
 	}
 
-    public void setSalt(long salt) {
-        this.salt = salt;
-    }
+	public void setSalt(long salt) {
+		this.salt = salt;
+	}
 
-    public void setLoginListener(LoginListener loginListener) {
+	public void setLoginListener(LoginListener loginListener) {
 		this.loginListener = loginListener;
 	}
 
-    private void showLoginError(){
-        JOptionPane.showMessageDialog(parent,
-                Labels.getProperty("noCredentialsMessage"),
-                Labels.getProperty("noCredentialsTitle"),
-                JOptionPane.ERROR_MESSAGE);
-    }
+	private void showLoginError() {
+		JOptionPane.showMessageDialog(parent, Labels.getProperty("noCredentialsMessage"),
+				Labels.getProperty("noCredentialsTitle"), JOptionPane.ERROR_MESSAGE);
+	}
 }

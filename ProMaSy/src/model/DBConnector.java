@@ -17,7 +17,7 @@ public enum DBConnector {
 	public void connect(Properties conSet) throws Exception {
 		if (con != null)
 			return;
-
+        Class.forName("org.postgresql.Driver");
 		String url = "jdbc:postgresql://"+conSet.getProperty("host")+
 				":"+conSet.getProperty("port")+"/"+conSet.getProperty("database");
 

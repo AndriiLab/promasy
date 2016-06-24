@@ -12,7 +12,7 @@ public class EmployeeModel extends AbstractModel {
 	private String depName;
 	private long subdepId;
 	private String subdepName;
-	private long roleId;
+	private int roleId;
 	private String roleName;
 	private String login;
 	private String password;
@@ -23,7 +23,7 @@ public class EmployeeModel extends AbstractModel {
 	
 	public EmployeeModel(String empFName, String empMName, 
 			String empLName, long depId, long subdepId, 
-			long roleId, String login, String password, long salt) {
+			int roleId, String login, String password, long salt) {
 		this.empFName = empFName;
 		this.empMName = empMName;
 		this.empLName = empLName;
@@ -36,7 +36,7 @@ public class EmployeeModel extends AbstractModel {
 	}
 	
 	public EmployeeModel(long empId, String empFName, String empMName, String empLName, long instId, String instName,
-			long depId, String depName, long subdepId, String subdepName, long roleId, String roleName, String login,
+			long depId, String depName, long subdepId, String subdepName, int roleId, String roleName, String login,
 			String password, long salt, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 			boolean active) {
 		super(empId, createdBy, createdDate, modifiedBy, modifiedDate, active);
@@ -96,11 +96,11 @@ public class EmployeeModel extends AbstractModel {
 		this.subdepId = subdepId;
 	}
 
-	public long getRoleId() {
+	public int getRoleId() {
 		return roleId;
 	}
 
-	public void setRoleId(long roleId) {
+	public void setRoleId(int roleId) {
 		this.roleId = roleId;
 	}
 

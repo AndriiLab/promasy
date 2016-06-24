@@ -9,14 +9,19 @@ import java.sql.Timestamp;
 public class BidModel extends AbstractModel{
 
     private long depId;
-    private long brandId;
+    private String depName;
+    private long producerId;
+    private String producerName;
     private String catNum;
     private String bidDesc;
     private String cpvCode;
+    private String cpvUkr;
     private BigDecimal onePrice;
     private int amount;
     private long amUnitId;
-    private long orderId;
+    private String amUnitName;
+    private long financeId;
+    private String financeName;
     private long supplierId;
     private String supplierName;
     private boolean received;
@@ -25,17 +30,22 @@ public class BidModel extends AbstractModel{
     private String createdMName;
     private String createdLName;
 
-    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, long brandId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long orderId, long supplierId, String supplierName, boolean received, Timestamp dateReceived, String createdFName, String createdMName, String createdLName) {
+    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, String depName, long producerId, String producerName, String catNum, String bidDesc, String cpvCode, String cpvUkr, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long financeId, String financeName, long supplierId, String supplierName, boolean received, Timestamp dateReceived, String createdFName, String createdMName, String createdLName) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.depId = depId;
-        this.brandId = brandId;
+        this.depName = depName;
+        this.producerId = producerId;
+        this.producerName = producerName;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
         this.cpvCode = cpvCode;
+        this.cpvUkr = cpvUkr;
         this.onePrice = onePrice;
         this.amount = amount;
         this.amUnitId = amUnitId;
-        this.orderId = orderId;
+        this.amUnitName = amUnitName;
+        this.financeId = financeId;
+        this.financeName = financeName;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
         this.received = received;
@@ -45,16 +55,16 @@ public class BidModel extends AbstractModel{
         this.createdLName = createdLName;
     }
 
-    public BidModel(long depId, long brandId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long orderId, long supplierId) {
+    public BidModel(long depId, long producerId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long financeId, long supplierId) {
         this.depId = depId;
-        this.brandId = brandId;
+        this.producerId = producerId;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
         this.cpvCode = cpvCode;
         this.onePrice = onePrice;
         this.amount = amount;
         this.amUnitId = amUnitId;
-        this.orderId = orderId;
+        this.financeId = financeId;
         this.supplierId = supplierId;
     }
 
@@ -62,12 +72,12 @@ public class BidModel extends AbstractModel{
 
     }
 
-    public long getBrandId() {
-        return brandId;
+    public long getProducerId() {
+        return producerId;
     }
 
-    public void setBrandId(long brandId) {
-        this.brandId = brandId;
+    public void setProducerId(long producerId) {
+        this.producerId = producerId;
     }
 
     public String getCatNum() {
@@ -118,12 +128,12 @@ public class BidModel extends AbstractModel{
         this.amUnitId = amUnitId;
     }
 
-    public long getOrderId() {
-        return orderId;
+    public long getFinanceId() {
+        return financeId;
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public void setFinanceId(long financeId) {
+        this.financeId = financeId;
     }
 
     public long getSupplierId() {
@@ -188,6 +198,46 @@ public class BidModel extends AbstractModel{
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public String getDepName() {
+        return depName;
+    }
+
+    public void setDepName(String depName) {
+        this.depName = depName;
+    }
+
+    public String getProducerName() {
+        return producerName;
+    }
+
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
+    }
+
+    public String getCpvUkr() {
+        return cpvUkr;
+    }
+
+    public void setCpvUkr(String cpvUkr) {
+        this.cpvUkr = cpvUkr;
+    }
+
+    public String getAmUnitName() {
+        return amUnitName;
+    }
+
+    public void setAmUnitName(String amUnitName) {
+        this.amUnitName = amUnitName;
+    }
+
+    public String getFinanceName() {
+        return financeName;
+    }
+
+    public void setFinanceName(String financeName) {
+        this.financeName = financeName;
     }
 
     @Override

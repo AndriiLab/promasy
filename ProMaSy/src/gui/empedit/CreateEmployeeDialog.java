@@ -1,21 +1,16 @@
 package gui.empedit;
 
+import gui.Labels;
+import gui.Utils;
+import model.*;
+
+import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-
-import gui.Labels;
-import gui.Utils;
-import model.DepartmentModel;
-import model.EmployeeModel;
-import model.InstituteModel;
-import model.RoleModel;
-import model.SubdepartmentModel;
 
 public class CreateEmployeeDialog extends JDialog {
 
@@ -203,7 +198,7 @@ public class CreateEmployeeDialog extends JDialog {
             String pass = Utils.makePass(password, salt);
             // if model empty create new user
             if (currentEmployeeModel == emptyEmployeeModel) {
-                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getModelId(), login, pass, salt);
+                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getRoleId(), login, pass, salt);
                 return true;
             } else {
                 // else - update existing
@@ -217,7 +212,7 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel.setEmpLName(lastName);
         currentEmployeeModel.setDepId(departmentModel.getModelId());
         currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
-        currentEmployeeModel.setRoleId(roleModel.getModelId());
+        currentEmployeeModel.setRoleId(roleModel.getRoleId());
         currentEmployeeModel.setLogin(login);
         return true;
     }

@@ -343,14 +343,14 @@ public class CreateBidDialog extends JDialog {
 
         } else {
             createdBidModel.setDepId(selectedDepartmentModel.getModelId());
-            createdBidModel.setBrandId(selectedProducerModel.getModelId());
+            createdBidModel.setProducerId(selectedProducerModel.getModelId());
             createdBidModel.setCatNum(selectedCatNum);
             createdBidModel.setBidDesc(selectedDescription);
             createdBidModel.setCpvCode(selectedCPV);
             createdBidModel.setOnePrice(onePrice);
             createdBidModel.setAmount(amount);
             createdBidModel.setAmUnitId(selectedAmountUnitsModel.getModelId());
-            createdBidModel.setOrderId(selectedFinanceDepartmentModel.getModelId());
+            createdBidModel.setFinanceId(selectedFinanceDepartmentModel.getModelId());
             createdBidModel.setSupplierId(selectedSupplierModel.getModelId());
         }
         return true;
@@ -370,8 +370,8 @@ public class CreateBidDialog extends JDialog {
         createdBidModel = model;
         setVisible(true);
         Utils.setBoxFromModel(departmentBox, createdBidModel.getDepId());
-        Utils.setBoxFromModel(financeDepartmentBox, createdBidModel.getOrderId());
-        Utils.setBoxFromModel(producerBox, createdBidModel.getBrandId());
+        Utils.setBoxFromModel(financeDepartmentBox, createdBidModel.getFinanceId());
+        Utils.setBoxFromModel(producerBox, createdBidModel.getProducerId());
         cpvField.setText(createdBidModel.getCpvCode());
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());

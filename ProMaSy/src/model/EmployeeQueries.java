@@ -54,6 +54,33 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.close();
 	}
 
+    public void retrieve(int roleId) throws SQLException {
+        list.clear();
+        String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "departments.inst_id, institute.inst_name, "+
+                "employees.dep_id, departments.dep_name, "+
+                "employees.subdep_id, subdepartments.subdep_name, "+
+                "employees.roles_id, roles.roles_name, "+
+                "employees.login, employees.password, "+
+                "employees.created_by, employees.created_date, "+
+                "employees.modified_by, employees.modified_date, "+
+                "employees.active, employees.salt "+
+                "FROM employees "+
+                "INNER JOIN departments ON employees.dep_id = departments.dep_id "+
+                "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
+                "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
+                "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
+                "WHERE employees.roles_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setInt(1, roleId);
+        ResultSet results = prepStmt.executeQuery();
+
+        loadResultsToList(results);
+
+        results.close();
+        prepStmt.close();
+    }
+
     public void retrieve(long departmentId) throws SQLException {
         list.clear();
         String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
@@ -81,6 +108,34 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
         prepStmt.close();
     }
 
+    public void retrieve(int roleId, long departmentId) throws SQLException {
+        list.clear();
+        String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "departments.inst_id, institute.inst_name, "+
+                "employees.dep_id, departments.dep_name, "+
+                "employees.subdep_id, subdepartments.subdep_name, "+
+                "employees.roles_id, roles.roles_name, "+
+                "employees.login, employees.password, "+
+                "employees.created_by, employees.created_date, "+
+                "employees.modified_by, employees.modified_date, "+
+                "employees.active, employees.salt "+
+                "FROM employees "+
+                "INNER JOIN departments ON employees.dep_id = departments.dep_id "+
+                "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
+                "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
+                "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
+                "WHERE employees.roles_id = ? AND employees.dep_id = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setInt(1, roleId);
+        prepStmt.setLong(2, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+
+        loadResultsToList(results);
+
+        results.close();
+        prepStmt.close();
+    }
+
     private void loadResultsToList(ResultSet results) throws SQLException {
         while (results.next()) {
             long empId = results.getLong("emp_id");
@@ -93,7 +148,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
             String depName = results.getString("dep_name");
             long subdepId = results.getLong("subdep_id");
             String subdepName = results.getString("subdep_name");
-            long roleId = results.getLong("roles_id");
+            int roleId = results.getInt("roles_id");
             String roleName = results.getString("roles_name");
             String login = results.getString("login");
             String password = results.getString("password");

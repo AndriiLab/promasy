@@ -28,7 +28,7 @@ $$ LANGUAGE PLPGSQL;
 
 -- Визначення посад та прав доступу
 CREATE TABLE roles (
-	roles_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT roles_pk PRIMARY KEY,
+	roles_id INT NOT NULL CONSTRAINT roles_pk PRIMARY KEY,
 	roles_name VARCHAR(100) NOT NULL, -- Посада
 	created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
 	created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Дата створення
@@ -136,22 +136,21 @@ CREATE TABLE prod_suppliers (
 
 --  Дані про користувачів
 CREATE TABLE employees (
-	emp_id BIGINT NOT NULL DEFAULT id_gen(),
+	emp_id BIGINT NOT NULL DEFAULT id_gen() UNIQUE,
 	emp_fname VARCHAR(30) NOT NULL, -- Ім'я
 	emp_mname VARCHAR(30), -- По-батькові
 	emp_lname VARCHAR(30) NOT NULL, -- Прізвище співробітника
 	dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
 	subdep_id BIGINT,
-	roles_id BIGINT NOT NULL REFERENCES roles (roles_id),
-	login varchar(20) NOT NULL,
+	roles_id INT NOT NULL REFERENCES roles (roles_id) ON UPDATE CASCADE,
+	login varchar(20) NOT NULL UNIQUE,
 	password varchar(64) NOT NULL,
   created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by BIGINT,
   modified_date TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT TRUE,
-  salt bigint NOT NULL,
-  UNIQUE (emp_id, login)
+  salt bigint NOT NULL
 );
 
 -- Дані про теми та їх фінансування

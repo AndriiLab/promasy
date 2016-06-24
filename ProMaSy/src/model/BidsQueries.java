@@ -17,14 +17,14 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query = "INSERT INTO bids(dep_id, brand_id, cat_num, bid_desc, cpv_code, one_price, amount, am_unit_id, order_id, supplier_id, received, date_received, created_by, created_date, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, object.getDepId());
-        prepStmt.setLong(2, object.getBrandId());
+        prepStmt.setLong(2, object.getProducerId());
         prepStmt.setString(3, object.getCatNum());
         prepStmt.setString(4, object.getBidDesc());
         prepStmt.setString(5, object.getCpvCode());
         prepStmt.setBigDecimal(6, object.getOnePrice());
         prepStmt.setInt(7, object.getAmount());
         prepStmt.setLong(8, object.getAmUnitId());
-        prepStmt.setLong(9, object.getOrderId());
+        prepStmt.setLong(9, object.getFinanceId());
         prepStmt.setLong(10, object.getSupplierId());
         prepStmt.setBoolean(11, object.isReceived());
         prepStmt.setTimestamp(12, object.getDateReceived());
@@ -38,7 +38,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
     @Override
     public void retrieve() throws SQLException {
         list.clear();
-        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE";
+        String query = "SELECT bids.bid_id, bids.dep_id, departments.dep_name AS depName, bids.brand_id, producers.brand_name, bids.cat_num, bids.bid_desc, bids.cpv_code, cpv.cpv_ukr, bids.one_price, bids.amount, bids.am_unit_id, amountunits.am_unit_desc, bids.order_id, finance.order_name, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN departments ON bids.dep_id = departments.dep_id INNER JOIN producers ON producers.brand_id = bids.brand_id INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id INNER JOIN finance ON finance.order_id = bids.order_id WHERE bids.active = TRUE";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         ResultSet results = prepStmt.executeQuery();
 
@@ -50,7 +50,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
 
     public void retrieve(long departmentId) throws SQLException {
         list.clear();
-        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE AND bids.dep_id = ?";
+        String query = "SELECT bids.bid_id, bids.dep_id, departments.dep_name AS depName, bids.brand_id, producers.brand_name, bids.cat_num, bids.bid_desc, bids.cpv_code, cpv.cpv_ukr, bids.one_price, bids.amount, bids.am_unit_id, amountunits.am_unit_desc, bids.order_id, finance.order_name, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN departments ON bids.dep_id = departments.dep_id INNER JOIN producers ON producers.brand_id = bids.brand_id INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id INNER JOIN finance ON finance.order_id = bids.order_id WHERE bids.active = TRUE AND bids.dep_id = ?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);
         ResultSet results = prepStmt.executeQuery();
@@ -63,7 +63,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
 
     public void retrieve(long departmentId, long orderId) throws SQLException {
         list.clear();
-        String query = "SELECT bids.bid_id, bids.dep_id, bids.brand_id, bids.cat_num, bids.bid_desc, bids.cpv_code, bids.one_price, bids.amount, bids.am_unit_id, bids.order_id, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id WHERE bids.active = TRUE AND bids.dep_id = ? AND bids.order_id = ?";
+        String query = "SELECT bids.bid_id, bids.dep_id, departments.dep_name AS depName, bids.brand_id, producers.brand_name, bids.cat_num, bids.bid_desc, bids.cpv_code, cpv.cpv_ukr, bids.one_price, bids.amount, bids.am_unit_id, amountunits.am_unit_desc, bids.order_id, finance.order_name, bids.supplier_id, suppliers.supplier_name, bids.received, bids.date_received, bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, employees.emp_fname, employees.emp_mname, employees.emp_lname FROM bids INNER JOIN departments ON bids.dep_id = departments.dep_id INNER JOIN producers ON producers.brand_id = bids.brand_id INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id INNER JOIN employees ON bids.created_by =  employees.emp_id INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id INNER JOIN finance ON finance.order_id = bids.order_id WHERE bids.active = TRUE AND bids.dep_id = ? AND bids.order_id = ?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);
         prepStmt.setLong(2, orderId);
@@ -80,14 +80,14 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query = "UPDATE bids SET dep_id=?, brand_id=?, cat_num=?, bid_desc=?, cpv_code=?,  one_price=?, amount=?, am_unit_id=?, order_id=?, supplier_id=?, received=?, date_received=?, modified_by=?,  modified_date=? WHERE bid_id = ? AND active = TRUE";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, object.getDepId());
-        prepStmt.setLong(2, object.getBrandId());
+        prepStmt.setLong(2, object.getProducerId());
         prepStmt.setString(3, object.getCatNum());
         prepStmt.setString(4, object.getBidDesc());
         prepStmt.setString(5, object.getCpvCode());
         prepStmt.setBigDecimal(6, object.getOnePrice());
         prepStmt.setInt(7, object.getAmount());
         prepStmt.setLong(8, object.getAmUnitId());
-        prepStmt.setLong(9, object.getOrderId());
+        prepStmt.setLong(9, object.getFinanceId());
         prepStmt.setLong(10, object.getSupplierId());
         prepStmt.setBoolean(11, object.isReceived());
         prepStmt.setTimestamp(12, object.getDateReceived());
@@ -113,14 +113,19 @@ public class BidsQueries extends SQLQueries<BidModel>{
         while (results.next()) {
             long bidId = results.getLong("bid_id");
             long depId = results.getLong("dep_id");
-            long brandId = results.getLong("brand_id");
+            String depName = results.getString("depName");
+            long producerId = results.getLong("brand_id");
+            String producerName = results.getString("brand_name");
             String catNum = results.getString("cat_num");
             String bidDesc = results.getString("bid_desc");
             String cpvCode = results.getString("cpv_code");
+            String cpvUkr = results.getString("cpv_ukr");
             BigDecimal onePrice = results.getBigDecimal("one_price");
             int amount = results.getInt("amount");
             long amUnitId = results.getLong("am_unit_id");
-            long orderId = results.getLong("order_id");
+            String amUnitName = results.getString("am_unit_desc");
+            long financeId = results.getLong("order_id");
+            String financeName = results.getString("order_name");
             String createdFName = results.getString("emp_fname");
             String createdMName = results.getString("emp_mname");
             String createdLName = results.getString("emp_lname");
@@ -134,7 +139,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
             Timestamp modifiedDate = results.getTimestamp("modified_date");
             boolean active = results.getBoolean("active");
 
-            BidModel model = new BidModel(bidId, createdBy, createdDate, modifiedBy, modifiedDate, active, depId, brandId, catNum, bidDesc, cpvCode, onePrice, amount, amUnitId, orderId, supplierId, supplierName, received, dateReceived, createdFName, createdMName, createdLName);
+            BidModel model = new BidModel(bidId, createdBy, createdDate, modifiedBy, modifiedDate, active, depId, depName, producerId, producerName, catNum, bidDesc, cpvCode, cpvUkr, onePrice, amount, amUnitId, amUnitName, financeId, financeName, supplierId, supplierName, received, dateReceived, createdFName, createdMName, createdLName);
             list.add(model);
         }
     }

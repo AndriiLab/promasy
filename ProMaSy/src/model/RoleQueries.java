@@ -3,7 +3,6 @@ package model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 
 public class RoleQueries extends SQLQueries<RoleModel>{
 
@@ -19,21 +18,15 @@ public class RoleQueries extends SQLQueries<RoleModel>{
 
 	public void retrieve() throws SQLException {
 		list.clear();
-		String query = "select roles_id, roles_name, created_by, created_date, modified_by, modified_date, active from roles where active = true";
+		String query = "select roles_id, roles_name from roles where active = true";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 
 		while (results.next()) {
-			long rolesId = results.getLong("roles_id");
+			int rolesId = results.getInt("roles_id");
 			String rolesName = results.getString("roles_name");
-			long createdBy = results.getLong("created_by");
-			Timestamp createdDate = results.getTimestamp("created_date");
-			long modifiedBy = results.getLong("modified_by");
-			Timestamp modifiedDate = results.getTimestamp("modified_date");
-			boolean active = results.getBoolean("active");
 
-			RoleModel rolesModel = new RoleModel(rolesId, rolesName, createdBy, 
-					createdDate, modifiedBy, modifiedDate, active);
+			RoleModel rolesModel = new RoleModel(rolesId, rolesName);
 			list.add(rolesModel);
 		}
 		results.close();

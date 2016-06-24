@@ -66,8 +66,7 @@ class BidsTableModel extends AbstractTableModel {
             case 5:
                 return model.getOnePrice().setScale(2, RoundingMode.CEILING);
             case 6:
-                //could be slow
-                return (model.getOnePrice().multiply(new BigDecimal(model.getAmount()))).setScale(2, RoundingMode.CEILING);
+                return (model.getOnePrice().multiply(BigDecimal.valueOf(model.getAmount()))).setScale(2, RoundingMode.CEILING);
             case 7:
                 return model.getCustormerName();
         }

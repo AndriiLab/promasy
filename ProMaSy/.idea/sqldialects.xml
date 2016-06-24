@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/model/AmountUnitsQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/BidsQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/CPVQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/DepartmentQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/EmployeeQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/FinanceDepartmentQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/FinanceQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/InstituteQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/ProducerQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/RoleQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/SQLQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/SubdepartmentQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/model/SupplierQueries.java" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/sqlfiles/tema_new_db.sql" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/src/sqlfiles/tema_new_db_values.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$" dialect="PostgreSQL" />
   </component>
 </project>

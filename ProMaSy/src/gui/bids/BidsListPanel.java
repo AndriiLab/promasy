@@ -3,6 +3,8 @@ package gui.bids;
 import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import gui.bids.reports.BidsReport;
+import gui.bids.reports.BidsReportModel;
 import model.*;
 
 import javax.swing.*;
@@ -11,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -133,7 +137,6 @@ public class BidsListPanel extends JPanel {
             public void mouseClicked(MouseEvent ev) {
                 int row = bidsTable.rowAtPoint(ev.getPoint());
                 bidsTable.getSelectionModel().setSelectionInterval(row, row);
-
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedBidModel = (BidModel) bidsTable.getValueAt(row, 0);
                 }
@@ -162,7 +165,7 @@ public class BidsListPanel extends JPanel {
         sumLabel.setText(sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
     }
 
-    public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
+    public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
             createBidDialog.addToDepartmentBox(model);
@@ -173,6 +176,10 @@ public class BidsListPanel extends JPanel {
         for (FinanceDepartmentModel model : db) {
             financeDepartmentBox.addItem(model);
         }
+    }
+
+    public long getSelectedDepartmentId(){
+       return ((DepartmentModel)departmentBox.getSelectedItem()).getModelId();
     }
 
     public void setBidsTableData(List<BidModel> db) {
@@ -225,5 +232,21 @@ public class BidsListPanel extends JPanel {
         add(topPanel, BorderLayout.NORTH);
         add(new JScrollPane(bidsTable), BorderLayout.CENTER);
         add(sumPanel, BorderLayout.SOUTH);
+    }
+    
+    public void printBidList(String headPosition, String head,
+    		String departmentHead, String personallyLiableEmpl, 
+    		String accountant, String economist){
+    	List<BidsReportModel> list = new ArrayList<>();
+    	for(int row = 0;  row < bidsTable.getRowCount(); row++){
+    		BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
+    		BidsReportModel reportModel = new BidsReportModel(headPosition, head, 
+    				md.getDepName(), md.getFinanceName(), md.getCpvCode(), md.getCpvUkr(),
+                    md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
+                    md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(),
+    				md.getAmount(), departmentHead, personallyLiableEmpl, accountant, economist);
+    		list.add(reportModel);
+    	}
+    	new BidsReport(Collections.unmodifiableList(list));
     }
 }

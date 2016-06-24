@@ -5,20 +5,9 @@
 
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JTabbedPane;
-
 import gui.amunits.AmUnitsDialog;
 import gui.bids.BidsListPanel;
+import gui.bids.reports.ReportParametersDialog;
 import gui.conset.ConSetDialog;
 import gui.cpv.CpvDialog;
 import gui.empedit.EditEmployeeDialog;
@@ -27,6 +16,11 @@ import gui.instedit.OrganizationDialog;
 import gui.login.LoginDialog;
 import gui.prodsupl.ProducerDialog;
 import gui.prodsupl.SupplierDialog;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 
@@ -46,6 +40,7 @@ public class MainFrame extends JFrame {
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
     private LoggerDialog loggerDialog;
+    private ReportParametersDialog reportParametersDialog;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -73,6 +68,7 @@ public class MainFrame extends JFrame {
         tabPane = new JTabbedPane();
         bidsListPanel = new BidsListPanel(this);
         loggerDialog = new LoggerDialog(this);
+        reportParametersDialog = new ReportParametersDialog(this);
 
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
@@ -92,7 +88,6 @@ public class MainFrame extends JFrame {
             }
         });
     }
-
 
     /*
      * This method generates menubar
@@ -212,4 +207,8 @@ public class MainFrame extends JFrame {
     public LoggerDialog getLoggerDialog() {
         return loggerDialog;
     }
+
+	public ReportParametersDialog getReportParametersDialog() {
+		return reportParametersDialog;
+	}
 }

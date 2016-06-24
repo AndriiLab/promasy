@@ -4,13 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 abstract class SQLQueries<T> {
 
-    List<T> list = new LinkedList<>();
+    List<T> list = new ArrayList<>();
     private String id;
     private String table;
 
