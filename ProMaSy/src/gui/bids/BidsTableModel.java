@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by laban on 26.05.2016.
+ * Table model for {@link BidsListPanel}
  */
 class BidsTableModel extends AbstractTableModel {
 

@@ -48,7 +48,7 @@ public class Controller {
 			}
 		});
 
-		// loginDialog appears first, right before the MainFrame
+		// loginDialog appears first, before the MainFrame
 		mainFrame.getLoginDialog().setVisible(true);
 		mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
 			public void usernameEntered(String username) {
@@ -93,8 +93,7 @@ public class Controller {
 		String password = prefs.get("password", "codetest");
 		int portNumber = prefs.getInt("port", 5432);
 
-		// if user entered new settings for connection to DB - putting them to
-		// Prefs
+		// if user entered new settings for connection to DB - putting them to Prefs
 		mainFrame.getConSettDialog().setPrefsListener(e -> {
 			prefs.put("server", e.getServer());
 			prefs.put("host", e.getDatabase());
@@ -125,7 +124,7 @@ public class Controller {
 		getFinances();
 		getBids();
 		getDepartmentFinancesByOrder(0);
-		// showing loaded data in view
+		// passing loaded data to view
 		mainFrame.getCpvDialog().setData(Database.CPV.getList());
 		mainFrame.getEditOrgDialog().setInstData(Database.INSTITUTES.getList());
 		mainFrame.getEditEmpDialog().getCreateEmployeeDialog().setInstData(Database.INSTITUTES.getList());
@@ -143,30 +142,14 @@ public class Controller {
 		mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
 
 		// setting listeners to frames and dialogs
+        mainFrame.setMainFraimeMenuListener(this::printBidList);
+
 		mainFrame.getCpvDialog().setCpvListener(ev -> {
 			getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());
 			mainFrame.getCpvDialog().refresh();
 		});
 
-		mainFrame.getToolbar().setToolbarListener(() -> {
-			// TODO print function
-			long selectedDepartmentId = mainFrame.getBidsListPanel().getSelectedDepartmentId();
-			mainFrame.getReportParametersDialog().setRoleBoxData(Database.ROLES.getList());
-			// search for heads of department (id 5000) in department
-			getEmployees(5000, selectedDepartmentId);
-			mainFrame.getReportParametersDialog().setDepartmentHeadBoxData(Database.EMPLOYEES.getList());
-			// search for personally liable employee (id 6000) in department
-			getEmployees(6000, selectedDepartmentId);
-			mainFrame.getReportParametersDialog().setPersonallyLiableEmpBoxData(Database.EMPLOYEES.getList());
-			// search for chief accountant (id 4000)
-			getEmployees(4000);
-			mainFrame.getReportParametersDialog().setAccountantBoxData(Database.EMPLOYEES.getList());
-			// search for chief economist (id 3000)
-			getEmployees(3000);
-			mainFrame.getReportParametersDialog().setEconomistBoxData(Database.EMPLOYEES.getList());
-
-			mainFrame.getReportParametersDialog().setVisible(true);
-		});
+		mainFrame.getToolbar().setToolbarListener(this::printBidList);
 
 		mainFrame.getEditEmpDialog().setEmployeeDialogListener(model -> {
 			deleteEmployee(model);
@@ -566,6 +549,27 @@ public class Controller {
 
 		mainFrame.getExitItem().addActionListener(ev -> closeDialog());
 	}
+
+    private void printBidList(){
+        if (mainFrame.getBidsListPanel().isReadyForPrint()) {
+            long selectedDepartmentId = mainFrame.getBidsListPanel().getSelectedDepartmentId();
+            mainFrame.getReportParametersDialog().setRoleBoxData(Database.ROLES.getList());
+            // search for heads of department (id 5000) in department
+            getEmployees(5000, selectedDepartmentId);
+            mainFrame.getReportParametersDialog().setDepartmentHeadBoxData(Database.EMPLOYEES.getList());
+            // search for personally liable employee (id 6000) in department
+            getEmployees(6000, selectedDepartmentId);
+            mainFrame.getReportParametersDialog().setPersonallyLiableEmpBoxData(Database.EMPLOYEES.getList());
+            // search for chief accountant (id 4000)
+            getEmployees(4000);
+            mainFrame.getReportParametersDialog().setAccountantBoxData(Database.EMPLOYEES.getList());
+            // search for chief economist (id 3000)
+            getEmployees(3000);
+            mainFrame.getReportParametersDialog().setEconomistBoxData(Database.EMPLOYEES.getList());
+            // show dialog with selectors for director, head of department, PLE, accountant, economist
+            mainFrame.getReportParametersDialog().setVisible(true);
+        }
+    }
 
 	private void logEvent(String message, Color color) {
 		mainFrame.getStatusPanel().setStatus(message, color);

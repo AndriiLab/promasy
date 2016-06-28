@@ -41,6 +41,7 @@ public class MainFrame extends JFrame {
     private BidsListPanel bidsListPanel;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
+    private MainFrameMenuListener listener;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -127,6 +128,12 @@ public class MainFrame extends JFrame {
         menuBar.add(settingsMenu);
         menuBar.add(helpMenu);
 
+        printItem.addActionListener(e -> {
+            if(listener != null){
+                listener.printEventOccurred();
+            }
+        });
+
         editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
 
         editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
@@ -142,6 +149,10 @@ public class MainFrame extends JFrame {
         infoItem.addActionListener(e -> infoDialog.setVisible(true));
 
         return menuBar;
+    }
+
+    public void setMainFraimeMenuListener(MainFrameMenuListener listener){
+        this.listener = listener;
     }
 
     public LoginDialog getLoginDialog() {

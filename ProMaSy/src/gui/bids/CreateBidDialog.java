@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by laban on 30.05.2016.
+ * Dialog for creation of new bids. Associated with {@link BidsListPanel}
  */
 public class CreateBidDialog extends JDialog {
 

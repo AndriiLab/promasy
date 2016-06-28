@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by laban on 26.04.2016.
+ * This Dialog Create, Modify, and Delete data of Amounts and Units entries in DB
  */
 public class AmUnitsDialog extends JDialog implements ActionListener {
     private JButton okButton;
@@ -36,6 +36,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
         Dimension comboBoxDim = new Dimension(150, 25);
 
         DefaultComboBoxModel<AmountUnitsModel> amUnitModel = new DefaultComboBoxModel<>();
+
         amUnitBox = new JComboBox<>(amUnitModel);
         amUnitBox.addItem(emptyModel);
         amUnitBox.setPreferredSize(comboBoxDim);
@@ -47,11 +48,13 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
         createAmUnit.setIcon(Utils.createIcon("/images/Add16.gif"));
         createAmUnit.setPreferredSize(buttonDim);
         createAmUnit.setEnabled(true);
+
         editAmUnit = new JButton();
         editAmUnit.setToolTipText(Labels.getProperty("editAmUnit"));
         editAmUnit.setIcon(Utils.createIcon("/images/Edit16.gif"));
         editAmUnit.setPreferredSize(buttonDim);
         editAmUnit.setEnabled(true);
+
         deleteAmUnit = new JButton();
         deleteAmUnit.setToolTipText(Labels.getProperty("delAmUnit"));
         deleteAmUnit.setIcon(Utils.createIcon("/images/Delete16.gif"));
@@ -71,8 +74,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                     listener.createEventOccurred(model);
                 }
             }
-            privateModel = emptyModel;
-            newName = "";
+            clearDialog();
         });
 
         editAmUnit.addActionListener(e -> {
@@ -84,8 +86,7 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                     listener.editEventOccurred(privateModel);
                 }
             }
-            privateModel = emptyModel;
-            newName = "";
+            clearDialog();
         });
 
         deleteAmUnit.addActionListener(e -> {
@@ -94,11 +95,15 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
                 amUnitBox.addItem(emptyModel);
                 listener.deleteEventOccurred(privateModel);
             }
-            privateModel = emptyModel;
-            newName = "";
+            clearDialog();
         });
 
         okButton.addActionListener(e -> setVisible(false));
+    }
+
+    private void clearDialog(){
+        privateModel = emptyModel;
+        newName = "";
     }
 
     public void setData(java.util.List<AmountUnitsModel> amUnitDb) {

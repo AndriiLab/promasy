@@ -20,7 +20,7 @@ public class BidsReport {
         String reportPath = "/resources/Bids_Report.jasper";
         InputStream reportStream = BidsReport.class.getResourceAsStream(reportPath);
         try {
-            //Run code below only if report (.jrxml) not compiled to .jasper
+            //Run code below only if report (.jrxml) is not compiled to .jasper
 //            JasperCompileManager.compileReportToFile("D:\\Dropbox\\Git\\ProMaSy\\src\\resources\\Bids_Report.jrxml");
             jasperPrint = JasperFillManager.fillReport(reportStream, new HashMap<String, Object>(), new JRBeanCollectionDataSource(bidsList));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
