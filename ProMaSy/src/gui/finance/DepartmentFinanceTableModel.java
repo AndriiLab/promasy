@@ -1,15 +1,14 @@
 package gui.finance;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
 import gui.Labels;
 import gui.Utils;
 import model.FinanceDepartmentModel;
-import model.FinanceModel;
-
-import javax.swing.table.AbstractTableModel;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Date;
-import java.util.List;
 
 /**
  * Created by laban on 04.05.2016.

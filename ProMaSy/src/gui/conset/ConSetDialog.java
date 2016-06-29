@@ -1,9 +1,5 @@
 package gui.conset;
 
-import gui.Labels;
-import gui.Utils;
-import model.ConnectionSettingsModel;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -21,6 +17,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
+
+import gui.Labels;
+import model.ConnectionSettingsModel;
 
 public class ConSetDialog extends JDialog {
 
