@@ -1,12 +1,13 @@
 package main.java.gui.bids.reports;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,18 +16,30 @@ import java.util.List;
  */
 public class BidsReport {
 
-    public BidsReport(List<BidsReportModel> bidsList){
+    public BidsReport (List<BidsReportModel> bidsList){
         JasperPrint jasperPrint;
-        String reportPath = "/main/resources/Bids_Report.jasper";
-        InputStream reportStream = BidsReport.class.getResourceAsStream(reportPath);
         try {
-            //Run code below only if report (.jrxml) is not compiled to .jasper
-//            JasperCompileManager.compileReportToFile("D:\\Dropbox\\Git\\ProMaSy\\src\\main.resources\\Bids_Report.jrxml");
-            jasperPrint = JasperFillManager.fillReport(reportStream, new HashMap<String, Object>(), new JRBeanCollectionDataSource(bidsList));
+            jasperPrint = JasperFillManager.fillReport("resources\\Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setAlwaysOnTop(true);
             jasperViewer.setVisible(true);
-        } catch (JRException ex) {
-            ex.printStackTrace();
+        } catch (JRException e) {
+            if (e.getMessage().startsWith("java.io.FileNotFoundException")){
+                //If report (.jrxml) is not compiled to .jasper, so compile it
+                compileReport();
+                System.out.println("Compiling report file");
+            }
+            e.printStackTrace();
+        }
+    }
+
+    private static void compileReport(){
+        // Bad file path. Possible doesn't work in jar
+        File jrxmlFile = new File("resources/Bids_Report.jrxml");
+        try {
+            JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
+        } catch (JRException e) {
+            e.printStackTrace();
         }
     }
 }
