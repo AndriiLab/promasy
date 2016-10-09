@@ -53,41 +53,95 @@ public class MainFrame extends JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
-        //initializing variables
-        loginDialog = new LoginDialog(this);
+        //initializing toolbar, login and connection settings windows, logger
         toolbar = new Toolbar();
+        loginDialog = new LoginDialog(this);
         conSettDialog = new ConSetDialog(this);
-        editOrgDialog = new OrganizationDialog(this);
-        editEmpDialog = new EditEmployeeDialog(this);
+        loggerDialog = new LoggerDialog(this);
+        statusPanel = new StatusPanel(this);
+
+        //initializing other common windows
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
         supplierDialog = new SupplierDialog(this);
         infoDialog = new InfoDialog(this);
-        statusPanel = new StatusPanel(this);
         cpvDialog = new CpvDialog(this);
-        financePanel = new FinancePanel(this);
-        tabPane = new JTabbedPane();
-        bidsListPanel = new BidsListPanel(this);
-        loggerDialog = new LoggerDialog(this);
+    }
+
+    public void initialize(int roleId, long departmentId){
+        //setting layout
+        setLayout(new BorderLayout());
+
+        //TODO constructor here
+        switch (roleId){
+            case 7000: // 'Користувач'
+                bidsListPanel = new BidsListPanel(this, departmentId);
+                financePanel = new FinancePanel(this, departmentId); // not needed
+//                add(bidsListPanel, BorderLayout.CENTER);
+                setTabPane();
+                break;
+            case 6000: // 'Матеріально-відповідальна особа'
+                bidsListPanel = new BidsListPanel(this, departmentId);
+                financePanel = new FinancePanel(this, departmentId);
+                setTabPane();
+                break;
+            case 5000: // 'Керівник підрозділу'
+                bidsListPanel = new BidsListPanel(this, departmentId);
+                financePanel = new FinancePanel(this, departmentId);
+                setTabPane();
+                break;
+            case 3000: // 'Головний економіст'
+                bidsListPanel = new BidsListPanel(this); // not needed
+                financePanel = new FinancePanel(this);
+                add(financePanel, BorderLayout.CENTER);
+                break;
+            case 4000: // 'Головний бухгалтер'
+                bidsListPanel = new BidsListPanel(this); // not needed
+                financePanel = new FinancePanel(this);
+                add(financePanel, BorderLayout.CENTER);
+                break;
+            case 2000: // 'Заступник директора'
+                bidsListPanel = new BidsListPanel(this);
+                financePanel = new FinancePanel(this);
+                setTabPane();
+                break;
+            case 1000: // 'Директор'
+                bidsListPanel = new BidsListPanel(this);
+                financePanel = new FinancePanel(this);
+                setTabPane();
+                break;
+            case 900: // 'Адміністратор'
+                bidsListPanel = new BidsListPanel(this);
+                financePanel = new FinancePanel(this);
+                setTabPane();
+                break;
+        }
+        // initializing other windows and toolbars
+
+        editOrgDialog = new OrganizationDialog(this);
+        editEmpDialog = new EditEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
 
-        tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
-        tabPane.addTab(Labels.getProperty("finances"), financePanel);
-
-        // creating Menubar
+        // creating MenuBar
         setJMenuBar(createMenuBar());
 
         // setting layout and formating frames on mainframe
-        setLayout(new BorderLayout());
         add(toolbar, BorderLayout.PAGE_START);
-        add(tabPane, BorderLayout.CENTER);
         add(statusPanel, BorderLayout.SOUTH);
+
         statusPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 loggerDialog.setVisible(true);
             }
         });
+    }
+
+    private void setTabPane(){
+        tabPane = new JTabbedPane();
+        tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
+        tabPane.addTab(Labels.getProperty("finances"), financePanel);
+        add(tabPane, BorderLayout.CENTER);
     }
 
     /*
@@ -151,7 +205,7 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    public void setMainFraimeMenuListener(MainFrameMenuListener listener){
+    public void setMainFrameMenuListener(MainFrameMenuListener listener){
         this.listener = listener;
     }
 

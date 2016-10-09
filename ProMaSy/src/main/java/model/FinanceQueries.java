@@ -14,10 +14,8 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
 
     @Override
     public void create(FinanceModel object) throws SQLException {
-        String query = "INSERT INTO inst_db.finance(\n" +
-                "            order_number, order_name, order_amount, starts_on, \n" +
-                "            due_to, created_by, created_date)\n" +
-                "    VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO finance(order_number, order_name, order_amount, starts_on, due_to, created_by, created_date)" +
+                " VALUES ( ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setInt(1, object.getOrderNumber());
         prepStmt.setString(2, object.getOrderName());
@@ -27,6 +25,38 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         prepStmt.setLong(6, object.getCreatedBy());
         prepStmt.setTimestamp(7, object.getCreatedDate());
         prepStmt.executeUpdate();
+        prepStmt.close();
+    }
+
+    public void retrive(long departmentId) throws SQLException{
+        list.clear();
+        String query = "SELECT finance.order_id, finance.order_number, finance.order_name, finance.order_amount, finance.starts_on," +
+                " finance.due_to, finance.created_by, " +
+                "finance.created_date, finance.modified_by, finance.modified_date, finance.active FROM finance " +
+                "INNER JOIN finance_dep ON finance.order_id = finance_dep.order_id WHERE active = TRUE AND finance_dep.dep_id = ? " +
+                "ORDER BY order_number ASC";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setLong(1, departmentId);
+        ResultSet results = prepStmt.executeQuery();
+
+        while (results.next()) {
+            long orderId = results.getLong("order_id");
+            int orderNumber = results.getInt("order_number");
+            String orderName = results.getString("order_name");
+            BigDecimal totalAmount = results.getBigDecimal("order_amount");
+            BigDecimal leftAmount = financeLeft(orderId, totalAmount);
+            Date startDate = results.getDate("starts_on");
+            Date endDate = results.getDate("due_to");
+            long createdBy = results.getLong("created_by");
+            Timestamp createdDate = results.getTimestamp("created_date");
+            long modifiedBy = results.getLong("modified_by");
+            Timestamp modifiedDate = results.getTimestamp("modified_date");
+            boolean active = results.getBoolean("active");
+
+            FinanceModel financeModel = new FinanceModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderNumber, orderName, totalAmount, leftAmount, startDate, endDate);
+            list.add(financeModel);
+        }
+        results.close();
         prepStmt.close();
     }
 
@@ -64,7 +94,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         String query = "UPDATE finance\n" +
                 "   SET order_number=?, order_name=?, order_amount=?, starts_on=?, \n" +
                 "       due_to=?, modified_by=?, modified_date=?\n" +
-                " WHERE order_id=?\n";
+                " WHERE order_id=?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setInt(1, object.getOrderNumber());
         prepStmt.setString(2, object.getOrderName());
@@ -82,7 +112,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
     public void delete(FinanceModel object) throws SQLException {
         String query = "UPDATE finance\n" +
                 "   SET modified_by=?, modified_date=?\n, active = FALSE" +
-                " WHERE order_id=?\n";
+                " WHERE order_id=?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, object.getModifiedBy());
         prepStmt.setTimestamp(2, object.getModifiedDate());

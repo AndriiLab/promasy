@@ -49,7 +49,6 @@ public class Controller {
         });
 
         // loginDialog appears first, before the MainFrame
-        mainFrame.getLoginDialog().setVisible(true);
         mainFrame.getLoginDialog().setLoginListener(new LoginListener() {
             public void usernameEntered(String username) {
                 mainFrame.getLoginDialog().setSalt(getSalt(username));
@@ -57,7 +56,9 @@ public class Controller {
 
             public void loginAttemptOccurred(LoginAttemptEvent ev) {
                 if (checkLogin(ev.getUsername(), ev.getPassword())) {
-                    // if login was successful setting MainFrame visible
+                    // if login was successful init MainFrame and make visible
+                    mainFrame.initialize(LoginData.getInstance().getRoleId(), LoginData.getInstance().getDepId());
+                    initListeners();
                     mainFrame.setVisible(true);
                     mainFrame.getLoginDialog().setVisible(false);
                     mainFrame.getStatusPanel().setCurrentUserLabel(LoginData.getInstance().getShortName());
@@ -112,9 +113,13 @@ public class Controller {
         mainFrame.getConSettDialog().setDefaults(server, database, schema, portNumber, user, password);
         setConnectionSettings(server, database, schema, Integer.toString(portNumber), user, password);
 
-        // connecting with DB and loading default data into models
         connect();
         checkVersion();
+        mainFrame.getLoginDialog().setVisible(true);
+    }
+
+    private void initListeners(){
+        // connecting with DB and loading default data into models
         getCpvRequest("", true);
         getRolesRequest();
         getInstRequest();
@@ -143,7 +148,7 @@ public class Controller {
         mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
 
         // setting listeners to frames and dialogs
-        mainFrame.setMainFraimeMenuListener(this::printBidList);
+        mainFrame.setMainFrameMenuListener(this::printBidList);
 
         mainFrame.getCpvDialog().setCpvListener(ev -> {
             getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());

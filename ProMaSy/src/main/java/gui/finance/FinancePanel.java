@@ -63,6 +63,13 @@ public class FinancePanel extends JPanel {
     private BigDecimal depFinanceAmount;
     private FinanceDepartmentModel selectedDepFinModel;
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
+    private long presetDepartmentId;
+
+    public FinancePanel(JFrame parent, long departmentId){
+        this(parent);
+        presetDepartmentId = departmentId;
+
+    }
 
     public FinancePanel(JFrame parent) {
         this.parent = parent;

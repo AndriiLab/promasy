@@ -38,7 +38,7 @@ class FinanceTableModel extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return db.size();
+       return db.size();
     }
 
     @Override
