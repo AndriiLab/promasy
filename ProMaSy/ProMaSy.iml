@@ -17,7 +17,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="library" name="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER" level="application" />
-    <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.3.0" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.9.0" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.1" level="project" />
@@ -54,11 +54,11 @@
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-sandbox:4.5.1" level="project" />
     <orderEntry type="library" name="Maven: jakarta-regexp:jakarta-regexp:1.4" level="project" />
     <orderEntry type="library" name="Maven: org.olap4j:olap4j:0.9.7.309-JS-3" level="project" />
-    <orderEntry type="library" name="Maven: com.google.zxing:core:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.icu:icu4j:57.1" level="project" />
     <orderEntry type="library" name="Maven: org.swinglabs.swingx:swingx-all:1.6.5-1" level="project" />
-    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1208" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1211" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.0.24" level="project" />
   </component>
 </module>
