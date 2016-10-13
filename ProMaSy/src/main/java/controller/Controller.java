@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class Controller {
@@ -87,10 +88,10 @@ public class Controller {
         // trying to get connection settings form prefs object,
         // if it doesn't exist defaults will be used
         String server = prefs.get("server", "localhost");
-        String database = prefs.get("database", "inst2016test");
-        String schema = prefs.get("schema", "inst_db");
-        String user = prefs.get("user", "postcoder");
-        String password = prefs.get("password", "codetest");
+        String database = prefs.get("database", "promasydb");
+        String schema = prefs.get("schema", "ibchem");
+        String user = prefs.get("user", "promasy");
+        String password = prefs.get("password", "cl1entp@@SS");
         int portNumber = prefs.getInt("port", 5432);
 
         // if user entered new settings for connection to DB - putting them to Prefs
@@ -543,8 +544,9 @@ public class Controller {
             }
 
             public void ReportParametersSelectionOccurred(ReportParametersEvent ev) {
-                mainFrame.getBidsListPanel().printBidList(ev.getHeadPosition(), ev.getHead(), ev.getDepartmentHead(),
+                ReportParametersData.getInstance().setData(ev.getHeadPosition(), ev.getHead(), ev.getDepartmentHead(),
                         ev.getPersonallyLiableEmpl(), ev.getAccountant(), ev.getEconomist());
+                mainFrame.getBidsListPanel().printBidList();
             }
         });
 
@@ -665,6 +667,15 @@ public class Controller {
         try {
             return new Version(Database.VERSION_QUERIES.retrive());
         } catch (SQLException e) {
+        	// this error occurs with old settings, so reset it to defaults
+        	try {
+				Preferences.userRoot().node("db_con").clear();
+				disconnect();
+				connect();
+			} catch (BackingStoreException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
             errorLogEvent(e, Labels.withColon("versionRequest") + Labels.withSpaceBefore("error"));
         }
         return null;

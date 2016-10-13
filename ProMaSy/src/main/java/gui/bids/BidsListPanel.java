@@ -4,7 +4,7 @@ import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
 import main.java.gui.bids.reports.BidsReport;
-import main.java.gui.bids.reports.BidsReportModel;
+import main.java.model.BidsReportModel;
 import main.java.model.*;
 
 import javax.swing.*;
@@ -253,15 +253,13 @@ public class BidsListPanel extends JPanel {
 		return true;
 	}
 
-	public void printBidList(String headPosition, String head, String departmentHead, String personallyLiableEmpl,
-			String accountant, String economist) {
+	public void printBidList() {
 		List<BidsReportModel> list = new ArrayList<>();
 		for (int row = 0; row < bidsTable.getRowCount(); row++) {
 			BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
-			BidsReportModel reportModel = new BidsReportModel(headPosition, head, md.getDepName(), md.getFinanceName(),
+			BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
 					md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
-					md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
-					departmentHead, personallyLiableEmpl, accountant, economist);
+					md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount());
 			list.add(reportModel);
 		}
 		new BidsReport(Collections.unmodifiableList(list));

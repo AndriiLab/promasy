@@ -14,7 +14,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
 
     @Override
     public void create(FinanceModel object) throws SQLException {
-        String query = "INSERT INTO inst_db.finance(\n" +
+        String query = "INSERT INTO finance(\n" +
                 "            order_number, order_name, order_amount, starts_on, \n" +
                 "            due_to, created_by, created_date)\n" +
                 "    VALUES ( ?, ?, ?, ?, ?, ?, ?)";

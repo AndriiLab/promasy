@@ -1,12 +1,10 @@
-package main.java.gui.bids.reports;
+package main.java.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
 
 public class BidsReportModel {
-	private String headPosition;
-	private String head;
 	private String department;
 	private String financeName;
 	private String cpvCode;
@@ -19,20 +17,11 @@ public class BidsReportModel {
 	private String packType;
 	private BigDecimal onePrice;
 	private int amount;
-	private String departmentHead;
-	private String personallyLiableEmpl;
-	private String accountant;
-	private String economist;
-	
-	
 
-	public BidsReportModel(String headPosition, String head, String department, String financeName, String cpvCode,
+	public BidsReportModel(String department, String financeName, String cpvCode,
 			String cpvUkr, String orderDescription, Timestamp orderDate, String producer, String catNum,
-			String supplier, String packType, BigDecimal onePrice, int amount, String departmentHead,
-			String personallyLiableEmpl, String accountant, String economist) {
+			String supplier, String packType, BigDecimal onePrice, int amount) {
 		super();
-		this.headPosition = headPosition;
-		this.head = head;
 		this.department = department;
 		this.financeName = financeName;
 		this.cpvCode = cpvCode;
@@ -45,18 +34,6 @@ public class BidsReportModel {
 		this.packType = packType;
 		this.onePrice = onePrice;
 		this.amount = amount;
-		this.departmentHead = departmentHead;
-		this.personallyLiableEmpl = personallyLiableEmpl;
-		this.accountant = accountant;
-		this.economist = economist;
-	}
-
-	public String getHeadPosition() {
-		return headPosition;
-	}
-
-	public String getHead() {
-		return head;
 	}
 
 	public String getDepartment() {
@@ -107,24 +84,7 @@ public class BidsReportModel {
 		return amount;
 	}
 	
-	public String getDepartmentHead() {
-		return departmentHead;
-	}
-
-	public String getPersonallyLiableEmpl() {
-		return personallyLiableEmpl;
-	}
-
-	public String getAccountant() {
-		return accountant;
-	}
-
-	public String getEconomist() {
-		return economist;
-	}
-
 	public BigDecimal getTotalPrice(){
 		return (onePrice.multiply(BigDecimal.valueOf(amount))).setScale(2, RoundingMode.CEILING);
 	}
-
 }

@@ -1,5 +1,6 @@
 package main.java.gui.bids.reports;
 
+import main.java.model.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -25,7 +26,7 @@ public class BidsReport {
             jasperViewer.setVisible(true);
         } catch (JRException e) {
             if (e.getMessage().startsWith("java.io.FileNotFoundException")){
-                //If report (.jrxml) is not compiled to .jasper, so compile it
+                //Compile report (.jrxml) to .jasper if it is not compiled
                 compileReport();
                 System.out.println("Compiling report file");
             }
