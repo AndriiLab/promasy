@@ -9,7 +9,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Created by laban on 04.06.2016.
+ * Creates dialog for suppliers CRUD
  */
 public class SupplierDialog extends JDialog {
     private JButton okButton;
@@ -79,6 +79,7 @@ public class SupplierDialog extends JDialog {
                     privateSuplModel = (SupplierModel) item;
                     telField.setText(privateSuplModel.getSupplierTel());
                     commentsPane.setText(privateSuplModel.getSupplierComments());
+                    newSuplName = privateSuplModel.getSupplierName();
                 } else if (item.equals(emptySuplModel)) {
                     telField.setText("");
                     commentsPane.setText("");

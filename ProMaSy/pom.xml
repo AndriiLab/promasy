@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ProMaSy</groupId>
 	<artifactId>ProMaSy</artifactId>
-	<version>0.5.2</version>
+	<version>0.5.3</version>
 	<name>ProMaSy</name>
 	<description>ProMaSy - Procurement Management System</description>
 	<build>

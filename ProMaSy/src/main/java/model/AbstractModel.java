@@ -18,7 +18,7 @@ public abstract class AbstractModel {
 		this.modifiedDate = null;
 		this.active = true;
 	}
-	
+
 	AbstractModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
 				  boolean active) {
         this.modelId = modelId;
