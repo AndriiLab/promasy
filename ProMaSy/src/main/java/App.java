@@ -1,4 +1,5 @@
-package main.java; /**
+package main.java;
+/*
  * This is main Promasy class. It implements general method
  * for launching applications based on Swing interface. 
  */

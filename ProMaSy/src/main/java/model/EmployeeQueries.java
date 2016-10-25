@@ -221,7 +221,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setString(2, password);
 		ResultSet results = prepStmt.executeQuery();
 		if (results.next()) {
-			LoginData.getInstance(results.getLong("emp_id"), results.getString("emp_fname"), results.getString("emp_mname"), results.getString("emp_lname"), results.getLong("inst_id"), results.getLong("dep_id"), results.getLong("subdep_id"), results.getLong("roles_id"), username, password, results.getLong("created_by"),results.getTimestamp("created_date"),results.getLong("modified_by"), results.getTimestamp("modified_date"));
+			LoginData.getInstance(results.getLong("emp_id"), results.getString("emp_fname"), results.getString("emp_mname"), results.getString("emp_lname"), results.getLong("inst_id"), results.getLong("dep_id"), results.getLong("subdep_id"), results.getInt("roles_id"), username, password, results.getLong("created_by"),results.getTimestamp("created_date"),results.getLong("modified_by"), results.getTimestamp("modified_date"));
 			results.close();
 			prepStmt.close();
 			return true;

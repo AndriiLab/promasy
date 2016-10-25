@@ -13,7 +13,7 @@ public final class LoginData {
     private final long instId;
     private final long depId;
     private final long subdepId;
-    private final long roleId;
+    private final int roleId;
     private final String login;
     private final String password;
     private final long createdBy;
@@ -21,7 +21,7 @@ public final class LoginData {
     private final long modifiedBy;
     private final Timestamp modifiedDate;
 
-    public static LoginData getInstance(long empId, String empFName, String empMName, String empLName, long instId, long depId, long subdepId, long roleId, String login, String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate) {
+    public static LoginData getInstance(long empId, String empFName, String empMName, String empLName, long instId, long depId, long subdepId, int roleId, String login, String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate) {
         LoginData localInstance = instance;
         if (localInstance == null) {
             synchronized (LoginData.class) {
@@ -38,7 +38,7 @@ public final class LoginData {
         return instance;
     }
 
-    private LoginData(long empId, String empFName, String empMName, String empLName, long instId, long depId, long subdepId, long roleId, String login, String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate) {
+    private LoginData(long empId, String empFName, String empMName, String empLName, long instId, long depId, long subdepId, int roleId, String login, String password, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate) {
         this.empId = empId;
         this.empFName = empFName;
         this.empMName = empMName;
@@ -83,7 +83,7 @@ public final class LoginData {
 		return subdepId;
 	}
 
-	public long getRoleId() {
+	public int getRoleId() {
 		return roleId;
 	}
 

@@ -39,6 +39,12 @@ public class BidsListPanel extends JPanel {
 	private FinanceDepartmentModel selectedFinanceModel;
 	private DepartmentModel selectedDepartmentModel;
 	private MainFrame parent;
+    private long presetDepartmentId;
+
+	public BidsListPanel(MainFrame parent, long departmentId){
+	    this(parent);
+        presetDepartmentId = departmentId;
+    }
 
 	public BidsListPanel(MainFrame parent) {
 
@@ -71,11 +77,11 @@ public class BidsListPanel extends JPanel {
 		deleteBidButton.setEnabled(true);
 
 		financeDepartmentBox = new JComboBox<>();
-		financeDepartmentBox.setPreferredSize(new Dimension(150, 25));
+		financeDepartmentBox.setPreferredSize(new Dimension(200, 25));
 		financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
 
 		departmentBox = new JComboBox<>();
-		departmentBox.setPreferredSize(new Dimension(200, 25));
+		departmentBox.setPreferredSize(new Dimension(250, 25));
 		departmentBox.addItem(emptyDepartmentModel);
 
 		bidsTableModel = new BidsTableModel();
@@ -174,6 +180,10 @@ public class BidsListPanel extends JPanel {
 			departmentBox.addItem(model);
 			createBidDialog.addToDepartmentBox(model);
 		}
+		if (presetDepartmentId != 0L){
+		    Utils.setBoxFromModel(departmentBox, presetDepartmentId);
+            departmentBox.setEnabled(false);
+        }
 	}
 
 	public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
