@@ -27,7 +27,7 @@ public class SupplierQueries extends SQLQueries<SupplierModel> {
     @Override
     public void retrieve() throws SQLException {
         list.clear();
-        String query = "SELECT supplier_id, supplier_name, supplier_tel, supplier_comments, created_by, created_date, modified_by, modified_date, active FROM suppliers WHERE active = TRUE";
+        String query = "SELECT supplier_id, supplier_name, supplier_tel, supplier_comments, created_by, created_date, modified_by, modified_date, active FROM suppliers WHERE active = TRUE ORDER BY supplier_name ASC";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
 

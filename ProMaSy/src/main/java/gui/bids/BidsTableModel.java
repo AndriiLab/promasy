@@ -19,7 +19,6 @@ class BidsTableModel extends AbstractTableModel {
     private String[] colNames = {Labels.getProperty("description"),
                                     Labels.getProperty("dateModified"),
                                     Labels.getProperty("isReceived"),
-                                    Labels.getProperty("supplier"),
                                     Labels.getProperty("amount"),
                                     Labels.getProperty("oneUnitPrice"),
                                     Labels.getProperty("totalPrice"),
@@ -45,7 +44,7 @@ class BidsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 8;
+        return 7;
     }
 
     @Override
@@ -60,14 +59,12 @@ class BidsTableModel extends AbstractTableModel {
             case 2:
                 return model.isReceived();
             case 3:
-                return model.getSupplierName();
-            case 4:
                 return model.getAmount();
-            case 5:
+            case 4:
                 return model.getOnePrice().setScale(2, RoundingMode.CEILING);
-            case 6:
+            case 5:
                 return (model.getOnePrice().multiply(BigDecimal.valueOf(model.getAmount()))).setScale(2, RoundingMode.CEILING);
-            case 7:
+            case 6:
                 return model.getCustormerName();
         }
 
@@ -84,14 +81,12 @@ class BidsTableModel extends AbstractTableModel {
             case 2:
                 return Boolean.class;
             case 3:
-                return String.class;
-            case 4:
                 return Integer.class;
+            case 4:
+                return BigDecimal.class;
             case 5:
                 return BigDecimal.class;
             case 6:
-                return BigDecimal.class;
-            case 7:
                 return String.class;
             default:
                 return null;

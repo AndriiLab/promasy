@@ -20,7 +20,7 @@ public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
 
 	public void retrieve() throws SQLException {
 		list.clear();
-		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits WHERE active = TRUE";
+		String query = "SELECT am_unit_id, am_unit_desc, created_by, created_date, modified_by, modified_date, active FROM amountunits WHERE active = TRUE ORDER BY am_unit_desc ASC";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 

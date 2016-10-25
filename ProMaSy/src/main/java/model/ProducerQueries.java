@@ -25,7 +25,7 @@ public class ProducerQueries extends SQLQueries<ProducerModel> {
     @Override
     public void retrieve() throws SQLException {
         list.clear();
-        String query = "SELECT brand_id, brand_name, created_by, created_date, modified_by,modified_date, active FROM producers WHERE active = TRUE";
+        String query = "SELECT brand_id, brand_name, created_by, created_date, modified_by,modified_date, active FROM producers WHERE active = TRUE ORDER BY brand_name ASC";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
 

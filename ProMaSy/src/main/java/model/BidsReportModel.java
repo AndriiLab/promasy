@@ -77,7 +77,7 @@ public class BidsReportModel {
 	}
 
 	public BigDecimal getOnePrice() {
-		return onePrice;
+		return onePrice.setScale(2, RoundingMode.CEILING);
 	}
 
 	public int getAmount() {

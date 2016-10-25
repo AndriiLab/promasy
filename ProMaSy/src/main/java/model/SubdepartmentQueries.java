@@ -32,7 +32,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
 	public void retrieve(long reqDepId) throws SQLException {
 		list.clear();
 		
-		String query = "select subdep_id, subdep_name, dep_id, created_by, created_date, modified_by, modified_date, active from subdepartments where dep_id = ? and active = true";
+		String query = "SELECT subdep_id, subdep_name, dep_id, created_by, created_date, modified_by, modified_date, active FROM subdepartments WHERE dep_id = ? AND active = TRUE ORDER BY subdep_name ASC";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, reqDepId);
 		ResultSet results = prepStmt.executeQuery();

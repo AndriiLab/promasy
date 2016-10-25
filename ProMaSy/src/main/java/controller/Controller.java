@@ -1,5 +1,5 @@
-/**
- * This class connects MainFrame and Database
+/*
+  This class connects MainFrame and Database
  */
 package main.java.controller;
 
@@ -657,7 +657,6 @@ public class Controller {
     private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
         try {
             Database.CPV.retrieve(cpvRequest, sameLvlShow);
-            logEvent(Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("error"));
         }

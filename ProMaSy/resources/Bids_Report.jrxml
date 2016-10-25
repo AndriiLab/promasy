@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-10-11T22:34:07 -->
+<!-- 2016-10-24T15:57:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Bids_Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c34731e0-a519-4fe6-b889-af61f587c884">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<queryString>
@@ -68,7 +68,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="162">
+			<band height="189">
 				<staticText>
 					<reportElement x="454" y="0" width="220" height="30" uuid="21e447e5-9914-437c-bbfb-561b08983c18"/>
 					<textElement>
@@ -219,6 +219,28 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{totalPrice1}+" грн."]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="315" y="162" width="233" height="25" uuid="bbba4992-6d82-4dc5-99b3-ae549e862fa3">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[Голова тендерного комітету]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="553" y="162" width="103" height="25" uuid="f1753c53-b109-4b7a-987e-37e602537476">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<text><![CDATA[____________]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
@@ -287,54 +309,7 @@
 					<text><![CDATA[Опис замовлення]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="290" y="20" width="50" height="40" backcolor="#CCCCCC" uuid="43ffd1eb-1f09-48b3-9903-f74836221704">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Дата]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="340" y="20" width="60" height="40" backcolor="#CCCCCC" uuid="150ff0ca-40e7-4d79-84d2-d310704d97b5">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Виробник]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="400" y="20" width="60" height="40" backcolor="#CCCCCC" uuid="9796b0db-4f66-4b7e-89eb-5fcd448657e4">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Номер в каталозі]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="520" y="20" width="280" height="20" backcolor="#CCCCCC" uuid="032c9c7a-896d-45d8-9e04-e1fe0e291259">
+					<reportElement mode="Opaque" x="290" y="20" width="230" height="20" backcolor="#CCCCCC" uuid="032c9c7a-896d-45d8-9e04-e1fe0e291259">
 						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
 					</reportElement>
 					<box>
@@ -349,38 +324,7 @@
 					<text><![CDATA[Замовлено]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="520" y="40" width="70" height="20" backcolor="#CCCCCC" uuid="8e53cb73-68a1-468e-9a44-8aa853875224">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Пакування]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="590" y="40" width="80" height="20" backcolor="#CCCCCC" uuid="af9fe4a9-4e03-4dc3-bda5-28c1d487081a">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Ціна одиниці]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="670" y="40" width="50" height="20" backcolor="#CCCCCC" uuid="e8494596-e9ab-4e6a-aa13-01591af5adf8">
+					<reportElement mode="Opaque" x="290" y="40" width="50" height="20" backcolor="#CCCCCC" uuid="e8494596-e9ab-4e6a-aa13-01591af5adf8">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					</reportElement>
 					<box>
@@ -395,8 +339,9 @@
 					<text><![CDATA[Кількість]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="720" y="40" width="80" height="20" backcolor="#CCCCCC" uuid="675e921f-ff9a-4165-acbd-3d7c89b5aee3">
+					<reportElement mode="Opaque" x="420" y="40" width="100" height="20" backcolor="#CCCCCC" uuid="675e921f-ff9a-4165-acbd-3d7c89b5aee3">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -408,19 +353,6 @@
 						<font size="12"/>
 					</textElement>
 					<text><![CDATA[Заг. вартість]]></text>
-				</staticText>
-				<staticText>
-					<reportElement mode="Opaque" x="460" y="20" width="60" height="40" backcolor="#CCCCCC" uuid="b1b38c41-17f5-422a-8e19-bb198bd46df0"/>
-					<box>
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12"/>
-					</textElement>
-					<text><![CDATA[Постачальник]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="0" width="55" height="20" uuid="3bd58383-4166-4325-995e-18ce5131f4ce">
@@ -443,6 +375,66 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{financeName}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="520" y="20" width="120" height="40" backcolor="#CCCCCC" uuid="267aa1ed-042a-4047-be8a-a42c7219c851">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Можливий виробник та кат. номер]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="640" y="20" width="100" height="40" backcolor="#CCCCCC" uuid="c68e7660-0688-48e8-8e61-869374f82e7d"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Можливий постачальник]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="740" y="20" width="60" height="40" backcolor="#CCCCCC" uuid="0653f8db-696f-4323-9992-a79e9bb87b24">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Дата]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="340" y="40" width="80" height="20" backcolor="#CCCCCC" uuid="8223614d-5b95-4795-893a-bd8b05da16ed">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Ціна одиниці]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -560,8 +552,20 @@
 				<textFieldExpression><![CDATA[$F{orderDescription}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="50" height="20" uuid="6fd16920-d4a1-4296-9b81-8d00ab37098e">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="80" height="20" uuid="6d8e776d-bc57-4aa3-9dbd-4c67008d64fc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{onePrice}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="420" y="0" width="100" height="20" uuid="0c4c10e2-08e3-4729-a93b-be912441157b">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -570,13 +574,13 @@
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Right">
 					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="60" height="20" uuid="a226f356-4dfd-4e41-a8fc-05901a9205ba"/>
+				<reportElement stretchType="RelativeToBandHeight" x="520" y="0" width="120" height="20" uuid="01f8f992-a262-4d83-b5bd-f6f4a77aaef5"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -586,23 +590,10 @@
 				<textElement>
 					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{producer}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{producer}+"\n № "+$F{catNum}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="400" y="0" width="60" height="20" uuid="b70ed9c2-f03b-4e3f-b651-d3a65fb7c424"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{catNum}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="460" y="0" width="60" height="20" uuid="8c7f694c-d504-46ae-b7a9-45f75e7d60b9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="640" y="0" width="100" height="20" uuid="05dcde6a-fb59-49f1-a3be-ff48f237b9b4"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -615,56 +606,33 @@
 				<textFieldExpression><![CDATA[$F{supplier}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="520" y="0" width="70" height="20" uuid="d87aa7b6-032d-4149-88fe-f839d3ba7c93"/>
+				<reportElement stretchType="RelativeToBandHeight" x="740" y="0" width="60" height="20" uuid="cfb25a52-53c9-406d-b846-b36dad7233fc">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{packType}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="590" y="0" width="80" height="20" uuid="6d8e776d-bc57-4aa3-9dbd-4c67008d64fc"/>
+				<reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="50" height="20" uuid="8909628e-3f8a-4f26-aaf5-6a5f4981192b"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Right">
 					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="670" y="0" width="50" height="20" uuid="b0bb7ee1-0dc0-4a38-a868-d4806399033c"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="720" y="0" width="80" height="20" uuid="0c4c10e2-08e3-4729-a93b-be912441157b"/>
-				<box>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{amount}+" "+$F{packType}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -18,7 +18,7 @@ public class RoleQueries extends SQLQueries<RoleModel>{
 
 	public void retrieve() throws SQLException {
 		list.clear();
-		String query = "select roles_id, roles_name from roles where active = true";
+		String query = "SELECT roles_id, roles_name FROM roles WHERE active = TRUE ORDER BY roles_name ASC";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 

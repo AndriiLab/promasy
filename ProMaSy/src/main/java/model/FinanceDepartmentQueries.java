@@ -39,7 +39,8 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 "FROM finance_dep " +
                 "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
                 "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
-                "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.active = TRUE";
+                "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.active = TRUE " +
+                "ORDER BY finance_dep.order_amount DESC";
         Statement selectStmt = Database.DB.getConnection().createStatement();
         ResultSet results = selectStmt.executeQuery(query);
 
@@ -60,7 +61,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
                 "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
                 "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.order_id = ? " +
-                "AND finance_dep.active = TRUE";
+                "AND finance_dep.active = TRUE ORDER BY finance_dep.order_amount DESC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, orderID);
         ResultSet results = prepStmt.executeQuery();
@@ -82,7 +83,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 "INNER JOIN finance ON finance.order_id = finance_dep.order_id " +
                 "INNER JOIN departments ON finance_dep.dep_id = departments.dep_id " +
                 "INNER JOIN employees ON finance_dep.emp_id = employees.emp_id WHERE finance_dep.dep_id = ? " +
-                "AND finance_dep.active = TRUE";
+                "AND finance_dep.active = TRUE ORDER BY finance_dep.order_amount DESC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);
         ResultSet results = prepStmt.executeQuery();

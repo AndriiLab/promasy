@@ -20,7 +20,7 @@ public class InstituteQueries extends SQLQueries<InstituteModel>{
 
 	public void retrieve() throws SQLException {
 		list.clear();
-		String query = "select inst_id, inst_name, created_by, created_date, modified_by, modified_date, active from institute where active = true";
+		String query = "SELECT inst_id, inst_name, created_by, created_date, modified_by, modified_date, active FROM institute WHERE active = TRUE ORDER BY inst_name ASC";
 		Statement selectStmt = Database.DB.getConnection().createStatement();
 		ResultSet results = selectStmt.executeQuery(query);
 

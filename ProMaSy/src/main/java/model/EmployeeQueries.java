@@ -44,7 +44,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 			"INNER JOIN departments ON employees.dep_id = departments.dep_id "+
 			"LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
 			"INNER JOIN roles ON employees.roles_id = roles.roles_id "+
-			"INNER JOIN institute ON departments.inst_id = institute.inst_id";
+			"INNER JOIN institute ON departments.inst_id = institute.inst_id ORDER BY emp_lname ASC";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		ResultSet results = prepStmt.executeQuery();
 
@@ -70,7 +70,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
                 "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
                 "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
                 "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
-                "WHERE employees.roles_id = ?";
+                "WHERE employees.roles_id = ? ORDER BY emp_lname ASC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setInt(1, roleId);
         ResultSet results = prepStmt.executeQuery();
@@ -97,7 +97,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
                 "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
                 "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
                 "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
-                "WHERE employees.dep_id = ?";
+                "WHERE employees.dep_id = ? ORDER BY emp_lname ASC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);
         ResultSet results = prepStmt.executeQuery();
@@ -124,7 +124,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
                 "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id "+
                 "INNER JOIN roles ON employees.roles_id = roles.roles_id "+
                 "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
-                "WHERE employees.roles_id = ? AND employees.dep_id = ?";
+                "WHERE employees.roles_id = ? AND employees.dep_id = ? ORDER BY emp_lname ASC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setInt(1, roleId);
         prepStmt.setLong(2, departmentId);

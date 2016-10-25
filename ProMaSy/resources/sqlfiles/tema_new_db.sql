@@ -189,7 +189,7 @@ CREATE TABLE bids (
 	dep_id BIGINT NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
 	brand_id BIGINT, -- Можливий виробник
 	cat_num VARCHAR(30), -- Можливий каталожний номер
-	bid_desc VARCHAR(500) NOT NULL, -- Опис заявки
+	bid_desc TEXT NOT NULL, -- Опис заявки
 	cpv_code VARCHAR(10) NOT NULL REFERENCES cpv(cpv_code) , -- СРВ код
 	one_price DECIMAL(19, 4) NOT NULL, -- Вартість одиниці
 	amount INT NOT NULL, -- Кількість одиниць

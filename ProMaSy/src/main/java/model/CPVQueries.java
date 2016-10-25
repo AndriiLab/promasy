@@ -67,7 +67,7 @@ public class CPVQueries extends SQLQueries<CPVModel> {
 			// selecting general Divisions
 			requestedCpv = "__000000-_";
 
-			query = "select cpv_code, cpv_ukr, cpv_eng, cpv_level, terminal from cpv where cpv_code ilike ? and cpv_level > 0 and active = true";
+			query = "SELECT cpv_code, cpv_ukr, cpv_eng, cpv_level, terminal FROM cpv WHERE cpv_code ILIKE ? AND cpv_level > 0 AND active = TRUE ORDER BY cpv_code ASC";
 			PreparedStatement prepStmt = con.prepareStatement(query);
 			prepStmt.setString(1, requestedCpv);
 			return prepStmt;

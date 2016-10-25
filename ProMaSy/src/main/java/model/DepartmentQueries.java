@@ -30,7 +30,7 @@ public class DepartmentQueries extends SQLQueries<DepartmentModel>{
 
 	public void retrieve(long reqInstId) throws SQLException {
 		list.clear();
-		String query = "select dep_id, dep_name, inst_id, created_by, created_date, modified_by, modified_date, active from departments where inst_id = ? and active = true";
+		String query = "SELECT dep_id, dep_name, inst_id, created_by, created_date, modified_by, modified_date, active FROM departments WHERE inst_id = ? AND active = TRUE ORDER BY dep_name ASC";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setLong(1, reqInstId);
 		ResultSet results = prepStmt.executeQuery();
