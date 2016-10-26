@@ -330,6 +330,7 @@ public class FinancePanel extends JPanel {
 
     public void setFinanceTableData(List<FinanceModel> db) {
         financeTableModel.setData(db);
+        refreshFinanceTable();
     }
 
     public void refreshFinanceTable() {
@@ -338,6 +339,7 @@ public class FinancePanel extends JPanel {
 
     public void setDepartmentFinanceTableData(List<FinanceDepartmentModel> db) {
         departmentFinanceTableModel.setData(db);
+        refreshDepartmentFinanceTable();
     }
 
     public void refreshDepartmentFinanceTable() {

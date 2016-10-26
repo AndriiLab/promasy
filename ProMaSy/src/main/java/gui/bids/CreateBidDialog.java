@@ -136,10 +136,10 @@ public class CreateBidDialog extends JDialog {
             }
         });
 
-        addProducerButton.addActionListener(e -> parent.getProducerDialog().setVisible(true));
-        addSupplierButton.addActionListener(e -> parent.getSupplierDialog().setVisible(true));
-        addAmUnitsButton.addActionListener(e -> parent.getAmUnitsDialog().setVisible(true));
-        searchCPVButton.addActionListener(e -> parent.getCpvDialog().setVisible(true));
+        addProducerButton.addActionListener(e -> parent.showProducerDialog());
+        addSupplierButton.addActionListener(e -> parent.showSupplierDialog());
+        addAmUnitsButton.addActionListener(e -> parent.showAmUnitsDialog());
+        searchCPVButton.addActionListener(e -> parent.showCpvDialog());
 
         oneUnitPriceField.addKeyListener(new KeyAdapter() {
             @Override

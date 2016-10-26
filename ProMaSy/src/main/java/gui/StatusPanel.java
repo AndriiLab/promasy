@@ -30,7 +30,7 @@ public class StatusPanel extends JPanel {
     public void setCurrentUserLabel(String user) {
         String currentUser = Labels.withColon("currentUser") + " " + user;
         currentUserLabel.setText(currentUser);
-        parent.getLoggerDialog().addToLog(currentUser, Utils.GREEN);
+        parent.logEvent(currentUser, Utils.GREEN);
     }
 
     public void setStatus(String statusInfo, Color color) {

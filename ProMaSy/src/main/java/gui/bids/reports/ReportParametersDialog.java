@@ -88,7 +88,7 @@ public class ReportParametersDialog extends JDialog {
 
 		okButton.addActionListener(e -> {
 			if (checkBoxes() && listener != null) {
-				listener.ReportParametersSelectionOccurred(new ReportParametersEvent(roleName, headName,
+				listener.reportParametersSelectionOccurred(new ReportParametersEvent(roleName, headName,
 						departmentHeadName, personallyLiableEmpName, accountantName, economistName));
 				setVisible(false);
 				clear();

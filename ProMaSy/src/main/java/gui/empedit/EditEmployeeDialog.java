@@ -101,6 +101,7 @@ public class EditEmployeeDialog extends JDialog {
 
     public void setEmpTableData(List<EmployeeModel> db){
         tableModel.setData(db);
+        refresh();
     }
 
     public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){

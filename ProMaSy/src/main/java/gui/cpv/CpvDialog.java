@@ -96,7 +96,7 @@ public class CpvDialog extends JDialog {
             if (selectedCPV.length() > 10){
                 selectedCPV =  selectedCPV.substring(0,10);
             }
-            parent.getBidsListPanel().getCreateBidDialog().setCPVField(selectedCPV);
+            parent.setCpvCode(selectedCPV);
             setVisible(false);
         });
 
@@ -153,6 +153,7 @@ public class CpvDialog extends JDialog {
 
 		if (cpvListener != null) {
 			cpvListener.cpvEventOccurred(ev);
+			refresh();
 		}
 	}
 	

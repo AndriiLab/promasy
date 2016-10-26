@@ -47,7 +47,7 @@ public class ConSetDialog extends JDialog {
                     String.valueOf(password));
 
 			if (prefsListener != null) {
-				prefsListener.preferencesSetOccurred(model);
+				prefsListener.preferencesSetEventOccurred(model);
 			}
 		});
 

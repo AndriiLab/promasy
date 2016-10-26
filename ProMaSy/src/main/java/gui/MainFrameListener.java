@@ -5,6 +5,7 @@ package main.java.gui;
  */
 public interface MainFrameListener {
     //menu
-    void printEventOccurred();
+    void searchForPerson(int roleId, long selectedDepartmentId);
+    void searchForPerson(int roleId);
     void exitEventOccurred();
 }

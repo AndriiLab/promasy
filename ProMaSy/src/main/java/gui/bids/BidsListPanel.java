@@ -99,7 +99,7 @@ public class BidsListPanel extends JPanel {
 		});
 
 		deleteBidButton.addActionListener(e -> {
-			if (selectedBidModel != emptyBidModel) {
+			if (selectedBidModel != emptyBidModel && listener != null) {
 				if (!isSelectedFinanceDepartmentModelEmpty()) {
 					listener.bidDeleteEventOccurred(selectedBidModel, selectedDepartmentModel.getModelId(),
 							selectedFinanceModel.getModelId());
@@ -114,7 +114,7 @@ public class BidsListPanel extends JPanel {
 		});
 
 		financeDepartmentBox.addActionListener(e -> {
-			if (financeDepartmentBox.getSelectedItem() != null) {
+			if (financeDepartmentBox.getSelectedItem() != null && listener != null) {
 				selectedFinanceModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
 				if (!isSelectedFinanceDepartmentModelEmpty()) {
 					listener.financeDepartmentSelectionEventOccurred(selectedFinanceModel.getDepId(),
@@ -126,14 +126,16 @@ public class BidsListPanel extends JPanel {
 		});
 
 		departmentBox.addActionListener(e -> {
-			financeDepartmentBox.removeAllItems();
-			financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
-			selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
-			if (!isSelectedDepartmentModelEmpty()) {
-				listener.departmentSelectionEventOccurred(selectedDepartmentModel.getModelId());
-			} else if (isSelectedDepartmentModelEmpty()) {
-				listener.selectAllDepartmentsBidsEventOccurred();
-			}
+            if(listener != null){
+                financeDepartmentBox.removeAllItems();
+                financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
+                selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
+                if (!isSelectedDepartmentModelEmpty()) {
+                    listener.departmentSelectionEventOccurred(selectedDepartmentModel.getModelId());
+                } else if (isSelectedDepartmentModelEmpty()) {
+                    listener.selectAllDepartmentsBidsEventOccurred();
+                }
+            }
 		});
 
 		bidsTable.addMouseListener(new MouseAdapter() {
@@ -196,6 +198,7 @@ public class BidsListPanel extends JPanel {
 
 	public void setBidsTableData(List<BidModel> db) {
 		bidsTableModel.setData(db);
+		refreshBidsTableData();
 	}
 
 	public void refreshBidsTableData() {

@@ -5,5 +5,5 @@ package main.java.gui.bids.reports;
  */
 public interface ReportParametersDialogListener {
     void roleSelectionOccurred(int roleId);
-    void ReportParametersSelectionOccurred(ReportParametersEvent ev);
+    void reportParametersSelectionOccurred(ReportParametersEvent ev);
 }

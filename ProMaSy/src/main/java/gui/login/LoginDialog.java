@@ -92,7 +92,7 @@ public class LoginDialog extends JDialog {
 		okButton.addActionListener(e -> {
 			String username = userField.getText();
 			if (username.length() > 0 && loginListener != null) {
-				loginListener.usernameEntered(username);
+				setSalt(loginListener.usernameEntered(username));
 				String passw = Utils.makePass(passwordField.getPassword(), salt);
 				if (salt != 0 && passw.length() > 0 && loginListener != null) {
 					LoginAttemptEvent ev = new LoginAttemptEvent(this, username, passw);

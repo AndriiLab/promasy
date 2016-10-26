@@ -4,6 +4,6 @@ import main.java.model.ConnectionSettingsModel;
 
 public interface ConSetListener {
 
-	void preferencesSetOccurred(ConnectionSettingsModel model);
+	void preferencesSetEventOccurred(ConnectionSettingsModel model);
 
 }
