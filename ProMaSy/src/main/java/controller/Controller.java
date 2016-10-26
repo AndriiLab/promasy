@@ -5,6 +5,7 @@ package main.java.controller;
 
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
+import main.java.gui.MainFrameListener;
 import main.java.gui.Utils;
 import main.java.gui.amunits.AmUnitsDialogListener;
 import main.java.gui.bids.BidsListPanelListener;
@@ -58,7 +59,7 @@ public class Controller {
             public void loginAttemptOccurred(LoginAttemptEvent ev) {
                 if (checkLogin(ev.getUsername(), ev.getPassword())) {
                     // if login was successful init MainFrame and make visible
-                    mainFrame.initialize(LoginData.getInstance().getRoleId(), LoginData.getInstance().getDepId());
+                    mainFrame.initialize();
                     initListeners();
                     mainFrame.setVisible(true);
                     mainFrame.getLoginDialog().setVisible(false);
@@ -149,7 +150,17 @@ public class Controller {
         mainFrame.getBidsListPanel().setSumLabel(getBidsSum());
 
         // setting listeners to frames and dialogs
-        mainFrame.setMainFrameMenuListener(this::printBidList);
+        mainFrame.setMainFrameListener(new MainFrameListener() {
+            @Override
+            public void printEventOccurred() {
+                printBidList();
+            }
+
+            @Override
+            public void exitEventOccurred() {
+                closeDialog();
+            }
+        });
 
         mainFrame.getCpvDialog().setCpvListener(ev -> {
             getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());
@@ -554,8 +565,6 @@ public class Controller {
                 mainFrame.getBidsListPanel().printBidList();
             }
         });
-
-        mainFrame.getExitItem().addActionListener(ev -> closeDialog());
     }
 
     private void checkVersion() {

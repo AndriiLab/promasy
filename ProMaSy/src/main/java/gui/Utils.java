@@ -31,7 +31,7 @@ public class Utils {
 		return new ImageIcon(url);
 	}
 
-    public static void setBoxFromModel( JComboBox<? extends AbstractModel> box, long requestedId){
+    public static void setBoxFromID(JComboBox<? extends AbstractModel> box, long requestedId){
         if(requestedId != 0){
             for(int i = 0; i<=box.getItemCount(); i++){
                 if(box.getItemAt(i).getModelId() == requestedId){

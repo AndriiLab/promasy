@@ -16,6 +16,7 @@ import main.java.gui.instedit.OrganizationDialog;
 import main.java.gui.login.LoginDialog;
 import main.java.gui.prodsupl.ProducerDialog;
 import main.java.gui.prodsupl.SupplierDialog;
+import main.java.model.LoginData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +34,6 @@ public class MainFrame extends JFrame {
     private CpvDialog cpvDialog;
     private JTabbedPane tabPane;
     private StatusPanel statusPanel;
-    private JMenuItem exitItem;
     private AmUnitsDialog amUnitsDialog;
     private ProducerDialog producerDialog;
     private SupplierDialog supplierDialog;
@@ -41,7 +41,7 @@ public class MainFrame extends JFrame {
     private BidsListPanel bidsListPanel;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
-    private MainFrameMenuListener listener;
+    private MainFrameListener listener;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -66,61 +66,51 @@ public class MainFrame extends JFrame {
         supplierDialog = new SupplierDialog(this);
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
+        bidsListPanel = new BidsListPanel(this);
+        financePanel = new FinancePanel(this);
+        editOrgDialog = new OrganizationDialog(this);
+        editEmpDialog = new EditEmployeeDialog(this);
+        reportParametersDialog = new ReportParametersDialog(this);
     }
 
-    public void initialize(int roleId, long departmentId){
+    public void initialize(){
+        int roleId = LoginData.getInstance().getRoleId();
         //setting layout
         setLayout(new BorderLayout());
 
         //TODO constructor here
         switch (roleId){
             case 7000: // 'Користувач'
-                bidsListPanel = new BidsListPanel(this, departmentId);
-                financePanel = new FinancePanel(this, departmentId); // not needed
-//                add(bidsListPanel, BorderLayout.CENTER);
-                setTabPane();
+                useUserDepartment();
+                add(bidsListPanel, BorderLayout.CENTER);
                 break;
             case 6000: // 'Матеріально-відповідальна особа'
-                bidsListPanel = new BidsListPanel(this, departmentId);
-                financePanel = new FinancePanel(this, departmentId);
-                setTabPane();
+                useUserDepartment();
+                createTabPane();
                 break;
             case 5000: // 'Керівник підрозділу'
-                bidsListPanel = new BidsListPanel(this, departmentId);
-                financePanel = new FinancePanel(this, departmentId);
-                setTabPane();
-                break;
-            case 3000: // 'Головний економіст'
-                bidsListPanel = new BidsListPanel(this); // not needed
-                financePanel = new FinancePanel(this);
-                add(financePanel, BorderLayout.CENTER);
+                useUserDepartment();
+                createTabPane();
                 break;
             case 4000: // 'Головний бухгалтер'
-                bidsListPanel = new BidsListPanel(this); // not needed
-                financePanel = new FinancePanel(this);
-                add(financePanel, BorderLayout.CENTER);
+                createTabPane();
+                break;
+            case 3000: // 'Головний економіст'
+                createTabPane();
+                break;
+            case 2500: // 'Голова тендерного комітету'
+                createTabPane();
                 break;
             case 2000: // 'Заступник директора'
-                bidsListPanel = new BidsListPanel(this);
-                financePanel = new FinancePanel(this);
-                setTabPane();
+                createTabPane();
                 break;
             case 1000: // 'Директор'
-                bidsListPanel = new BidsListPanel(this);
-                financePanel = new FinancePanel(this);
-                setTabPane();
+                createTabPane();
                 break;
             case 900: // 'Адміністратор'
-                bidsListPanel = new BidsListPanel(this);
-                financePanel = new FinancePanel(this);
-                setTabPane();
+                createTabPane();
                 break;
         }
-        // initializing other windows and toolbars
-
-        editOrgDialog = new OrganizationDialog(this);
-        editEmpDialog = new EditEmployeeDialog(this);
-        reportParametersDialog = new ReportParametersDialog(this);
 
         // creating MenuBar
         setJMenuBar(createMenuBar());
@@ -137,7 +127,12 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void setTabPane(){
+    private void useUserDepartment(){
+        bidsListPanel.setUseUserDepartment();
+        financePanel.setUseUserDepartment();
+    }
+
+    private void createTabPane(){
         tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
@@ -152,7 +147,7 @@ public class MainFrame extends JFrame {
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
         JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
-        exitItem = new JMenuItem(Labels.getProperty("exit"));
+        JMenuItem exitItem = new JMenuItem(Labels.getProperty("exit"));
         fileMenu.add(printItem);
         fileMenu.addSeparator();
         fileMenu.add(exitItem);
@@ -188,6 +183,12 @@ public class MainFrame extends JFrame {
             }
         });
 
+        exitItem.addActionListener(e -> {
+            if(listener != null){
+                listener.exitEventOccurred();
+            }
+        });
+
         editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
 
         editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
@@ -205,7 +206,7 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    public void setMainFrameMenuListener(MainFrameMenuListener listener){
+    public void setMainFrameListener(MainFrameListener listener){
         this.listener = listener;
     }
 
@@ -243,10 +244,6 @@ public class MainFrame extends JFrame {
 
     public JTabbedPane getTabPane() {
         return tabPane;
-    }
-
-    public JMenuItem getExitItem() {
-        return exitItem;
     }
 
     public AmUnitsDialog getAmUnitsDialog() {

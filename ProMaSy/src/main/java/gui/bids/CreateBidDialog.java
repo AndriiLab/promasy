@@ -194,12 +194,12 @@ public class CreateBidDialog extends JDialog {
 
     void setCurrentDepartmentId(long currentDepartmentId) {
         this.currentDepartmentId = currentDepartmentId;
-        Utils.setBoxFromModel(departmentBox, currentDepartmentId);
+        Utils.setBoxFromID(departmentBox, currentDepartmentId);
     }
 
     void setCurrentFinanceDepartmentId(long currentFinanceDepartmentId) {
         this.currentFinanceDepartmentId = currentFinanceDepartmentId;
-        Utils.setBoxFromModel(financeDepartmentBox, currentFinanceDepartmentId);
+        Utils.setBoxFromID(financeDepartmentBox, currentFinanceDepartmentId);
     }
 
     private void clearFieldsAndSetTitle() {
@@ -369,14 +369,14 @@ public class CreateBidDialog extends JDialog {
         okButton.setText(Labels.getProperty("editBid"));
         createdBidModel = model;
         setVisible(true);
-        Utils.setBoxFromModel(departmentBox, createdBidModel.getDepId());
-        Utils.setBoxFromModel(financeDepartmentBox, createdBidModel.getFinanceId());
-        Utils.setBoxFromModel(producerBox, createdBidModel.getProducerId());
+        Utils.setBoxFromID(departmentBox, createdBidModel.getDepId());
+        Utils.setBoxFromID(financeDepartmentBox, createdBidModel.getFinanceId());
+        Utils.setBoxFromID(producerBox, createdBidModel.getProducerId());
         cpvField.setText(createdBidModel.getCpvCode());
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());
-        Utils.setBoxFromModel(supplierBox, createdBidModel.getSupplierId());
-        Utils.setBoxFromModel(amUnitsBox, createdBidModel.getAmUnitId());
+        Utils.setBoxFromID(supplierBox, createdBidModel.getSupplierId());
+        Utils.setBoxFromID(amUnitsBox, createdBidModel.getAmUnitId());
         amountField.setText(Integer.toString(createdBidModel.getAmount()));
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
         calculateTotalPrice();

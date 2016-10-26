@@ -224,10 +224,10 @@ public class CreateEmployeeDialog extends JDialog {
         middleNameField.setText(currentEmployeeModel.getEmpMName());
         lastNameField.setText(currentEmployeeModel.getEmpLName());
         loginField.setText(currentEmployeeModel.getLogin());
-        Utils.setBoxFromModel(roleBox, currentEmployeeModel.getRoleId());
-        Utils.setBoxFromModel(instituteBox, currentEmployeeModel.getInstId());
-        Utils.setBoxFromModel(departmentBox, currentEmployeeModel.getDepId());
-        Utils.setBoxFromModel(subdepartmentBox, currentEmployeeModel.getSubdepId());
+        Utils.setBoxFromID(roleBox, currentEmployeeModel.getRoleId());
+        Utils.setBoxFromID(instituteBox, currentEmployeeModel.getInstId());
+        Utils.setBoxFromID(departmentBox, currentEmployeeModel.getDepId());
+        Utils.setBoxFromID(subdepartmentBox, currentEmployeeModel.getSubdepId());
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("editEmployee"));
         setVisible(true);

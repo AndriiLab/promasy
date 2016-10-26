@@ -4,7 +4,6 @@ import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
 import main.java.gui.bids.reports.BidsReport;
-import main.java.model.BidsReportModel;
 import main.java.model.*;
 
 import javax.swing.*;
@@ -39,12 +38,7 @@ public class BidsListPanel extends JPanel {
 	private FinanceDepartmentModel selectedFinanceModel;
 	private DepartmentModel selectedDepartmentModel;
 	private MainFrame parent;
-    private long presetDepartmentId;
-
-	public BidsListPanel(MainFrame parent, long departmentId){
-	    this(parent);
-        presetDepartmentId = departmentId;
-    }
+    private boolean useUserDepartment = false;
 
 	public BidsListPanel(MainFrame parent) {
 
@@ -175,13 +169,17 @@ public class BidsListPanel extends JPanel {
 		sumLabel.setText(sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
 	}
 
+    public void setUseUserDepartment(){
+        useUserDepartment = true;
+    }
+
 	public void setDepartmentBoxData(List<DepartmentModel> db) {
 		for (DepartmentModel model : db) {
 			departmentBox.addItem(model);
 			createBidDialog.addToDepartmentBox(model);
 		}
-		if (presetDepartmentId != 0L){
-		    Utils.setBoxFromModel(departmentBox, presetDepartmentId);
+		if(useUserDepartment){
+            Utils.setBoxFromID(departmentBox, LoginData.getInstance().getDepId());
             departmentBox.setEnabled(false);
         }
 	}

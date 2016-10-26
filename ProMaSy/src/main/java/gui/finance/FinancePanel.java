@@ -2,10 +2,7 @@ package main.java.gui.finance;
 
 import main.java.gui.Labels;
 import main.java.gui.Utils;
-import main.java.model.DepartmentModel;
-import main.java.model.EmployeeModel;
-import main.java.model.FinanceDepartmentModel;
-import main.java.model.FinanceModel;
+import main.java.model.*;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
@@ -63,13 +60,7 @@ public class FinancePanel extends JPanel {
     private BigDecimal depFinanceAmount;
     private FinanceDepartmentModel selectedDepFinModel;
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
-    private long presetDepartmentId;
-
-    public FinancePanel(JFrame parent, long departmentId){
-        this(parent);
-        presetDepartmentId = departmentId;
-
-    }
+    private boolean useUserDepartment = false;
 
     public FinancePanel(JFrame parent) {
         this.parent = parent;
@@ -183,8 +174,8 @@ public class FinancePanel extends JPanel {
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 4);
                     if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
-                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepId());
-                        Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getEmpId());
+                        Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepId());
+                        Utils.setBoxFromID(employeeBox, selectedDepFinModel.getEmpId());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().toString());
                     }
                 }
@@ -353,9 +344,17 @@ public class FinancePanel extends JPanel {
         departmentFinanceTableModel.fireTableDataChanged();
     }
 
+    public void setUseUserDepartment(){
+        useUserDepartment = true;
+    }
+
     public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
+        }
+        if(useUserDepartment){
+            Utils.setBoxFromID(departmentBox, LoginData.getInstance().getDepId());
+            departmentBox.setEnabled(false);
         }
     }
 

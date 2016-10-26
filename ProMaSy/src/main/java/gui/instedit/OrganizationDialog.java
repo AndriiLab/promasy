@@ -39,7 +39,6 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
     private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
 
-
     public OrganizationDialog(JFrame parent) {
         super(parent, Labels.getProperty("addEditOrganizationAndDepartments"), false);
         setSize(610, 200);
