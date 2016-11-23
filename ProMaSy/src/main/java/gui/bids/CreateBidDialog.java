@@ -3,6 +3,7 @@ package main.java.gui.bids;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
+import main.java.gui.bids.status.Status;
 import main.java.model.*;
 
 import javax.swing.*;
@@ -20,6 +21,12 @@ import java.util.List;
  */
 public class CreateBidDialog extends JDialog {
 
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
+    private final ProducerModel emptyProducerModel = new ProducerModel();
+    private final SupplierModel emptySupplierModel = new SupplierModel();
+    private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
+    private final BidModel emptyBidModel = new BidModel();
     private JComboBox<DepartmentModel> departmentBox;
     private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
     private JComboBox<ProducerModel> producerBox;
@@ -36,12 +43,6 @@ public class CreateBidDialog extends JDialog {
     private JTextField amountField;
     private JTextField oneUnitPriceField;
     private JTextPane descriptionPane;
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
-    private final ProducerModel emptyProducerModel = new ProducerModel();
-    private final SupplierModel emptySupplierModel = new SupplierModel();
-    private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
-    private final BidModel emptyBidModel = new BidModel();
     private BidModel createdBidModel;
     private JLabel totalPriceLabel;
     private CreateBidDialogListener listener;
@@ -339,7 +340,7 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         if (createdBidModel == emptyBidModel) {
-            createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId());
+            createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId(), Status.CREATED.getStatusId());
 
         } else {
             createdBidModel.setDepId(selectedDepartmentModel.getModelId());

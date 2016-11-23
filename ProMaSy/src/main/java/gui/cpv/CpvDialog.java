@@ -120,6 +120,9 @@ public class CpvDialog extends JDialog {
 
 		});
 
+		//seting search button as default button, for search by hitting enter
+		this.getRootPane().setDefaultButton(searchButton);
+
 		searchPanel.setLayout(new FlowLayout());
 		searchPanel.setBorder(BorderFactory.createEtchedBorder());
 		searchPanel.add(homeButton);

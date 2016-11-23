@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * Created by laban on 23.05.2016.
+ * Model for storing data related to the bid
  */
 public class BidModel extends AbstractModel{
 
@@ -24,13 +24,16 @@ public class BidModel extends AbstractModel{
     private String financeName;
     private long supplierId;
     private String supplierName;
-    private boolean received;
-    private Timestamp dateReceived;
+    private int statusId;
+    private String statusDesc;
     private String createdFName;
     private String createdMName;
     private String createdLName;
+    private String editedFName;
+    private String editedMName;
+    private String editedLName;
 
-    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, String depName, long producerId, String producerName, String catNum, String bidDesc, String cpvCode, String cpvUkr, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long financeId, String financeName, long supplierId, String supplierName, boolean received, Timestamp dateReceived, String createdFName, String createdMName, String createdLName) {
+    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, String depName, long producerId, String producerName, String catNum, String bidDesc, String cpvCode, String cpvUkr, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long financeId, String financeName, long supplierId, String supplierName, int statusId, String statusDesc, String createdFName, String createdMName, String createdLName, String editedFName, String editedMName, String editedLName) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.depId = depId;
         this.depName = depName;
@@ -48,14 +51,17 @@ public class BidModel extends AbstractModel{
         this.financeName = financeName;
         this.supplierId = supplierId;
         this.supplierName = supplierName;
-        this.received = received;
-        this.dateReceived = dateReceived;
+        this.statusId = statusId;
+        this.statusDesc = statusDesc;
         this.createdFName = createdFName;
         this.createdMName = createdMName;
         this.createdLName = createdLName;
+        this.editedFName = editedFName;
+        this.editedMName = editedMName;
+        this.editedLName = editedLName;
     }
 
-    public BidModel(long depId, long producerId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long financeId, long supplierId) {
+    public BidModel(long depId, long producerId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long financeId, long supplierId, int statusId) {
         this.depId = depId;
         this.producerId = producerId;
         this.catNum = catNum;
@@ -66,10 +72,27 @@ public class BidModel extends AbstractModel{
         this.amUnitId = amUnitId;
         this.financeId = financeId;
         this.supplierId = supplierId;
+        this.statusId = statusId;
     }
 
     public BidModel() {
 
+    }
+
+    public long getDepId() {
+        return depId;
+    }
+
+    public void setDepId(long depId) {
+        this.depId = depId;
+    }
+
+    public String getDepName() {
+        return depName;
+    }
+
+    public void setDepName(String depName) {
+        this.depName = depName;
     }
 
     public long getProducerId() {
@@ -78,6 +101,14 @@ public class BidModel extends AbstractModel{
 
     public void setProducerId(long producerId) {
         this.producerId = producerId;
+    }
+
+    public String getProducerName() {
+        return producerName;
+    }
+
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
     }
 
     public String getCatNum() {
@@ -104,6 +135,14 @@ public class BidModel extends AbstractModel{
         this.cpvCode = cpvCode;
     }
 
+    public String getCpvUkr() {
+        return cpvUkr;
+    }
+
+    public void setCpvUkr(String cpvUkr) {
+        this.cpvUkr = cpvUkr;
+    }
+
     public BigDecimal getOnePrice() {
         return onePrice;
     }
@@ -128,12 +167,28 @@ public class BidModel extends AbstractModel{
         this.amUnitId = amUnitId;
     }
 
+    public String getAmUnitName() {
+        return amUnitName;
+    }
+
+    public void setAmUnitName(String amUnitName) {
+        this.amUnitName = amUnitName;
+    }
+
     public long getFinanceId() {
         return financeId;
     }
 
     public void setFinanceId(long financeId) {
         this.financeId = financeId;
+    }
+
+    public String getFinanceName() {
+        return financeName;
+    }
+
+    public void setFinanceName(String financeName) {
+        this.financeName = financeName;
     }
 
     public long getSupplierId() {
@@ -144,28 +199,28 @@ public class BidModel extends AbstractModel{
         this.supplierId = supplierId;
     }
 
-    public boolean isReceived() {
-        return received;
+    public String getSupplierName() {
+        return supplierName;
     }
 
-    public void setReceived(boolean received) {
-        this.received = received;
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
     }
 
-    public Timestamp getDateReceived() {
-        return dateReceived;
+    public int getStatusId() {
+        return statusId;
     }
 
-    public void setDateReceived(Timestamp dateReceived) {
-        this.dateReceived = dateReceived;
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
     }
 
-    public long getDepId() {
-        return depId;
+    public String getStatusDesc() {
+        return statusDesc;
     }
 
-    public void setDepId(long depId) {
-        this.depId = depId;
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
     }
 
     public String getCreatedFName() {
@@ -192,52 +247,28 @@ public class BidModel extends AbstractModel{
         this.createdLName = createdLName;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    public String getEditedFName() {
+        return editedFName;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setEditedFName(String editedFName) {
+        this.editedFName = editedFName;
     }
 
-    public String getDepName() {
-        return depName;
+    public String getEditedMName() {
+        return editedMName;
     }
 
-    public void setDepName(String depName) {
-        this.depName = depName;
+    public void setEditedMName(String editedMName) {
+        this.editedMName = editedMName;
     }
 
-    public String getProducerName() {
-        return producerName;
+    public String getEditedLName() {
+        return editedLName;
     }
 
-    public void setProducerName(String producerName) {
-        this.producerName = producerName;
-    }
-
-    public String getCpvUkr() {
-        return cpvUkr;
-    }
-
-    public void setCpvUkr(String cpvUkr) {
-        this.cpvUkr = cpvUkr;
-    }
-
-    public String getAmUnitName() {
-        return amUnitName;
-    }
-
-    public void setAmUnitName(String amUnitName) {
-        this.amUnitName = amUnitName;
-    }
-
-    public String getFinanceName() {
-        return financeName;
-    }
-
-    public void setFinanceName(String financeName) {
-        this.financeName = financeName;
+    public void setEditedLName(String editedLName) {
+        this.editedLName = editedLName;
     }
 
     @Override
@@ -245,10 +276,22 @@ public class BidModel extends AbstractModel{
         return bidDesc;
     }
 
-    public Object getCustormerName() {
-        if(createdFName != null && createdLName != null && createdMName != null){
+    public Object getLastEditPersonName() {
+        if (editedFName != null && editedLName != null && editedMName != null) {
+            return editedLName + " " + editedFName.substring(0, 1) + "."
+                    + editedMName.substring(0, 1) + ".";
+        } else if (createdFName != null && createdLName != null && createdMName != null) {
             return createdLName + " " + createdFName.substring(0, 1) + "."
                     + createdMName.substring(0, 1)+".";
+        }
+        return null;
+    }
+
+    public Object getLastEditDate() {
+        if (super.getModifiedDate() != null) {
+            return super.getModifiedDate();
+        } else if (super.getCreatedDate() != null) {
+            return super.getCreatedDate();
         }
         return null;
     }

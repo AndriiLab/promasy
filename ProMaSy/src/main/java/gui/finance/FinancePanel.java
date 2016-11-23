@@ -19,10 +19,16 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by laban on 04.05.2016.
+ * Panel displays data about current finances and its relation to departments.
  */
 public class FinancePanel extends JPanel {
 
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
+    private final java.util.Date defaultStartDate = (new GregorianCalendar(Year.now().getValue(), 0, 1)).getTime();
+    private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
+    private final FinanceModel emptyFinanceModel = new FinanceModel();
+    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private JTextField orderNumberField;
     private JTextField orderNameField;
     private JTextField financeAmountField;
@@ -41,8 +47,6 @@ public class FinancePanel extends JPanel {
     private JButton deleteDepOrderButton;
     private JTable depFinanceTable;
     private DepartmentFinanceTableModel departmentFinanceTableModel;
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private FinancePanelListener listener;
     private JFrame parent;
     private int orderNumber;
@@ -50,16 +54,12 @@ public class FinancePanel extends JPanel {
     private Date startDate;
     private Date endDate;
     private BigDecimal financeAmount;
-    private final java.util.Date defaultStartDate = (new GregorianCalendar(Year.now().getValue(), 0, 1)).getTime();
-    private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
     private FinanceModel selectedFinanceModel;
-    private final FinanceModel emptyFinanceModel = new FinanceModel();
     private long selectedOrder = 0;
     private DepartmentModel selectedDepartment;
     private EmployeeModel selectedEmployee;
     private BigDecimal depFinanceAmount;
     private FinanceDepartmentModel selectedDepFinModel;
-    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private boolean useUserDepartment = false;
 
     public FinancePanel(JFrame parent) {
@@ -348,16 +348,24 @@ public class FinancePanel extends JPanel {
 
     public void setUseUserDepartment(){
         useUserDepartment = true;
+        departmentBox.setEnabled(false);
+        employeeBox.setEnabled(false);
+        createDepOrderButton.setEnabled(false);
+        editDepOrderButton.setEnabled(false);
+        deleteDepOrderButton.setEnabled(false);
+        createOrderButton.setEnabled(false);
+        editOrderButton.setEnabled(false);
+        deleteOrderButton.setEnabled(false);
     }
 
     public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
+            if (useUserDepartment && LoginData.getInstance().getDepId() == model.getModelId()) {
+                departmentBox.setSelectedItem(model);
+            }
         }
-        if(useUserDepartment){
-            Utils.setBoxFromID(departmentBox, LoginData.getInstance().getDepId());
-            departmentBox.setEnabled(false);
-        }
+
     }
 
     public void setEmployeeBoxData(List<EmployeeModel> db) {

@@ -224,8 +224,8 @@ public class MainFrame extends JFrame {
     }
 
     //setters
-    public void setDefaultConnectionSettings(String server, String database, String schema, int portNumber, String user, String password) {
-        conSettDialog.setDefaults(server, database, schema, portNumber, user, password);
+    public void setDefaultConnectionSettings(String server, String database, String schema, int portNumber, String user) {
+        conSettDialog.setDefaults(server, database, schema, portNumber, user);
     }
 
     public void setBidsPanelSum(BigDecimal sum) {
@@ -403,5 +403,9 @@ public class MainFrame extends JFrame {
 
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
+    }
+
+    public void setBidStatusList(List<StatusModel> list) {
+        bidsListPanel.setBidStatusTableData(list);
     }
 }

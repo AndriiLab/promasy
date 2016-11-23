@@ -80,10 +80,14 @@ public class Controller {
 
             public void loginAttemptOccurred(LoginAttemptEvent ev) {
                 if (checkLogin(ev.getUsername(), ev.getPassword())) {
-                    // if login was successful init MainFrame and make visible
+                    // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
-                    loadDataToView();
                     initListeners();
+                    // if role "Head of department"(id 5000) and lower, than load data according to department
+                    if (LoginData.getInstance().getRoleId() < 5000) {
+                        loadDataToView();
+                    } else loadDataToView(LoginData.getInstance().getDepId());
+
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
                 } else if (!checkLogin(ev.getUsername(), ev.getPassword())) {
@@ -115,6 +119,27 @@ public class Controller {
         getBids();
         getDepartmentFinancesByOrder(0);
 
+        loadToView();
+    }
+
+    private void loadDataToView(long departmentId) {
+        //loading default data into models
+        getCpvRequest("", true);
+        getRolesRequest();
+        getInstRequest();
+        getDepartments(LoginData.getInstance().getInstId());
+        getEmployees(departmentId);
+        getAmUnits();
+        getProd();
+        getSupl();
+        getFinances(departmentId);
+        getBids(departmentId);
+        getDepartmentFinancesByOrder(0);
+
+        loadToView();
+    }
+
+    private void loadToView() {
         // passing loaded data to view
         mainFrame.setRoleModelList(Database.ROLES.getList());
         mainFrame.setAmountUnitsModelList(Database.AMOUNTUNITS.getList());
@@ -159,9 +184,7 @@ public class Controller {
             }
         });
 
-        mainFrame.setCpvListener(ev -> {
-            getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow());
-        });
+        mainFrame.setCpvListener(ev -> getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
 
         mainFrame.setEmployeeDialogListener(model -> {
             deleteEmployee(model);
@@ -428,6 +451,36 @@ public class Controller {
                 mainFrame.setBidModelList(Database.BIDS.getList());
                 mainFrame.setBidsPanelSum(getBidsSum(departmentId));
             }
+
+            public void showBidStatusesEventOccured(long modelId) {
+                getBidStatuses(modelId);
+                mainFrame.setBidStatusList(Database.STATUSES.getList());
+            }
+
+            public void statusChangeEventOccured(StatusModel model) {
+                createBidStatus(model);
+                getBidStatuses(model.getBidId());
+                getBids();
+                mainFrame.setBidStatusList(Database.STATUSES.getList());
+                mainFrame.setBidModelList(Database.BIDS.getList());
+            }
+
+
+            public void statusChangeEventOccured(StatusModel model, long departmentId) {
+                createBidStatus(model);
+                getBidStatuses(model.getBidId());
+                getBids(departmentId);
+                mainFrame.setBidStatusList(Database.STATUSES.getList());
+                mainFrame.setBidModelList(Database.BIDS.getList());
+            }
+
+            public void statusChangeEventOccured(StatusModel model, long departmentId, long orderId) {
+                createBidStatus(model);
+                getBidStatuses(model.getBidId());
+                getBids(departmentId, orderId);
+                mainFrame.setBidStatusList(Database.STATUSES.getList());
+                mainFrame.setBidModelList(Database.BIDS.getList());
+            }
         });
 
         mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
@@ -541,7 +594,7 @@ public class Controller {
     // sets connection settings to Properties object
     private void setConnectionSettings(String host, String database, String schema, int port, String user,
                                        String password) {
-        mainFrame.setDefaultConnectionSettings(host, database, schema, port, user, password);
+        mainFrame.setDefaultConnectionSettings(host, database, schema, port, user);
         if (conSet == null) {
             conSet = new Properties();
         }
@@ -728,6 +781,15 @@ public class Controller {
     private void getFinances() {
         try {
             Database.FINANCES.retrieve();
+        } catch (SQLException e) {
+            errorLogEvent(e,
+                    Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void getFinances(long departmentId) {
+        try {
+            Database.FINANCES.retrieve(departmentId);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
@@ -1149,6 +1211,26 @@ public class Controller {
             logEvent(Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void createBidStatus(StatusModel model) {
+        setCreated(model);
+        try {
+            Database.STATUSES.create(model);
+            logEvent(Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("success"), Utils.GREEN);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorLogEvent(e, Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void getBidStatuses(long bidId) {
+        try {
+            Database.STATUSES.retrieve(bidId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            errorLogEvent(e, Labels.withColon("status") + bidId + Labels.withSpaceBefore("error"));
         }
     }
 

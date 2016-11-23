@@ -6,7 +6,7 @@ import main.java.model.BidModel;
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -17,12 +17,12 @@ class BidsTableModel extends AbstractTableModel {
     private List<BidModel> db;
 
     private String[] colNames = {Labels.getProperty("description"),
-                                    Labels.getProperty("dateModified"),
-                                    Labels.getProperty("isReceived"),
                                     Labels.getProperty("amount"),
                                     Labels.getProperty("oneUnitPrice"),
                                     Labels.getProperty("totalPrice"),
-                                    Labels.getProperty("customer")};
+            Labels.getProperty("user"),
+            Labels.getProperty("dateModified"),
+            Labels.getProperty("status")};
 
     public BidsTableModel(){
 
@@ -54,18 +54,17 @@ class BidsTableModel extends AbstractTableModel {
             case 0:
                 return model;
             case 1:
-                //TODO appropriate function to "date modified"
-                return model.getCreatedDate();
-            case 2:
-                return model.isReceived();
-            case 3:
                 return model.getAmount();
-            case 4:
+            case 2:
                 return model.getOnePrice().setScale(2, RoundingMode.CEILING);
-            case 5:
+            case 3:
                 return (model.getOnePrice().multiply(BigDecimal.valueOf(model.getAmount()))).setScale(2, RoundingMode.CEILING);
+            case 4:
+                return model.getLastEditPersonName();
+            case 5:
+                return model.getLastEditDate();
             case 6:
-                return model.getCustormerName();
+                return model.getStatusDesc();
         }
 
         return null;
@@ -77,15 +76,15 @@ class BidsTableModel extends AbstractTableModel {
             case 0:
                 return String.class;
             case 1:
-                return Date.class;
-            case 2:
-                return Boolean.class;
-            case 3:
                 return Integer.class;
+            case 2:
+                return BigDecimal.class;
+            case 3:
+                return BigDecimal.class;
             case 4:
-                return BigDecimal.class;
+                return String.class;
             case 5:
-                return BigDecimal.class;
+                return Timestamp.class;
             case 6:
                 return String.class;
             default:

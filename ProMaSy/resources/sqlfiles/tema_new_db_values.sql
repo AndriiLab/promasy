@@ -1,4 +1,4 @@
-SET SCHEMA 'inst_db';
+SET SCHEMA 'ibchem';
 
 INSERT INTO roles
  (roles_id, roles_name)
@@ -18,7 +18,7 @@ INSERT INTO institute
 VALUES
 ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
 
-SET SCHEMA 'inst_db';
+SET SCHEMA 'ibchem';
 CREATE OR REPLACE FUNCTION check_login ("user" TEXT, pass TEXT) RETURNS BOOLEAN AS $$
 DECLARE exists BOOLEAN;
 BEGIN
@@ -92,3 +92,12 @@ VALUES
 ('уп.'),
 ('шт.');
 
+INSERT INTO statuses
+(status_id, status_desc)
+VALUES
+  (10, 'Створено'),
+  (20, 'Подано'),
+  (50, 'Розміщено на Prozorro'),
+  (60, 'Отримано'),
+  (80, 'Не отримано'),
+  (90, 'Відхилено')

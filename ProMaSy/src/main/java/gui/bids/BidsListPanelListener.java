@@ -1,9 +1,10 @@
 package main.java.gui.bids;
 
 import main.java.model.BidModel;
+import main.java.model.StatusModel;
 
 /**
- * Created by laban on 26.05.2016.
+ * Listener for {@link BidsListPanel}
  */
 public interface BidsListPanelListener {
     void departmentSelectionEventOccurred(long departmentId);
@@ -13,4 +14,12 @@ public interface BidsListPanelListener {
     void bidDeleteEventOccurred(BidModel model, long departmentId, long orderId);
     void selectAllDepartmentsBidsEventOccurred();
     void selectAllOrdersBidsEventOccurred(long departmentId);
+
+    void showBidStatusesEventOccured(long modelId);
+
+    void statusChangeEventOccured(StatusModel model);
+
+    void statusChangeEventOccured(StatusModel model, long departmentId);
+
+    void statusChangeEventOccured(StatusModel model, long departmentId, long orderId);
 }

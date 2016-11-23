@@ -1,5 +1,5 @@
-CREATE SCHEMA inst_db;
-SET SCHEMA 'inst_db';
+CREATE SCHEMA ibchem;
+SET SCHEMA 'ibchem';
 
 -- ALTER TABLE institute ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
 
@@ -183,21 +183,43 @@ CREATE TABLE finance_dep (
   PRIMARY KEY (order_id, dep_id)
 );
 
+-- Статус виконання замовлення
+CREATE TABLE statuses (
+  status_id     INT         NOT NULL CONSTRAINT status_pk PRIMARY KEY,
+  status_desc   VARCHAR(50) NOT NULL,
+  created_by    BIGINT      NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
+  modified_date TIMESTAMP,
+  active        BOOLEAN     NOT NULL DEFAULT TRUE
+);
+
 -- Дані про замовлення
 CREATE TABLE bids (
-	bid_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
-	dep_id BIGINT NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
-	brand_id BIGINT, -- Можливий виробник
-	cat_num VARCHAR(30), -- Можливий каталожний номер
-	bid_desc TEXT NOT NULL, -- Опис заявки
-	cpv_code VARCHAR(10) NOT NULL REFERENCES cpv(cpv_code) , -- СРВ код
-	one_price DECIMAL(19, 4) NOT NULL, -- Вартість одиниці
-	amount INT NOT NULL, -- Кількість одиниць
-	am_unit_id BIGINT NOT NULL REFERENCES amountunits(am_unit_id), -- Розмірність одиниць
-	order_id BIGINT NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
-	supplier_id BIGINT, -- Можливий постачальник
-	received BOOLEAN NOT NULL, -- Чи був отриманий товар складом
-	date_received TIMESTAMP, -- Дата отримання складом
+  bid_id        BIGINT         NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
+  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
+  brand_id      BIGINT, -- Можливий виробник
+  cat_num       VARCHAR(30), -- Можливий каталожний номер
+  bid_desc      TEXT           NOT NULL, -- Опис заявки
+  cpv_code      VARCHAR(10)    NOT NULL REFERENCES cpv (cpv_code), -- СРВ код
+  one_price     DECIMAL(19, 4) NOT NULL, -- Вартість одиниці
+  amount        INT            NOT NULL, -- Кількість одиниць
+  am_unit_id    BIGINT         NOT NULL REFERENCES amountunits (am_unit_id), -- Розмірність одиниць
+  order_id      BIGINT         NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
+  supplier_id   BIGINT, -- Можливий постачальник
+  created_by    BIGINT         NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
+  modified_date TIMESTAMP,
+  status_id     INT            NOT NULL REFERENCES statuses (status_id),
+  active        BOOLEAN        NOT NULL DEFAULT TRUE
+);
+
+-- Дані про статус замовлення
+CREATE TABLE bid_status (
+  id            BIGINT   NOT NULL DEFAULT id_gen() CONSTRAINT bid_status_pk PRIMARY KEY,
+  bid_id        BIGINT   NOT NULL REFERENCES bids (bid_id),
+  status_id     INT      NOT NULL REFERENCES statuses (status_id),
   created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by BIGINT,
