@@ -13,32 +13,45 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
     }
 
     private static BigDecimal financeLeft(long orderId, BigDecimal totalAmount) throws SQLException {
-        String query = "SELECT ? - sum(one_price*amount) AS finance_left FROM bids WHERE active = TRUE AND order_id = ?";
+        String query = "SELECT ? AS order_amount, ? - sum(b.one_price*b.amount) AS finance_left " +
+                "FROM bids b " +
+                "WHERE b.active = TRUE AND b.order_id = ?";
         try (PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query)) {
             prepStmt.setBigDecimal(1, totalAmount);
-            prepStmt.setLong(2, orderId);
-            return getFinanceLeftResults(prepStmt, totalAmount);
+            prepStmt.setBigDecimal(2, totalAmount);
+            prepStmt.setLong(3, orderId);
+            return getFinanceLeftResults(prepStmt);
         }
     }
 
-    static BigDecimal financeLeft(long orderId, long depId, BigDecimal totalAmount) throws SQLException {
-        String query = "SELECT ? - sum(one_price*amount) AS finance_left FROM bids WHERE active = TRUE AND order_id = ? AND dep_id = ?";
+    public static BigDecimal financeLeft(long orderId, long depId) throws SQLException {
+        //TODO Optimize sql statement
+        String query = "SELECT (SELECT f.order_amount FROM finance_dep f " +
+                "WHERE f.order_id = ? AND f.dep_id = ?) AS order_amount, " +
+                "(SELECT f.order_amount FROM finance_dep f " +
+                "WHERE f.order_id = ? AND f.dep_id = ?) - sum(b.one_price*b.amount) AS finance_left " +
+                "FROM bids b " +
+                "WHERE b.active = TRUE AND b.order_id = ? AND b.dep_id = ?";
         try (PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query)) {
-            prepStmt.setBigDecimal(1, totalAmount);
-            prepStmt.setLong(2, orderId);
-            prepStmt.setLong(3, depId);
-            return getFinanceLeftResults(prepStmt, totalAmount);
+            prepStmt.setLong(1, orderId);
+            prepStmt.setLong(2, depId);
+            prepStmt.setLong(3, orderId);
+            prepStmt.setLong(4, depId);
+            prepStmt.setLong(5, orderId);
+            prepStmt.setLong(6, depId);
+            return getFinanceLeftResults(prepStmt);
         }
     }
 
-    private static BigDecimal getFinanceLeftResults(PreparedStatement prepStmt, BigDecimal totalAmount) throws SQLException {
+    private static BigDecimal getFinanceLeftResults(PreparedStatement prepStmt) throws SQLException {
         try (ResultSet results = prepStmt.executeQuery()) {
             results.next();
             BigDecimal leftAmount = results.getBigDecimal("finance_left");
+            BigDecimal totalFinance = results.getBigDecimal("order_amount");
             if (leftAmount == null) {
-                return totalAmount;
+                return totalFinance;
             }
-            return results.getBigDecimal("finance_left");
+            return leftAmount;
         }
     }
 

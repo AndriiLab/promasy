@@ -142,7 +142,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
             String empLName = results.getString("emp_lname");
             String empName = getName(empFName, empMName, empLName);
             BigDecimal totalAmount = results.getBigDecimal("order_amount");
-            BigDecimal leftAmount = FinanceQueries.financeLeft(orderId, depId, totalAmount);
+            BigDecimal leftAmount = FinanceQueries.financeLeft(orderId, depId);
 
             FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, leftAmount);
             list.add(financeDepartmentModel);

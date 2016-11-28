@@ -228,8 +228,8 @@ public class MainFrame extends JFrame {
         conSettDialog.setDefaults(server, database, schema, portNumber, user);
     }
 
-    public void setBidsPanelSum(BigDecimal sum) {
-        bidsListPanel.setSumLabel(sum);
+    public void setBidsPanelSum(BigDecimal sum, BigDecimal financeLeft) {
+        bidsListPanel.setFinanceLabels(sum, financeLeft);
     }
 
     public void setCpvCode(String selectedCPV){

@@ -152,7 +152,7 @@ public class Controller {
         mainFrame.setFinanceModelList(Database.FINANCES.getList());
         mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
         mainFrame.setBidModelList(Database.BIDS.getList());
-        mainFrame.setBidsPanelSum(getBidsSum());
+        mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
     }
 
     private void initListeners(){
@@ -399,13 +399,13 @@ public class Controller {
                 getBids(departmentId);
                 mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
             }
 
             public void financeDepartmentSelectionEventOccurred(long departmentId, long orderId) {
                 getBids(departmentId, orderId);
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
             }
 
             public void bidDeleteEventOccurred(BidModel model) {
@@ -415,7 +415,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum());
+                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
             }
 
             @Override
@@ -426,7 +426,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
             }
 
             @Override
@@ -437,19 +437,19 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
             }
 
             public void selectAllDepartmentsBidsEventOccurred() {
                 getBids();
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum());
+                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
             }
 
             public void selectAllOrdersBidsEventOccurred(long departmentId) {
                 getBids(departmentId);
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
             }
 
             public void showBidStatusesEventOccured(long modelId) {
@@ -496,7 +496,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum());
+                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
             }
 
             @Override
@@ -507,7 +507,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
             }
 
             @Override
@@ -518,7 +518,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
             }
 
             public void bidEditEventOccurred(BidModel model) {
@@ -528,7 +528,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum());
+                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
             }
 
             @Override
@@ -539,7 +539,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
             }
 
             @Override
@@ -550,7 +550,7 @@ public class Controller {
                 getFinances();
                 mainFrame.setFinanceModelList(Database.FINANCES.getList());
                 mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId));
+                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
             }
         });
 
@@ -878,6 +878,15 @@ public class Controller {
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2")
                     + Labels.withSpaceBefore("error"));
+        }
+        return BigDecimal.ZERO;
+    }
+
+    private BigDecimal getFinancesLeft(long departmentId, long orderId) {
+        try {
+            return FinanceQueries.financeLeft(orderId, departmentId);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("financeLeftByTema") + Labels.withSpaceBefore("error"));
         }
         return BigDecimal.ZERO;
     }

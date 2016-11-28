@@ -38,7 +38,8 @@ public class BidsListPanel extends JPanel {
     private StatusDialog statusDialog;
     private BidModel selectedBidModel;
     private JLabel sumLabel;
-	private FinanceDepartmentModel selectedFinanceModel;
+    private JLabel financeLeftLabel;
+    private FinanceDepartmentModel selectedFinanceModel;
 	private DepartmentModel selectedDepartmentModel;
 	private MainFrame parent;
     private boolean useUserDepartment = false;
@@ -92,6 +93,7 @@ public class BidsListPanel extends JPanel {
 		bidsTable = new JTable(bidsTableModel);
 
 		sumLabel = new JLabel(0 + Labels.withSpaceBefore("uah"));
+        financeLeftLabel = new JLabel();
 
 		createLayout();
 
@@ -198,9 +200,14 @@ public class BidsListPanel extends JPanel {
 		return selectedFinanceModel.equals(emptyFinanceDepartmentModel);
 	}
 
-	public void setSumLabel(BigDecimal sum) {
-		sumLabel.setText(sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
-	}
+    public void setFinanceLabels(BigDecimal sum, BigDecimal financeLeft) {
+        sumLabel.setText(Labels.withColon("totalPrice2") + " " + sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
+        if (!isSelectedFinanceDepartmentModelEmpty()) {
+            financeLeftLabel.setText(Labels.withColon("financeLeftByTema") + " " + financeLeft.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
+        } else {
+            financeLeftLabel.setText("");
+        }
+    }
 
     public void setUseUserDepartment(){
         useUserDepartment = true;
@@ -269,25 +276,28 @@ public class BidsListPanel extends JPanel {
 	private void createLayout() {
 		JPanel topPanel = new JPanel();
 		JPanel sumPanel = new JPanel();
-        JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-        separator.setPreferredSize(new Dimension(10, (int) createBidButton.getPreferredSize().getHeight()));
+        JSeparator separatorTopPanel = new JSeparator(SwingConstants.VERTICAL);
+        separatorTopPanel.setPreferredSize(new Dimension(10, (int) createBidButton.getPreferredSize().getHeight()));
 
 		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		topPanel.setBorder(BorderFactory.createEtchedBorder());
 		topPanel.add(createBidButton);
 		topPanel.add(editBidButton);
 		topPanel.add(deleteBidButton);
-        topPanel.add(separator);
+        topPanel.add(separatorTopPanel);
         topPanel.add(new JLabel(Labels.getProperty("order")));
         topPanel.add(financeDepartmentBox);
 		topPanel.add(new JLabel(Labels.getProperty("department")));
 		topPanel.add(departmentBox);
-        topPanel.add(separator);
+        topPanel.add(separatorTopPanel);
         topPanel.add(changeStatusButton);
 
-		sumPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		sumPanel.add(new JLabel(Labels.withColon("totalPrice2")));
-		sumPanel.add(sumLabel);
+        JSeparator separatorSumPanel = new JSeparator(SwingConstants.VERTICAL);
+        separatorSumPanel.setPreferredSize(new Dimension(10, (int) sumLabel.getPreferredSize().getHeight()));
+        sumPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        sumPanel.add(financeLeftLabel);
+        sumPanel.add(separatorSumPanel);
+        sumPanel.add(sumLabel);
 
 		setLayout(new BorderLayout());
 		add(topPanel, BorderLayout.NORTH);
