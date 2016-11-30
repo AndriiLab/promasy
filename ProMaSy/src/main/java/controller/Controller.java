@@ -486,7 +486,7 @@ public class Controller {
         mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
             public void departmentSelectionEventOccurred(long depId) {
                 getDepartmentFinancesByDepartment(depId);
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
+                mainFrame.setFinanceDepartmentModelListToBidDialog(Database.DEPARTMENT_FINANCES.getList());
             }
 
             public void bidCreateEventOccurred(BidModel model) {

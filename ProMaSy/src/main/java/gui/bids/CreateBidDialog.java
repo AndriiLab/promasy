@@ -49,6 +49,7 @@ public class CreateBidDialog extends JDialog {
     private MainFrame parent;
     private Long currentDepartmentId = 0L;
     private Long currentFinanceDepartmentId = 0L;
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), false);
@@ -203,6 +204,10 @@ public class CreateBidDialog extends JDialog {
         Utils.setBoxFromID(financeDepartmentBox, currentFinanceDepartmentId);
     }
 
+    void setEnabledDepartmentBox(boolean state) {
+        departmentBox.setEnabled(state);
+    }
+
     private void clearFieldsAndSetTitle() {
         createdBidModel = emptyBidModel;
         setVisible(false);
@@ -228,11 +233,16 @@ public class CreateBidDialog extends JDialog {
             try {
                 BigDecimal onePrice = new BigDecimal(oneUnitPriceField.getText());
                 BigDecimal amount = new BigDecimal(amountField.getText());
-                totalPriceLabel.setText(onePrice.multiply(amount) + Labels.withSpaceBefore("uah"));
+                totalPrice = onePrice.multiply(amount);
+                totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
             } catch (NumberFormatException ex) {
+                totalPrice = BigDecimal.ZERO;
                 totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
             }
-        } else totalPriceLabel.setText("0" + Labels.withSpaceBefore("uah"));
+        } else {
+            totalPrice = BigDecimal.ZERO;
+            totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
+        }
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
@@ -337,6 +347,11 @@ public class CreateBidDialog extends JDialog {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"),  Labels.getProperty("wrongFloatFormat"));
+            return false;
+        }
+
+        if (selectedFinanceDepartmentModel.getLeftAmount().compareTo(totalPrice) < 0) {
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("insufficientFundsMessage"), Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
             return false;
         }
         if (createdBidModel == emptyBidModel) {

@@ -401,6 +401,10 @@ public class MainFrame extends JFrame {
         bidsListPanel.getCreateBidDialog().setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
+    public void setFinanceDepartmentModelListToBidDialog(List<FinanceDepartmentModel> list) {
+        bidsListPanel.getCreateBidDialog().setFinanceDepartmentBoxData(list);
+    }
+
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
     }
