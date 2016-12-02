@@ -1,7 +1,7 @@
 package main.java.gui.instedit;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.DepartmentModel;
 import main.java.model.InstituteModel;
 import main.java.model.SubdepartmentModel;
@@ -15,6 +15,9 @@ import java.util.List;
 
 public class OrganizationDialog extends JDialog implements ActionListener {
 
+    private final InstituteModel emptyInstituteModel = new InstituteModel();
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
     private JButton closeButton;
     private JButton createInstButton;
     private JButton editInstButton;
@@ -35,9 +38,6 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private InstituteModel privateInstModel;
     private DepartmentModel privateDepModel;
     private SubdepartmentModel privateSybdepModel;
-    private final InstituteModel emptyInstituteModel = new InstituteModel();
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
 
     public OrganizationDialog(JFrame parent) {
         super(parent, Labels.getProperty("addEditOrganizationAndDepartments"), false);
@@ -62,17 +62,17 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         createInstButton = new JButton();
         createInstButton.setToolTipText(Labels.getProperty("addInstitute"));
-        createInstButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createInstButton.setIcon(Icons.CREATE);
         createInstButton.setPreferredSize(buttonDim);
         createInstButton.setEnabled(true);
         editInstButton = new JButton();
         editInstButton.setToolTipText(Labels.getProperty("editInstitite"));
-        editInstButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editInstButton.setIcon(Icons.EDIT);
         editInstButton.setPreferredSize(buttonDim);
         editInstButton.setEnabled(true);
         deleteInstButton = new JButton();
         deleteInstButton.setToolTipText(Labels.getProperty("delInstitite"));
-        deleteInstButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteInstButton.setIcon(Icons.DELETE);
         deleteInstButton.setPreferredSize(buttonDim);
         deleteInstButton.setEnabled(true);
 
@@ -86,17 +86,17 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         createDepButton = new JButton();
         createDepButton.setToolTipText(Labels.getProperty("addDepartment"));
-        createDepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createDepButton.setIcon(Icons.CREATE);
         createDepButton.setPreferredSize(buttonDim);
         createDepButton.setEnabled(true);
         editDepButton = new JButton();
         editDepButton.setToolTipText(Labels.getProperty("editDepartment"));
-        editDepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editDepButton.setIcon(Icons.EDIT);
         editDepButton.setPreferredSize(buttonDim);
         editDepButton.setEnabled(true);
         deleteDepButton = new JButton();
         deleteDepButton.setToolTipText(Labels.getProperty("delDepartment"));
-        deleteDepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteDepButton.setIcon(Icons.DELETE);
         deleteDepButton.setPreferredSize(buttonDim);
         deleteDepButton.setEnabled(true);
 
@@ -110,17 +110,17 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         createSubdepButton = new JButton();
         createSubdepButton.setToolTipText(Labels.getProperty("addSubdepartment"));
-        createSubdepButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createSubdepButton.setIcon(Icons.CREATE);
         createSubdepButton.setPreferredSize(buttonDim);
         createSubdepButton.setEnabled(true);
         editSubdepButton = new JButton();
         editSubdepButton.setToolTipText(Labels.getProperty("editSubdepartment"));
-        editSubdepButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editSubdepButton.setIcon(Icons.EDIT);
         editSubdepButton.setPreferredSize(buttonDim);
         editSubdepButton.setEnabled(true);
         deleteSubdepButton = new JButton();
         deleteSubdepButton.setToolTipText(Labels.getProperty("delSubdepartment"));
-        deleteSubdepButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteSubdepButton.setIcon(Icons.DELETE);
         deleteSubdepButton.setPreferredSize(buttonDim);
         deleteSubdepButton.setEnabled(true);
 

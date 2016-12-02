@@ -1,7 +1,6 @@
 package main.java.gui.finance;
 
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.FinanceModel;
 
 import javax.swing.table.AbstractTableModel;
@@ -11,7 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by laban on 04.05.2016.
+ * TableModel for Finance table
  */
 class FinanceTableModel extends AbstractTableModel {
 
@@ -57,12 +56,12 @@ class FinanceTableModel extends AbstractTableModel {
             case 2:
                 BigDecimal totalAmount = model.getTotalAmount();
                 if (totalAmount == null){
-                    return Utils.ZERO_VALUE;
+                    return BigDecimal.ZERO;
                 } else return totalAmount.setScale(2, RoundingMode.CEILING);
             case 3:
                 BigDecimal leftAmount = model.getLeftAmount();
                 if (leftAmount == null){
-                    return Utils.ZERO_VALUE;
+                    return BigDecimal.ZERO;
                 } else return leftAmount.setScale(2, RoundingMode.CEILING);
             case 4:
                 return model.getStartDate();

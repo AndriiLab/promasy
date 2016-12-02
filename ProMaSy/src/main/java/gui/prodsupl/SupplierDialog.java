@@ -1,5 +1,6 @@
 package main.java.gui.prodsupl;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.Utils;
 import main.java.model.SupplierModel;
@@ -12,12 +13,12 @@ import java.awt.*;
  * Creates dialog for suppliers CRUD
  */
 public class SupplierDialog extends JDialog {
+    private final SupplierModel emptySuplModel = new SupplierModel();
     private JButton okButton;
     private JButton createSupl;
     private JButton editSupl;
     private JButton deleteSupl;
     private JComboBox<SupplierModel> suplBox;
-    private final SupplierModel emptySuplModel = new SupplierModel();
     private SupplierDialogListener listener;
     private SupplierModel privateSuplModel;
     private String newSuplName = "";
@@ -46,17 +47,17 @@ public class SupplierDialog extends JDialog {
 
         createSupl = new JButton();
         createSupl.setToolTipText(Labels.getProperty("addSupl"));
-        createSupl.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createSupl.setIcon(Icons.CREATE);
         createSupl.setPreferredSize(buttonDim);
         createSupl.setEnabled(true);
         editSupl = new JButton();
         editSupl.setToolTipText(Labels.getProperty("editSupl"));
-        editSupl.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editSupl.setIcon(Icons.EDIT);
         editSupl.setPreferredSize(buttonDim);
         editSupl.setEnabled(true);
         deleteSupl = new JButton();
         deleteSupl.setToolTipText(Labels.getProperty("delSupl"));
-        deleteSupl.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteSupl.setIcon(Icons.DELETE);
         deleteSupl.setPreferredSize(buttonDim);
         deleteSupl.setEnabled(true);
 

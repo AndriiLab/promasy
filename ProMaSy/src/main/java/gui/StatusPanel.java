@@ -18,6 +18,7 @@ public class StatusPanel extends JPanel {
 
         currentUserLabel = new JLabel("");
         currentUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        currentUserLabel.setIcon(Icons.USER);
 
         status = new JLabel("");
         status.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -28,9 +29,8 @@ public class StatusPanel extends JPanel {
     }
 
     public void setCurrentUserLabel(String user) {
-        String currentUser = Labels.withColon("currentUser") + " " + user;
-        currentUserLabel.setText(currentUser);
-        parent.logEvent(currentUser, Utils.GREEN);
+        currentUserLabel.setText(user);
+        parent.logEvent(Labels.withColon("currentUser") + " " + user, Utils.GREEN);
     }
 
     public void setStatus(String statusInfo, Color color) {

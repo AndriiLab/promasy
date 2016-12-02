@@ -1,5 +1,6 @@
 package main.java.gui.bids;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
@@ -89,25 +90,25 @@ public class CreateBidDialog extends JDialog {
 
         addProducerButton = new JButton();
         addProducerButton.setToolTipText(Labels.getProperty("addProd"));
-        addProducerButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        addProducerButton.setIcon(Icons.CREATE);
         addProducerButton.setPreferredSize(buttonDim);
         addProducerButton.setEnabled(true);
 
         addSupplierButton = new JButton();
         addSupplierButton.setToolTipText(Labels.getProperty("addSupl"));
-        addSupplierButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        addSupplierButton.setIcon(Icons.CREATE);
         addSupplierButton.setPreferredSize(buttonDim);
         addSupplierButton.setEnabled(true);
 
         addAmUnitsButton = new JButton();
         addAmUnitsButton.setToolTipText(Labels.getProperty("addAmUnit"));
-        addAmUnitsButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        addAmUnitsButton.setIcon(Icons.CREATE);
         addAmUnitsButton.setPreferredSize(buttonDim);
         addAmUnitsButton.setEnabled(true);
 
         searchCPVButton = new JButton();
         searchCPVButton.setToolTipText(Labels.getProperty("cpvPanelTab"));
-        searchCPVButton.setIcon(Utils.createIcon("/images/Find16.gif"));
+        searchCPVButton.setIcon(Icons.SEARCH);
         searchCPVButton.setPreferredSize(buttonDim);
         searchCPVButton.setEnabled(true);
 

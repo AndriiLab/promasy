@@ -1,5 +1,6 @@
 package main.java.gui.bids;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
@@ -59,25 +60,25 @@ public class BidsListPanel extends JPanel {
 
         createBidButton = new JButton();
         createBidButton.setToolTipText(Labels.getProperty("createBid"));
-        createBidButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createBidButton.setIcon(Icons.CREATE);
         createBidButton.setPreferredSize(buttonDim);
         createBidButton.setEnabled(true);
 
         editBidButton = new JButton();
         editBidButton.setToolTipText(Labels.getProperty("editBid"));
-        editBidButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editBidButton.setIcon(Icons.EDIT);
         editBidButton.setPreferredSize(buttonDim);
         editBidButton.setEnabled(true);
 
         deleteBidButton = new JButton();
         deleteBidButton.setToolTipText(Labels.getProperty("deleteBid"));
-        deleteBidButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteBidButton.setIcon(Icons.DELETE);
         deleteBidButton.setPreferredSize(buttonDim);
         deleteBidButton.setEnabled(true);
 
         changeStatusButton = new JButton();
         changeStatusButton.setToolTipText(Labels.getProperty("changeStatus"));
-        changeStatusButton.setIcon(Utils.createIcon("/images/Status16.png"));
+        changeStatusButton.setIcon(Icons.SET_STATUS);
         changeStatusButton.setPreferredSize(buttonDim);
         changeStatusButton.setEnabled(true);
 

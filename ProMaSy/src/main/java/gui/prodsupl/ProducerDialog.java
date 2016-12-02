@@ -1,7 +1,7 @@
 package main.java.gui.prodsupl;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.ProducerModel;
 
 import javax.swing.*;
@@ -9,15 +9,15 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Created by laban on 04.06.2016.
+ * Class for CRUD of item Producers
  */
 public class ProducerDialog extends JDialog {
+    private final ProducerModel emptyProdModel = new ProducerModel();
     private JButton okButton;
     private JButton createProd;
     private JButton editProd;
     private JButton deleteProd;
     private JComboBox<ProducerModel> prodBox;
-    private final ProducerModel emptyProdModel = new ProducerModel();
     private ProducerDialogListener listener;
     private ProducerModel privateProdModel;
     private String newProdName;
@@ -40,17 +40,17 @@ public class ProducerDialog extends JDialog {
 
         createProd = new JButton();
         createProd.setToolTipText(Labels.getProperty("addProd"));
-        createProd.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createProd.setIcon(Icons.CREATE);
         createProd.setPreferredSize(buttonDim);
         createProd.setEnabled(true);
         editProd = new JButton();
         editProd.setToolTipText(Labels.getProperty("editProd"));
-        editProd.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editProd.setIcon(Icons.EDIT);
         editProd.setPreferredSize(buttonDim);
         editProd.setEnabled(true);
         deleteProd = new JButton();
         deleteProd.setToolTipText(Labels.getProperty("delProd"));
-        deleteProd.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteProd.setIcon(Icons.DELETE);
         deleteProd.setPreferredSize(buttonDim);
         deleteProd.setEnabled(true);
 

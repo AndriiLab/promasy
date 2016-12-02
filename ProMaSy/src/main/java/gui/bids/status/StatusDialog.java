@@ -1,7 +1,7 @@
 package main.java.gui.bids.status;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.StatusModel;
 
 import javax.swing.*;
@@ -42,7 +42,7 @@ public class StatusDialog extends JDialog {
 
         setStatusButton = new JButton();
         setStatusButton.setToolTipText(Labels.getProperty("setStatus"));
-        setStatusButton.setIcon(Utils.createIcon("/images/Status16.png"));
+        setStatusButton.setIcon(Icons.SET_STATUS);
         setStatusButton.setPreferredSize(buttonDim);
         setStatusButton.setEnabled(true);
 

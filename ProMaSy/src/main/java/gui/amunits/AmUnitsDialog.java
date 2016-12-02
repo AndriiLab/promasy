@@ -1,7 +1,7 @@
 package main.java.gui.amunits;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.AmountUnitsModel;
 
 import javax.swing.*;
@@ -14,12 +14,12 @@ import java.awt.event.ActionListener;
  * This Dialog Create, Modify, and Delete data of Amounts and Units entries in DB
  */
 public class AmUnitsDialog extends JDialog implements ActionListener {
+    private final AmountUnitsModel emptyModel = new AmountUnitsModel();
     private JButton okButton;
     private JButton createAmUnit;
     private JButton editAmUnit;
     private JButton deleteAmUnit;
     private JComboBox<AmountUnitsModel> amUnitBox;
-    private final AmountUnitsModel emptyModel = new AmountUnitsModel();
     private AmUnitsDialogListener listener;
     private AmountUnitsModel privateModel;
     private String newName;
@@ -45,19 +45,19 @@ public class AmUnitsDialog extends JDialog implements ActionListener {
 
         createAmUnit = new JButton();
         createAmUnit.setToolTipText(Labels.getProperty("addAmUnit"));
-        createAmUnit.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createAmUnit.setIcon(Icons.CREATE);
         createAmUnit.setPreferredSize(buttonDim);
         createAmUnit.setEnabled(true);
 
         editAmUnit = new JButton();
         editAmUnit.setToolTipText(Labels.getProperty("editAmUnit"));
-        editAmUnit.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editAmUnit.setIcon(Icons.EDIT);
         editAmUnit.setPreferredSize(buttonDim);
         editAmUnit.setEnabled(true);
 
         deleteAmUnit = new JButton();
         deleteAmUnit.setToolTipText(Labels.getProperty("delAmUnit"));
-        deleteAmUnit.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteAmUnit.setIcon(Icons.DELETE);
         deleteAmUnit.setPreferredSize(buttonDim);
         deleteAmUnit.setEnabled(true);
 

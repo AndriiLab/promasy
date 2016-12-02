@@ -1,8 +1,8 @@
 package main.java.gui.cpv;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
-import main.java.gui.Utils;
 import main.java.model.CPVModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
@@ -43,12 +43,12 @@ public class CpvDialog extends JDialog {
 		table.getColumnModel().getColumn(0).setMaxWidth(150);
 		
 		homeButton.setToolTipText(Labels.getProperty("goToTopCategory"));
-		homeButton.setIcon(Utils.createIcon("/images/Home16.gif"));
+		homeButton.setIcon(Icons.HOME);
 		upButton.setToolTipText(Labels.getProperty("upCategory"));
-		upButton.setIcon(Utils.createIcon("/images/Up16.gif"));
+		upButton.setIcon(Icons.LEVEL_UP);
 		upButton.setEnabled(false);
 		searchButton.setToolTipText(Labels.getProperty("search"));
-		searchButton.setIcon(Utils.createIcon("/images/Find16.gif"));
+		searchButton.setIcon(Icons.SEARCH);
 		selectButton.setEnabled(false);
 
 		PromptSupport.setPrompt(Labels.getProperty("searchFieldHint"), searchField);

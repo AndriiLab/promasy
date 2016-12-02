@@ -1252,7 +1252,7 @@ public class Controller {
     // but it calls only in this close() method (except close in login dialog)
     private void closeDialog() {
         int action = JOptionPane.showConfirmDialog(this.mainFrame, Labels.getProperty("WantExit"),
-                Labels.getProperty("ConfirmExit"), JOptionPane.OK_CANCEL_OPTION);
+                Labels.getProperty("exitFromProgram"), JOptionPane.OK_CANCEL_OPTION);
         if (action == JOptionPane.OK_OPTION) {
             close();
         }

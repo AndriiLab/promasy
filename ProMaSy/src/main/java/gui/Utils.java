@@ -5,8 +5,6 @@ import main.java.model.AbstractModel;
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,19 +15,11 @@ import java.sql.Timestamp;
 public class Utils {
     public static final Color GREEN = new Color(0, 153, 51);
     public static final Color RED = new Color(204, 0, 0);
-
-    public static final BigDecimal ZERO_VALUE = BigDecimal.valueOf(0.00);
+    public static final Color BLUE = new Color(25, 61, 160);
 
     public static Timestamp getCurrentTime(){
         return new Timestamp(System.currentTimeMillis());
     }
-	public static ImageIcon createIcon(String path){
-		URL url = System.class.getResource(path);
-		if(url == null){
-            return createIcon("/images/Applet16.gif");
-		}
-		return new ImageIcon(url);
-	}
 
     public static void setBoxFromID(JComboBox<? extends AbstractModel> box, long requestedId){
         if(requestedId != 0){

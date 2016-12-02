@@ -1,7 +1,7 @@
 package main.java.gui.empedit;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
-import main.java.gui.Utils;
 import main.java.model.EmployeeModel;
 
 import javax.swing.*;
@@ -12,12 +12,12 @@ import java.util.List;
 
 public class EditEmployeeDialog extends JDialog {
 
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private EditEmployeeDialogListener listener;
     private CreateEmployeeDialog createEmployeeDialog;
     private JTable table;
     private EmployeeTableModel tableModel;
     private EmployeeModel selectedModel;
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
 
     public EditEmployeeDialog(JFrame parent) {
         super(parent, Labels.getProperty("addEmployee"), false);
@@ -30,19 +30,19 @@ public class EditEmployeeDialog extends JDialog {
 
         JButton createEmployeeButton = new JButton();
         createEmployeeButton.setToolTipText(Labels.getProperty("createNewEmployee"));
-        createEmployeeButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createEmployeeButton.setIcon(Icons.CREATE);
         createEmployeeButton.setPreferredSize(buttonDim);
         createEmployeeButton.setEnabled(true);
 
         JButton editEmployeeButton = new JButton();
         editEmployeeButton.setToolTipText(Labels.getProperty("editEmployee"));
-        editEmployeeButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editEmployeeButton.setIcon(Icons.EDIT);
         editEmployeeButton.setPreferredSize(buttonDim);
         editEmployeeButton.setEnabled(true);
 
         JButton deleteEmployeeButton = new JButton();
         deleteEmployeeButton.setToolTipText(Labels.getProperty("deleteEmployee"));
-        deleteEmployeeButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteEmployeeButton.setIcon(Icons.DELETE);
         deleteEmployeeButton.setPreferredSize(buttonDim);
         deleteEmployeeButton.setEnabled(true);
 

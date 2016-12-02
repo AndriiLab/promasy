@@ -1,5 +1,6 @@
 package main.java.gui.finance;
 
+import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.Utils;
 import main.java.model.*;
@@ -80,19 +81,19 @@ public class FinancePanel extends JPanel {
 
         createOrderButton = new JButton();
         createOrderButton.setToolTipText(Labels.getProperty("createOrder"));
-        createOrderButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createOrderButton.setIcon(Icons.CREATE);
         createOrderButton.setPreferredSize(buttonDim);
         createOrderButton.setEnabled(true);
 
         editOrderButton = new JButton();
         editOrderButton.setToolTipText(Labels.getProperty("editOrder"));
-        editOrderButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editOrderButton.setIcon(Icons.EDIT);
         editOrderButton.setPreferredSize(buttonDim);
         editOrderButton.setEnabled(true);
 
         deleteOrderButton = new JButton();
         deleteOrderButton.setToolTipText(Labels.getProperty("deleteOrder"));
-        deleteOrderButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteOrderButton.setIcon(Icons.DELETE);
         deleteOrderButton.setPreferredSize(buttonDim);
         deleteOrderButton.setEnabled(true);
 
@@ -145,19 +146,19 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton = new JButton();
         createDepOrderButton.setToolTipText(Labels.getProperty("addDepOrder"));
-        createDepOrderButton.setIcon(Utils.createIcon("/images/Add16.gif"));
+        createDepOrderButton.setIcon(Icons.CREATE);
         createDepOrderButton.setPreferredSize(buttonDim);
         createDepOrderButton.setEnabled(true);
 
         editDepOrderButton = new JButton();
         editDepOrderButton.setToolTipText(Labels.getProperty("editDepOrder"));
-        editDepOrderButton.setIcon(Utils.createIcon("/images/Edit16.gif"));
+        editDepOrderButton.setIcon(Icons.EDIT);
         editDepOrderButton.setPreferredSize(buttonDim);
         editDepOrderButton.setEnabled(true);
 
         deleteDepOrderButton = new JButton();
         deleteDepOrderButton.setToolTipText(Labels.getProperty("deleteDepOrder"));
-        deleteDepOrderButton.setIcon(Utils.createIcon("/images/Delete16.gif"));
+        deleteDepOrderButton.setIcon(Icons.DELETE);
         deleteDepOrderButton.setPreferredSize(buttonDim);
         deleteDepOrderButton.setEnabled(true);
 

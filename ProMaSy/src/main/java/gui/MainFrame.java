@@ -5,6 +5,8 @@
 
 package main.java.gui;
 
+import jiconfont.icons.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import main.java.gui.amunits.AmUnitsDialog;
 import main.java.gui.amunits.AmUnitsDialogListener;
 import main.java.gui.bids.BidsListPanel;
@@ -64,6 +66,9 @@ public class MainFrame extends JFrame {
         super(Labels.getProperty("mainFrameSuper"));
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // registering font for icons
+        IconFontSwing.register(FontAwesome.getIconFont());
 
         // set location relative to the screen center
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -168,6 +173,7 @@ public class MainFrame extends JFrame {
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
         JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
+        printItem.setIcon(Icons.PRINT);
         JMenuItem exitItem = new JMenuItem(Labels.getProperty("exit"));
         fileMenu.add(printItem);
         fileMenu.addSeparator();
@@ -187,10 +193,12 @@ public class MainFrame extends JFrame {
 
         JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
         JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
+        conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
         settingsMenu.add(conSettItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
         JMenuItem infoItem = new JMenuItem(Labels.withThreeDots("aboutSoftware"));
+        infoItem.setIcon(Icons.ABOUT);
         helpMenu.add(infoItem);
 
         menuBar.add(fileMenu);
