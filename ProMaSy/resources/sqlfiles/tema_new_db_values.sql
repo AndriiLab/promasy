@@ -1,39 +1,9 @@
 SET SCHEMA 'ibchem';
 
-INSERT INTO roles
- (roles_id, roles_name)
-VALUES
-(900, 'Адміністратор'),
-(1000, 'Директор'),
-(2000, 'Заступник директора'),
-(2500, 'Голова тендерного комітету'),
-(3000, 'Головний економіст'),
-(4000, 'Головний бухгалтер'),
-(5000, 'Керівник підрозділу'),
-(6000, 'Матеріально-відповідальна особа'),
-(7000, 'Користувач');
-
 INSERT INTO institute
 (inst_name)
 VALUES
 ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
-
-SET SCHEMA 'ibchem';
-CREATE OR REPLACE FUNCTION check_login ("user" TEXT, pass TEXT) RETURNS BOOLEAN AS $$
-DECLARE exists BOOLEAN;
-BEGIN
-	SELECT (password = $2) INTO exists
-	FROM employees
-	WHERE login = $1;
-
-	RETURN exists;
-END;
-$$  LANGUAGE plpgsql
-    SECURITY DEFINER
-    -- Set a secure search_path: trusted schema(s), then 'pg_temp'.
-    SET search_path = inst_db, pg_temp;
-
-
 
 CREATE OR REPLACE FUNCTION def_inst_id(OUT result bigint) AS $$
 BEGIN
@@ -81,23 +51,3 @@ VALUES
 	WHERE dep_name = 'Відділ біохімії ліпідів')),
 ('Група електронної мікроскопії', (SELECT dep_id FROM departments
 	WHERE dep_name = 'Відділ хімії та біохімії ферментів'));
-
-INSERT INTO amountunits
-(am_unit_desc)
-VALUES
-('г'),
-('кг'),
-('л'),
-('мл'),
-('уп.'),
-('шт.');
-
-INSERT INTO statuses
-(status_id, status_desc)
-VALUES
-  (10, 'Створено'),
-  (20, 'Подано'),
-  (50, 'Розміщено на Prozorro'),
-  (60, 'Отримано'),
-  (80, 'Не отримано'),
-  (90, 'Відхилено')

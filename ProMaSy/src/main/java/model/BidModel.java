@@ -32,8 +32,10 @@ public class BidModel extends AbstractModel{
     private String editedFName;
     private String editedMName;
     private String editedLName;
+    private long reasonId;
+    private String reasonName;
 
-    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, String depName, long producerId, String producerName, String catNum, String bidDesc, String cpvCode, String cpvUkr, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long financeId, String financeName, long supplierId, String supplierName, int statusId, String statusDesc, String createdFName, String createdMName, String createdLName, String editedFName, String editedMName, String editedLName) {
+    public BidModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long depId, String depName, long producerId, String producerName, String catNum, String bidDesc, String cpvCode, String cpvUkr, BigDecimal onePrice, int amount, long amUnitId, String amUnitName, long financeId, String financeName, long supplierId, String supplierName, int statusId, String statusDesc, String createdFName, String createdMName, String createdLName, String editedFName, String editedMName, String editedLName, long reasonId, String reasonName) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.depId = depId;
         this.depName = depName;
@@ -59,9 +61,11 @@ public class BidModel extends AbstractModel{
         this.editedFName = editedFName;
         this.editedMName = editedMName;
         this.editedLName = editedLName;
+        this.reasonId = reasonId;
+        this.reasonName = reasonName;
     }
 
-    public BidModel(long depId, long producerId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long financeId, long supplierId, int statusId) {
+    public BidModel(long depId, long producerId, String catNum, String bidDesc, String cpvCode, BigDecimal onePrice, int amount, long amUnitId, long financeId, long supplierId, int statusId, long reasonId, String reasonName) {
         this.depId = depId;
         this.producerId = producerId;
         this.catNum = catNum;
@@ -73,6 +77,8 @@ public class BidModel extends AbstractModel{
         this.financeId = financeId;
         this.supplierId = supplierId;
         this.statusId = statusId;
+        this.reasonId = reasonId;
+        this.reasonName = reasonName;
     }
 
     public BidModel() {
@@ -269,6 +275,22 @@ public class BidModel extends AbstractModel{
 
     public void setEditedLName(String editedLName) {
         this.editedLName = editedLName;
+    }
+
+    public long getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(long reasonId) {
+        this.reasonId = reasonId;
+    }
+
+    public String getReasonName() {
+        return reasonName;
+    }
+
+    public void setReasonName(String reasonName) {
+        this.reasonName = reasonName;
     }
 
     @Override

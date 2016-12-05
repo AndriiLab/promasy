@@ -23,7 +23,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
         results.next();
         object.setModelId(results.getLong("id_gen"));
 
-        String query1 = "INSERT INTO bids(bid_id, dep_id, brand_id, cat_num, bid_desc, cpv_code, one_price, amount, am_unit_id, order_id, supplier_id, created_by, created_date, active, status_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query1 = "INSERT INTO bids(bid_id, dep_id, brand_id, cat_num, bid_desc, cpv_code, one_price, amount, am_unit_id, order_id, supplier_id, created_by, created_date, active, status_id, reason_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
         prepStmt1.setLong(1, object.getModelId());
         prepStmt1.setLong(2, object.getDepId());
@@ -40,6 +40,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt1.setTimestamp(13, object.getCreatedDate());
         prepStmt1.setBoolean(14, object.isActive());
         prepStmt1.setInt(15, object.getStatusId());
+        prepStmt1.setLong(16, object.getReasonId());
         prepStmt1.executeUpdate();
 
         String query2 = "INSERT INTO bid_status(bid_id, status_id, created_by, created_date) VALUES (?, ?, ?, ?)";
@@ -68,7 +69,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -79,6 +80,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
+                "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
                 "WHERE bids.active = TRUE ORDER BY bids.modified_date DESC, bids.created_date DESC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         ResultSet results = prepStmt.executeQuery();
@@ -98,7 +100,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -109,6 +111,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
+                "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
                 "WHERE bids.active = TRUE AND bids.dep_id = ? " +
                 "ORDER BY bids.modified_date DESC, bids.created_date DESC";
 
@@ -131,7 +134,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name  " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -142,6 +145,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
+                "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
                 "WHERE bids.active = TRUE AND bids.dep_id = ? AND bids.order_id = ?" +
                 "ORDER BY bids.modified_date DESC, bids.created_date DESC";
 
@@ -160,7 +164,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
     public void update(BidModel object) throws SQLException {
         Database.DB.getConnection().setAutoCommit(false); // enabling transactions
 
-        String query1 = "UPDATE bids SET dep_id=?, brand_id=?, cat_num=?, bid_desc=?, cpv_code=?,  one_price=?, amount=?, am_unit_id=?, order_id=?, supplier_id=?, modified_by=?, modified_date=?, status_id=? WHERE bid_id = ? AND active = TRUE";
+        String query1 = "UPDATE bids SET dep_id=?, brand_id=?, cat_num=?, bid_desc=?, cpv_code=?,  one_price=?, amount=?, am_unit_id=?, order_id=?, supplier_id=?, modified_by=?, modified_date=?, status_id=?, reason_id=? WHERE bid_id = ? AND active = TRUE";
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
         prepStmt1.setLong(1, object.getDepId());
         prepStmt1.setLong(2, object.getProducerId());
@@ -175,7 +179,8 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt1.setLong(11, object.getModifiedBy());
         prepStmt1.setTimestamp(12, object.getModifiedDate());
         prepStmt1.setInt(13, object.getStatusId());
-        prepStmt1.setLong(14, object.getModelId());
+        prepStmt1.setLong(14, object.getReasonId());
+        prepStmt1.setLong(15, object.getModelId());
         prepStmt1.executeUpdate();
 
         String query2 = "INSERT INTO bid_status(bid_id, status_id, created_by, created_date) VALUES (?, ?, ?, ?)";
@@ -249,8 +254,10 @@ public class BidsQueries extends SQLQueries<BidModel>{
             Timestamp createdDate = results.getTimestamp("created_date");
             Timestamp modifiedDate = results.getTimestamp("modified_date");
             boolean active = results.getBoolean("active");
+            long reasonId = results.getLong("reason_id");
+            String reasonName = results.getString("reason_name");
 
-            BidModel model = new BidModel(bidId, createdBy, createdDate, modifiedBy, modifiedDate, active, depId, depName, producerId, producerName, catNum, bidDesc, cpvCode, cpvUkr, onePrice, amount, amUnitId, amUnitName, financeId, financeName, supplierId, supplierName, statusId, statusDesc, createdFName, createdMName, createdLName, editedFName, editedMName, editedLName);
+            BidModel model = new BidModel(bidId, createdBy, createdDate, modifiedBy, modifiedDate, active, depId, depName, producerId, producerName, catNum, bidDesc, cpvCode, cpvUkr, onePrice, amount, amUnitId, amUnitName, financeId, financeName, supplierId, supplierName, statusId, statusDesc, createdFName, createdMName, createdLName, editedFName, editedMName, editedLName, reasonId, reasonName);
             list.add(model);
         }
     }

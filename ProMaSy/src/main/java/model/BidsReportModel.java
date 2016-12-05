@@ -14,27 +14,37 @@ public class BidsReportModel {
 	private String producer;
 	private String catNum;
 	private String supplier;
-	private String packType;
+    private String reasonForSupplierChoice;
+    private String packType;
 	private BigDecimal onePrice;
 	private int amount;
 
 	public BidsReportModel(String department, String financeName, String cpvCode,
-			String cpvUkr, String orderDescription, Timestamp orderDate, String producer, String catNum,
-			String supplier, String packType, BigDecimal onePrice, int amount) {
-		super();
-		this.department = department;
-		this.financeName = financeName;
-		this.cpvCode = cpvCode;
-		this.cpvUkr = cpvUkr;
-		this.orderDescription = orderDescription;
-		this.orderDate = orderDate;
-		this.producer = producer;
-		this.catNum = catNum;
-		this.supplier = supplier;
-		this.packType = packType;
-		this.onePrice = onePrice;
-		this.amount = amount;
-	}
+                           String cpvUkr, String orderDescription, Timestamp orderDate, String producer, String catNum,
+                           String supplier, String packType, BigDecimal onePrice, int amount, String reasonForSupplierChoice) {
+        super();
+        this.department = department;
+        this.financeName = financeName;
+        this.cpvCode = cpvCode;
+        this.cpvUkr = cpvUkr;
+        this.orderDescription = orderDescription;
+        this.orderDate = orderDate;
+        this.producer = producer;
+        this.catNum = catNum;
+        this.supplier = supplier;
+        this.packType = packType;
+        this.onePrice = onePrice;
+        this.amount = amount;
+        this.reasonForSupplierChoice = reasonForSupplierChoice;
+    }
+
+    public BidsReportModel() {
+
+    }
+
+    public String getReasonForSupplierChoice() {
+        return reasonForSupplierChoice;
+    }
 
 	public String getDepartment() {
 		return department;

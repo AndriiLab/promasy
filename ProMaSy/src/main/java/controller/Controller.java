@@ -18,6 +18,7 @@ import main.java.gui.instedit.OrganizationDialogListener;
 import main.java.gui.login.LoginAttemptEvent;
 import main.java.gui.login.LoginListener;
 import main.java.gui.prodsupl.ProducerDialogListener;
+import main.java.gui.prodsupl.ReasonsDialogListener;
 import main.java.gui.prodsupl.SupplierDialogListener;
 import main.java.model.*;
 
@@ -115,6 +116,7 @@ public class Controller {
         getAmUnits();
         getProd();
         getSupl();
+        getReasons();
         getFinances();
         getBids();
         getDepartmentFinancesByOrder(0);
@@ -132,6 +134,7 @@ public class Controller {
         getAmUnits();
         getProd();
         getSupl();
+        getReasons();
         getFinances(departmentId);
         getBids(departmentId);
         getDepartmentFinancesByOrder(0);
@@ -149,6 +152,7 @@ public class Controller {
         mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
         mainFrame.setProducerModelList(Database.PRODUCERS.getList());
         mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
+        mainFrame.setReasonsModelList(Database.REASONS.getList());
         mainFrame.setFinanceModelList(Database.FINANCES.getList());
         mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
         mainFrame.setBidModelList(Database.BIDS.getList());
@@ -342,6 +346,28 @@ public class Controller {
                 deleteSupl(model);
                 getSupl();
                 mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
+            }
+        });
+        mainFrame.setReasonsDialogListener(new ReasonsDialogListener() {
+            @Override
+            public void createReasonEventOccurred(ReasonForSupplierChoiceModel model) {
+                createReason(model);
+                getReasons();
+                mainFrame.setReasonsModelList(Database.REASONS.getList());
+            }
+
+            @Override
+            public void editReasonEventOccurred(ReasonForSupplierChoiceModel model) {
+                editReason(model);
+                getReasons();
+                mainFrame.setReasonsModelList(Database.REASONS.getList());
+            }
+
+            @Override
+            public void deleteReasonEventOccurred(ReasonForSupplierChoiceModel model) {
+                deleteReason(model);
+                getReasons();
+                mainFrame.setReasonsModelList(Database.REASONS.getList());
             }
         });
         mainFrame.setFinancePanelListener(new FinancePanelListener() {
@@ -654,7 +680,7 @@ public class Controller {
 
     private Version getDBVersion(){
         try {
-            return new Version(Database.VERSION_QUERIES.retrive());
+            return new Version(Database.VERSIONS.retrive());
         } catch (SQLException e) {
         	// this error occurs with old settings, so reset it to defaults
         	try {
@@ -774,6 +800,15 @@ public class Controller {
             Database.SUPPLIERS.retrieve();
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("suplBorder")
+                    + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void getReasons() {
+        try {
+            Database.REASONS.retrieve();
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("reasonForSupplierChoice")
                     + Labels.withSpaceBefore("error"));
         }
     }
@@ -1122,6 +1157,37 @@ public class Controller {
             logEvent(Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    // CRUD for Reasons for reasons why buyer choose selected supplier
+    private void createReason(ReasonForSupplierChoiceModel model) {
+        setCreated(model);
+        try {
+            Database.REASONS.create(model);
+            logEvent(Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void editReason(ReasonForSupplierChoiceModel model) {
+        setModified(model);
+        try {
+            Database.REASONS.update(model);
+            logEvent(Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private void deleteReason(ReasonForSupplierChoiceModel model) {
+        setInactive(model);
+        try {
+            Database.REASONS.delete(model);
+            logEvent(Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 

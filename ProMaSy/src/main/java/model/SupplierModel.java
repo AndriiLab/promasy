@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.gui.Labels;
+
 import java.sql.Timestamp;
 
 /**
@@ -27,7 +29,8 @@ public class SupplierModel extends AbstractModel {
     }
 
     public SupplierModel(){
-
+        this.setModelId(0L);
+        this.supplierName = Labels.getProperty("any");
     }
 
     public String getSupplierName() {

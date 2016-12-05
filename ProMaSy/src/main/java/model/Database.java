@@ -15,5 +15,6 @@ public class Database {
     public static final FinanceQueries FINANCES = new FinanceQueries();
     public static final FinanceDepartmentQueries DEPARTMENT_FINANCES = new FinanceDepartmentQueries();
     public static final BidsQueries BIDS = new BidsQueries();
-	public static final VersionQueries VERSION_QUERIES = new VersionQueries();
+    public static final VersionQueries VERSIONS = new VersionQueries();
+    public static final ReasonsForSupplierChoiceQueries REASONS = new ReasonsForSupplierChoiceQueries();
 }

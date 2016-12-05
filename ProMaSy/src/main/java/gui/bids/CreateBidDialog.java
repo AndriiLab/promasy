@@ -28,15 +28,18 @@ public class CreateBidDialog extends JDialog {
     private final SupplierModel emptySupplierModel = new SupplierModel();
     private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
     private final BidModel emptyBidModel = new BidModel();
+    private final ReasonForSupplierChoiceModel emptyReasonForSupplierChoiceModel = new ReasonForSupplierChoiceModel();
     private JComboBox<DepartmentModel> departmentBox;
     private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
     private JComboBox<ProducerModel> producerBox;
     private JComboBox<SupplierModel> supplierBox;
     private JComboBox<AmountUnitsModel> amUnitsBox;
+    private JComboBox<ReasonForSupplierChoiceModel> reasonForSupplierChoiceBox;
     private JButton addProducerButton;
     private JButton addSupplierButton;
     private JButton searchCPVButton;
     private JButton addAmUnitsButton;
+    private JButton addReasonForSupplierChoiceButton;
     private JButton okButton;
     private JButton cancelButton;
     private JTextField catNumberField;
@@ -55,7 +58,7 @@ public class CreateBidDialog extends JDialog {
     CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), false);
         this.parent = parent;
-        setSize(330, 470);
+        setSize(440, 495);
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -68,20 +71,26 @@ public class CreateBidDialog extends JDialog {
         Dimension preferredFieldDim = new Dimension(235, 25);
 
         departmentBox = new JComboBox<>();
-        departmentBox.setPreferredSize(new Dimension(230, 25));
+        departmentBox.setPreferredSize(preferredFieldDim);
         departmentBox.addItem(emptyDepartmentModel);
 
         financeDepartmentBox = new JComboBox<>();
         financeDepartmentBox.setPreferredSize(preferredFieldDim);
         financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
 
-        preferredFieldDim = new Dimension(150, 25);
+        preferredFieldDim = new Dimension(170, 25);
 
         producerBox = new JComboBox<>();
         producerBox.setPreferredSize(preferredFieldDim);
+        producerBox.addItem(emptyProducerModel);
 
         supplierBox = new JComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
+        supplierBox.addItem(emptySupplierModel);
+
+        reasonForSupplierChoiceBox = new JComboBox<>();
+        reasonForSupplierChoiceBox.setPreferredSize(preferredFieldDim);
+        reasonForSupplierChoiceBox.addItem(emptyReasonForSupplierChoiceModel);
 
         amUnitsBox = new JComboBox<>();
         amUnitsBox.setPreferredSize(preferredFieldDim);
@@ -99,6 +108,12 @@ public class CreateBidDialog extends JDialog {
         addSupplierButton.setIcon(Icons.CREATE);
         addSupplierButton.setPreferredSize(buttonDim);
         addSupplierButton.setEnabled(true);
+
+        addReasonForSupplierChoiceButton = new JButton();
+        addReasonForSupplierChoiceButton.setToolTipText(Labels.getProperty("addReasonForSupplierChoice"));
+        addReasonForSupplierChoiceButton.setIcon(Icons.CREATE);
+        addReasonForSupplierChoiceButton.setPreferredSize(buttonDim);
+        addReasonForSupplierChoiceButton.setEnabled(false);
 
         addAmUnitsButton = new JButton();
         addAmUnitsButton.setToolTipText(Labels.getProperty("addAmUnit"));
@@ -118,6 +133,7 @@ public class CreateBidDialog extends JDialog {
 
         catNumberField = new JTextField();
         catNumberField.setPreferredSize(preferredFieldDim);
+        catNumberField.setEnabled(false);
         cpvField = new JTextField();
         cpvField.setPreferredSize(preferredFieldDim);
         amountField = new JTextField();
@@ -125,7 +141,7 @@ public class CreateBidDialog extends JDialog {
         oneUnitPriceField = new JTextField();
         oneUnitPriceField.setPreferredSize(preferredFieldDim);
         descriptionPane = new JTextPane();
-        descriptionPane.setPreferredSize(new Dimension(147, 25));
+        descriptionPane.setPreferredSize(new Dimension(168, 25));
         descriptionPane.setEditable(true);
 
         createLayout();
@@ -139,7 +155,34 @@ public class CreateBidDialog extends JDialog {
             }
         });
 
+        producerBox.addActionListener(e -> {
+            if (producerBox.getItemCount() > 0) {
+                ProducerModel model = (ProducerModel) producerBox.getSelectedItem();
+                if (!model.equals(emptyProducerModel)) {
+                    catNumberField.setEnabled(true);
+                } else {
+                    catNumberField.setEnabled(false);
+                    catNumberField.setText("");
+                }
+            }
+        });
+
+        supplierBox.addActionListener(e -> {
+            if (supplierBox.getItemCount() > 0) {
+                SupplierModel model = (SupplierModel) supplierBox.getSelectedItem();
+                if (!model.equals(emptySupplierModel)) {
+                    addReasonForSupplierChoiceButton.setEnabled(true);
+                    reasonForSupplierChoiceBox.setEnabled(true);
+                } else {
+                    addReasonForSupplierChoiceButton.setEnabled(false);
+                    reasonForSupplierChoiceBox.setEnabled(false);
+                    reasonForSupplierChoiceBox.setSelectedIndex(0);
+                }
+            }
+        });
+
         addProducerButton.addActionListener(e -> parent.showProducerDialog());
+        addReasonForSupplierChoiceButton.addActionListener(e -> parent.showReasonsDialog());
         addSupplierButton.addActionListener(e -> parent.showSupplierDialog());
         addAmUnitsButton.addActionListener(e -> parent.showAmUnitsDialog());
         searchCPVButton.addActionListener(e -> parent.showCpvDialog());
@@ -274,6 +317,14 @@ public class CreateBidDialog extends JDialog {
         supplierBox.repaint();
     }
 
+    public void setReasonForSupplierChoiceBoxData(List<ReasonForSupplierChoiceModel> db) {
+        reasonForSupplierChoiceBox.removeAllItems();
+        reasonForSupplierChoiceBox.addItem(emptyReasonForSupplierChoiceModel);
+        for (ReasonForSupplierChoiceModel model : db) {
+            reasonForSupplierChoiceBox.addItem(model);
+        }
+    }
+
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
         amUnitsBox.removeAllItems();
         amUnitsBox.addItem(emptyAmountUnitsModel);
@@ -295,10 +346,6 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         ProducerModel selectedProducerModel = (ProducerModel) producerBox.getSelectedItem();
-        if(selectedProducerModel.equals(emptyProducerModel)){
-            Utils.emptyFieldError(parent, Labels.getProperty("producer"));
-            return false;
-        }
         String selectedCatNum = catNumberField.getText();
         String selectedCPV = cpvField.getText();
         if (selectedCPV.isEmpty()) {
@@ -314,8 +361,9 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         SupplierModel selectedSupplierModel = (SupplierModel) supplierBox.getSelectedItem();
-        if (selectedSupplierModel.equals(emptySupplierModel)){
-            Utils.emptyFieldError(parent, Labels.getProperty("supplier"));
+        ReasonForSupplierChoiceModel selectedReasonModel = (ReasonForSupplierChoiceModel) reasonForSupplierChoiceBox.getSelectedItem();
+        if (!selectedSupplierModel.equals(emptySupplierModel) && selectedReasonModel.equals(emptyReasonForSupplierChoiceModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("reasonForSupplierChoice"));
             return false;
         }
         AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUnitsBox.getSelectedItem();
@@ -356,7 +404,7 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         if (createdBidModel == emptyBidModel) {
-            createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId(), Status.CREATED.getStatusId());
+            createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId(), Status.CREATED.getStatusId(), selectedReasonModel.getModelId(), selectedReasonModel.getReason());
 
         } else {
             createdBidModel.setDepId(selectedDepartmentModel.getModelId());
@@ -369,6 +417,8 @@ public class CreateBidDialog extends JDialog {
             createdBidModel.setAmUnitId(selectedAmountUnitsModel.getModelId());
             createdBidModel.setFinanceId(selectedFinanceDepartmentModel.getModelId());
             createdBidModel.setSupplierId(selectedSupplierModel.getModelId());
+            createdBidModel.setReasonId(selectedReasonModel.getModelId());
+            createdBidModel.setReasonName(selectedReasonModel.getReason());
         }
         return true;
     }
@@ -393,6 +443,7 @@ public class CreateBidDialog extends JDialog {
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());
         Utils.setBoxFromID(supplierBox, createdBidModel.getSupplierId());
+        Utils.setBoxFromID(reasonForSupplierChoiceBox, createdBidModel.getReasonId());
         Utils.setBoxFromID(amUnitsBox, createdBidModel.getAmUnitId());
         amountField.setText(Integer.toString(createdBidModel.getAmount()));
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
@@ -536,6 +587,27 @@ public class CreateBidDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         createBidPanel.add(addSupplierButton, gc);
+
+        /// Next row///
+        gc.gridy++;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.gridwidth = 1;
+        gc.ipady = 0;
+        gc.insets = smallPadding;
+        createBidPanel.add(new JLabel(Labels.withColon("reasonForSupplierChoice")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(reasonForSupplierChoiceBox, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(addReasonForSupplierChoiceButton, gc);
 
         /// Next row///
         gc.gridy++;

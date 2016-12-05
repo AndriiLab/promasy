@@ -270,14 +270,6 @@ public class BidsListPanel extends JPanel {
         this.listener = listener;
     }
 
-    public void setProducerBoxData(java.util.List<ProducerModel> db) {
-        createBidDialog.setProducerBoxData(db);
-    }
-
-    public void setSupplierBoxData(java.util.List<SupplierModel> db) {
-        createBidDialog.setSupplierBoxData(db);
-    }
-
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
         createBidDialog.setAmUnitsBoxData(db);
     }
@@ -345,7 +337,8 @@ public class BidsListPanel extends JPanel {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
                 BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
                         md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
-                        md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount());
+                        md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
+                        md.getReasonName());
                 list.add(reportModel);
             }
         }
@@ -354,7 +347,8 @@ public class BidsListPanel extends JPanel {
             BidModel md = selectedBidModel;
             BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
                     md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
-                    md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount());
+                    md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
+                    md.getReasonName());
             list.add(reportModel);
         }
         // if multiple bids selected
@@ -362,7 +356,8 @@ public class BidsListPanel extends JPanel {
             for (BidModel md : selectedBidModels) {
                 BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
                         md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
-                        md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount());
+                        md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
+                        md.getReasonName());
                 list.add(reportModel);
             }
         }

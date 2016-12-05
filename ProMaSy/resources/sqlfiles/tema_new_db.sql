@@ -1,7 +1,5 @@
-CREATE SCHEMA ibchem;
-SET SCHEMA 'ibchem';
-
--- ALTER TABLE institute ADD COLUMN active BOOLEAN NOT NULL DEFAULT true;
+CREATE SCHEMA promasy;
+SET SCHEMA 'promasy';
 
 /* function modified from
 http://rob.conery.io/2014/05/29/a-better-id-generator-for-postgresql */
@@ -36,6 +34,19 @@ CREATE TABLE roles (
 	modified_date TIMESTAMP, -- Дата модифікації
 	active BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+INSERT INTO roles
+(roles_id, roles_name)
+VALUES
+  (900, 'Адміністратор'),
+  (1000, 'Директор'),
+  (2000, 'Заступник директора'),
+  (2500, 'Голова тендерного комітету'),
+  (3000, 'Головний економіст'),
+  (4000, 'Головний бухгалтер'),
+  (5000, 'Керівник підрозділу'),
+  (6000, 'Матеріально-відповідальна особа'),
+  (7000, 'Користувач');
 
 -- Повна назва інституту/-тів. Використовується в документах
 CREATE TABLE institute (
@@ -97,6 +108,16 @@ CREATE TABLE amountunits (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO amountunits
+(am_unit_desc)
+VALUES
+  ('г'),
+  ('кг'),
+  ('л'),
+  ('мл'),
+  ('уп.'),
+  ('шт.');
+
 -- Фірми-виробники продукції
 CREATE TABLE producers (
 	brand_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT producers_pk PRIMARY KEY,
@@ -107,6 +128,8 @@ CREATE TABLE producers (
   modified_date TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+INSERT INTO producers (brand_id, brand_name, active) VALUES (0, "Будь-який", FALSE);
 
 -- Фірми-постачальники продукції
 CREATE TABLE suppliers (
@@ -121,6 +144,8 @@ CREATE TABLE suppliers (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO suppliers (supplier_id, supplier_name, supplier_tel, active) VALUES (0, "Будь-який", "", FALSE);
+
 /* Зв'язок між постачальниками та 
 виробниками для пропозицій постачальників*/
 CREATE TABLE prod_suppliers (
@@ -133,6 +158,19 @@ CREATE TABLE prod_suppliers (
   active BOOLEAN NOT NULL DEFAULT TRUE,
   PRIMARY KEY (supplier_id, brand_id)
 );
+
+-- Причини вибору конкретного постачальника
+CREATE TABLE reasons_for_suppl (
+  reason_id     BIGINT      NOT NULL DEFAULT id_gen() CONSTRAINT reasons_for_suppl_pk PRIMARY KEY,
+  reason_name   VARCHAR(30) NOT NULL, -- Назва причини вибору
+  created_by    BIGINT      NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
+  modified_date TIMESTAMP,
+  active        BOOLEAN     NOT NULL DEFAULT TRUE
+);
+
+INSERT INTO reasons_for_suppl (reason_id, reason_name, active) VALUES (0, "", FALSE);
 
 --  Дані про користувачів
 CREATE TABLE employees (
@@ -171,15 +209,15 @@ CREATE TABLE finance (
 
 -- Дані про відповідність теми та її фінансування відділам
 CREATE TABLE finance_dep (
-	order_id BIGINT NOT NULL REFERENCES finance(order_id),
-  dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
-  emp_id BIGINT NOT NULL REFERENCES employees (emp_id), -- Керівник теми
-	order_amount DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  order_id      BIGINT         NOT NULL REFERENCES finance (order_id),
+  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id),
+  emp_id        BIGINT         NOT NULL REFERENCES employees (emp_id), -- Керівник теми
+  order_amount  DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
+  created_by    BIGINT         NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE,
+  active        BOOLEAN        NOT NULL DEFAULT TRUE,
   PRIMARY KEY (order_id, dep_id)
 );
 
@@ -194,6 +232,16 @@ CREATE TABLE statuses (
   active        BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO statuses
+(status_id, status_desc)
+VALUES
+  (10, 'Створено'),
+  (20, 'Подано'),
+  (50, 'Розміщено на Prozorro'),
+  (60, 'Отримано'),
+  (80, 'Не отримано'),
+  (90, 'Відхилено');
+
 -- Дані про замовлення
 CREATE TABLE bids (
   bid_id        BIGINT         NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
@@ -207,6 +255,7 @@ CREATE TABLE bids (
   am_unit_id    BIGINT         NOT NULL REFERENCES amountunits (am_unit_id), -- Розмірність одиниць
   order_id      BIGINT         NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
   supplier_id   BIGINT, -- Можливий постачальник
+  reason_id     BIGINT REFERENCES reasons_for_suppl (reason_id), --Причина вибору постачальника
   created_by    BIGINT         NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by   BIGINT,
@@ -217,17 +266,33 @@ CREATE TABLE bids (
 
 -- Дані про статус замовлення
 CREATE TABLE bid_status (
-  id            BIGINT   NOT NULL DEFAULT id_gen() CONSTRAINT bid_status_pk PRIMARY KEY,
-  bid_id        BIGINT   NOT NULL REFERENCES bids (bid_id),
-  status_id     INT      NOT NULL REFERENCES statuses (status_id),
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  id            BIGINT    NOT NULL DEFAULT id_gen() CONSTRAINT bid_status_pk PRIMARY KEY,
+  bid_id        BIGINT    NOT NULL REFERENCES bids (bid_id),
+  status_id     INT       NOT NULL REFERENCES statuses (status_id),
+  created_by    BIGINT    NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE
+  active        BOOLEAN   NOT NULL DEFAULT TRUE
 );
 
-CREATE TABLE inst_db.version
+CREATE TABLE version
 (
   version_allowed VARCHAR(50)
 );
+
+CREATE OR REPLACE FUNCTION check_login("user" TEXT, pass TEXT)
+  RETURNS BOOLEAN AS $$
+DECLARE exists BOOLEAN;
+BEGIN
+  SELECT (password = $2)
+  INTO exists
+  FROM employees
+  WHERE login = $1;
+
+  RETURN exists;
+END;
+$$ LANGUAGE plpgsql
+SECURITY DEFINER
+-- Set a secure search_path: trusted schema(s), then 'pg_temp'.
+SET search_path = promasy, pg_temp;

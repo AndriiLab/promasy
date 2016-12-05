@@ -27,10 +27,7 @@ import main.java.gui.instedit.OrganizationDialog;
 import main.java.gui.instedit.OrganizationDialogListener;
 import main.java.gui.login.LoginDialog;
 import main.java.gui.login.LoginListener;
-import main.java.gui.prodsupl.ProducerDialog;
-import main.java.gui.prodsupl.ProducerDialogListener;
-import main.java.gui.prodsupl.SupplierDialog;
-import main.java.gui.prodsupl.SupplierDialogListener;
+import main.java.gui.prodsupl.*;
 import main.java.model.*;
 
 import javax.swing.*;
@@ -54,6 +51,7 @@ public class MainFrame extends JFrame {
     private AmUnitsDialog amUnitsDialog;
     private ProducerDialog producerDialog;
     private SupplierDialog supplierDialog;
+    private ReasonsDialog reasonsDialog;
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
     private LoggerDialog loggerDialog;
@@ -85,6 +83,7 @@ public class MainFrame extends JFrame {
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
         supplierDialog = new SupplierDialog(this);
+        reasonsDialog = new ReasonsDialog(this);
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
         bidsListPanel = new BidsListPanel(this);
@@ -257,6 +256,10 @@ public class MainFrame extends JFrame {
     public void showSupplierDialog(){
         supplierDialog.setVisible(true);
     }
+
+    public void showReasonsDialog() {
+        reasonsDialog.setVisible(true);
+    }
     public void showAmUnitsDialog(){
        amUnitsDialog.setVisible(true);
     }
@@ -335,6 +338,10 @@ public class MainFrame extends JFrame {
     public void setSupplierDialogListener(SupplierDialogListener listener) {
         supplierDialog.setListener(listener);
     }
+
+    public void setReasonsDialogListener(ReasonsDialogListener listener) {
+        reasonsDialog.setListener(listener);
+    }
     public void setFinancePanelListener(FinancePanelListener listener) {
         financePanel.setFinancePanelListener(listener);
     }
@@ -389,14 +396,17 @@ public class MainFrame extends JFrame {
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {
         producerDialog.setProdData(producerModelList);
-        bidsListPanel.setProducerBoxData(producerModelList);
         bidsListPanel.getCreateBidDialog().setProducerBoxData(producerModelList);
     }
 
     public void setSupplierModelList(List<SupplierModel> supplierModelList) {
         supplierDialog.setSuplData(supplierModelList);
-        bidsListPanel.setSupplierBoxData(supplierModelList);
         bidsListPanel.getCreateBidDialog().setSupplierBoxData(supplierModelList);
+    }
+
+    public void setReasonsModelList(List<ReasonForSupplierChoiceModel> reasonsModelList) {
+        bidsListPanel.getCreateBidDialog().setReasonForSupplierChoiceBoxData(reasonsModelList);
+        reasonsDialog.setReasonData(reasonsModelList);
     }
 
     public void setFinanceModelList(List<FinanceModel> financeModelList) {
@@ -420,4 +430,5 @@ public class MainFrame extends JFrame {
     public void setBidStatusList(List<StatusModel> list) {
         bidsListPanel.setBidStatusTableData(list);
     }
+
 }
