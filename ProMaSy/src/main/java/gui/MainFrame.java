@@ -46,7 +46,6 @@ public class MainFrame extends JFrame {
     private EditEmployeeDialog editEmpDialog;
     private InfoDialog infoDialog;
     private CpvDialog cpvDialog;
-    private JTabbedPane tabPane;
     private StatusPanel statusPanel;
     private AmUnitsDialog amUnitsDialog;
     private ProducerDialog producerDialog;
@@ -158,7 +157,7 @@ public class MainFrame extends JFrame {
     }
 
     private void createTabPane() {
-        tabPane = new JTabbedPane();
+        JTabbedPane tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
         add(tabPane, BorderLayout.CENTER);
