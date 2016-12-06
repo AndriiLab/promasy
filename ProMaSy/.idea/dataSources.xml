@@ -4,7 +4,6 @@
     <data-source source="LOCAL" name="PostgreSQL - promasydb@localhost" uuid="95a04f14-ee07-4dc9-8d95-85bf2adcaac6">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/promasydb</jdbc-url>
     </data-source>

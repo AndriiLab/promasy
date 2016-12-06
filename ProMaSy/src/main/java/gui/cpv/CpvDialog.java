@@ -38,7 +38,7 @@ public class CpvDialog extends JDialog {
 		upButton = new JButton();
 		JButton searchButton = new JButton();
 		selectButton = new JButton(Labels.getProperty("selectCode"));
-		
+
 		//set format for table		
 		table.getColumnModel().getColumn(0).setMaxWidth(150);
 		
@@ -52,7 +52,7 @@ public class CpvDialog extends JDialog {
 		selectButton.setEnabled(false);
 
 		PromptSupport.setPrompt(Labels.getProperty("searchFieldHint"), searchField);
-        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIDE_PROMPT, searchField);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, searchField);
         searchField.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				selectButton.setEnabled(false);

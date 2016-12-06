@@ -4,6 +4,8 @@ SET SCHEMA 'promasy';
 /* function modified from
 http://rob.conery.io/2014/05/29/a-better-id-generator-for-postgresql */
 
+CREATE SEQUENCE registrations_left INCREMENT BY -1 MINVALUE 0 MAXVALUE 10000 START WITH 100;
+
 CREATE SEQUENCE id_seq;
 
 CREATE OR REPLACE FUNCTION id_gen(OUT result BIGINT) AS $$
@@ -59,6 +61,19 @@ CREATE TABLE institute (
 	active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO institute
+(inst_name)
+VALUES
+  ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
+
+CREATE OR REPLACE FUNCTION def_inst_id(OUT result BIGINT) AS $$
+BEGIN
+  result := (SELECT inst_id
+             FROM institute
+             WHERE inst_name = 'Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
+END;
+$$ LANGUAGE PLPGSQL;
+
 -- Повні назви відділів. Використовується в документах
 CREATE TABLE departments (
 	dep_id bigint not null DEFAULT id_gen() CONSTRAINT departments_pk PRIMARY KEY,
@@ -71,6 +86,28 @@ CREATE TABLE departments (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
+INSERT INTO departments
+(dep_name, inst_id)
+VALUES
+  ('Дирекція', def_inst_id()),
+  ('Бухгалтерія', def_inst_id()),
+  ('Відділ постачання', def_inst_id()),
+  ('Відділ молекулярної імунології', def_inst_id()),
+  ('Відділ біохімії м`язів', def_inst_id()),
+  ('Відділ структури та функції білка', def_inst_id()),
+  ('Відділ регуляції обміну речовин', def_inst_id()),
+  ('Відділ біохімії вітамінів і коензимів', def_inst_id()),
+  ('Відділ біохімії ліпідів', def_inst_id()),
+  ('Відділ хімії та біохімії ферментів', def_inst_id()),
+  ('Відділ нейрохімії', def_inst_id()),
+  ('Відділ молекулярної біології', def_inst_id()),
+  ('Відділ науково-технічної інформації', def_inst_id()),
+  ('Лабораторія сигнальних механізмів клітини', def_inst_id()),
+  ('Експлуатаційно-технічний відділ', def_inst_id()),
+  ('Відділ техніки безпеки', def_inst_id()),
+  ('Адміністративно-господарський відділ', def_inst_id()),
+  ('Бібліотека', def_inst_id());
+
 -- Повні назви лабораторій або підвідділів. Використовується в документах
 CREATE TABLE subdepartments (
 	subdep_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT subdepartments_pk PRIMARY KEY,
@@ -82,6 +119,31 @@ CREATE TABLE subdepartments (
   modified_date TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
+
+INSERT INTO subdepartments
+(subdep_name, dep_id)
+VALUES
+  ('Лабораторія імунобіології', (SELECT dep_id
+                                 FROM departments
+                                 WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія імунології клітинних рецепторів', (SELECT dep_id
+                                                   FROM departments
+                                                   WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія нанобіотехнології', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія медичної біохімії', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ біохімії вітамінів і коензимів')),
+  ('Лабораторія оптичних методів дослідження', (SELECT dep_id
+                                                FROM departments
+                                                WHERE dep_name = 'Відділ біохімії м`язів')),
+  ('Група хроматографії', (SELECT dep_id
+                           FROM departments
+                           WHERE dep_name = 'Відділ біохімії ліпідів')),
+  ('Група електронної мікроскопії', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ хімії та біохімії ферментів'));
 
 -- cpv коди з розшифровкою на двох мовах
 CREATE TABLE cpv (
@@ -129,7 +191,7 @@ CREATE TABLE producers (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO producers (brand_id, brand_name, active) VALUES (0, "Будь-який", FALSE);
+INSERT INTO producers (brand_id, brand_name, active) VALUES (0, 'Будь-який', FALSE);
 
 -- Фірми-постачальники продукції
 CREATE TABLE suppliers (
@@ -144,7 +206,7 @@ CREATE TABLE suppliers (
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO suppliers (supplier_id, supplier_name, supplier_tel, active) VALUES (0, "Будь-який", "", FALSE);
+INSERT INTO suppliers (supplier_id, supplier_name, supplier_tel, active) VALUES (0, 'Будь-який', '', FALSE);
 
 /* Зв'язок між постачальниками та 
 виробниками для пропозицій постачальників*/
@@ -170,7 +232,7 @@ CREATE TABLE reasons_for_suppl (
   active        BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO reasons_for_suppl (reason_id, reason_name, active) VALUES (0, "", FALSE);
+INSERT INTO reasons_for_suppl (reason_id, reason_name, active) VALUES (0, '', FALSE);
 
 --  Дані про користувачів
 CREATE TABLE employees (

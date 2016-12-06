@@ -4,8 +4,8 @@ import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.Utils;
-import main.java.gui.bids.status.Status;
 import main.java.model.*;
+import main.java.model.enums.Status;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -55,7 +55,7 @@ public class CreateBidDialog extends JDialog {
     private Long currentFinanceDepartmentId = 0L;
     private BigDecimal totalPrice = BigDecimal.ZERO;
 
-    CreateBidDialog(MainFrame parent) {
+    public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), false);
         this.parent = parent;
         setSize(440, 495);

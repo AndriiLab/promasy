@@ -17,4 +17,5 @@ public class Database {
     public static final BidsQueries BIDS = new BidsQueries();
     public static final VersionQueries VERSIONS = new VersionQueries();
     public static final ReasonsForSupplierChoiceQueries REASONS = new ReasonsForSupplierChoiceQueries();
+    public static final RegistrationQueries REGISTRATION = new RegistrationQueries();
 }

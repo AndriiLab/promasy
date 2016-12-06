@@ -2,10 +2,10 @@ package main.java.gui.login;
 
 public interface LoginListener {
 
-	long usernameEntered(String username);
-	
-	void loginAttemptOccurred(LoginAttemptEvent ev);
-	
-	void loginCancelled();
+    void loginAttemptOccurred(String user, char[] password);
+
+    void loginCancelled();
+
+    boolean isAbleToRegister();
 
 }

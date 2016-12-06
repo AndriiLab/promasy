@@ -14,10 +14,16 @@ import java.util.List;
 
 public class CreateEmployeeDialog extends JDialog {
 
+    private final RoleModel emptyRoleModel = new RoleModel();
+    private final InstituteModel emptyInstituteModel = new InstituteModel();
+    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
+    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private JButton okButton;
     private JButton cancelButton;
     private JFrame parent;
     private CreateEmployeeDialogListener listener;
+    private CreateEmployeeFromLoginListener loginListener;
     private JTextField nameField;
     private JTextField middleNameField;
     private JTextField lastNameField;
@@ -29,14 +35,9 @@ public class CreateEmployeeDialog extends JDialog {
     private JPasswordField passwordField;
     private JPasswordField repeatPasswordField;
     private EmployeeModel currentEmployeeModel;
-    private final RoleModel emptyRoleModel = new RoleModel();
-    private final InstituteModel emptyInstituteModel = new InstituteModel();
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
 
     public CreateEmployeeDialog(JFrame parent) {
-        super(parent, Labels.getProperty("createNewEmployee"), false);
+        super(parent, Labels.getProperty("createNewEmployee"), true);
         this.parent = parent;
         setSize(600, 330);
         setResizable(false);
@@ -114,14 +115,25 @@ public class CreateEmployeeDialog extends JDialog {
                     listener.editEmployeeEventOccurred(currentEmployeeModel);
                 }
                 clearDialog();
+                if (loginListener != null) {
+                    loginListener.newUserCreatedEvent();
+                }
             }
         });
-        cancelButton.addActionListener(e -> clearDialog());
+        cancelButton.addActionListener(e -> {
+            clearDialog();
+            if (loginListener != null) {
+                loginListener.cancelEvent();
+            }
+        });
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 clearDialog();
+                if (loginListener != null) {
+                    loginListener.cancelEvent();
+                }
             }
         });
     }
@@ -260,6 +272,10 @@ public class CreateEmployeeDialog extends JDialog {
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
         this.listener = listener;
 
+    }
+
+    public void setLoginListener(CreateEmployeeFromLoginListener loginListener) {
+        this.loginListener = loginListener;
     }
 
     private void layoutControls() {

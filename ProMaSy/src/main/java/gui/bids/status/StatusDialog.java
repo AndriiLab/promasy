@@ -3,6 +3,7 @@ package main.java.gui.bids.status;
 import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.model.StatusModel;
+import main.java.model.enums.Status;
 
 import javax.swing.*;
 import javax.swing.border.Border;

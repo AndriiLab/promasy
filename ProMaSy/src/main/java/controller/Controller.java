@@ -15,12 +15,12 @@ import main.java.gui.bids.reports.ReportParametersEvent;
 import main.java.gui.empedit.CreateEmployeeDialogListener;
 import main.java.gui.finance.FinancePanelListener;
 import main.java.gui.instedit.OrganizationDialogListener;
-import main.java.gui.login.LoginAttemptEvent;
 import main.java.gui.login.LoginListener;
 import main.java.gui.prodsupl.ProducerDialogListener;
 import main.java.gui.prodsupl.ReasonsDialogListener;
 import main.java.gui.prodsupl.SupplierDialogListener;
 import main.java.model.*;
+import main.java.model.enums.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,38 +75,49 @@ public class Controller {
 
         // init LoginListener here, because loginDialog appears before the MainFrame
         mainFrame.setLoginListener(new LoginListener() {
-            public long usernameEntered(String username) {
-                return getSalt(username);
-            }
-
-            public void loginAttemptOccurred(LoginAttemptEvent ev) {
-                if (checkLogin(ev.getUsername(), ev.getPassword())) {
+            public void loginAttemptOccurred(String user, char[] password) {
+                String pass = Utils.makePass(password, getSalt(user));
+                if (checkLogin(user, pass)) {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
-                    // if role "Head of department"(id 5000) and lower, than load data according to department
-                    if (LoginData.getInstance().getRoleId() < 5000) {
+                    // if role lower than "Head of department" load data according to department
+                    if (LoginData.getInstance().getRoleId() < Role.HEAD_OF_DEPARTMENT.getRoleId()) {
                         loadDataToView();
                     } else loadDataToView(LoginData.getInstance().getDepId());
 
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
-                } else if (!checkLogin(ev.getUsername(), ev.getPassword())) {
+                } else if (!checkLogin(user, pass)) {
                     // if login wasn't successful showing error dialog
                     JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("wrongCredentialsPlsCheck"),
                             Labels.getProperty("loginError"), JOptionPane.ERROR_MESSAGE);
                 }
             }
+
             // if user do not want login call close method
             public void loginCancelled() {
                 close();
+            }
+
+            // creating new user
+            public boolean isAbleToRegister() {
+                int registrationNumber = registrationsLeft();
+                System.out.println("Ticket number: " + registrationNumber);
+                if (registrationNumber > 0) {
+                    LoginData.getInstance(registrationNumber, "", "", "", 0L, 0L, 0L, Role.USER.getRoleId(), "", "", 0L, null, 0L, null);
+                    mainFrame.initialize();
+                    initListeners();
+                    loadDataToView();
+                    return true;
+                } else return false;
             }
         });
 
         mainFrame.showLoginDialog();
     }
 
-    private void loadDataToView(){
+    private void loadDataToView() {
         //loading default data into models
         getCpvRequest("", true);
         getRolesRequest();
@@ -159,7 +170,7 @@ public class Controller {
         mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
     }
 
-    private void initListeners(){
+    private void initListeners() {
         // adding implementation for closing operation via X-button on window
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -197,30 +208,30 @@ public class Controller {
         });
 
         mainFrame.setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
-                    public void instSelectionEventOccurred(long instId) {
-                        getDepartments(instId);
-                        mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-                    }
+            public void instSelectionEventOccurred(long instId) {
+                getDepartments(instId);
+                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
+            }
 
-                    public void depSelectionEventOccurred(long depId) {
-                        getSubdepRequest(depId);
-                        mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-                    }
+            public void depSelectionEventOccurred(long depId) {
+                getSubdepRequest(depId);
+                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
+            }
 
-                    public void createEmployeeEventOccurred(EmployeeModel model) {
-                        setCreated(model);
-                        createEmployee(model);
-                        getEmployees();
-                        mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
-                    }
+            public void createEmployeeEventOccurred(EmployeeModel model) {
+                setCreated(model);
+                createEmployee(model);
+                getEmployees();
+                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            }
 
-                    public void editEmployeeEventOccurred(EmployeeModel model) {
-                        setModified(model);
-                        editEmployee(model);
-                        getEmployees();
-                        mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
-                    }
-                });
+            public void editEmployeeEventOccurred(EmployeeModel model) {
+                setModified(model);
+                editEmployee(model);
+                getEmployees();
+                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            }
+        });
 
         mainFrame.setOrganizationDialogListener(new OrganizationDialogListener() {
 
@@ -678,19 +689,19 @@ public class Controller {
         }
     }
 
-    private Version getDBVersion(){
+    private Version getDBVersion() {
         try {
             return new Version(Database.VERSIONS.retrive());
         } catch (SQLException e) {
-        	// this error occurs with old settings, so reset it to defaults
-        	try {
-				Preferences.userRoot().node("db_con").clear();
-				disconnect();
-				connect();
-			} catch (BackingStoreException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            // this error occurs with old settings, so reset it to defaults
+            try {
+                Preferences.userRoot().node("db_con").clear();
+                disconnect();
+                connect();
+            } catch (BackingStoreException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             errorLogEvent(e, Labels.withColon("versionRequest") + Labels.withSpaceBefore("error"));
         }
         return null;
@@ -1306,6 +1317,15 @@ public class Controller {
         } catch (SQLException e) {
             e.printStackTrace();
             errorLogEvent(e, Labels.withColon("status") + bidId + Labels.withSpaceBefore("error"));
+        }
+    }
+
+    private int registrationsLeft() {
+        try {
+            return Database.REGISTRATION.getRegistrationNumber();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

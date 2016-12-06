@@ -11,6 +11,7 @@ import main.java.gui.amunits.AmUnitsDialog;
 import main.java.gui.amunits.AmUnitsDialogListener;
 import main.java.gui.bids.BidsListPanel;
 import main.java.gui.bids.BidsListPanelListener;
+import main.java.gui.bids.CreateBidDialog;
 import main.java.gui.bids.CreateBidDialogListener;
 import main.java.gui.bids.reports.ReportParametersDialog;
 import main.java.gui.bids.reports.ReportParametersDialogListener;
@@ -18,6 +19,7 @@ import main.java.gui.conset.ConSetDialog;
 import main.java.gui.conset.ConSetListener;
 import main.java.gui.cpv.CpvDialog;
 import main.java.gui.cpv.CpvSearchListener;
+import main.java.gui.empedit.CreateEmployeeDialog;
 import main.java.gui.empedit.CreateEmployeeDialogListener;
 import main.java.gui.empedit.EditEmployeeDialog;
 import main.java.gui.empedit.EditEmployeeDialogListener;
@@ -29,6 +31,7 @@ import main.java.gui.login.LoginDialog;
 import main.java.gui.login.LoginListener;
 import main.java.gui.prodsupl.*;
 import main.java.model.*;
+import main.java.model.enums.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +47,7 @@ public class MainFrame extends JFrame {
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
+    private CreateEmployeeDialog createEmployeeDialog;
     private InfoDialog infoDialog;
     private CpvDialog cpvDialog;
     private StatusPanel statusPanel;
@@ -53,10 +57,11 @@ public class MainFrame extends JFrame {
     private ReasonsDialog reasonsDialog;
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
+    private CreateBidDialog createBidDialog;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
+    private JTabbedPane tabPane;
     private MainFrameListener listener;
-
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -86,9 +91,11 @@ public class MainFrame extends JFrame {
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
         bidsListPanel = new BidsListPanel(this);
+        createBidDialog = new CreateBidDialog(this);
         financePanel = new FinancePanel(this);
         editOrgDialog = new OrganizationDialog(this);
         editEmpDialog = new EditEmployeeDialog(this);
+        createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
     }
 
@@ -97,42 +104,41 @@ public class MainFrame extends JFrame {
         //setting layout
         setLayout(new BorderLayout());
 
-        //TODO constructor here
-        switch (roleId) {
-            case 7000: // 'Користувач'
-                useUserDepartment();
-                add(bidsListPanel, BorderLayout.CENTER);
-                break;
-            case 6000: // 'Матеріально-відповідальна особа'
-                useUserDepartment();
-                createTabPane();
-                break;
-            case 5000: // 'Керівник підрозділу'
-                useUserDepartment();
-                createTabPane();
-                break;
-            case 4000: // 'Головний бухгалтер'
-                createTabPane();
-                break;
-            case 3000: // 'Головний економіст'
-                createTabPane();
-                break;
-            case 2500: // 'Голова тендерного комітету'
-                createTabPane();
-                break;
-            case 2000: // 'Заступник директора'
-                createTabPane();
-                break;
-            case 1000: // 'Директор'
-                createTabPane();
-                break;
-            case 900: // 'Адміністратор'
-                createTabPane();
-                break;
+        // init panes according to user roles
+        if (roleId == Role.ADMIN.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.DIRECTOR.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.DEPUTY_DIRECTOR.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.HEAD_OF_TENDER_COMMITTEE.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.ACCOUNTANT.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.ECONOMIST.getRoleId()) {
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.HEAD_OF_DEPARTMENT.getRoleId()) {
+            useUserDepartment();
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.PERSONALLY_LIABLE_EMPLOYEE.getRoleId()) {
+            useUserDepartment();
+            createTabPane();
+            setJMenuBar(createMenuBar(true));
+        } else if (roleId == Role.USER.getRoleId()) {
+            useUserDepartment();
+            setJMenuBar(createMenuBar(false));
+            add(bidsListPanel, BorderLayout.CENTER);
         }
 
         // creating MenuBar
-        setJMenuBar(createMenuBar());
+
 
         // setting layout and formating frames on mainframe
         add(toolbar, BorderLayout.PAGE_START);
@@ -145,7 +151,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        toolbar.setToolbarListener(this::showReportParametersDialog);
+        toolbar.setToolbarListener(this::printEventOccurred);
 
         //hiding login dialog and showing mainframe
         loginDialog.setVisible(false);
@@ -157,16 +163,14 @@ public class MainFrame extends JFrame {
     }
 
     private void createTabPane() {
-        JTabbedPane tabPane = new JTabbedPane();
+        tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
         add(tabPane, BorderLayout.CENTER);
     }
 
-    /*
-     * This method generates menubar
-     */
-    private JMenuBar createMenuBar() {
+    //This method generates menubar
+    private JMenuBar createMenuBar(boolean isAdvanced) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
@@ -178,21 +182,15 @@ public class MainFrame extends JFrame {
         fileMenu.add(exitItem);
 
         JMenu editMenu = new JMenu(Labels.getProperty("edit"));
-        JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
-        JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployee"));
         JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"));
+        editAmUnitsItem.setIcon(Icons.UNITS);
         JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"));
+        editProdItem.setIcon(Icons.PRODUCER);
         JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
-        editMenu.add(editOrgItem);
-        editMenu.add(editEmpItem);
+        editSuplItem.setIcon(Icons.SUPPLIER);
         editMenu.add(editAmUnitsItem);
         editMenu.add(editProdItem);
         editMenu.add(editSuplItem);
-
-        JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-        JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
-        conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
-        settingsMenu.add(conSettItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
         JMenuItem infoItem = new JMenuItem(Labels.withThreeDots("aboutSoftware"));
@@ -201,10 +199,10 @@ public class MainFrame extends JFrame {
 
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
-        menuBar.add(settingsMenu);
+
         menuBar.add(helpMenu);
 
-        printItem.addActionListener(e -> showReportParametersDialog());
+        printItem.addActionListener(e -> printEventOccurred());
 
         exitItem.addActionListener(e -> {
             if (listener != null) {
@@ -212,21 +210,46 @@ public class MainFrame extends JFrame {
             }
         });
 
-        editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
-
-        editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
-
         editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
-
         editProdItem.addActionListener(e -> producerDialog.setVisible(true));
-
         editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
-
-        conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
-
         infoItem.addActionListener(e -> infoDialog.setVisible(true));
 
+        // advanced menu for non users
+        if (isAdvanced) {
+            JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
+            editOrgItem.setIcon(Icons.ORGANIZATION);
+            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployee"));
+            editEmpItem.setIcon(Icons.USERS);
+            editMenu.addSeparator();
+            editMenu.add(editOrgItem);
+            editMenu.add(editEmpItem);
+
+            JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
+            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
+            conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
+            settingsMenu.add(conSettItem);
+            menuBar.add(settingsMenu);
+
+            editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
+            editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
+            conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
+
+        }
+
         return menuBar;
+    }
+
+    private void printEventOccurred() {
+        if (tabPane != null) {
+            if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
+                showReportParametersDialog();
+            } else {
+                JOptionPane.showMessageDialog(this, Labels.getProperty("printSupportedOnlyInBids"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            showReportParametersDialog();
+        }
     }
 
     //setters
@@ -238,35 +261,40 @@ public class MainFrame extends JFrame {
         bidsListPanel.setFinanceLabels(sum, financeLeft);
     }
 
-    public void setCpvCode(String selectedCPV){
-        bidsListPanel.getCreateBidDialog().setCPVField(selectedCPV);
+    public void setCpvCode(String selectedCPV) {
+        createBidDialog.setCPVField(selectedCPV);
     }
 
     //windows controls
     public void showLoginDialog() {
         loginDialog.setVisible(true);
     }
+
     public void showConSettDialog() {
         conSettDialog.setVisible(true);
     }
-    public void showProducerDialog(){
+
+    public void showProducerDialog() {
         producerDialog.setVisible(true);
     }
-    public void showSupplierDialog(){
+
+    public void showSupplierDialog() {
         supplierDialog.setVisible(true);
     }
 
     public void showReasonsDialog() {
         reasonsDialog.setVisible(true);
     }
-    public void showAmUnitsDialog(){
-       amUnitsDialog.setVisible(true);
+
+    public void showAmUnitsDialog() {
+        amUnitsDialog.setVisible(true);
     }
-    public void showCpvDialog(){
+
+    public void showCpvDialog() {
         cpvDialog.setVisible(true);
     }
 
-    private void showReportParametersDialog(){
+    private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
             // search for heads of department (id 5000) in department
             listener.searchForPerson(5000, bidsListPanel.getSelectedDepartmentId());
@@ -310,30 +338,39 @@ public class MainFrame extends JFrame {
     public void setMainFrameListener(MainFrameListener listener) {
         this.listener = listener;
     }
+
     public void setLoginListener(LoginListener loginListener) {
         loginDialog.setLoginListener(loginListener);
     }
+
     public void setConSetListener(ConSetListener listener) {
         conSettDialog.setPrefsListener(listener);
     }
+
     public void setCpvListener(CpvSearchListener listener) {
         cpvDialog.setCpvListener(listener);
     }
+
     public void setEmployeeDialogListener(EditEmployeeDialogListener listener) {
         editEmpDialog.setEmployeeDialogListener(listener);
     }
+
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
-        editEmpDialog.getCreateEmployeeDialog().setCreateEmployeeDialogListener(listener);
+        createEmployeeDialog.setCreateEmployeeDialogListener(listener);
     }
+
     public void setOrganizationDialogListener(OrganizationDialogListener listener) {
         editOrgDialog.setOrganizationDialogListener(listener);
     }
+
     public void setAmUnitsDialogListener(AmUnitsDialogListener listener) {
         amUnitsDialog.setListener(listener);
     }
+
     public void setProducerDialogListener(ProducerDialogListener listener) {
         producerDialog.setListener(listener);
     }
+
     public void setSupplierDialogListener(SupplierDialogListener listener) {
         supplierDialog.setListener(listener);
     }
@@ -341,15 +378,19 @@ public class MainFrame extends JFrame {
     public void setReasonsDialogListener(ReasonsDialogListener listener) {
         reasonsDialog.setListener(listener);
     }
+
     public void setFinancePanelListener(FinancePanelListener listener) {
         financePanel.setFinancePanelListener(listener);
     }
+
     public void setBidsListPanelListener(BidsListPanelListener listener) {
         bidsListPanel.setBidsListPanelListener(listener);
     }
+
     public void setCreateBidDialogListener(CreateBidDialogListener listener) {
-        bidsListPanel.getCreateBidDialog().setCreateBidDialogListener(listener);
+        createBidDialog.setCreateBidDialogListener(listener);
     }
+
     public void setReportParametersDialogListener(ReportParametersDialogListener listener) {
         reportParametersDialog.setListener(listener);
     }
@@ -361,24 +402,23 @@ public class MainFrame extends JFrame {
 
     public void setAmountUnitsModelList(List<AmountUnitsModel> amountUnitsModelList) {
         amUnitsDialog.setData(amountUnitsModelList);
-        bidsListPanel.setAmUnitsBoxData(amountUnitsModelList);
-        bidsListPanel.getCreateBidDialog().setAmUnitsBoxData(amountUnitsModelList);
+        createBidDialog.setAmUnitsBoxData(amountUnitsModelList);
     }
 
     public void setInstituteModelList(List<InstituteModel> instituteModelList) {
         editOrgDialog.setInstData(instituteModelList);
-        editEmpDialog.getCreateEmployeeDialog().setInstData(instituteModelList);
+        createEmployeeDialog.setInstData(instituteModelList);
     }
 
     public void setDepartmentModelList(List<DepartmentModel> departmentsList) {
         financePanel.setDepartmentBoxData(departmentsList);
         bidsListPanel.setDepartmentBoxData(departmentsList);
-        editEmpDialog.getCreateEmployeeDialog().setDepData(departmentsList);
+        createEmployeeDialog.setDepData(departmentsList);
         editOrgDialog.setDepData(departmentsList);
     }
 
     public void setSubdepartmentModelList(List<SubdepartmentModel> subdepartmentModelList) {
-        editEmpDialog.getCreateEmployeeDialog().setSubdepData(subdepartmentModelList);
+        createEmployeeDialog.setSubdepData(subdepartmentModelList);
         editOrgDialog.setSubdepData(subdepartmentModelList);
     }
 
@@ -389,22 +429,22 @@ public class MainFrame extends JFrame {
     }
 
     public void setRoleModelList(List<RoleModel> roleModelList) {
-        editEmpDialog.getCreateEmployeeDialog().setRolesData(roleModelList);
+        createEmployeeDialog.setRolesData(roleModelList);
         reportParametersDialog.setRoleBoxData(roleModelList);
     }
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {
         producerDialog.setProdData(producerModelList);
-        bidsListPanel.getCreateBidDialog().setProducerBoxData(producerModelList);
+        createBidDialog.setProducerBoxData(producerModelList);
     }
 
     public void setSupplierModelList(List<SupplierModel> supplierModelList) {
         supplierDialog.setSuplData(supplierModelList);
-        bidsListPanel.getCreateBidDialog().setSupplierBoxData(supplierModelList);
+        createBidDialog.setSupplierBoxData(supplierModelList);
     }
 
     public void setReasonsModelList(List<ReasonForSupplierChoiceModel> reasonsModelList) {
-        bidsListPanel.getCreateBidDialog().setReasonForSupplierChoiceBoxData(reasonsModelList);
+        createBidDialog.setReasonForSupplierChoiceBoxData(reasonsModelList);
         reasonsDialog.setReasonData(reasonsModelList);
     }
 
@@ -415,11 +455,11 @@ public class MainFrame extends JFrame {
     public void setFinanceDepartmentModelList(List<FinanceDepartmentModel> financeDepartmentModelList) {
         financePanel.setDepartmentFinanceTableData(financeDepartmentModelList);
         bidsListPanel.setFinanceDepartmentBoxData(financeDepartmentModelList);
-        bidsListPanel.getCreateBidDialog().setFinanceDepartmentBoxData(financeDepartmentModelList);
+        createBidDialog.setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
     public void setFinanceDepartmentModelListToBidDialog(List<FinanceDepartmentModel> list) {
-        bidsListPanel.getCreateBidDialog().setFinanceDepartmentBoxData(list);
+        createBidDialog.setFinanceDepartmentBoxData(list);
     }
 
     public void setBidModelList(List<BidModel> bidModelList) {
@@ -430,4 +470,11 @@ public class MainFrame extends JFrame {
         bidsListPanel.setBidStatusTableData(list);
     }
 
+    public CreateEmployeeDialog getCreateEmployeeDialog() {
+        return createEmployeeDialog;
+    }
+
+    public CreateBidDialog getCreateBidDialog() {
+        return createBidDialog;
+    }
 }

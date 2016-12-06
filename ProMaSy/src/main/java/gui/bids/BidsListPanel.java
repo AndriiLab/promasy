@@ -33,7 +33,6 @@ public class BidsListPanel extends JPanel {
     private BidsTableModel bidsTableModel;
     private JTable bidsTable;
     private BidsListPanelListener listener;
-    private CreateBidDialog createBidDialog;
     private StatusDialog statusDialog;
     private BidModel selectedBidModel;
     private List<BidModel> selectedBidModels;
@@ -55,7 +54,6 @@ public class BidsListPanel extends JPanel {
         selectedFinanceDepartmentModel = emptyFinanceDepartmentModel;
         selectedDepartmentModel = emptyDepartmentModel;
 
-        createBidDialog = new CreateBidDialog(parent);
         statusDialog = new StatusDialog(parent);
 
         createBidButton = new JButton();
@@ -102,13 +100,13 @@ public class BidsListPanel extends JPanel {
 
         createBidButton.addActionListener(e -> {
             setIDsToCreateBidDialog();
-            createBidDialog.setVisible(true);
+            parent.getCreateBidDialog().setVisible(true);
         });
 
         editBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(emptyBidModel)) {
                 setIDsToCreateBidDialog();
-                createBidDialog.loadToDialog(selectedBidModel);
+                parent.getCreateBidDialog().loadToDialog(selectedBidModel);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
             }
@@ -201,10 +199,10 @@ public class BidsListPanel extends JPanel {
 
     private void setIDsToCreateBidDialog() {
         if (!isSelectedFinanceDepartmentModelEmpty()) {
-            createBidDialog.setCurrentDepartmentId(selectedDepartmentModel.getModelId());
-            createBidDialog.setCurrentFinanceDepartmentId(selectedFinanceDepartmentModel.getModelId());
+            parent.getCreateBidDialog().setCurrentDepartmentId(selectedDepartmentModel.getModelId());
+            parent.getCreateBidDialog().setCurrentFinanceDepartmentId(selectedFinanceDepartmentModel.getModelId());
         } else if (!isSelectedDepartmentModelEmpty()) {
-            createBidDialog.setCurrentDepartmentId(selectedDepartmentModel.getModelId());
+            parent.getCreateBidDialog().setCurrentDepartmentId(selectedDepartmentModel.getModelId());
         }
     }
 
@@ -228,13 +226,13 @@ public class BidsListPanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         departmentBox.setEnabled(false);
-        createBidDialog.setEnabledDepartmentBox(false);
+        parent.getCreateBidDialog().setEnabledDepartmentBox(false);
     }
 
     public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
-            createBidDialog.addToDepartmentBox(model);
+            parent.getCreateBidDialog().addToDepartmentBox(model);
             if (useUserDepartment && LoginData.getInstance().getDepId() == model.getModelId()) {
                 departmentBox.setSelectedItem(model);
             }
@@ -270,16 +268,8 @@ public class BidsListPanel extends JPanel {
         this.listener = listener;
     }
 
-    public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
-        createBidDialog.setAmUnitsBoxData(db);
-    }
-
     public void setBidStatusTableData(List<StatusModel> list) {
         statusDialog.setTableData(list);
-    }
-
-    public CreateBidDialog getCreateBidDialog() {
-        return createBidDialog;
     }
 
     private void createLayout() {

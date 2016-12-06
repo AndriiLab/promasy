@@ -2,6 +2,7 @@ package main.java.gui.empedit;
 
 import main.java.gui.Icons;
 import main.java.gui.Labels;
+import main.java.gui.MainFrame;
 import main.java.model.EmployeeModel;
 
 import javax.swing.*;
@@ -14,17 +15,16 @@ public class EditEmployeeDialog extends JDialog {
 
     private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private EditEmployeeDialogListener listener;
-    private CreateEmployeeDialog createEmployeeDialog;
+
     private JTable table;
     private EmployeeTableModel tableModel;
     private EmployeeModel selectedModel;
 
-    public EditEmployeeDialog(JFrame parent) {
+    public EditEmployeeDialog(MainFrame parent) {
         super(parent, Labels.getProperty("addEmployee"), false);
         setSize(600, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
-        createEmployeeDialog = new CreateEmployeeDialog(parent);
 
         Dimension buttonDim = new Dimension(25, 25);
 
@@ -71,10 +71,10 @@ public class EditEmployeeDialog extends JDialog {
         add(new JScrollPane(table), BorderLayout.CENTER);
         add(downButtonsPanel, BorderLayout.SOUTH);
 
-        createEmployeeButton.addActionListener(e -> createEmployeeDialog.setVisible(true));
+        createEmployeeButton.addActionListener(e -> parent.getCreateEmployeeDialog().setVisible(true));
         editEmployeeButton.addActionListener(e -> {
             if (!selectedModel.equals(emptyEmployeeModel)){
-                createEmployeeDialog.setEmployeeModel(selectedModel);
+                parent.getCreateEmployeeDialog().setEmployeeModel(selectedModel);
             }
         });
 
@@ -110,10 +110,6 @@ public class EditEmployeeDialog extends JDialog {
 
     public void refresh(){
         tableModel.fireTableDataChanged();
-    }
-
-    public CreateEmployeeDialog getCreateEmployeeDialog(){
-        return createEmployeeDialog;
     }
 
 }

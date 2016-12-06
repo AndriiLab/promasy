@@ -1,4 +1,4 @@
-package main.java.gui.bids.status;
+package main.java.model.enums;
 
 /**
  * This Enum holds data about available bid statuses
