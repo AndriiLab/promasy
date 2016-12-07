@@ -1,6 +1,6 @@
 package main.java.gui.instedit;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.model.DepartmentModel;
 import main.java.model.InstituteModel;
@@ -60,21 +60,10 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         instituteBox.addActionListener(this);
         instituteBox.setPreferredSize(comboBoxDim);
 
-        createInstButton = new JButton();
-        createInstButton.setToolTipText(Labels.getProperty("addInstitute"));
-        createInstButton.setIcon(Icons.CREATE);
-        createInstButton.setPreferredSize(buttonDim);
-        createInstButton.setEnabled(true);
-        editInstButton = new JButton();
-        editInstButton.setToolTipText(Labels.getProperty("editInstitite"));
-        editInstButton.setIcon(Icons.EDIT);
-        editInstButton.setPreferredSize(buttonDim);
-        editInstButton.setEnabled(true);
-        deleteInstButton = new JButton();
-        deleteInstButton.setToolTipText(Labels.getProperty("delInstitite"));
-        deleteInstButton.setIcon(Icons.DELETE);
-        deleteInstButton.setPreferredSize(buttonDim);
-        deleteInstButton.setEnabled(true);
+        CrEdDelButtons cedInst = new CrEdDelButtons(Labels.getProperty("addInstitute"), Labels.getProperty("editInstitite"), Labels.getProperty("delInstitite"));
+        createInstButton = cedInst.getCreateButton();
+        editInstButton = cedInst.getEditButton();
+        deleteInstButton = cedInst.getDeleteButton();
 
         //Set up department combo box and edit buttons
         DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
@@ -84,21 +73,10 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         departmentBox.addActionListener(this);
         departmentBox.setPreferredSize(comboBoxDim);
 
-        createDepButton = new JButton();
-        createDepButton.setToolTipText(Labels.getProperty("addDepartment"));
-        createDepButton.setIcon(Icons.CREATE);
-        createDepButton.setPreferredSize(buttonDim);
-        createDepButton.setEnabled(true);
-        editDepButton = new JButton();
-        editDepButton.setToolTipText(Labels.getProperty("editDepartment"));
-        editDepButton.setIcon(Icons.EDIT);
-        editDepButton.setPreferredSize(buttonDim);
-        editDepButton.setEnabled(true);
-        deleteDepButton = new JButton();
-        deleteDepButton.setToolTipText(Labels.getProperty("delDepartment"));
-        deleteDepButton.setIcon(Icons.DELETE);
-        deleteDepButton.setPreferredSize(buttonDim);
-        deleteDepButton.setEnabled(true);
+        CrEdDelButtons cedDepartment = new CrEdDelButtons(Labels.getProperty("addDepartment"), Labels.getProperty("editDepartment"), Labels.getProperty("delDepartment"));
+        createDepButton = cedDepartment.getCreateButton();
+        editDepButton = cedDepartment.getEditButton();
+        deleteDepButton = cedDepartment.getDeleteButton();
 
         //Set up SubDepartment combo box and edit buttons
         DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
@@ -108,21 +86,10 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         subdepartmentBox.addActionListener(this);
         subdepartmentBox.setPreferredSize(comboBoxDim);
 
-        createSubdepButton = new JButton();
-        createSubdepButton.setToolTipText(Labels.getProperty("addSubdepartment"));
-        createSubdepButton.setIcon(Icons.CREATE);
-        createSubdepButton.setPreferredSize(buttonDim);
-        createSubdepButton.setEnabled(true);
-        editSubdepButton = new JButton();
-        editSubdepButton.setToolTipText(Labels.getProperty("editSubdepartment"));
-        editSubdepButton.setIcon(Icons.EDIT);
-        editSubdepButton.setPreferredSize(buttonDim);
-        editSubdepButton.setEnabled(true);
-        deleteSubdepButton = new JButton();
-        deleteSubdepButton.setToolTipText(Labels.getProperty("delSubdepartment"));
-        deleteSubdepButton.setIcon(Icons.DELETE);
-        deleteSubdepButton.setPreferredSize(buttonDim);
-        deleteSubdepButton.setEnabled(true);
+        CrEdDelButtons cedSubdepartment = new CrEdDelButtons(Labels.getProperty("addSubdepartment"), Labels.getProperty("editSubdepartment"), Labels.getProperty("delSubdepartment"));
+        createSubdepButton = cedSubdepartment.getCreateButton();
+        editSubdepButton = cedSubdepartment.getEditButton();
+        deleteSubdepButton = cedSubdepartment.getDeleteButton();
 
         closeButton = new JButton(Labels.getProperty("closeBtn"));
 

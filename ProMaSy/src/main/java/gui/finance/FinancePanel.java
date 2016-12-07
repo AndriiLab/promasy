@@ -1,6 +1,6 @@
 package main.java.gui.finance;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.gui.Utils;
 import main.java.model.*;
@@ -66,7 +66,6 @@ public class FinancePanel extends JPanel {
     public FinancePanel(JFrame parent) {
         this.parent = parent;
 
-        Dimension buttonDim = new Dimension(25, 25);
         selectedFinanceModel = emptyFinanceModel;
 
         orderNumberField = new JTextField(10);
@@ -79,23 +78,11 @@ public class FinancePanel extends JPanel {
         endDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         endDatePicker.setDate(defaultEndDate);
 
-        createOrderButton = new JButton();
-        createOrderButton.setToolTipText(Labels.getProperty("createOrder"));
-        createOrderButton.setIcon(Icons.CREATE);
-        createOrderButton.setPreferredSize(buttonDim);
-        createOrderButton.setEnabled(true);
+        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("createOrder"), Labels.getProperty("editOrder"), Labels.getProperty("deleteOrder"));
 
-        editOrderButton = new JButton();
-        editOrderButton.setToolTipText(Labels.getProperty("editOrder"));
-        editOrderButton.setIcon(Icons.EDIT);
-        editOrderButton.setPreferredSize(buttonDim);
-        editOrderButton.setEnabled(true);
-
-        deleteOrderButton = new JButton();
-        deleteOrderButton.setToolTipText(Labels.getProperty("deleteOrder"));
-        deleteOrderButton.setIcon(Icons.DELETE);
-        deleteOrderButton.setPreferredSize(buttonDim);
-        deleteOrderButton.setEnabled(true);
+        createOrderButton = cedFinance.getCreateButton();
+        editOrderButton = cedFinance.getEditButton();
+        deleteOrderButton = cedFinance.getDeleteButton();
 
         selectedOrder = 0;
 
@@ -144,23 +131,10 @@ public class FinancePanel extends JPanel {
 
         financeDepAmountField = new JTextField(10);
 
-        createDepOrderButton = new JButton();
-        createDepOrderButton.setToolTipText(Labels.getProperty("addDepOrder"));
-        createDepOrderButton.setIcon(Icons.CREATE);
-        createDepOrderButton.setPreferredSize(buttonDim);
-        createDepOrderButton.setEnabled(true);
-
-        editDepOrderButton = new JButton();
-        editDepOrderButton.setToolTipText(Labels.getProperty("editDepOrder"));
-        editDepOrderButton.setIcon(Icons.EDIT);
-        editDepOrderButton.setPreferredSize(buttonDim);
-        editDepOrderButton.setEnabled(true);
-
-        deleteDepOrderButton = new JButton();
-        deleteDepOrderButton.setToolTipText(Labels.getProperty("deleteDepOrder"));
-        deleteDepOrderButton.setIcon(Icons.DELETE);
-        deleteDepOrderButton.setPreferredSize(buttonDim);
-        deleteDepOrderButton.setEnabled(true);
+        CrEdDelButtons cedDepartmentFinances = new CrEdDelButtons(Labels.getProperty("addDepOrder"), Labels.getProperty("editDepOrder"), Labels.getProperty("deleteDepOrder"));
+        createDepOrderButton = cedDepartmentFinances.getCreateButton();
+        editDepOrderButton = cedDepartmentFinances.getEditButton();
+        deleteDepOrderButton = cedDepartmentFinances.getDeleteButton();
 
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
         depFinanceTable = new JTable(departmentFinanceTableModel);

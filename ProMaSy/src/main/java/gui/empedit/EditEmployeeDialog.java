@@ -1,6 +1,6 @@
 package main.java.gui.empedit;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.model.EmployeeModel;
@@ -26,25 +26,10 @@ public class EditEmployeeDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
-        Dimension buttonDim = new Dimension(25, 25);
-
-        JButton createEmployeeButton = new JButton();
-        createEmployeeButton.setToolTipText(Labels.getProperty("createNewEmployee"));
-        createEmployeeButton.setIcon(Icons.CREATE);
-        createEmployeeButton.setPreferredSize(buttonDim);
-        createEmployeeButton.setEnabled(true);
-
-        JButton editEmployeeButton = new JButton();
-        editEmployeeButton.setToolTipText(Labels.getProperty("editEmployee"));
-        editEmployeeButton.setIcon(Icons.EDIT);
-        editEmployeeButton.setPreferredSize(buttonDim);
-        editEmployeeButton.setEnabled(true);
-
-        JButton deleteEmployeeButton = new JButton();
-        deleteEmployeeButton.setToolTipText(Labels.getProperty("deleteEmployee"));
-        deleteEmployeeButton.setIcon(Icons.DELETE);
-        deleteEmployeeButton.setPreferredSize(buttonDim);
-        deleteEmployeeButton.setEnabled(true);
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("createNewEmployee"), Labels.getProperty("editEmployee"), Labels.getProperty("deleteEmployee"));
+        JButton createEmployeeButton = ced.getCreateButton();
+        JButton editEmployeeButton = ced.getEditButton();
+        JButton deleteEmployeeButton = ced.getDeleteButton();
 
         selectedModel =  emptyEmployeeModel;
 

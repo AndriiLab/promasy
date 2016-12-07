@@ -1,6 +1,6 @@
 package main.java.gui.prodsupl;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.model.ReasonForSupplierChoiceModel;
 
@@ -27,7 +27,6 @@ public class ReasonsDialog extends JDialog {
         setSize(280, 150);
         setLocationRelativeTo(parent);
 
-        Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateReasonModel = emptyReasonsModel;
@@ -38,21 +37,10 @@ public class ReasonsDialog extends JDialog {
         reasonBox.setPreferredSize(comboBoxDim);
         reasonBox.setEditable(true);
 
-        createReason = new JButton();
-        createReason.setToolTipText(Labels.getProperty("addReasonForSupplierChoice"));
-        createReason.setIcon(Icons.CREATE);
-        createReason.setPreferredSize(buttonDim);
-        createReason.setEnabled(true);
-        editReason = new JButton();
-        editReason.setToolTipText(Labels.getProperty("editReasonForSupplierChoice"));
-        editReason.setIcon(Icons.EDIT);
-        editReason.setPreferredSize(buttonDim);
-        editReason.setEnabled(true);
-        deleteReason = new JButton();
-        deleteReason.setToolTipText(Labels.getProperty("deleteReasonForSupplierChoice"));
-        deleteReason.setIcon(Icons.DELETE);
-        deleteReason.setPreferredSize(buttonDim);
-        deleteReason.setEnabled(true);
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addReasonForSupplierChoice"), Labels.getProperty("editReasonForSupplierChoice"), Labels.getProperty("deleteReasonForSupplierChoice"));
+        createReason = ced.getCreateButton();
+        editReason = ced.getEditButton();
+        deleteReason = ced.getDeleteButton();
 
         okButton = new JButton(Labels.getProperty("closeBtn"));
 

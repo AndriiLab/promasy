@@ -1,6 +1,6 @@
 package main.java.gui.prodsupl;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.gui.Utils;
 import main.java.model.SupplierModel;
@@ -45,21 +45,10 @@ public class SupplierDialog extends JDialog {
         suplBox.setPreferredSize(comboBoxDim);
         suplBox.setEditable(true);
 
-        createSupl = new JButton();
-        createSupl.setToolTipText(Labels.getProperty("addSupl"));
-        createSupl.setIcon(Icons.CREATE);
-        createSupl.setPreferredSize(buttonDim);
-        createSupl.setEnabled(true);
-        editSupl = new JButton();
-        editSupl.setToolTipText(Labels.getProperty("editSupl"));
-        editSupl.setIcon(Icons.EDIT);
-        editSupl.setPreferredSize(buttonDim);
-        editSupl.setEnabled(true);
-        deleteSupl = new JButton();
-        deleteSupl.setToolTipText(Labels.getProperty("delSupl"));
-        deleteSupl.setIcon(Icons.DELETE);
-        deleteSupl.setPreferredSize(buttonDim);
-        deleteSupl.setEnabled(true);
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addSupl"), Labels.getProperty("editSupl"), Labels.getProperty("delSupl"));
+        createSupl = ced.getCreateButton();
+        editSupl = ced.getEditButton();
+        deleteSupl = ced.getDeleteButton();
 
         telField = new JTextField(10);
         telField.setPreferredSize(comboBoxDim);

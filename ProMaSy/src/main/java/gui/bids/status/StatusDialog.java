@@ -41,9 +41,8 @@ public class StatusDialog extends JDialog {
         statusJComboBox.setPreferredSize(comboBoxDim);
         statusJComboBox.setEditable(false);
 
-        setStatusButton = new JButton();
+        setStatusButton = new JButton(Icons.SET_STATUS);
         setStatusButton.setToolTipText(Labels.getProperty("setStatus"));
-        setStatusButton.setIcon(Icons.SET_STATUS);
         setStatusButton.setPreferredSize(buttonDim);
         setStatusButton.setEnabled(true);
 

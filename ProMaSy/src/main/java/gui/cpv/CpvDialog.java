@@ -34,22 +34,22 @@ public class CpvDialog extends JDialog {
 		table = new JTable(cpvTableModel);
 		JPanel searchPanel = new JPanel();
 		searchField = new JTextField(43);
-		JButton homeButton = new JButton();
-		upButton = new JButton();
-		JButton searchButton = new JButton();
-		selectButton = new JButton(Labels.getProperty("selectCode"));
 
-		//set format for table		
-		table.getColumnModel().getColumn(0).setMaxWidth(150);
-		
-		homeButton.setToolTipText(Labels.getProperty("goToTopCategory"));
-		homeButton.setIcon(Icons.HOME);
-		upButton.setToolTipText(Labels.getProperty("upCategory"));
-		upButton.setIcon(Icons.LEVEL_UP);
+        JButton homeButton = new JButton(Icons.HOME);
+        homeButton.setToolTipText(Labels.getProperty("goToTopCategory"));
+
+        upButton = new JButton(Icons.LEVEL_UP);
+        upButton.setToolTipText(Labels.getProperty("upCategory"));
 		upButton.setEnabled(false);
-		searchButton.setToolTipText(Labels.getProperty("search"));
-		searchButton.setIcon(Icons.SEARCH);
-		selectButton.setEnabled(false);
+
+        JButton searchButton = new JButton(Icons.SEARCH);
+        searchButton.setToolTipText(Labels.getProperty("search"));
+
+        selectButton = new JButton(Labels.getProperty("selectCode"));
+        selectButton.setEnabled(false);
+
+        //set format for table
+        table.getColumnModel().getColumn(0).setMaxWidth(150);
 
 		PromptSupport.setPrompt(Labels.getProperty("searchFieldHint"), searchField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, searchField);
@@ -159,6 +159,4 @@ public class CpvDialog extends JDialog {
 			refresh();
 		}
 	}
-	
-
 }

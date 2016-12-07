@@ -3,6 +3,7 @@ package main.java.gui.empedit;
 import main.java.gui.Labels;
 import main.java.gui.Utils;
 import main.java.model.*;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -55,6 +56,8 @@ public class CreateEmployeeDialog extends JDialog {
         loginField = new JTextField(10);
         passwordField = new JPasswordField(12);
         repeatPasswordField = new JPasswordField(12);
+        PromptSupport.setPrompt(Labels.getProperty("repeatPassword"), repeatPasswordField);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, repeatPasswordField);
 
         //Set up roles combo box
         DefaultComboBoxModel<RoleModel> roleModel = new DefaultComboBoxModel<>();
@@ -204,7 +207,7 @@ public class CreateEmployeeDialog extends JDialog {
                 return false;
             }
             if (!Arrays.equals(password, repeatPassword)) {
-                Utils.emptyFieldError(parent, Labels.getProperty("password"));
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             String pass = Utils.makePass(password, salt);
@@ -243,6 +246,11 @@ public class CreateEmployeeDialog extends JDialog {
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("editEmployee"));
         setVisible(true);
+    }
+
+    public void setRoleBox(boolean state, int roleId) {
+        Utils.setBoxFromID(roleBox, roleId);
+        roleBox.setEnabled(state);
     }
 
     public void setRolesData(List<RoleModel> rolesDb) {

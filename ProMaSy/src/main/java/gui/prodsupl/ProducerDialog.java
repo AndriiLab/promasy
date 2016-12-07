@@ -1,6 +1,6 @@
 package main.java.gui.prodsupl;
 
-import main.java.gui.Icons;
+import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
 import main.java.model.ProducerModel;
 
@@ -27,7 +27,6 @@ public class ProducerDialog extends JDialog {
         setSize(280, 150);
         setLocationRelativeTo(parent);
 
-        Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateProdModel = emptyProdModel;
@@ -38,21 +37,10 @@ public class ProducerDialog extends JDialog {
         prodBox.setPreferredSize(comboBoxDim);
         prodBox.setEditable(true);
 
-        createProd = new JButton();
-        createProd.setToolTipText(Labels.getProperty("addProd"));
-        createProd.setIcon(Icons.CREATE);
-        createProd.setPreferredSize(buttonDim);
-        createProd.setEnabled(true);
-        editProd = new JButton();
-        editProd.setToolTipText(Labels.getProperty("editProd"));
-        editProd.setIcon(Icons.EDIT);
-        editProd.setPreferredSize(buttonDim);
-        editProd.setEnabled(true);
-        deleteProd = new JButton();
-        deleteProd.setToolTipText(Labels.getProperty("delProd"));
-        deleteProd.setIcon(Icons.DELETE);
-        deleteProd.setPreferredSize(buttonDim);
-        deleteProd.setEnabled(true);
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addProd"), Labels.getProperty("editProd"), Labels.getProperty("delProd"));
+        createProd = ced.getCreateButton();
+        editProd = ced.getEditButton();
+        deleteProd = ced.getDeleteButton();
 
         okButton = new JButton(Labels.getProperty("closeBtn"));
 

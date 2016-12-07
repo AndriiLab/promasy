@@ -97,33 +97,28 @@ public class CreateBidDialog extends JDialog {
 
         Dimension buttonDim = new Dimension(25, 25);
 
-        addProducerButton = new JButton();
+        addProducerButton = new JButton(Icons.CREATE);
         addProducerButton.setToolTipText(Labels.getProperty("addProd"));
-        addProducerButton.setIcon(Icons.CREATE);
         addProducerButton.setPreferredSize(buttonDim);
         addProducerButton.setEnabled(true);
 
-        addSupplierButton = new JButton();
+        addSupplierButton = new JButton(Icons.CREATE);
         addSupplierButton.setToolTipText(Labels.getProperty("addSupl"));
-        addSupplierButton.setIcon(Icons.CREATE);
         addSupplierButton.setPreferredSize(buttonDim);
         addSupplierButton.setEnabled(true);
 
-        addReasonForSupplierChoiceButton = new JButton();
+        addReasonForSupplierChoiceButton = new JButton(Icons.CREATE);
         addReasonForSupplierChoiceButton.setToolTipText(Labels.getProperty("addReasonForSupplierChoice"));
-        addReasonForSupplierChoiceButton.setIcon(Icons.CREATE);
         addReasonForSupplierChoiceButton.setPreferredSize(buttonDim);
         addReasonForSupplierChoiceButton.setEnabled(false);
 
-        addAmUnitsButton = new JButton();
+        addAmUnitsButton = new JButton(Icons.CREATE);
         addAmUnitsButton.setToolTipText(Labels.getProperty("addAmUnit"));
-        addAmUnitsButton.setIcon(Icons.CREATE);
         addAmUnitsButton.setPreferredSize(buttonDim);
         addAmUnitsButton.setEnabled(true);
 
-        searchCPVButton = new JButton();
+        searchCPVButton = new JButton(Icons.SEARCH);
         searchCPVButton.setToolTipText(Labels.getProperty("cpvPanelTab"));
-        searchCPVButton.setIcon(Icons.SEARCH);
         searchCPVButton.setPreferredSize(buttonDim);
         searchCPVButton.setEnabled(true);
 

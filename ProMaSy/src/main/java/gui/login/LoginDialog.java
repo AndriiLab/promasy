@@ -4,6 +4,7 @@ import main.java.gui.Icons;
 import main.java.gui.Labels;
 import main.java.gui.MainFrame;
 import main.java.gui.empedit.CreateEmployeeFromLoginListener;
+import main.java.model.enums.Role;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -138,6 +139,7 @@ public class LoginDialog extends JDialog {
                 userField.setText("");
                 passwordField.setText("");
                 if (loginListener.isAbleToRegister()) {
+                    parent.getCreateEmployeeDialog().setRoleBox(false, Role.USER.getRoleId());
                     parent.getCreateEmployeeDialog().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(parent, Labels.getProperty("registrationClosed"),

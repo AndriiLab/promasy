@@ -1,9 +1,6 @@
 package main.java.gui.bids;
 
-import main.java.gui.Icons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.Utils;
+import main.java.gui.*;
 import main.java.gui.bids.reports.BidsReport;
 import main.java.gui.bids.status.StatusDialog;
 import main.java.model.*;
@@ -24,9 +21,7 @@ public class BidsListPanel extends JPanel {
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
     private final BidModel emptyBidModel = new BidModel();
-    private JButton createBidButton;
-    private JButton editBidButton;
-    private JButton deleteBidButton;
+    private CrEdDelButtons ced;
     private JButton changeStatusButton;
     private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
     private JComboBox<DepartmentModel> departmentBox;
@@ -56,23 +51,7 @@ public class BidsListPanel extends JPanel {
 
         statusDialog = new StatusDialog(parent);
 
-        createBidButton = new JButton();
-        createBidButton.setToolTipText(Labels.getProperty("createBid"));
-        createBidButton.setIcon(Icons.CREATE);
-        createBidButton.setPreferredSize(buttonDim);
-        createBidButton.setEnabled(true);
-
-        editBidButton = new JButton();
-        editBidButton.setToolTipText(Labels.getProperty("editBid"));
-        editBidButton.setIcon(Icons.EDIT);
-        editBidButton.setPreferredSize(buttonDim);
-        editBidButton.setEnabled(true);
-
-        deleteBidButton = new JButton();
-        deleteBidButton.setToolTipText(Labels.getProperty("deleteBid"));
-        deleteBidButton.setIcon(Icons.DELETE);
-        deleteBidButton.setPreferredSize(buttonDim);
-        deleteBidButton.setEnabled(true);
+        ced = new CrEdDelButtons(Labels.getProperty("createBid"), Labels.getProperty("editBid"), Labels.getProperty("deleteBid"));
 
         changeStatusButton = new JButton();
         changeStatusButton.setToolTipText(Labels.getProperty("changeStatus"));
@@ -98,12 +77,12 @@ public class BidsListPanel extends JPanel {
 
         createLayout();
 
-        createBidButton.addActionListener(e -> {
+        ced.getCreateButton().addActionListener(e -> {
             setIDsToCreateBidDialog();
             parent.getCreateBidDialog().setVisible(true);
         });
 
-        editBidButton.addActionListener(e -> {
+        ced.getEditButton().addActionListener(e -> {
             if (!selectedBidModel.equals(emptyBidModel)) {
                 setIDsToCreateBidDialog();
                 parent.getCreateBidDialog().loadToDialog(selectedBidModel);
@@ -113,7 +92,7 @@ public class BidsListPanel extends JPanel {
             selectedBidModel = emptyBidModel;
         });
 
-        deleteBidButton.addActionListener(e -> {
+        ced.getDeleteButton().addActionListener(e -> {
             if (selectedBidModel != emptyBidModel && listener != null) {
                 if (!isSelectedFinanceDepartmentModelEmpty()) {
                     listener.bidDeleteEventOccurred(selectedBidModel, selectedDepartmentModel.getModelId(),
@@ -276,13 +255,13 @@ public class BidsListPanel extends JPanel {
         JPanel topPanel = new JPanel();
         JPanel sumPanel = new JPanel();
         JSeparator separatorTopPanel = new JSeparator(SwingConstants.VERTICAL);
-        separatorTopPanel.setPreferredSize(new Dimension(10, (int) createBidButton.getPreferredSize().getHeight()));
+        separatorTopPanel.setPreferredSize(new Dimension(10, (int) ced.getCreateButton().getPreferredSize().getHeight()));
 
         topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBorder(BorderFactory.createEtchedBorder());
-        topPanel.add(createBidButton);
-        topPanel.add(editBidButton);
-        topPanel.add(deleteBidButton);
+        topPanel.add(ced.getCreateButton());
+        topPanel.add(ced.getEditButton());
+        topPanel.add(ced.getDeleteButton());
         topPanel.add(separatorTopPanel);
         topPanel.add(new JLabel(Labels.getProperty("order")));
         topPanel.add(financeDepartmentBox);
