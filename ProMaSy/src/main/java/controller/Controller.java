@@ -77,7 +77,8 @@ public class Controller {
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = Utils.makePass(password, getSalt(user));
-                if (checkLogin(user, pass)) {
+                boolean isLoginDataValid = checkLogin(user, pass);
+                if (isLoginDataValid) {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
@@ -88,7 +89,7 @@ public class Controller {
 
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
-                } else if (!checkLogin(user, pass)) {
+                } else if (!isLoginDataValid) {
                     // if login wasn't successful showing error dialog
                     JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("wrongCredentialsPlsCheck"),
                             Labels.getProperty("loginError"), JOptionPane.ERROR_MESSAGE);
@@ -197,6 +198,11 @@ public class Controller {
             public void exitEventOccurred() {
                 closeDialog();
             }
+
+            @Override
+            public void setMinimumVersionEventOccurred() {
+                setCurrentVersionAsMinimum();
+            }
         });
 
         mainFrame.setCpvListener(ev -> getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
@@ -230,6 +236,11 @@ public class Controller {
                 editEmployee(model);
                 getEmployees();
                 mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            }
+
+            @Override
+            public boolean checkUniqueLogin(String login) {
+                return isLoginUnique(login);
             }
         });
 
@@ -691,7 +702,7 @@ public class Controller {
 
     private Version getDBVersion() {
         try {
-            return new Version(Database.VERSIONS.retrive());
+            return new Version(Database.VERSIONS.retrieve());
         } catch (SQLException e) {
             // this error occurs with old settings, so reset it to defaults
             try {
@@ -705,6 +716,15 @@ public class Controller {
             errorLogEvent(e, Labels.withColon("versionRequest") + Labels.withSpaceBefore("error"));
         }
         return null;
+    }
+
+    private void setCurrentVersionAsMinimum() {
+        try {
+            Database.VERSIONS.set();
+            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"), Utils.GREEN);
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"));
+        }
     }
 
     private void getRolesRequest() {
@@ -867,6 +887,15 @@ public class Controller {
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " :" + username
                     + Labels.withSpaceBefore("error"));
+            return false;
+        }
+    }
+
+    private boolean isLoginUnique(String username) {
+        try {
+            return Database.EMPLOYEES.checkLogin(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

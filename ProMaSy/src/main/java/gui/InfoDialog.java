@@ -7,8 +7,8 @@ import java.awt.*;
 public class InfoDialog extends JDialog {
 
     public InfoDialog(JFrame parent) {
-		super(parent, Labels.getProperty("aboutSoftware"), false);
-		setSize(300, 200);
+        super(parent, Labels.getProperty("aboutSoftware"), true);
+        setSize(300, 200);
 		setLocationRelativeTo(parent);
 
         JTextPane infoPane = new JTextPane();

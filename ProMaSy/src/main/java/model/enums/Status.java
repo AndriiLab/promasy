@@ -1,15 +1,17 @@
 package main.java.model.enums;
 
+import main.java.gui.Labels;
+
 /**
  * This Enum holds data about available bid statuses
  */
 public enum Status {
-    CREATED(10, "Створено"),
-    SUBMITTED(20, "Подано"),
-    POSTED_IN_PROZORRO(50, "Розміщено на Prozorro"),
-    RECEIVED(60, "Отримано"),
-    NOT_RECEIVED(80, "Не отримано"),
-    DECLINED(90, "Відхилено");
+    CREATED(10, Labels.getProperty("created")),
+    SUBMITTED(20, Labels.getProperty("submitted")),
+    POSTED_IN_PROZORRO(50, Labels.getProperty("postedInProzorro")),
+    RECEIVED(60, Labels.getProperty("received")),
+    NOT_RECEIVED(80, Labels.getProperty("notReceived")),
+    DECLINED(90, Labels.getProperty("declined"));
 
     private final int statusId;
     private final String statusDesc;

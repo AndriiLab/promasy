@@ -2,6 +2,7 @@ package main.java.gui.prodsupl;
 
 import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
+import main.java.gui.Utils;
 import main.java.model.ProducerModel;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.awt.*;
  */
 public class ProducerDialog extends JDialog {
     private final ProducerModel emptyProdModel = new ProducerModel();
-    private JButton okButton;
+    private JButton closeButton;
     private JButton createProd;
     private JButton editProd;
     private JButton deleteProd;
@@ -23,13 +24,15 @@ public class ProducerDialog extends JDialog {
     private String newProdName;
 
     public ProducerDialog(JFrame parent) {
-        super(parent, Labels.getProperty("prodDialogSuper"), false);
+        super(parent, Labels.getProperty("prodDialogSuper"), true);
         setSize(280, 150);
         setLocationRelativeTo(parent);
+        setResizable(false);
 
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateProdModel = emptyProdModel;
+        newProdName = "";
 
         DefaultComboBoxModel<ProducerModel> prodModel = new DefaultComboBoxModel<>();
         prodBox = new JComboBox<>(prodModel);
@@ -37,12 +40,14 @@ public class ProducerDialog extends JDialog {
         prodBox.setPreferredSize(comboBoxDim);
         prodBox.setEditable(true);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addProd"), Labels.getProperty("editProd"), Labels.getProperty("delProd"));
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("producer_ced"));
         createProd = ced.getCreateButton();
         editProd = ced.getEditButton();
         deleteProd = ced.getDeleteButton();
+        editProd.setEnabled(false);
+        deleteProd.setEnabled(false);
 
-        okButton = new JButton(Labels.getProperty("closeBtn"));
+        closeButton = new JButton(Labels.getProperty("closeBtn"));
 
         layoutControls();
 
@@ -50,39 +55,52 @@ public class ProducerDialog extends JDialog {
             Object item = prodBox.getSelectedItem();
             if (item instanceof ProducerModel && !item.equals(emptyProdModel)) {
                 privateProdModel = (ProducerModel) item;
+                if (privateProdModel.equals(emptyProdModel)) {
+                    createProd.setEnabled(true);
+                    editProd.setEnabled(false);
+                    deleteProd.setEnabled(false);
+                } else {
+                    createProd.setEnabled(false);
+                    editProd.setEnabled(true);
+                    deleteProd.setEnabled(true);
+                }
             } else if (item instanceof String && !item.equals("")) {
                 newProdName = (String) item;
             }
         });
 
         createProd.addActionListener(e -> {
-            if (!newProdName.equals("")) {
+            if (!newProdName.isEmpty()) {
                 ProducerModel model = new ProducerModel(newProdName);
                 if (listener != null) {
                     prodBox.removeAllItems();
                     prodBox.addItem(emptyProdModel);
                     listener.createProdEventOccurred(model);
                 }
+            } else {
+                Utils.emptyFieldError(parent, Labels.getProperty("producer"));
             }
             privateProdModel = emptyProdModel;
             newProdName = "";
         });
 
         editProd.addActionListener(e -> {
-            if (newProdName != null && !newProdName.equals("") && !privateProdModel.equals(emptyProdModel)) {
+            if (!newProdName.isEmpty() && !privateProdModel.equals(emptyProdModel)) {
                 if (listener != null) {
                     prodBox.removeAllItems();
                     prodBox.addItem(emptyProdModel);
                     privateProdModel.setBrandName(newProdName);
                     listener.editProdEventOccurred(privateProdModel);
                 }
+            } else {
+                Utils.emptyFieldError(parent, Labels.getProperty("producer"));
             }
             privateProdModel = emptyProdModel;
             newProdName = "";
         });
 
         deleteProd.addActionListener(e -> {
-            if (!privateProdModel.equals(emptyProdModel) && listener != null) {
+            if (!privateProdModel.equals(emptyProdModel) && ced.deleteEntry(parent, privateProdModel.getBrandName()) && listener != null) {
                 prodBox.removeAllItems();
                 prodBox.addItem(emptyProdModel);
                 listener.deleteProdEventOccurred(privateProdModel);
@@ -91,7 +109,7 @@ public class ProducerDialog extends JDialog {
             newProdName = "";
         });
 
-        okButton.addActionListener(e -> setVisible(false));
+        closeButton.addActionListener(e -> setVisible(false));
     }
 
     public void setProdData(java.util.List<ProducerModel> prodDb) {
@@ -148,7 +166,7 @@ public class ProducerDialog extends JDialog {
         prodPanel.add(deleteProd, gc);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(okButton);
+        buttonsPanel.add(closeButton);
 
         setLayout(new BorderLayout());
         add(prodPanel, BorderLayout.CENTER);

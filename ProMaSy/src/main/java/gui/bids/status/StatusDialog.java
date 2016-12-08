@@ -24,7 +24,7 @@ public class StatusDialog extends JDialog {
     private long selectedBidId;
 
     public StatusDialog(JFrame parent) {
-        super(parent, Labels.getProperty("bidHistory"), false);
+        super(parent, Labels.getProperty("bidHistory"), true);
         setSize(450, 300);
         setLocationRelativeTo(parent);
 

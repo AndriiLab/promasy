@@ -2,6 +2,7 @@ package main.java.gui.amunits;
 
 import main.java.gui.CrEdDelButtons;
 import main.java.gui.Labels;
+import main.java.gui.Utils;
 import main.java.model.AmountUnitsModel;
 
 import javax.swing.*;
@@ -14,20 +15,31 @@ import java.awt.*;
 public class AmUnitsDialog extends JDialog {
     private final AmountUnitsModel emptyModel = new AmountUnitsModel();
     private JButton closeButton;
-    private CrEdDelButtons ced;
+    private JButton createAmUnitButton;
+    private JButton editAmUnitButton;
+    private JButton deleteAmUnitButton;
     private JComboBox<AmountUnitsModel> amUnitBox;
     private AmUnitsDialogListener listener;
     private AmountUnitsModel privateModel;
     private String newName;
 
     public AmUnitsDialog(JFrame parent) {
-        super(parent, Labels.getProperty("amUnitsDialogSuper"), false);
+        super(parent, Labels.getProperty("amUnitsDialogSuper"), true);
         setSize(271, 128);
         setResizable(false);
         setLocationRelativeTo(parent);
 
         privateModel = emptyModel;
         newName = "";
+
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("amUnit_ced"));
+        createAmUnitButton = ced.getCreateButton();
+        editAmUnitButton = ced.getEditButton();
+        deleteAmUnitButton = ced.getDeleteButton();
+        editAmUnitButton.setEnabled(false);
+        deleteAmUnitButton.setEnabled(false);
+
+        closeButton = new JButton(Labels.getProperty("closeBtn"));
 
         Dimension comboBoxDim = new Dimension(150, 25);
 
@@ -39,45 +51,54 @@ public class AmUnitsDialog extends JDialog {
         amUnitBox.setEditable(true);
         amUnitBox.addActionListener(e -> {
             Object item = ((JComboBox) e.getSource()).getSelectedItem();
-            if (item instanceof AmountUnitsModel && !item.equals(emptyModel)) {
+            if (item instanceof AmountUnitsModel) {
                 privateModel = (AmountUnitsModel) item;
-            } else if (item instanceof String && !item.equals("")) {
+                if (privateModel.equals(emptyModel)) {
+                    createAmUnitButton.setEnabled(true);
+                    editAmUnitButton.setEnabled(false);
+                    deleteAmUnitButton.setEnabled(false);
+                } else {
+                    createAmUnitButton.setEnabled(false);
+                    editAmUnitButton.setEnabled(true);
+                    deleteAmUnitButton.setEnabled(true);
+                }
+            } else if (item instanceof String) {
                 newName = (String) item;
             }
         });
 
-        ced = new CrEdDelButtons(Labels.getProperty("addAmUnit"), Labels.getProperty("editAmUnit"), Labels.getProperty("delAmUnit"));
-
-        closeButton = new JButton(Labels.getProperty("closeBtn"));
-
         layoutControls();
 
-        ced.getCreateButton().addActionListener(e -> {
-            if (!newName.equals("") && privateModel.equals(emptyModel)) {
+        createAmUnitButton.addActionListener(e -> {
+            if (!newName.isEmpty() && privateModel.equals(emptyModel)) {
                 AmountUnitsModel model = new AmountUnitsModel(newName);
                 if (listener != null) {
                     amUnitBox.removeAllItems();
                     amUnitBox.addItem(emptyModel);
                     listener.createEventOccurred(model);
                 }
+            } else if (newName.isEmpty()) {
+                Utils.emptyFieldError(parent, Labels.getProperty("amUnit"));
             }
             clearDialog();
         });
 
-        ced.getEditButton().addActionListener(e -> {
-            if (!newName.equals("") && !privateModel.equals(emptyModel)) {
+        editAmUnitButton.addActionListener(e -> {
+            if (!newName.isEmpty() && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     amUnitBox.removeAllItems();
                     amUnitBox.addItem(emptyModel);
                     privateModel.setAmUnitDesc(newName);
                     listener.editEventOccurred(privateModel);
                 }
+            } else if (newName.isEmpty()) {
+                Utils.emptyFieldError(parent, Labels.getProperty("amUnit"));
             }
             clearDialog();
         });
 
-        ced.getDeleteButton().addActionListener(e -> {
-            if (!privateModel.equals(emptyModel) && listener != null) {
+        deleteAmUnitButton.addActionListener(e -> {
+            if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.getAmUnitDesc()) && listener != null) {
                 amUnitBox.removeAllItems();
                 amUnitBox.addItem(emptyModel);
                 listener.deleteEventOccurred(privateModel);
@@ -133,17 +154,17 @@ public class AmUnitsDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        amUnitPanel.add(ced.getCreateButton(), gc);
+        amUnitPanel.add(createAmUnitButton, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        amUnitPanel.add(ced.getEditButton(), gc);
+        amUnitPanel.add(editAmUnitButton, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        amUnitPanel.add(ced.getDeleteButton(), gc);
+        amUnitPanel.add(deleteAmUnitButton, gc);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(closeButton);

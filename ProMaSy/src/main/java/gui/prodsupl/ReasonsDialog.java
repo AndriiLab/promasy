@@ -23,7 +23,7 @@ public class ReasonsDialog extends JDialog {
     private String newReasonName;
 
     public ReasonsDialog(JFrame parent) {
-        super(parent, Labels.getProperty("reasonForSupplierChoice"), false);
+        super(parent, Labels.getProperty("reasonForSupplierChoice"), true);
         setSize(280, 150);
         setLocationRelativeTo(parent);
 
@@ -37,7 +37,7 @@ public class ReasonsDialog extends JDialog {
         reasonBox.setPreferredSize(comboBoxDim);
         reasonBox.setEditable(true);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addReasonForSupplierChoice"), Labels.getProperty("editReasonForSupplierChoice"), Labels.getProperty("deleteReasonForSupplierChoice"));
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("reason_ced"));
         createReason = ced.getCreateButton();
         editReason = ced.getEditButton();
         deleteReason = ced.getDeleteButton();
@@ -82,7 +82,7 @@ public class ReasonsDialog extends JDialog {
         });
 
         deleteReason.addActionListener(e -> {
-            if (!privateReasonModel.equals(emptyReasonsModel) && listener != null) {
+            if (!privateReasonModel.equals(emptyReasonsModel) && ced.deleteEntry(parent, privateReasonModel.getReason()) && listener != null) {
                 reasonBox.removeAllItems();
                 reasonBox.addItem(emptyReasonsModel);
                 listener.deleteReasonEventOccurred(privateReasonModel);

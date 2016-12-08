@@ -56,7 +56,7 @@ public class CreateBidDialog extends JDialog {
     private BigDecimal totalPrice = BigDecimal.ZERO;
 
     public CreateBidDialog(MainFrame parent) {
-        super(parent, Labels.getProperty("createBid"), false);
+        super(parent, Labels.getProperty("createBid"), true);
         this.parent = parent;
         setSize(440, 495);
         setResizable(false);
@@ -180,7 +180,13 @@ public class CreateBidDialog extends JDialog {
         addReasonForSupplierChoiceButton.addActionListener(e -> parent.showReasonsDialog());
         addSupplierButton.addActionListener(e -> parent.showSupplierDialog());
         addAmUnitsButton.addActionListener(e -> parent.showAmUnitsDialog());
-        searchCPVButton.addActionListener(e -> parent.showCpvDialog());
+        searchCPVButton.addActionListener(e -> {
+            if (cpvField.getText().isEmpty()) {
+                parent.showCpvDialog();
+            } else {
+                parent.showCpvDialog(cpvField.getText());
+            }
+        });
 
         oneUnitPriceField.addKeyListener(new KeyAdapter() {
             @Override
@@ -390,7 +396,7 @@ public class CreateBidDialog extends JDialog {
         try {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
-            Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"),  Labels.getProperty("wrongFloatFormat"));
+            Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
             return false;
         }
 

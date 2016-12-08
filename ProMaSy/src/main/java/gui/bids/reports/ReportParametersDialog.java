@@ -16,14 +16,14 @@ import java.util.List;
  */
 public class ReportParametersDialog extends JDialog {
 
-	private JComboBox<RoleModel> roleBox;
+    private final RoleModel emptyRoleModel = new RoleModel();
+    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
+    private JComboBox<RoleModel> roleBox;
 	private JComboBox<EmployeeModel> headBox;
 	private JComboBox<EmployeeModel> departmentHeadBox;
 	private JComboBox<EmployeeModel> personallyLiableEmpBox;
 	private JComboBox<EmployeeModel> accountantBox;
 	private JComboBox<EmployeeModel> economistBox;
-	private final RoleModel emptyRoleModel = new RoleModel();
-	private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
 	private JButton okButton;
 	private JButton cancelButton;
 	private ReportParametersDialogListener listener;
@@ -229,8 +229,8 @@ public class ReportParametersDialog extends JDialog {
 		selectionPanel.add(roleBox);
 		selectionPanel.add(new JLabel(Labels.getProperty("headOrganization")));
 		selectionPanel.add(headBox);
-		selectionPanel.add(new JLabel(Labels.getProperty("departmentHead")));
-		selectionPanel.add(departmentHeadBox);
+        selectionPanel.add(new JLabel(Labels.getProperty("headOfDepartment")));
+        selectionPanel.add(departmentHeadBox);
 		selectionPanel.add(new JLabel(Labels.getProperty("personallyLiableEmployee")));
 		selectionPanel.add(personallyLiableEmpBox);
 		selectionPanel.add(new JLabel(Labels.getProperty("chiefAccountant")));

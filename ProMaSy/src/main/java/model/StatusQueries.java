@@ -55,7 +55,7 @@ public class StatusQueries extends SQLQueries<StatusModel> {
                 "INNER JOIN statuses ON bid_status.status_id = statuses.status_id " +
                 "INNER JOIN employees ON bid_status.created_by = employees.emp_id " +
                 "WHERE bid_status.active=TRUE AND bid_id = ? " +
-                "ORDER BY created_by ASC";
+                "ORDER BY created_date DESC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, bidId);
         ResultSet results = prepStmt.executeQuery();

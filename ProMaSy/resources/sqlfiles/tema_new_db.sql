@@ -36,20 +36,6 @@ CREATE TABLE roles (
 	modified_date TIMESTAMP, -- Дата модифікації
 	active BOOLEAN NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO roles
-(roles_id, roles_name)
-VALUES
-  (900, 'Адміністратор'),
-  (1000, 'Директор'),
-  (2000, 'Заступник директора'),
-  (2500, 'Голова тендерного комітету'),
-  (3000, 'Головний економіст'),
-  (4000, 'Головний бухгалтер'),
-  (5000, 'Керівник підрозділу'),
-  (6000, 'Матеріально-відповідальна особа'),
-  (7000, 'Користувач');
-
 -- Повна назва інституту/-тів. Використовується в документах
 CREATE TABLE institute (
 	inst_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT institute_pk PRIMARY KEY,
@@ -61,89 +47,29 @@ CREATE TABLE institute (
 	active BOOLEAN NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO institute
-(inst_name)
-VALUES
-  ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
-
-CREATE OR REPLACE FUNCTION def_inst_id(OUT result BIGINT) AS $$
-BEGIN
-  result := (SELECT inst_id
-             FROM institute
-             WHERE inst_name = 'Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
-END;
-$$ LANGUAGE PLPGSQL;
-
 -- Повні назви відділів. Використовується в документах
 CREATE TABLE departments (
-	dep_id bigint not null DEFAULT id_gen() CONSTRAINT departments_pk PRIMARY KEY,
-	dep_name VARCHAR(100) NOT NULL, --Повна назва відділів
-	inst_id BIGINT NOT NULL REFERENCES institute (inst_id),
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  dep_id        bigint       not null DEFAULT id_gen() CONSTRAINT departments_pk PRIMARY KEY,
+  dep_name      VARCHAR(100) NOT NULL, --Повна назва відділів
+  inst_id       BIGINT       NOT NULL REFERENCES institute (inst_id) ON UPDATE CASCADE,
+  created_by    BIGINT       NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE
+  active        BOOLEAN      NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO departments
-(dep_name, inst_id)
-VALUES
-  ('Дирекція', def_inst_id()),
-  ('Бухгалтерія', def_inst_id()),
-  ('Відділ постачання', def_inst_id()),
-  ('Відділ молекулярної імунології', def_inst_id()),
-  ('Відділ біохімії м`язів', def_inst_id()),
-  ('Відділ структури та функції білка', def_inst_id()),
-  ('Відділ регуляції обміну речовин', def_inst_id()),
-  ('Відділ біохімії вітамінів і коензимів', def_inst_id()),
-  ('Відділ біохімії ліпідів', def_inst_id()),
-  ('Відділ хімії та біохімії ферментів', def_inst_id()),
-  ('Відділ нейрохімії', def_inst_id()),
-  ('Відділ молекулярної біології', def_inst_id()),
-  ('Відділ науково-технічної інформації', def_inst_id()),
-  ('Лабораторія сигнальних механізмів клітини', def_inst_id()),
-  ('Експлуатаційно-технічний відділ', def_inst_id()),
-  ('Відділ техніки безпеки', def_inst_id()),
-  ('Адміністративно-господарський відділ', def_inst_id()),
-  ('Бібліотека', def_inst_id());
 
 -- Повні назви лабораторій або підвідділів. Використовується в документах
 CREATE TABLE subdepartments (
-	subdep_id BIGINT NOT NULL DEFAULT id_gen() CONSTRAINT subdepartments_pk PRIMARY KEY,
-	subdep_name VARCHAR(100) NOT NULL, --Повна назва робочих груп
-	dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  subdep_id     BIGINT       NOT NULL DEFAULT id_gen() CONSTRAINT subdepartments_pk PRIMARY KEY,
+  subdep_name   VARCHAR(100) NOT NULL, --Повна назва робочих груп
+  dep_id        BIGINT       NOT NULL REFERENCES departments (dep_id) ON UPDATE CASCADE,
+  created_by    BIGINT       NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE
+  active        BOOLEAN      NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO subdepartments
-(subdep_name, dep_id)
-VALUES
-  ('Лабораторія імунобіології', (SELECT dep_id
-                                 FROM departments
-                                 WHERE dep_name = 'Відділ молекулярної імунології')),
-  ('Лабораторія імунології клітинних рецепторів', (SELECT dep_id
-                                                   FROM departments
-                                                   WHERE dep_name = 'Відділ молекулярної імунології')),
-  ('Лабораторія нанобіотехнології', (SELECT dep_id
-                                     FROM departments
-                                     WHERE dep_name = 'Відділ молекулярної імунології')),
-  ('Лабораторія медичної біохімії', (SELECT dep_id
-                                     FROM departments
-                                     WHERE dep_name = 'Відділ біохімії вітамінів і коензимів')),
-  ('Лабораторія оптичних методів дослідження', (SELECT dep_id
-                                                FROM departments
-                                                WHERE dep_name = 'Відділ біохімії м`язів')),
-  ('Група хроматографії', (SELECT dep_id
-                           FROM departments
-                           WHERE dep_name = 'Відділ біохімії ліпідів')),
-  ('Група електронної мікроскопії', (SELECT dep_id
-                                     FROM departments
-                                     WHERE dep_name = 'Відділ хімії та біохімії ферментів'));
 
 -- cpv коди з розшифровкою на двох мовах
 CREATE TABLE cpv (
@@ -169,16 +95,6 @@ CREATE TABLE amountunits (
   modified_date TIMESTAMP,
   active BOOLEAN NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO amountunits
-(am_unit_desc)
-VALUES
-  ('г'),
-  ('кг'),
-  ('л'),
-  ('мл'),
-  ('уп.'),
-  ('шт.');
 
 -- Фірми-виробники продукції
 CREATE TABLE producers (
@@ -211,13 +127,13 @@ INSERT INTO suppliers (supplier_id, supplier_name, supplier_tel, active) VALUES 
 /* Зв'язок між постачальниками та 
 виробниками для пропозицій постачальників*/
 CREATE TABLE prod_suppliers (
-	supplier_id BIGINT NOT NULL REFERENCES suppliers (supplier_id),
-	brand_id BIGINT NOT NULL REFERENCES producers (brand_id),
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  supplier_id   BIGINT    NOT NULL REFERENCES suppliers (supplier_id) ON UPDATE CASCADE,
+  brand_id      BIGINT    NOT NULL REFERENCES producers (brand_id) ON UPDATE CASCADE,
+  created_by    BIGINT    NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE,
+  active        BOOLEAN   NOT NULL DEFAULT TRUE,
   PRIMARY KEY (supplier_id, brand_id)
 );
 
@@ -236,21 +152,24 @@ INSERT INTO reasons_for_suppl (reason_id, reason_name, active) VALUES (0, '', FA
 
 --  Дані про користувачів
 CREATE TABLE employees (
-	emp_id BIGINT NOT NULL DEFAULT id_gen() UNIQUE,
-	emp_fname VARCHAR(30) NOT NULL, -- Ім'я
-	emp_mname VARCHAR(30), -- По-батькові
-	emp_lname VARCHAR(30) NOT NULL, -- Прізвище співробітника
-	dep_id BIGINT NOT NULL REFERENCES departments (dep_id),
-	subdep_id BIGINT,
-	roles_id INT NOT NULL REFERENCES roles (roles_id) ON UPDATE CASCADE,
-	login varchar(20) NOT NULL UNIQUE,
-	password varchar(64) NOT NULL,
-  created_by BIGINT NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
-  created_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  modified_by BIGINT,
+  emp_id        BIGINT      NOT NULL DEFAULT id_gen() UNIQUE,
+  emp_fname     VARCHAR(30) NOT NULL, -- Ім'я
+  emp_mname     VARCHAR(30), -- По-батькові
+  emp_lname     VARCHAR(30) NOT NULL, -- Прізвище співробітника
+  email         VARCHAR(50) NOT NULL UNIQUE, -- Електронна пошта співробітника
+  phone_main    VARCHAR(30) NOT NULL, -- Робочий телефон
+  phone_reserve VARCHAR(30), -- Запасний телефон
+  dep_id        BIGINT      NOT NULL REFERENCES departments (dep_id) ON UPDATE CASCADE,
+  subdep_id     BIGINT,
+  roles_id      INT         NOT NULL REFERENCES roles (roles_id) ON UPDATE CASCADE,
+  login         varchar(20) NOT NULL UNIQUE,
+  password      varchar(64) NOT NULL,
+  created_by    BIGINT      NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
+  created_date  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  modified_by   BIGINT,
   modified_date TIMESTAMP,
-  active BOOLEAN NOT NULL DEFAULT TRUE,
-  salt bigint NOT NULL
+  active        BOOLEAN     NOT NULL DEFAULT TRUE,
+  salt          bigint      NOT NULL
 );
 
 -- Дані про теми та їх фінансування
@@ -271,9 +190,9 @@ CREATE TABLE finance (
 
 -- Дані про відповідність теми та її фінансування відділам
 CREATE TABLE finance_dep (
-  order_id      BIGINT         NOT NULL REFERENCES finance (order_id),
-  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id),
-  emp_id        BIGINT         NOT NULL REFERENCES employees (emp_id), -- Керівник теми
+  order_id      BIGINT         NOT NULL REFERENCES finance (order_id) ON UPDATE CASCADE,
+  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id) ON UPDATE CASCADE,
+  emp_id        BIGINT         NOT NULL REFERENCES employees (emp_id) ON UPDATE CASCADE, -- Керівник теми
   order_amount  DECIMAL(19, 4) NOT NULL, -- Об'єм фінансування
   created_by    BIGINT         NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -294,43 +213,33 @@ CREATE TABLE statuses (
   active        BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO statuses
-(status_id, status_desc)
-VALUES
-  (10, 'Створено'),
-  (20, 'Подано'),
-  (50, 'Розміщено на Prozorro'),
-  (60, 'Отримано'),
-  (80, 'Не отримано'),
-  (90, 'Відхилено');
-
 -- Дані про замовлення
 CREATE TABLE bids (
   bid_id        BIGINT         NOT NULL DEFAULT id_gen() CONSTRAINT bids_pk PRIMARY KEY,
-  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id), -- відділ. від якого створили заявку
+  dep_id        BIGINT         NOT NULL REFERENCES departments (dep_id) ON UPDATE CASCADE, -- відділ. від якого створили заявку
   brand_id      BIGINT, -- Можливий виробник
   cat_num       VARCHAR(30), -- Можливий каталожний номер
   bid_desc      TEXT           NOT NULL, -- Опис заявки
-  cpv_code      VARCHAR(10)    NOT NULL REFERENCES cpv (cpv_code), -- СРВ код
+  cpv_code      VARCHAR(10)    NOT NULL REFERENCES cpv (cpv_code) ON UPDATE CASCADE, -- СРВ код
   one_price     DECIMAL(19, 4) NOT NULL, -- Вартість одиниці
   amount        INT            NOT NULL, -- Кількість одиниць
-  am_unit_id    BIGINT         NOT NULL REFERENCES amountunits (am_unit_id), -- Розмірність одиниць
-  order_id      BIGINT         NOT NULL REFERENCES finance (order_id), -- Номер теми фінансування
+  am_unit_id    BIGINT         NOT NULL REFERENCES amountunits (am_unit_id) ON UPDATE CASCADE, -- Розмірність одиниць
+  order_id      BIGINT         NOT NULL REFERENCES finance (order_id) ON UPDATE CASCADE, -- Номер теми фінансування
   supplier_id   BIGINT, -- Можливий постачальник
-  reason_id     BIGINT REFERENCES reasons_for_suppl (reason_id), --Причина вибору постачальника
+  reason_id     BIGINT REFERENCES reasons_for_suppl (reason_id) ON UPDATE CASCADE, --Причина вибору постачальника
   created_by    BIGINT         NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date  TIMESTAMP      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by   BIGINT,
   modified_date TIMESTAMP,
-  status_id     INT            NOT NULL REFERENCES statuses (status_id),
+  status_id     INT            NOT NULL REFERENCES statuses (status_id) ON UPDATE CASCADE,
   active        BOOLEAN        NOT NULL DEFAULT TRUE
 );
 
 -- Дані про статус замовлення
 CREATE TABLE bid_status (
   id            BIGINT    NOT NULL DEFAULT id_gen() CONSTRAINT bid_status_pk PRIMARY KEY,
-  bid_id        BIGINT    NOT NULL REFERENCES bids (bid_id),
-  status_id     INT       NOT NULL REFERENCES statuses (status_id),
+  bid_id        BIGINT    NOT NULL REFERENCES bids (bid_id) ON UPDATE CASCADE,
+  status_id     INT       NOT NULL REFERENCES statuses (status_id) ON UPDATE CASCADE,
   created_by    BIGINT    NOT NULL DEFAULT 1000000000000, -- Створено користувачем з ІН
   created_date  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   modified_by   BIGINT,
@@ -358,3 +267,99 @@ $$ LANGUAGE plpgsql
 SECURITY DEFINER
 -- Set a secure search_path: trusted schema(s), then 'pg_temp'.
 SET search_path = promasy, pg_temp;
+
+-- General Insertions
+INSERT INTO roles
+(roles_id, roles_name)
+VALUES
+  (900, 'Адміністратор'),
+  (1000, 'Директор'),
+  (2000, 'Заступник директора'),
+  (2500, 'Голова тендерного комітету'),
+  (3000, 'Головний економіст'),
+  (4000, 'Головний бухгалтер'),
+  (5000, 'Керівник підрозділу'),
+  (6000, 'Матеріально-відповідальна особа'),
+  (7000, 'Користувач');
+
+INSERT INTO statuses
+(status_id, status_desc)
+VALUES
+  (10, 'Створено'),
+  (20, 'Подано'),
+  (50, 'Розміщено на Prozorro'),
+  (60, 'Отримано'),
+  (80, 'Не отримано'),
+  (90, 'Відхилено');
+
+INSERT INTO amountunits
+(am_unit_desc)
+VALUES
+  ('г'),
+  ('кг'),
+  ('л'),
+  ('мл'),
+  ('уп.'),
+  ('шт.');
+
+-- Specific Insertions
+
+INSERT INTO institute
+(inst_name)
+VALUES
+  ('Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
+
+CREATE OR REPLACE FUNCTION def_inst_id(OUT result BIGINT) AS $$
+BEGIN
+  result := (SELECT inst_id
+             FROM institute
+             WHERE inst_name = 'Інститут біохімії ім. О.В. Палладіна Національної академії наук України');
+END;
+$$ LANGUAGE PLPGSQL;
+
+INSERT INTO departments
+(dep_name, inst_id)
+VALUES
+  ('Дирекція', def_inst_id()),
+  ('Бухгалтерія', def_inst_id()),
+  ('Відділ постачання', def_inst_id()),
+  ('Відділ молекулярної імунології', def_inst_id()),
+  ('Відділ біохімії м`язів', def_inst_id()),
+  ('Відділ структури та функції білка', def_inst_id()),
+  ('Відділ регуляції обміну речовин', def_inst_id()),
+  ('Відділ біохімії вітамінів і коензимів', def_inst_id()),
+  ('Відділ біохімії ліпідів', def_inst_id()),
+  ('Відділ хімії та біохімії ферментів', def_inst_id()),
+  ('Відділ нейрохімії', def_inst_id()),
+  ('Відділ молекулярної біології', def_inst_id()),
+  ('Відділ науково-технічної інформації', def_inst_id()),
+  ('Лабораторія сигнальних механізмів клітини', def_inst_id()),
+  ('Експлуатаційно-технічний відділ', def_inst_id()),
+  ('Відділ техніки безпеки', def_inst_id()),
+  ('Адміністративно-господарський відділ', def_inst_id()),
+  ('Бібліотека', def_inst_id());
+
+INSERT INTO subdepartments
+(subdep_name, dep_id)
+VALUES
+  ('Лабораторія імунобіології', (SELECT dep_id
+                                 FROM departments
+                                 WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія імунології клітинних рецепторів', (SELECT dep_id
+                                                   FROM departments
+                                                   WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія нанобіотехнології', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ молекулярної імунології')),
+  ('Лабораторія медичної біохімії', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ біохімії вітамінів і коензимів')),
+  ('Лабораторія оптичних методів дослідження', (SELECT dep_id
+                                                FROM departments
+                                                WHERE dep_name = 'Відділ біохімії м`язів')),
+  ('Група хроматографії', (SELECT dep_id
+                           FROM departments
+                           WHERE dep_name = 'Відділ біохімії ліпідів')),
+  ('Група електронної мікроскопії', (SELECT dep_id
+                                     FROM departments
+                                     WHERE dep_name = 'Відділ хімії та біохімії ферментів'));

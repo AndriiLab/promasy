@@ -7,4 +7,6 @@ public interface CreateEmployeeDialogListener {
 	void depSelectionEventOccurred(long depId);
 	void createEmployeeEventOccurred(EmployeeModel model);
 	void editEmployeeEventOccurred(EmployeeModel model);
+
+    boolean checkUniqueLogin(String login);
 }

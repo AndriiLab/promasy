@@ -20,7 +20,7 @@ public class ConSetDialog extends JDialog {
     private ConSetListener prefsListener;
 
     public ConSetDialog(JFrame parent) {
-        super(parent, Labels.getProperty("ConnectionWithDBSettings"), false);
+        super(parent, Labels.getProperty("ConnectionWithDBSettings"), true);
 
         okButton = new JButton(Labels.getProperty("okBtn"));
         cancelButton = new JButton(Labels.getProperty("cancel"));

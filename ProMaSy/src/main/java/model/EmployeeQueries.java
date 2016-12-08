@@ -12,8 +12,8 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 	}
 	
 	public void create(EmployeeModel object) throws SQLException {
-		String query = "INSERT INTO employees (emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date, salt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        String query = "INSERT INTO employees (emp_fname, emp_mname, emp_lname, dep_id, subdep_id, roles_id, login, password, created_by, created_date, salt, email, phone_main, phone_reserve) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
@@ -25,14 +25,18 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setLong(9, object.getCreatedBy());
 		prepStmt.setTimestamp(10, object.getCreatedDate());
 		prepStmt.setLong(11, object.getSalt());
-		prepStmt.executeUpdate();
+        prepStmt.setString(12, object.getEmail());
+        prepStmt.setString(13, object.getPhoneMain());
+        prepStmt.setString(14, object.getPhoneReserve());
+        prepStmt.executeUpdate();
 		prepStmt.close();
 	}
 
 	public void retrieve() throws SQLException {
 		list.clear();
-		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+ 
-				"departments.inst_id, institute.inst_name, "+
+        String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
+                "employees.email, employees.phone_main, employees.phone_reserve, " +
+                "departments.inst_id, institute.inst_name, "+
 				"employees.dep_id, departments.dep_name, "+
 				"employees.subdep_id, subdepartments.subdep_name, "+
 				"employees.roles_id, roles.roles_name, "+
@@ -57,6 +61,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
     public void retrieve(int roleId) throws SQLException {
         list.clear();
         String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "employees.email, employees.phone_main, employees.phone_reserve, " +
                 "departments.inst_id, institute.inst_name, "+
                 "employees.dep_id, departments.dep_name, "+
                 "employees.subdep_id, subdepartments.subdep_name, "+
@@ -84,6 +89,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
     public void retrieve(long departmentId) throws SQLException {
         list.clear();
         String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "employees.email, employees.phone_main, employees.phone_reserve, " +
                 "departments.inst_id, institute.inst_name, "+
                 "employees.dep_id, departments.dep_name, "+
                 "employees.subdep_id, subdepartments.subdep_name, "+
@@ -111,6 +117,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
     public void retrieve(int roleId, long departmentId) throws SQLException {
         list.clear();
         String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, "+
+                "employees.email, employees.phone_main, employees.phone_reserve, " +
                 "departments.inst_id, institute.inst_name, "+
                 "employees.dep_id, departments.dep_name, "+
                 "employees.subdep_id, subdepartments.subdep_name, "+
@@ -142,6 +149,9 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
             String empFName = results.getString("emp_fname");
             String empMName = results.getString("emp_mname");
             String empLName = results.getString("emp_lname");
+            String email = results.getString("email");
+            String phoneMain = results.getString("phone_main");
+            String phoneReserve = results.getString("phone_reserve");
             long instId = results.getLong("inst_id");
             String instName = results.getString("inst_name");
             long depId = results.getLong("dep_id");
@@ -159,17 +169,14 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
             Timestamp modifiedDate = results.getTimestamp("modified_date");
             boolean active = results.getBoolean("active");
 
-            EmployeeModel empModel = new EmployeeModel(empId, empFName, empMName, empLName,
-                    instId, instName, depId, depName, subdepId, subdepName, roleId,
-                    roleName, login, password, salt, createdBy, createdDate, modifiedBy,
-                    modifiedDate, active);
+            EmployeeModel empModel = new EmployeeModel(empId, createdBy, createdDate, modifiedBy, modifiedDate, active, empFName, empMName, empLName, email, phoneMain, phoneReserve, instId, instName, depId, depName, subdepId, subdepName, roleId, roleName, login, password, salt);
             list.add(empModel);
         }
     }
 
 	public void update(EmployeeModel object) throws SQLException {
-		String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=?, salt=? WHERE emp_id=?";
-		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        String query = "UPDATE employees SET emp_fname=?, emp_mname=?, emp_lname=?, dep_id=?, subdep_id=?, roles_id=?, login=?, password=?, modified_by=?, modified_date=?, active=?, salt=?, email=?, phone_main=?, phone_reserve=? WHERE emp_id=?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
@@ -182,8 +189,11 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setTimestamp(10, object.getModifiedDate());
 		prepStmt.setBoolean(11, object.isActive());
         prepStmt.setLong(12, object.getSalt());
-		prepStmt.setLong(13, object.getModelId());
-		prepStmt.executeUpdate();
+        prepStmt.setString(13, object.getEmail());
+        prepStmt.setString(14, object.getPhoneMain());
+        prepStmt.setString(15, object.getPhoneReserve());
+        prepStmt.setLong(16, object.getModelId());
+        prepStmt.executeUpdate();
 		prepStmt.close();
 	}
 
@@ -230,4 +240,19 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.close();
 		return false;
 	}
+
+    public boolean checkLogin(String username) throws SQLException {
+        String query = "SELECT login FROM employees WHERE login = ?";
+        PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
+        prepStmt.setString(1, username);
+        ResultSet results = prepStmt.executeQuery();
+        if (results.next()) {
+            results.close();
+            prepStmt.close();
+            return false;
+        }
+        results.close();
+        prepStmt.close();
+        return true;
+    }
 }

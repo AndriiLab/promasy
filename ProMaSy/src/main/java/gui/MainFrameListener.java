@@ -8,4 +8,6 @@ public interface MainFrameListener {
     void searchForPerson(int roleId, long selectedDepartmentId);
     void searchForPerson(int roleId);
     void exitEventOccurred();
+
+    void setMinimumVersionEventOccurred();
 }

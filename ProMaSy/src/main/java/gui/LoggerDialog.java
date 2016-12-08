@@ -9,14 +9,14 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 /**
- * Created by laban on 13.06.2016.
+ * Dialog displays program log
  */
 public class LoggerDialog extends JDialog {
 
     private JTextPane logPane;
 
     public LoggerDialog (JFrame parent){
-        super(parent, Labels.getProperty("log"), false);
+        super(parent, Labels.getProperty("log"), true);
         setSize(500, 300);
         setLocationRelativeTo(parent);
 

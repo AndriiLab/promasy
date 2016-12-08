@@ -25,7 +25,7 @@ public class CpvDialog extends JDialog {
 	
 
 	public CpvDialog (MainFrame parent) {
-		super(parent, Labels.getProperty("cpvPanelTab"), false);
+        super(parent, Labels.getProperty("cpvPanelTab"), true);
         setSize(800, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
@@ -149,10 +149,10 @@ public class CpvDialog extends JDialog {
 		this.cpvListener = cpvListener;
 
 	}
-	
-	private void makeCpvQuery(String cpvRequest, boolean sameLvlShow){
-		
-		CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
+
+    public void makeCpvQuery(String cpvRequest, boolean sameLvlShow) {
+
+        CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
 
 		if (cpvListener != null) {
 			cpvListener.cpvEventOccurred(ev);

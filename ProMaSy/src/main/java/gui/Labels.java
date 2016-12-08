@@ -16,11 +16,13 @@ public class Labels {
     public static String withColon(final String key) {
         return getProperty(key) + ": ";
     }
-
     public static String withSpaceBefore(final String key) {
         return " "+getProperty(key);
     }
 
+    public static String withSpaceAfter(final String key) {
+        return getProperty(key) + " ";
+    }
     public static String withThreeDots(final String key) {
         return getProperty(key) + "...";
     }

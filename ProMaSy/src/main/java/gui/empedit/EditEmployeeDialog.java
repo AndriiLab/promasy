@@ -15,21 +15,26 @@ public class EditEmployeeDialog extends JDialog {
 
     private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private EditEmployeeDialogListener listener;
+    private JButton createEmployeeButton;
+    private JButton editEmployeeButton;
+    private JButton deleteEmployeeButton;
 
     private JTable table;
     private EmployeeTableModel tableModel;
     private EmployeeModel selectedModel;
 
     public EditEmployeeDialog(MainFrame parent) {
-        super(parent, Labels.getProperty("addEmployee"), false);
+        super(parent, Labels.getProperty("addEmployee"), true);
         setSize(600, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("createNewEmployee"), Labels.getProperty("editEmployee"), Labels.getProperty("deleteEmployee"));
-        JButton createEmployeeButton = ced.getCreateButton();
-        JButton editEmployeeButton = ced.getEditButton();
-        JButton deleteEmployeeButton = ced.getDeleteButton();
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("user_ced"));
+        createEmployeeButton = ced.getCreateButton();
+        editEmployeeButton = ced.getEditButton();
+        deleteEmployeeButton = ced.getDeleteButton();
+        editEmployeeButton.setEnabled(false);
+        deleteEmployeeButton.setEnabled(false);
 
         selectedModel =  emptyEmployeeModel;
 
@@ -64,7 +69,7 @@ public class EditEmployeeDialog extends JDialog {
         });
 
         deleteEmployeeButton.addActionListener(e -> {
-            if (!selectedModel.equals(emptyEmployeeModel)) {
+            if (!selectedModel.equals(emptyEmployeeModel) && ced.deleteEntry(parent, selectedModel.toString())) {
                 listener.deleteEmployeeEventOccurred(selectedModel);
             }
         });
@@ -77,6 +82,8 @@ public class EditEmployeeDialog extends JDialog {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                    selectedModel = (EmployeeModel) table.getValueAt(row, 0);
+                    editEmployeeButton.setEnabled(true);
+                    deleteEmployeeButton.setEnabled(true);
                 }
             }
         });

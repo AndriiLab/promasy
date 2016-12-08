@@ -69,7 +69,11 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name, " +
+                "CAST(CASE " +
+                "WHEN bids.modified_date=NULL THEN bids.modified_date " +
+                "ELSE bids.created_date " +
+                "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -81,7 +85,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
                 "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
-                "WHERE bids.active = TRUE ORDER BY bids.modified_date DESC, bids.created_date DESC";
+                "WHERE bids.active = TRUE ORDER BY mod_date DESC";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         ResultSet results = prepStmt.executeQuery();
 
@@ -100,7 +104,11 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name, " +
+                "CAST(CASE " +
+                "WHEN bids.modified_date=NULL THEN bids.modified_date " +
+                "ELSE bids.created_date " +
+                "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -113,7 +121,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
                 "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
                 "WHERE bids.active = TRUE AND bids.dep_id = ? " +
-                "ORDER BY bids.modified_date DESC, bids.created_date DESC";
+                "ORDER BY mod_date DESC";
 
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);
@@ -134,7 +142,11 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "bids.created_by, bids.created_date, bids.modified_by, bids.modified_date, bids.active, " +
                 "creator.emp_fname AS c_fname, creator.emp_mname AS c_mname, creator.emp_lname AS c_lname, " +
                 "modifier.emp_fname AS m_fname, modifier.emp_mname AS m_mname, modifier.emp_lname AS m_lname, " +
-                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name  " +
+                "bids.status_id, statuses.status_desc, bids.reason_id, reasons_for_suppl.reason_name, " +
+                "CAST(CASE " +
+                "WHEN bids.modified_date=NULL THEN bids.modified_date " +
+                "ELSE bids.created_date " +
+                "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
                 "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
@@ -147,7 +159,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "LEFT JOIN employees AS modifier ON bids.modified_by = modifier.emp_id " +
                 "LEFT JOIN reasons_for_suppl ON bids.reason_id = reasons_for_suppl.reason_id " +
                 "WHERE bids.active = TRUE AND bids.dep_id = ? AND bids.order_id = ?" +
-                "ORDER BY bids.modified_date DESC, bids.created_date DESC";
+                "ORDER BY mod_date DESC";
 
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, departmentId);

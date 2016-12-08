@@ -6,7 +6,10 @@ public class EmployeeModel extends AbstractModel {
 	private String empFName;
 	private String empMName;
 	private String empLName;
-	private long instId;
+    private String email;
+    private String phoneMain;
+    private String phoneReserve;
+    private long instId;
 	private String instName;
 	private long depId;
 	private String depName;
@@ -17,44 +20,46 @@ public class EmployeeModel extends AbstractModel {
 	private String login;
 	private String password;
 	private long salt;
-	
-	public EmployeeModel() {
-	}
-	
-	public EmployeeModel(String empFName, String empMName, 
-			String empLName, long depId, long subdepId, 
-			int roleId, String login, String password, long salt) {
-		this.empFName = empFName;
+
+    public EmployeeModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, String empFName, String empMName, String empLName, String email, String phoneMain, String phoneReserve, long instId, String instName, long depId, String depName, long subdepId, String subdepName, int roleId, String roleName, String login, String password, long salt) {
+        super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
+        this.empFName = empFName;
+        this.empMName = empMName;
+        this.empLName = empLName;
+        this.email = email;
+        this.phoneMain = phoneMain;
+        this.phoneReserve = phoneReserve;
+        this.instId = instId;
+        this.instName = instName;
+        this.depId = depId;
+        this.depName = depName;
+        this.subdepId = subdepId;
+        this.subdepName = subdepName;
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.login = login;
+        this.password = password;
+        this.salt = salt;
+    }
+
+    public EmployeeModel() {
+    }
+
+    public EmployeeModel(String empFName, String empMName, String email, String phoneMain, String phoneReserve,
+                         String empLName, long depId, long subdepId, int roleId, String login, String password, long salt) {
+        this.empFName = empFName;
 		this.empMName = empMName;
 		this.empLName = empLName;
-		this.depId = depId;
+        this.email = email;
+        this.phoneMain = phoneMain;
+        this.phoneReserve = phoneReserve;
+        this.depId = depId;
 		this.subdepId = subdepId;
 		this.roleId = roleId;
-		this.login = login;
-		this.password = password;
-		this.salt = salt;
-	}
-	
-	public EmployeeModel(long empId, String empFName, String empMName, String empLName, long instId, String instName,
-			long depId, String depName, long subdepId, String subdepName, int roleId, String roleName, String login,
-			String password, long salt, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
-			boolean active) {
-		super(empId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-		this.empFName = empFName;
-		this.empMName = empMName;
-		this.empLName = empLName;
-		this.instId = instId;
-		this.instName = instName;
-		this.depId = depId;
-		this.depName = depName;
-		this.subdepId = subdepId;
-		this.subdepName = subdepName;
-		this.roleId = roleId;
-		this.roleName = roleName;
 		this.login = login;
 		this.password = password;
         this.salt = salt;
-	}
+    }
 
 	public String getEmpFName() {
 		return empFName;
@@ -166,6 +171,30 @@ public class EmployeeModel extends AbstractModel {
 
     public void setSalt(long salt) {
         this.salt = salt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneMain() {
+        return phoneMain;
+    }
+
+    public void setPhoneMain(String phoneMain) {
+        this.phoneMain = phoneMain;
+    }
+
+    public String getPhoneReserve() {
+        return phoneReserve;
+    }
+
+    public void setPhoneReserve(String phoneReserve) {
+        this.phoneReserve = phoneReserve;
     }
 
     public String toString() {

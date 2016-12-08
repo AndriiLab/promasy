@@ -78,11 +78,14 @@ public class FinancePanel extends JPanel {
         endDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         endDatePicker.setDate(defaultEndDate);
 
-        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("createOrder"), Labels.getProperty("editOrder"), Labels.getProperty("deleteOrder"));
+        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("order_ced"));
 
         createOrderButton = cedFinance.getCreateButton();
         editOrderButton = cedFinance.getEditButton();
         deleteOrderButton = cedFinance.getDeleteButton();
+
+        editOrderButton.setEnabled(false);
+        deleteOrderButton.setEnabled(false);
 
         selectedOrder = 0;
 
@@ -98,7 +101,13 @@ public class FinancePanel extends JPanel {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 1);
+                    clearDepFinPanel();
                     if (!selectedFinanceModel.equals(emptyFinanceModel)) {
+                        editOrderButton.setEnabled(true);
+                        deleteOrderButton.setEnabled(true);
+                        createDepOrderButton.setEnabled(true);
+                        editDepOrderButton.setEnabled(false);
+                        deleteDepOrderButton.setEnabled(false);
                         orderNumberField.setText(String.valueOf(selectedFinanceModel.getOrderNumber()));
                         orderNameField.setText(selectedFinanceModel.getOrderName());
                         financeAmountField.setText(selectedFinanceModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
@@ -131,10 +140,14 @@ public class FinancePanel extends JPanel {
 
         financeDepAmountField = new JTextField(10);
 
-        CrEdDelButtons cedDepartmentFinances = new CrEdDelButtons(Labels.getProperty("addDepOrder"), Labels.getProperty("editDepOrder"), Labels.getProperty("deleteDepOrder"));
+        CrEdDelButtons cedDepartmentFinances = new CrEdDelButtons(Labels.getProperty("dep_order_ced"));
         createDepOrderButton = cedDepartmentFinances.getCreateButton();
         editDepOrderButton = cedDepartmentFinances.getEditButton();
         deleteDepOrderButton = cedDepartmentFinances.getDeleteButton();
+
+        createDepOrderButton.setEnabled(false);
+        editDepOrderButton.setEnabled(false);
+        deleteDepOrderButton.setEnabled(false);
 
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
         depFinanceTable = new JTable(departmentFinanceTableModel);
@@ -149,6 +162,11 @@ public class FinancePanel extends JPanel {
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 4);
                     if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
+                        editOrderButton.setEnabled(true);
+                        deleteOrderButton.setEnabled(true);
+                        createDepOrderButton.setEnabled(true);
+                        editDepOrderButton.setEnabled(true);
+                        deleteDepOrderButton.setEnabled(true);
                         Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepId());
                         Utils.setBoxFromID(employeeBox, selectedDepFinModel.getEmpId());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().toString());
@@ -165,6 +183,7 @@ public class FinancePanel extends JPanel {
                 listener.createOrderEventOccurred(model);
             }
             clearFinancePanel();
+            clearDepFinPanel();
         });
 
         editOrderButton.addActionListener(e -> {
@@ -180,14 +199,16 @@ public class FinancePanel extends JPanel {
                 selectedFinanceModel = emptyFinanceModel;
             }
             clearFinancePanel();
+            clearDepFinPanel();
         });
 
         deleteOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(emptyFinanceModel) && listener != null) {
+            if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getOrderName()) && listener != null) {
                 listener.deleteOrderEventOccurred(selectedFinanceModel);
             }
             selectedFinanceModel = emptyFinanceModel;
             clearFinancePanel();
+            clearDepFinPanel();
         });
 
         createDepOrderButton.addActionListener(e -> {
@@ -212,7 +233,7 @@ public class FinancePanel extends JPanel {
         });
 
         deleteDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && listener != null) {
+            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getOrderName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getDepName()) && listener != null) {
                 listener.deleteDepOrderEventOccurred(selectedDepFinModel);
             }
             selectedDepFinModel = emptyFinanceDepartmentModel;
@@ -235,6 +256,7 @@ public class FinancePanel extends JPanel {
 
     private void clearDepFinPanel() {
         departmentBox.setSelectedIndex(0);
+        employeeBox.setSelectedIndex(0);
         financeDepAmountField.setText("");
         depFinanceAmount = null;
         selectedDepartment = emptyDepartmentModel;
@@ -345,6 +367,7 @@ public class FinancePanel extends JPanel {
 
     public void setEmployeeBoxData(List<EmployeeModel> db) {
         employeeBox.removeAllItems();
+        employeeBox.addItem(emptyEmployeeModel);
         for (EmployeeModel model : db) {
             employeeBox.addItem(model);
         }

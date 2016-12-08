@@ -29,12 +29,12 @@ public class SupplierDialog extends JDialog {
     private JFrame parent;
 
     public SupplierDialog(JFrame parent) {
-        super(parent, Labels.getProperty("suplDialogSuper"), false);
+        super(parent, Labels.getProperty("suplDialogSuper"), true);
         this.parent = parent;
         setSize(350, 250);
+        setResizable(false);
         setLocationRelativeTo(parent);
 
-        Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateSuplModel = emptySuplModel;
@@ -45,15 +45,16 @@ public class SupplierDialog extends JDialog {
         suplBox.setPreferredSize(comboBoxDim);
         suplBox.setEditable(true);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("addSupl"), Labels.getProperty("editSupl"), Labels.getProperty("delSupl"));
+        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("supplier_ced"));
         createSupl = ced.getCreateButton();
         editSupl = ced.getEditButton();
         deleteSupl = ced.getDeleteButton();
+        editSupl.setEnabled(false);
+        deleteSupl.setEnabled(false);
 
-        telField = new JTextField(10);
+        telField = new JTextField(13);
         telField.setPreferredSize(comboBoxDim);
         telField.setEditable(true);
-        //TODO limit size of input to 20 char
 
         commentsPane = new JTextPane();
         commentsPane.setPreferredSize(new Dimension(140, 75));
@@ -70,11 +71,19 @@ public class SupplierDialog extends JDialog {
                     telField.setText(privateSuplModel.getSupplierTel());
                     commentsPane.setText(privateSuplModel.getSupplierComments());
                     newSuplName = privateSuplModel.getSupplierName();
+
+                    createSupl.setEnabled(false);
+                    editSupl.setEnabled(true);
+                    deleteSupl.setEnabled(true);
                 } else if (item.equals(emptySuplModel)) {
                     telField.setText("");
                     commentsPane.setText("");
+
+                    createSupl.setEnabled(true);
+                    editSupl.setEnabled(false);
+                    deleteSupl.setEnabled(false);
                 }
-            } else if (item instanceof String && !item.equals("")) {
+            } else if (item instanceof String) {
                 newSuplName = (String) item;
             }
         });
@@ -115,7 +124,7 @@ public class SupplierDialog extends JDialog {
         });
 
         deleteSupl.addActionListener(e -> {
-            if (!privateSuplModel.equals(emptySuplModel) && listener != null) {
+            if (!privateSuplModel.equals(emptySuplModel) && ced.deleteEntry(parent, privateSuplModel.getSupplierName()) && listener != null) {
                 suplBox.removeAllItems();
                 suplBox.addItem(emptySuplModel);
                 listener.deleteSuplEventOccurred(privateSuplModel);
@@ -138,13 +147,16 @@ public class SupplierDialog extends JDialog {
     }
 
     private boolean isSuplDataValid() {
-        if (newSuplName.equals("")){
+        if (newSuplName.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("name"));
             return false;
         }
         newSuplTel = telField.getText();
-        if (newSuplName.equals("")){
+        if (newSuplName.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("phone"));
+            return false;
+        } else if (newSuplTel.length() > 20) {
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("telephoneTooLong"), Labels.getProperty("wrongFormat"), JOptionPane.ERROR_MESSAGE);
             return false;
         }
         newSuplComment = commentsPane.getText();

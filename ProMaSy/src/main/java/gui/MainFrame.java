@@ -228,13 +228,26 @@ public class MainFrame extends JFrame {
             JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
             JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
             conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
+
             settingsMenu.add(conSettItem);
+
+            if (LoginData.getInstance().getRoleId() == Role.ADMIN.getRoleId()) {
+                JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
+                settingsMenu.addSeparator();
+                settingsMenu.add(setCurrentVersionAsMinimum);
+                setCurrentVersionAsMinimum.addActionListener(e -> {
+                    int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + Labels.withSpaceBefore("versionNumber") + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
+                    if (action == JOptionPane.OK_OPTION && listener != null) {
+                        listener.setMinimumVersionEventOccurred();
+                    }
+                });
+            }
+
             menuBar.add(settingsMenu);
 
             editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
             editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
             conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
-
         }
 
         return menuBar;
@@ -291,6 +304,11 @@ public class MainFrame extends JFrame {
     }
 
     public void showCpvDialog() {
+        cpvDialog.setVisible(true);
+    }
+
+    public void showCpvDialog(String cpv) {
+        cpvDialog.makeCpvQuery(cpv, true);
         cpvDialog.setVisible(true);
     }
 

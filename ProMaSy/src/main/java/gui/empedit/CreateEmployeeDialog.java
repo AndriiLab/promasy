@@ -28,6 +28,9 @@ public class CreateEmployeeDialog extends JDialog {
     private JTextField nameField;
     private JTextField middleNameField;
     private JTextField lastNameField;
+    private JTextField emailField;
+    private JTextField phoneMainField;
+    private JTextField phoneReserveField;
     private JComboBox<InstituteModel> instituteBox;
     private JComboBox<DepartmentModel> departmentBox;
     private JComboBox<SubdepartmentModel> subdepartmentBox;
@@ -38,9 +41,9 @@ public class CreateEmployeeDialog extends JDialog {
     private EmployeeModel currentEmployeeModel;
 
     public CreateEmployeeDialog(JFrame parent) {
-        super(parent, Labels.getProperty("createNewEmployee"), true);
+        super(parent, Labels.getProperty("createNewUser"), true);
         this.parent = parent;
-        setSize(600, 330);
+        setSize(785, 385);
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -52,6 +55,10 @@ public class CreateEmployeeDialog extends JDialog {
         nameField = new JTextField(10);
         middleNameField = new JTextField(10);
         lastNameField = new JTextField(10);
+
+        emailField = new JTextField(10);
+        phoneMainField = new JTextField(10);
+        phoneReserveField = new JTextField(10);
 
         loginField = new JTextField(10);
         passwordField = new JPasswordField(12);
@@ -87,7 +94,7 @@ public class CreateEmployeeDialog extends JDialog {
         subdepartmentBox.setEditable(false);
         subdepartmentBox.setPreferredSize(comboBoxDim);
 
-        okButton = new JButton(Labels.getProperty("createProfile"));
+        okButton = new JButton(Labels.getProperty("createUser"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
 
         layoutControls();
@@ -144,11 +151,14 @@ public class CreateEmployeeDialog extends JDialog {
     private void clearDialog() {
         setVisible(false);
         currentEmployeeModel = emptyEmployeeModel;
-        setTitle(Labels.getProperty("createNewEmployee"));
-        okButton.setText(Labels.getProperty("createProfile"));
+        setTitle(Labels.getProperty("createNewUser"));
+        okButton.setText(Labels.getProperty("createUser"));
         nameField.setText("");
         middleNameField.setText("");
         lastNameField.setText("");
+        emailField.setText("");
+        phoneMainField.setText("");
+        phoneReserveField.setText("");
         instituteBox.setSelectedIndex(0);
         roleBox.setSelectedItem("");
         loginField.setText("");
@@ -174,6 +184,19 @@ public class CreateEmployeeDialog extends JDialog {
             Utils.emptyFieldError(parent, Labels.getProperty("middleName"));
             return false;
         }
+
+        String email = emailField.getText();
+        if (email.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("email"));
+            return false;
+        }
+        //TODO add email validator
+        String phoneMain = phoneMainField.getText();
+        if (phoneMain.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("phoneMain"));
+            return false;
+        }
+        String phoneReserve = phoneReserveField.getText();
         String login = loginField.getText();
         if (login.length() == 0) {
             loginField.setDisabledTextColor(Color.RED);
@@ -199,22 +222,21 @@ public class CreateEmployeeDialog extends JDialog {
         char[] password = passwordField.getPassword();
         char[] repeatPassword = repeatPasswordField.getPassword();
         // Generating new salt in case of creation of new user or password change for old user
-        if (currentEmployeeModel == emptyEmployeeModel || password.length > 0 || repeatPassword.length > 0) {
-            long salt = Utils.makeSalt();
-            if (password.length == 0) {
-                passwordField.setDisabledTextColor(Color.RED);
-                Utils.emptyFieldError(parent, Labels.getProperty("password"));
-                return false;
-            }
+        if (currentEmployeeModel.equals(emptyEmployeeModel) || password.length > 0 || repeatPassword.length > 0) {
             if (!Arrays.equals(password, repeatPassword)) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
                 return false;
             }
+            boolean isUniqueUser = listener.checkUniqueLogin(login);
+            long salt = Utils.makeSalt();
             String pass = Utils.makePass(password, salt);
-            // if main.java.model empty create new user
-            if (currentEmployeeModel == emptyEmployeeModel) {
-                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getRoleId(), login, pass, salt);
+            // if model empty create new user
+            if (currentEmployeeModel.equals(emptyEmployeeModel) && isUniqueUser) {
+                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, email, phoneMain, phoneReserve, departmentModel.getModelId(), subdepartmentModel.getModelId(), roleModel.getRoleId(), login, pass, salt);
                 return true;
+            } else if (currentEmployeeModel.equals(emptyEmployeeModel) && !isUniqueUser) {
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
+                return false;
             } else {
                 // else - update existing
                 currentEmployeeModel.setSalt(salt);
@@ -238,6 +260,9 @@ public class CreateEmployeeDialog extends JDialog {
         nameField.setText(currentEmployeeModel.getEmpFName());
         middleNameField.setText(currentEmployeeModel.getEmpMName());
         lastNameField.setText(currentEmployeeModel.getEmpLName());
+        emailField.setText(currentEmployeeModel.getEmail());
+        phoneMainField.setText(currentEmployeeModel.getPhoneMain());
+        phoneReserveField.setText(currentEmployeeModel.getPhoneReserve());
         loginField.setText(currentEmployeeModel.getLogin());
         Utils.setBoxFromID(roleBox, currentEmployeeModel.getRoleId());
         Utils.setBoxFromID(instituteBox, currentEmployeeModel.getInstId());
@@ -291,7 +316,9 @@ public class CreateEmployeeDialog extends JDialog {
 
         JPanel loginPanel = new JPanel();
         JPanel employeePanel = new JPanel();
-        JPanel newEmployeePanel = new JPanel();
+        JPanel contactsPanel = new JPanel();
+        JPanel loginAndAffiliationsPanel = new JPanel();
+        JPanel userAndContactsPanel = new JPanel();
 
         JPanel institutePanel = new JPanel();
 
@@ -300,9 +327,11 @@ public class CreateEmployeeDialog extends JDialog {
         Border employeeBorder = BorderFactory.createTitledBorder(Labels.getProperty("user"));
         Border loginBorder = BorderFactory.createTitledBorder(Labels.getProperty("loginParameters"));
         Border instituteBorder = BorderFactory.createTitledBorder(Labels.getProperty("AssociatedOrganization"));
+        Border contactsBorder = BorderFactory.createTitledBorder(Labels.getProperty("contacts"));
 
         loginPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, loginBorder));
         employeePanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, employeeBorder));
+        contactsPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, contactsBorder));
         institutePanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, instituteBorder));
 
         Insets smallPadding = new Insets(1, 0, 1, 5);
@@ -319,7 +348,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        loginPanel.add(new JLabel(Labels.getProperty("userName")), gc);
+        loginPanel.add(new JLabel(Labels.withColon("userName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -329,7 +358,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        loginPanel.add(new JLabel(Labels.getProperty("password")), gc);
+        loginPanel.add(new JLabel(Labels.withColon("password")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -351,7 +380,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        employeePanel.add(new JLabel(Labels.getProperty("lastName") + ":"), gc);
+        employeePanel.add(new JLabel(Labels.withColon("lastName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -361,7 +390,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        employeePanel.add(new JLabel(Labels.getProperty("firstName") + ":"), gc);
+        employeePanel.add(new JLabel(Labels.withColon("firstName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -371,12 +400,49 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        employeePanel.add(new JLabel(Labels.getProperty("middleName") + ":"), gc);
+        employeePanel.add(new JLabel(Labels.withColon("middleName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
         employeePanel.add(middleNameField, gc);
+
+        contactsPanel.setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
+
+        ////// First row//////
+        gc.gridy = 0;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        contactsPanel.add(new JLabel(Labels.withColon("email")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        contactsPanel.add(emailField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        contactsPanel.add(new JLabel(Labels.withColon("phoneMain")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        contactsPanel.add(phoneMainField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        contactsPanel.add(new JLabel(Labels.withColon("phoneReserve")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = noPadding;
+        contactsPanel.add(phoneReserveField, gc);
 
         institutePanel.setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
@@ -388,7 +454,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("institute") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("institute")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -400,7 +466,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("department") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("department")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.NORTHWEST;
@@ -412,7 +478,7 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("subdepartment") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("subdepartment")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.NORTHWEST;
@@ -424,16 +490,20 @@ public class CreateEmployeeDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("role") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("role")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.NORTHWEST;
         gc.insets = smallPadding;
         institutePanel.add(roleBox, gc);
 
-        newEmployeePanel.setLayout(new BorderLayout());
-        newEmployeePanel.add(loginPanel, BorderLayout.NORTH);
-        newEmployeePanel.add(institutePanel, BorderLayout.CENTER);
+        userAndContactsPanel.setLayout(new BorderLayout());
+        userAndContactsPanel.add(employeePanel, BorderLayout.NORTH);
+        userAndContactsPanel.add(contactsPanel, BorderLayout.CENTER);
+
+        loginAndAffiliationsPanel.setLayout(new BorderLayout());
+        loginAndAffiliationsPanel.add(loginPanel, BorderLayout.NORTH);
+        loginAndAffiliationsPanel.add(institutePanel, BorderLayout.CENTER);
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 
@@ -445,8 +515,8 @@ public class CreateEmployeeDialog extends JDialog {
         buttonsPanel.add(cancelButton);
 
         setLayout(new BorderLayout());
-        add(employeePanel, BorderLayout.NORTH);
-        add(newEmployeePanel, BorderLayout.CENTER);
+        add(userAndContactsPanel, BorderLayout.NORTH);
+        add(loginAndAffiliationsPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 }
