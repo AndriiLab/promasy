@@ -3,7 +3,7 @@ package main.java.gui;
 import java.util.ResourceBundle;
 
 /**
- * Created by A on 26.04.2016.
+ * Getter class for LabelsBundle.properties
  */
 public class Labels {
     private static final String FILENAME = "LabelsBundle";
@@ -11,6 +11,10 @@ public class Labels {
 
     public static String getProperty(final String key) {
         return LABELS.getString(key);
+    }
+
+    public static int getInt(final String key) {
+        return Integer.parseInt(LABELS.getString(key));
     }
 
     public static String withColon(final String key) {

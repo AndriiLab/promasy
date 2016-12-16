@@ -45,6 +45,11 @@ public class EmployeeModel extends AbstractModel {
     public EmployeeModel() {
     }
 
+	public EmployeeModel(long modelId, int roleId) {
+		super.setModelId(modelId);
+		this.roleId = roleId;
+	}
+
     public EmployeeModel(String empFName, String empMName, String email, String phoneMain, String phoneReserve,
                          String empLName, long depId, long subdepId, int roleId, String login, String password, long salt) {
         this.empFName = empFName;
@@ -197,11 +202,15 @@ public class EmployeeModel extends AbstractModel {
         this.phoneReserve = phoneReserve;
     }
 
-    public String toString() {
-		if(empFName != null && empLName != null && empMName != null){
+	public String getShortName() {
+		if (empFName != null && empLName != null && empMName != null) {
 			return empLName + " " + empFName.substring(0, 1) + "."
-					+ empMName.substring(0, 1)+".";
+					+ empMName.substring(0, 1) + ".";
 		}
-		return "";
+		return null;
+	}
+
+	public String toString() {
+		return getShortName();
 	}
 }

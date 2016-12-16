@@ -276,7 +276,12 @@ public class CreateBidDialog extends JDialog {
     private void calculateTotalPrice() {
         if (!oneUnitPriceField.getText().isEmpty() && !amountField.getText().isEmpty()) {
             try {
-                BigDecimal onePrice = new BigDecimal(oneUnitPriceField.getText());
+                String onePriceString = oneUnitPriceField.getText();
+                if (onePriceString.contains(",")) {
+                    onePriceString = onePriceString.replace(",", ".");
+                    oneUnitPriceField.setText(onePriceString);
+                }
+                BigDecimal onePrice = new BigDecimal(onePriceString);
                 BigDecimal amount = new BigDecimal(amountField.getText());
                 totalPrice = onePrice.multiply(amount);
                 totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));

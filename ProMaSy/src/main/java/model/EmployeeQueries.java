@@ -1,9 +1,6 @@
 package main.java.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 
@@ -220,20 +217,53 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 	
 	public boolean checkLogin(String username, String password) throws SQLException{
 		String query = "SELECT employees.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
-				"departments.inst_id, employees.dep_id, employees.subdep_id, employees.roles_id, employees.login, " +
-                "employees.password, employees.created_by, employees.created_date, employees.modified_by, " +
-                "employees.modified_date " +
+                "employees.email, employees.phone_main, employees.phone_reserve, " +
+                "departments.inst_id, institute.inst_name, " +
+                "employees.dep_id, departments.dep_name, " +
+                "employees.subdep_id, subdepartments.subdep_name, " +
+                "employees.roles_id, roles.roles_name, " +
+                "employees.login, employees.password, " +
+                "employees.created_by, employees.created_date, " +
+                "employees.modified_by, employees.modified_date, " +
+                "employees.active, employees.salt " +
                 "FROM employees " +
                 "INNER JOIN departments ON employees.dep_id = departments.dep_id " +
-                "WHERE employees.login = ? AND employees.password = ? AND employees.active = true";
+                "LEFT OUTER JOIN subdepartments ON employees.subdep_id = subdepartments.subdep_id " +
+                "INNER JOIN roles ON employees.roles_id = roles.roles_id " +
+                "INNER JOIN institute ON departments.inst_id = institute.inst_id " +
+                "WHERE employees.login = ? AND employees.password = ? AND employees.active = TRUE";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, username);
 		prepStmt.setString(2, password);
 		ResultSet results = prepStmt.executeQuery();
 		if (results.next()) {
-			LoginData.getInstance(results.getLong("emp_id"), results.getString("emp_fname"), results.getString("emp_mname"), results.getString("emp_lname"), results.getLong("inst_id"), results.getLong("dep_id"), results.getLong("subdep_id"), results.getInt("roles_id"), username, password, results.getLong("created_by"),results.getTimestamp("created_date"),results.getLong("modified_by"), results.getTimestamp("modified_date"));
-			results.close();
-			prepStmt.close();
+            long empId = results.getLong("emp_id");
+            String empFName = results.getString("emp_fname");
+            String empMName = results.getString("emp_mname");
+            String empLName = results.getString("emp_lname");
+            String email = results.getString("email");
+            String phoneMain = results.getString("phone_main");
+            String phoneReserve = results.getString("phone_reserve");
+            long instId = results.getLong("inst_id");
+            String instName = results.getString("inst_name");
+            long depId = results.getLong("dep_id");
+            String depName = results.getString("dep_name");
+            long subdepId = results.getLong("subdep_id");
+            String subdepName = results.getString("subdep_name");
+            int roleId = results.getInt("roles_id");
+            String roleName = results.getString("roles_name");
+            String login = results.getString("login");
+            String pass = results.getString("password");
+            long salt = results.getLong("salt");
+            long createdBy = results.getLong("created_by");
+            Timestamp createdDate = results.getTimestamp("created_date");
+            long modifiedBy = results.getLong("modified_by");
+            Timestamp modifiedDate = results.getTimestamp("modified_date");
+            boolean active = results.getBoolean("active");
+
+            LoginData.getInstance(new EmployeeModel(empId, createdBy, createdDate, modifiedBy, modifiedDate, active, empFName, empMName, empLName, email, phoneMain, phoneReserve, instId, instName, depId, depName, subdepId, subdepName, roleId, roleName, login, pass, salt));
+            results.close();
+            prepStmt.close();
 			return true;
 		}
 		results.close();
@@ -253,6 +283,20 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
         }
         results.close();
         prepStmt.close();
+        return true;
+    }
+
+    public boolean isFirstRun() throws SQLException {
+        String query = "SELECT active FROM employees";
+        Statement selectStmt = Database.DB.getConnection().createStatement();
+        ResultSet results = selectStmt.executeQuery(query);
+        if (results.next()) {
+            results.close();
+            selectStmt.close();
+            return false;
+        }
+        results.close();
+        selectStmt.close();
         return true;
     }
 }

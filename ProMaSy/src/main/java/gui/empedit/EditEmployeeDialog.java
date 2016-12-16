@@ -93,15 +93,10 @@ public class EditEmployeeDialog extends JDialog {
 
     public void setEmpTableData(List<EmployeeModel> db){
         tableModel.setData(db);
-        refresh();
+        tableModel.fireTableDataChanged();
     }
 
     public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){
         this.listener = empListener;
     }
-
-    public void refresh(){
-        tableModel.fireTableDataChanged();
-    }
-
 }

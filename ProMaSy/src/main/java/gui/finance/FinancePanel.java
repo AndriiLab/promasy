@@ -169,7 +169,7 @@ public class FinancePanel extends JPanel {
                         deleteDepOrderButton.setEnabled(true);
                         Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepId());
                         Utils.setBoxFromID(employeeBox, selectedDepFinModel.getEmpId());
-                        financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().toString());
+                        financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                     }
                 }
             }
@@ -274,6 +274,10 @@ public class FinancePanel extends JPanel {
         startDate = new java.sql.Date(startDatePicker.getDate().getTime());
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());
         String financeAmountText = financeAmountField.getText();
+        if (financeAmountText.contains(",")) {
+            financeAmountText = financeAmountText.replace(",", ".");
+            financeAmountField.setText(financeAmountText);
+        }
         if (orderName.length() < 1) {
             Utils.emptyFieldError(parent, Labels.getProperty("orderName"));
             return false;
@@ -303,6 +307,10 @@ public class FinancePanel extends JPanel {
         selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
         selectedEmployee = (EmployeeModel) employeeBox.getSelectedItem();
         String inpDepFinanceAmount = financeDepAmountField.getText();
+        if (inpDepFinanceAmount.contains(",")) {
+            inpDepFinanceAmount = inpDepFinanceAmount.replace(",", ".");
+            financeDepAmountField.setText(inpDepFinanceAmount);
+        }
         if (selectedDepartment.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             return false;

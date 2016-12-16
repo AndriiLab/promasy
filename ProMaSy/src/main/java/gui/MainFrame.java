@@ -188,9 +188,13 @@ public class MainFrame extends JFrame {
         editProdItem.setIcon(Icons.PRODUCER);
         JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
         editSuplItem.setIcon(Icons.SUPPLIER);
+        JMenuItem editCurrentUserItem = new JMenuItem(Labels.withThreeDots("editCurrentUser"));
+        editCurrentUserItem.setIcon(Icons.USER);
         editMenu.add(editAmUnitsItem);
         editMenu.add(editProdItem);
         editMenu.add(editSuplItem);
+        editMenu.addSeparator();
+        editMenu.add(editCurrentUserItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
         JMenuItem infoItem = new JMenuItem(Labels.withThreeDots("aboutSoftware"));
@@ -199,8 +203,6 @@ public class MainFrame extends JFrame {
 
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
-
-        menuBar.add(helpMenu);
 
         printItem.addActionListener(e -> printEventOccurred());
 
@@ -213,17 +215,16 @@ public class MainFrame extends JFrame {
         editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
         editProdItem.addActionListener(e -> producerDialog.setVisible(true));
         editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
+        editCurrentUserItem.addActionListener(e -> createEmployeeDialog.setEmployeeModel(LoginData.getInstance()));
         infoItem.addActionListener(e -> infoDialog.setVisible(true));
 
         // advanced menu for non users
         if (isAdvanced) {
             JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
             editOrgItem.setIcon(Icons.ORGANIZATION);
-            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployee"));
-            editEmpItem.setIcon(Icons.USERS);
-            editMenu.addSeparator();
+
             editMenu.add(editOrgItem);
-            editMenu.add(editEmpItem);
+
 
             JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
             JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
@@ -232,6 +233,10 @@ public class MainFrame extends JFrame {
             settingsMenu.add(conSettItem);
 
             if (LoginData.getInstance().getRoleId() == Role.ADMIN.getRoleId()) {
+                JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
+                editEmpItem.setIcon(Icons.USERS);
+                editMenu.add(editEmpItem);
+
                 JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
                 settingsMenu.addSeparator();
                 settingsMenu.add(setCurrentVersionAsMinimum);
@@ -241,14 +246,17 @@ public class MainFrame extends JFrame {
                         listener.setMinimumVersionEventOccurred();
                     }
                 });
+                editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
             }
 
             menuBar.add(settingsMenu);
 
             editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
-            editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
+
             conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
         }
+
+        menuBar.add(helpMenu);
 
         return menuBar;
     }
@@ -494,5 +502,9 @@ public class MainFrame extends JFrame {
 
     public CreateBidDialog getCreateBidDialog() {
         return createBidDialog;
+    }
+
+    public OrganizationDialog getEditOrgDialog() {
+        return editOrgDialog;
     }
 }

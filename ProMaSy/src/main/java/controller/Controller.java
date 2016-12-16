@@ -13,6 +13,7 @@ import main.java.gui.bids.CreateBidDialogListener;
 import main.java.gui.bids.reports.ReportParametersDialogListener;
 import main.java.gui.bids.reports.ReportParametersEvent;
 import main.java.gui.empedit.CreateEmployeeDialogListener;
+import main.java.gui.empedit.CreateEmployeeFromLoginListener;
 import main.java.gui.finance.FinancePanelListener;
 import main.java.gui.instedit.OrganizationDialogListener;
 import main.java.gui.login.LoginListener;
@@ -44,15 +45,20 @@ public class Controller {
 
         // Preferences class used for storage of connection settings to DB
         prefs = Preferences.userRoot().node("db_con");
+        try {
+            prefs.clear();
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
 
         // trying to get connection settings form prefs object,
         // if it doesn't exist defaults will be used
-        setConnectionSettings(prefs.get("server", "localhost"),
-                prefs.get("database", "promasydb"),
-                prefs.get("schema", "ibchem"),
-                prefs.getInt("port", 5432),
-                prefs.get("user", "promasy"),
-                prefs.get("password", "cl1entp@@SS"));
+        setConnectionSettings(prefs.get("server", Labels.getProperty("connectionSettings.server")),
+                prefs.get("database", Labels.getProperty("connectionSettings.database")),
+                prefs.get("schema", Labels.getProperty("connectionSettings.schema")),
+                prefs.getInt("port", Labels.getInt("connectionSettings.port")),
+                prefs.get("user", Labels.getProperty("connectionSettings.user")),
+                prefs.get("password", Labels.getProperty("connectionSettings.password")));
 
         // if user entered new settings for connection to DB - putting them to Prefs
         mainFrame.setConSetListener(e -> {
@@ -68,9 +74,12 @@ public class Controller {
             // trying to connect with new settings
             disconnect();
             connect();
+            checkFirstRun();
+            checkVersion();
         });
 
         connect();
+        checkFirstRun();
         checkVersion();
 
         // init LoginListener here, because loginDialog appears before the MainFrame
@@ -106,7 +115,7 @@ public class Controller {
                 int registrationNumber = registrationsLeft();
                 System.out.println("Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
-                    LoginData.getInstance(registrationNumber, "", "", "", 0L, 0L, 0L, Role.USER.getRoleId(), "", "", 0L, null, 0L, null);
+                    LoginData.getInstance(new EmployeeModel(registrationNumber, Role.USER.getRoleId()));
                     mainFrame.initialize();
                     initListeners();
                     loadDataToView();
@@ -616,6 +625,39 @@ public class Controller {
         });
     }
 
+    private void checkFirstRun() {
+        if (isFirstRun()) {
+            int option = JOptionPane.showConfirmDialog(mainFrame, Labels.getProperty("firstRunLong"), Labels.getProperty("firstRun"), JOptionPane.YES_NO_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                createAdmin();
+            } else if (option == JOptionPane.NO_OPTION) {
+                closeDialog();
+            }
+        }
+    }
+
+    private void createAdmin() {
+        mainFrame.getCreateEmployeeDialog().setLoginListener(new CreateEmployeeFromLoginListener() {
+            @Override
+            public void newUserCreatedEvent() {
+                JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("youCanLoginAfterRestart"),
+                        Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE);
+                close();
+            }
+
+            @Override
+            public void cancelEvent() {
+                close();
+            }
+        });
+        LoginData.getInstance(new EmployeeModel(0, Role.ADMIN.getRoleId()));
+        mainFrame.initialize();
+        initListeners();
+        loadDataToView();
+        mainFrame.getCreateEmployeeDialog().setRoleBox(false, Role.ADMIN.getRoleId());
+        mainFrame.getCreateEmployeeDialog().setVisible(true);
+    }
+
     private void checkVersion() {
         Version currentVersion = new Version(Labels.getProperty("versionNumber"));
         Version dbVersion = getDBVersion();
@@ -676,12 +718,12 @@ public class Controller {
 
     // general methods for modifications in DB entries
     private <T extends AbstractModel> void setCreated(T model) {
-        model.setCreatedBy(LoginData.getInstance().getEmpId());
+        model.setCreatedBy(LoginData.getInstance().getModelId());
         model.setCreatedDate(Utils.getCurrentTime());
     }
 
     private <T extends AbstractModel> void setModified(T model) {
-        model.setModifiedBy(LoginData.getInstance().getEmpId());
+        model.setModifiedBy(LoginData.getInstance().getModelId());
         model.setModifiedDate(Utils.getCurrentTime());
     }
 
@@ -720,10 +762,19 @@ public class Controller {
 
     private void setCurrentVersionAsMinimum() {
         try {
-            Database.VERSIONS.set();
+            Database.VERSIONS.updateVersion();
             logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"), Utils.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"));
+        }
+    }
+
+    private boolean isFirstRun() {
+        try {
+            return Database.EMPLOYEES.isFirstRun();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
