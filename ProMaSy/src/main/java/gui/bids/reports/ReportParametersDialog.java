@@ -5,6 +5,7 @@ import main.java.gui.MainFrame;
 import main.java.gui.Utils;
 import main.java.model.EmployeeModel;
 import main.java.model.RoleModel;
+import main.java.model.enums.Role;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -24,6 +25,7 @@ public class ReportParametersDialog extends JDialog {
 	private JComboBox<EmployeeModel> personallyLiableEmpBox;
 	private JComboBox<EmployeeModel> accountantBox;
 	private JComboBox<EmployeeModel> economistBox;
+	private JComboBox<EmployeeModel> headTenderBox;
 	private JButton okButton;
 	private JButton cancelButton;
 	private ReportParametersDialogListener listener;
@@ -33,12 +35,13 @@ public class ReportParametersDialog extends JDialog {
 	private String personallyLiableEmpName;
 	private String accountantName;
 	private String economistName;
+	private String headTenderName;
 	private MainFrame parent;
 
 	public ReportParametersDialog(MainFrame parent) {
 		super(parent, Labels.getProperty("reportParameters"), true);
 		this.parent = parent;
-		setSize(330, 340);
+		setSize(330, 390);
 		setResizable(false);
 		setLocationRelativeTo(this.parent);
 
@@ -46,7 +49,8 @@ public class ReportParametersDialog extends JDialog {
 
 		roleBox = new JComboBox<>();
 		roleBox.setSize(preferredFieldDim);
-		roleBox.addItem(emptyRoleModel);
+		roleBox.addItem(new RoleModel(Role.DIRECTOR));
+		roleBox.addItem(new RoleModel(Role.DEPUTY_DIRECTOR));
 
 		headBox = new JComboBox<>();
 		headBox.setSize(preferredFieldDim);
@@ -67,6 +71,10 @@ public class ReportParametersDialog extends JDialog {
 		economistBox = new JComboBox<>();
 		economistBox.setSize(preferredFieldDim);
 		economistBox.addItem(emptyEmployeeModel);
+
+		headTenderBox = new JComboBox<>();
+		headTenderBox.setSize(preferredFieldDim);
+		headTenderBox.addItem(emptyEmployeeModel);
 
 		okButton = new JButton(Labels.getProperty("print"));
 
@@ -89,7 +97,7 @@ public class ReportParametersDialog extends JDialog {
 		okButton.addActionListener(e -> {
 			if (checkBoxes() && listener != null) {
 				listener.reportParametersSelectionOccurred(new ReportParametersEvent(roleName, headName,
-						departmentHeadName, personallyLiableEmpName, accountantName, economistName));
+						departmentHeadName, personallyLiableEmpName, accountantName, economistName, headTenderName));
 				setVisible(false);
 				clear();
 			}
@@ -110,25 +118,16 @@ public class ReportParametersDialog extends JDialog {
 		}
 
 		headName = headBox.getSelectedItem().toString();
-		if (headName == null || headName.equals("")) {
-			Utils.emptyFieldError(parent, Labels.getProperty("headOrganization"));
-			return false;
-		}
+
 		departmentHeadName = departmentHeadBox.getSelectedItem().toString();
 
 		personallyLiableEmpName = personallyLiableEmpBox.getSelectedItem().toString();
 
 		accountantName = accountantBox.getSelectedItem().toString();
-		if (accountantName == null || accountantName.equals("")) {
-			Utils.emptyFieldError(parent, Labels.getProperty("chiefAccountant"));
-			return false;
-		}
 
 		economistName = economistBox.getSelectedItem().toString();
-		if (economistName == null || economistName.equals("")) {
-			Utils.emptyFieldError(parent, Labels.getProperty("chiefEconomist"));
-			return false;
-		}
+
+		headTenderName = headTenderBox.getSelectedItem().toString();
 
 		return true;
 	}
@@ -140,16 +139,7 @@ public class ReportParametersDialog extends JDialog {
 		personallyLiableEmpName = "";
 		accountantName = "";
 		economistName = "";
-	}
-
-	public void setRoleBoxData(List<RoleModel> db) {
-		for (RoleModel model : db) {
-			// only if role is director(def id 1000) or deputy director (def id
-			// 2000) add to box
-			if (model.getRoleId() == 1000 || model.getRoleId() == 2000) {
-				roleBox.addItem(model);
-			}
-		}
+		headTenderName = "";
 	}
 
 	public void setHeadBoxData(List<EmployeeModel> db) {
@@ -207,6 +197,17 @@ public class ReportParametersDialog extends JDialog {
 		}
 	}
 
+	public void setHeadTenderBoxData(List<EmployeeModel> db) {
+		headTenderBox.removeAllItems();
+		if (db.isEmpty()) {
+			headTenderBox.addItem(emptyEmployeeModel);
+		} else {
+			for (EmployeeModel model : db) {
+				headTenderBox.addItem(model);
+			}
+		}
+	}
+
 	public void setListener(ReportParametersDialogListener listener) {
 		this.listener = listener;
 	}
@@ -237,6 +238,8 @@ public class ReportParametersDialog extends JDialog {
 		selectionPanel.add(accountantBox);
 		selectionPanel.add(new JLabel(Labels.getProperty("chiefEconomist")));
 		selectionPanel.add(economistBox);
+		selectionPanel.add(new JLabel(Labels.getProperty("headOfTenderCommittee")));
+		selectionPanel.add(headTenderBox);
 
 		okButton.setPreferredSize(cancelButton.getPreferredSize());
 		buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));

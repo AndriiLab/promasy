@@ -323,18 +323,24 @@ public class MainFrame extends JFrame {
     private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
             // search for heads of department (id 5000) in department
-            listener.searchForPerson(5000, bidsListPanel.getSelectedDepartmentId());
+            listener.searchForPerson(Role.HEAD_OF_DEPARTMENT.getRoleId(), bidsListPanel.getSelectedDepartmentId());
             reportParametersDialog.setDepartmentHeadBoxData(Database.EMPLOYEES.getList());
             // search for personally liable employee (id 6000) in department
-            listener.searchForPerson(6000, bidsListPanel.getSelectedDepartmentId());
+            listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE.getRoleId(), bidsListPanel.getSelectedDepartmentId());
             reportParametersDialog.setPersonallyLiableEmpBoxData(Database.EMPLOYEES.getList());
             // search for chief accountant (id 4000)
-            listener.searchForPerson(4000);
+            listener.searchForPerson(Role.ACCOUNTANT.getRoleId());
             reportParametersDialog.setAccountantBoxData(Database.EMPLOYEES.getList());
             // search for chief economist (id 3000)
-            listener.searchForPerson(3000);
+            listener.searchForPerson(Role.ECONOMIST.getRoleId());
             reportParametersDialog.setEconomistBoxData(Database.EMPLOYEES.getList());
-            // show dialog with selectors for director, head of department, PLE, accountant, economist
+            // search for HEAD OF TENDER COMMITTEE (id 2500)
+            listener.searchForPerson(Role.HEAD_OF_TENDER_COMMITTEE.getRoleId());
+            reportParametersDialog.setHeadTenderBoxData(Database.EMPLOYEES.getList());
+            // search for director (id 1000)
+            listener.searchForPerson(Role.DIRECTOR.getRoleId());
+            reportParametersDialog.setHeadBoxData(Database.EMPLOYEES.getList());
+            // show dialog with selectors for director, head of department, PLE, accountant, economist, HEAD OF TENDER COMMITTEE
             reportParametersDialog.setVisible(true);
         }
     }
@@ -456,7 +462,6 @@ public class MainFrame extends JFrame {
 
     public void setRoleModelList(List<RoleModel> roleModelList) {
         createEmployeeDialog.setRolesData(roleModelList);
-        reportParametersDialog.setRoleBoxData(roleModelList);
     }
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {

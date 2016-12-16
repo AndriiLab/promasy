@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-12-05T13:13:21 -->
+<!-- 2016-12-16T17:09:58 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -249,6 +249,19 @@
 					</textElement>
 					<text><![CDATA[____________]]></text>
 				</staticText>
+                <textField>
+                    <reportElement x="656" y="162" width="146" height="25" uuid="0499dc8c-671d-40a9-8791-3413662c361d">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="14"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[main.java.model.ReportParametersData.getInstance().getHeadTender()]]></textFieldExpression>
+                </textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -667,7 +680,8 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Замовлення сформоване " + java.time.LocalDate.now() + ". Замовник: " + main.java.model.LoginData.getInstance().getShortName()]]></textFieldExpression>
+                <textFieldExpression>
+                    <![CDATA["Замовлення сформоване " + java.time.LocalDate.now() + ". Замовник: " + main.java.model.LoginData.getInstance().getShortName() + " Телефон: "+main.java.model.LoginData.getInstance().getPhoneMain()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="761" y="10" width="41" height="20" uuid="1c3988bf-41ad-46af-893f-e586e6d973be">

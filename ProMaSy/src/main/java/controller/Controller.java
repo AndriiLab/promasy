@@ -619,7 +619,7 @@ public class Controller {
 
             public void reportParametersSelectionOccurred(ReportParametersEvent ev) {
                 ReportParametersData.getInstance().setData(ev.getHeadPosition(), ev.getHead(), ev.getDepartmentHead(),
-                        ev.getPersonallyLiableEmpl(), ev.getAccountant(), ev.getEconomist());
+                        ev.getPersonallyLiableEmpl(), ev.getAccountant(), ev.getEconomist(), ev.getHeadTender());
                 mainFrame.bidListPrint();
             }
         });

@@ -11,21 +11,24 @@ public class ReportParametersData {
     private String personallyLiableEmpl = "";
     private String accountant = "";
     private String economist = "";
+    private String headTender = "";
+
+
+    private ReportParametersData() {
+    }
 
     public static ReportParametersData getInstance() {
         return instance;
     }
 
-    private ReportParametersData() {
-    }
-
-    public void setData (String headPosition, String head, String departmentHead, String personallyLiableEmpl, String accountant, String economist) {
+    public void setData(String headPosition, String head, String departmentHead, String personallyLiableEmpl, String accountant, String economist, String headTender) {
         this.headPosition = headPosition;
         this.head = head;
         this.departmentHead = departmentHead;
         this.personallyLiableEmpl = personallyLiableEmpl;
         this.accountant = accountant;
         this.economist = economist;
+        this.headTender = headTender;
     }
 
     public String getHeadPosition() {
@@ -50,6 +53,10 @@ public class ReportParametersData {
 
     public String getEconomist() {
         return economist;
+    }
+
+    public String getHeadTender() {
+        return headTender;
     }
 
 	@Override

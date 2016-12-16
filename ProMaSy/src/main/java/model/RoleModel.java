@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.model.enums.Role;
+
 public class RoleModel extends AbstractModel{
 	private String rolesName;
     private int roleId;
@@ -13,6 +15,12 @@ public class RoleModel extends AbstractModel{
         this.roleId = roleId;
         this.rolesName = rolesName;
 	}
+
+    public RoleModel(Role role) {
+        super.setModelId(((long) role.getRoleId()));
+        this.roleId = role.getRoleId();
+        this.rolesName = role.getRoleName();
+    }
 
     public int getRoleId() {
         return roleId;

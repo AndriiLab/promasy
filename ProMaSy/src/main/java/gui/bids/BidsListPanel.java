@@ -353,6 +353,6 @@ public class BidsListPanel extends JPanel {
                 list.add(reportModel);
             }
         }
-        new BidsReport(Collections.unmodifiableList(list));
+        new BidsReport(Collections.unmodifiableList(list), parent);
     }
 }

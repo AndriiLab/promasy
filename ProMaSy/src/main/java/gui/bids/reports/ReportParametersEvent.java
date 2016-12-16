@@ -10,14 +10,16 @@ public class ReportParametersEvent {
     private String personallyLiableEmpl;
     private String accountant;
     private String economist;
+    private String headTender;
 
-    public ReportParametersEvent(String headPosition, String head, String departmentHead, String personallyLiableEmpl, String accountant, String economist) {
+    public ReportParametersEvent(String headPosition, String head, String departmentHead, String personallyLiableEmpl, String accountant, String economist, String headTender) {
         this.headPosition = headPosition;
         this.head = head;
         this.departmentHead = departmentHead;
         this.personallyLiableEmpl = personallyLiableEmpl;
         this.accountant = accountant;
         this.economist = economist;
+        this.headTender = headTender;
     }
 
     public String getHeadPosition() {
@@ -42,5 +44,9 @@ public class ReportParametersEvent {
 
     public String getEconomist() {
         return economist;
+    }
+
+    public String getHeadTender() {
+        return headTender;
     }
 }

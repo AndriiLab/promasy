@@ -1,5 +1,7 @@
 package main.java.gui.bids.reports;
 
+import main.java.gui.Labels;
+import main.java.gui.MainFrame;
 import main.java.model.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -8,6 +10,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 public class BidsReport {
 
-    public BidsReport (List<BidsReportModel> bidsList){
+    public BidsReport(List<BidsReportModel> bidsList, MainFrame parent) {
         JasperPrint jasperPrint;
         try {
             jasperPrint = JasperFillManager.fillReport("resources\\Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
@@ -28,14 +31,17 @@ public class BidsReport {
             if (e.getMessage().startsWith("java.io.FileNotFoundException")){
                 //Compile report (.jrxml) to .jasper if it is not compiled
                 compileReport();
-                System.out.println("Compiling report file");
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupComplete"), Labels.getProperty("printInfo"), JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupError"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE);
+                parent.logEvent(e, Labels.getProperty("printError"));
             }
-            e.printStackTrace();
+
         }
     }
 
     private static void compileReport(){
-        // Bad file path. Possible doesn't work in jar
+        System.out.println("Compiling new report file");
         File jrxmlFile = new File("resources/Bids_Report.jrxml");
         try {
             JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
