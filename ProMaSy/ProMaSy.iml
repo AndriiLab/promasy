@@ -16,7 +16,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-    <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.3.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.jasperreports:jasperreports:6.4.0" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.9.0" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.1" level="project" />
@@ -56,8 +56,8 @@
     <orderEntry type="library" name="Maven: com.google.zxing:core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.icu:icu4j:57.1" level="project" />
     <orderEntry type="library" name="Maven: org.swinglabs.swingx:swingx-all:1.6.5-1" level="project" />
-    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1211" level="project" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1212" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:3.0.24" level="project" />
     <orderEntry type="library" name="Maven: com.github.jiconfont:jiconfont-swing:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: com.github.jiconfont:jiconfont:0.10.0" level="project" />
