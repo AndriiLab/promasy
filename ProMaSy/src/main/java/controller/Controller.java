@@ -3,10 +3,7 @@
  */
 package main.java.controller;
 
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.MainFrameListener;
-import main.java.gui.Utils;
+import main.java.gui.*;
 import main.java.gui.amunits.AmUnitsDialogListener;
 import main.java.gui.bids.BidsListPanelListener;
 import main.java.gui.bids.CreateBidDialogListener;
@@ -700,12 +697,12 @@ public class Controller {
     private void connect() {
         try {
             Database.DB.connect(conSet);
-            logEvent(Labels.getProperty("connectedToDB"), Utils.GREEN);
+            logEvent(Labels.getProperty("connectedToDB"), Colors.GREEN);
         } catch (Exception e) {
             e.printStackTrace();
-            logEvent(Labels.getProperty("NoConnectionToDB"), Utils.RED);
-            JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("NoConnectionToDB"),
-                    Labels.getProperty("DatabaseConnectionError"), JOptionPane.ERROR_MESSAGE);
+            logEvent(Labels.getProperty("noConnectionToDB"), Colors.RED);
+            JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
+                    Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE);
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
         }
@@ -763,7 +760,7 @@ public class Controller {
     private void setCurrentVersionAsMinimum() {
         try {
             Database.VERSIONS.updateVersion();
-            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"), Utils.GREEN);
+            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"));
         }
@@ -1023,7 +1020,7 @@ public class Controller {
         try {
             Database.EMPLOYEES.create(model);
             logEvent(Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("error"));
@@ -1035,7 +1032,7 @@ public class Controller {
         try {
             Database.EMPLOYEES.update(model);
             logEvent(Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1046,7 +1043,7 @@ public class Controller {
         try {
             Database.EMPLOYEES.delete(model);
             logEvent(Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1058,7 +1055,7 @@ public class Controller {
         try {
             Database.INSTITUTES.create(instModel);
             logEvent(Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1069,7 +1066,7 @@ public class Controller {
         try {
             Database.INSTITUTES.update(instModel);
             logEvent(Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
@@ -1082,7 +1079,7 @@ public class Controller {
         try {
             Database.INSTITUTES.delete(instModel);
             logEvent(Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1094,7 +1091,7 @@ public class Controller {
         try {
             Database.DEPARTMENTS.create(model);
             logEvent(Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1105,7 +1102,7 @@ public class Controller {
         try {
             Database.DEPARTMENTS.update(model);
             logEvent(Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1116,7 +1113,7 @@ public class Controller {
         try {
             Database.DEPARTMENTS.delete(model);
             logEvent(Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1128,7 +1125,7 @@ public class Controller {
         try {
             Database.SUBDEPARTMENS.create(model);
             logEvent(Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1139,7 +1136,7 @@ public class Controller {
         try {
             Database.SUBDEPARTMENS.update(model);
             logEvent(Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
@@ -1151,7 +1148,7 @@ public class Controller {
         try {
             Database.SUBDEPARTMENS.delete(model);
             logEvent(Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1162,7 +1159,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.AMOUNTUNITS.create(model);
-            logEvent(Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1173,7 +1170,7 @@ public class Controller {
         try {
             Database.AMOUNTUNITS.update(model);
             logEvent(Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1183,7 +1180,7 @@ public class Controller {
         setInactive(model);
         try {
             Database.AMOUNTUNITS.delete(model);
-            logEvent(Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1194,7 +1191,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.PRODUCERS.create(model);
-            logEvent(Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1204,7 +1201,7 @@ public class Controller {
         setModified(model);
         try {
             Database.PRODUCERS.update(model);
-            logEvent(Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1214,7 +1211,7 @@ public class Controller {
         setInactive(model);
         try {
             Database.PRODUCERS.delete(model);
-            logEvent(Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1225,7 +1222,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.SUPPLIERS.create(model);
-            logEvent(Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1235,7 +1232,7 @@ public class Controller {
         setModified(model);
         try {
             Database.SUPPLIERS.update(model);
-            logEvent(Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1245,7 +1242,7 @@ public class Controller {
         setInactive(model);
         try {
             Database.SUPPLIERS.delete(model);
-            logEvent(Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1256,7 +1253,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.REASONS.create(model);
-            logEvent(Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1266,7 +1263,7 @@ public class Controller {
         setModified(model);
         try {
             Database.REASONS.update(model);
-            logEvent(Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1276,7 +1273,7 @@ public class Controller {
         setInactive(model);
         try {
             Database.REASONS.delete(model);
-            logEvent(Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1288,7 +1285,7 @@ public class Controller {
         try {
             Database.FINANCES.create(model);
             logEvent(Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1298,7 +1295,7 @@ public class Controller {
         setModified(model);
         try {
             Database.FINANCES.update(model);
-            logEvent(Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1309,7 +1306,7 @@ public class Controller {
         try {
             Database.FINANCES.delete(model);
             logEvent(Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1321,7 +1318,7 @@ public class Controller {
         try {
             Database.DEPARTMENT_FINANCES.create(model);
             logEvent(Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1332,7 +1329,7 @@ public class Controller {
         try {
             Database.DEPARTMENT_FINANCES.update(model);
             logEvent(Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1343,7 +1340,7 @@ public class Controller {
         try {
             Database.DEPARTMENT_FINANCES.delete(model);
             logEvent(Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Utils.GREEN);
+                    Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1354,7 +1351,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.BIDS.create(model);
-            logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1364,7 +1361,7 @@ public class Controller {
         setModified(model);
         try {
             Database.BIDS.update(model);
-            logEvent(Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1374,7 +1371,7 @@ public class Controller {
         setInactive(model);
         try {
             Database.BIDS.delete(model);
-            logEvent(Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("error"));
         }
@@ -1384,7 +1381,7 @@ public class Controller {
         setCreated(model);
         try {
             Database.STATUSES.create(model);
-            logEvent(Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("success"), Utils.GREEN);
+            logEvent(Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             e.printStackTrace();
             errorLogEvent(e, Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("error"));
@@ -1417,7 +1414,7 @@ public class Controller {
 
     // but it calls only in this close() method (except close in login dialog)
     private void closeDialog() {
-        int action = JOptionPane.showConfirmDialog(this.mainFrame, Labels.getProperty("WantExit"),
+        int action = JOptionPane.showConfirmDialog(this.mainFrame, Labels.getProperty("doYouWantExit"),
                 Labels.getProperty("exitFromProgram"), JOptionPane.OK_CANCEL_OPTION);
         if (action == JOptionPane.OK_OPTION) {
             close();

@@ -20,7 +20,7 @@ public class ConSetDialog extends JDialog {
     private ConSetListener prefsListener;
 
     public ConSetDialog(JFrame parent) {
-        super(parent, Labels.getProperty("ConnectionWithDBSettings"), true);
+        super(parent, Labels.getProperty("connectionWithDBSettings"), true);
 
         okButton = new JButton(Labels.getProperty("okBtn"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
@@ -109,7 +109,7 @@ public class ConSetDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = rightPadding;
-        controlsPanel.add(new JLabel(Labels.withColon("DBName")), gc);
+        controlsPanel.add(new JLabel(Labels.withColon("dbName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

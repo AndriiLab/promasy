@@ -355,10 +355,10 @@ public class CreateBidDialog extends JDialog {
         String selectedCatNum = catNumberField.getText();
         String selectedCPV = cpvField.getText();
         if (selectedCPV.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("CPVCode"));
+            Utils.emptyFieldError(parent, Labels.getProperty("cpvCode"));
             return false;
         } else if (selectedCPV.length() != 10) {
-            Utils.wrongFormatError(parent, Labels.getProperty("CPVCode"), Labels.getProperty("wrongFormatCPV"));
+            Utils.wrongFormatError(parent, Labels.getProperty("cpvCode"), Labels.getProperty("wrongFormatCPV"));
             return false;
         }
         String selectedDescription = descriptionPane.getText();
@@ -440,20 +440,20 @@ public class CreateBidDialog extends JDialog {
     void loadToDialog(BidModel model) {
         setTitle(Labels.getProperty("editBid"));
         okButton.setText(Labels.getProperty("editBid"));
+        Utils.setBoxFromID(departmentBox, model.getDepId());
+        Utils.setBoxFromID(financeDepartmentBox, model.getFinanceId());
+        Utils.setBoxFromID(producerBox, model.getProducerId());
+        Utils.setBoxFromID(supplierBox, model.getSupplierId());
+        Utils.setBoxFromID(reasonForSupplierChoiceBox, model.getReasonId());
+        Utils.setBoxFromID(amUnitsBox, model.getAmUnitId());
         createdBidModel = model;
-        setVisible(true);
-        Utils.setBoxFromID(departmentBox, createdBidModel.getDepId());
-        Utils.setBoxFromID(financeDepartmentBox, createdBidModel.getFinanceId());
-        Utils.setBoxFromID(producerBox, createdBidModel.getProducerId());
         cpvField.setText(createdBidModel.getCpvCode());
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());
-        Utils.setBoxFromID(supplierBox, createdBidModel.getSupplierId());
-        Utils.setBoxFromID(reasonForSupplierChoiceBox, createdBidModel.getReasonId());
-        Utils.setBoxFromID(amUnitsBox, createdBidModel.getAmUnitId());
         amountField.setText(Integer.toString(createdBidModel.getAmount()));
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
         calculateTotalPrice();
+        setVisible(true);
     }
 
     private void createLayout() {
@@ -545,7 +545,7 @@ public class CreateBidDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("CPVCode")), gc);
+        createBidPanel.add(new JLabel(Labels.withColon("cpvCode")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

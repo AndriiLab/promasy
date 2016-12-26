@@ -10,9 +10,9 @@ class CpvTableModel extends AbstractTableModel {
 
 	private List<CPVModel> db;
 
-	private String[] colNames = {Labels.getProperty("CPVCode"),
-									Labels.getProperty("UkrainianName"),
-									Labels.getProperty("EnglishName")};
+    private String[] colNames = {Labels.getProperty("cpvCode"),
+            Labels.getProperty("ukrainianName"),
+            Labels.getProperty("englishName")};
 
 	public CpvTableModel() {
 	}

@@ -227,7 +227,7 @@ public class MainFrame extends JFrame {
 
 
             JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("ConnectionWithDBSettings"));
+            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("connectionWithDBSettings"));
             conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
 
             settingsMenu.add(conSettItem);
@@ -361,9 +361,9 @@ public class MainFrame extends JFrame {
 
     public void logEvent(Exception exception, String message) {
         exception.printStackTrace();
-        statusPanel.setStatus(message, Utils.RED);
-        loggerDialog.addToLog(message, Utils.RED);
-        loggerDialog.addToLog(exception.toString(), Utils.RED);
+        statusPanel.setStatus(message, Colors.RED);
+        loggerDialog.addToLog(message, Colors.RED);
+        loggerDialog.addToLog(exception.toString(), Colors.RED);
     }
 
     //Listeners
@@ -465,7 +465,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {
-        producerDialog.setProdData(producerModelList);
+        producerDialog.setData(producerModelList);
         createBidDialog.setProducerBoxData(producerModelList);
     }
 

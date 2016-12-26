@@ -4,7 +4,6 @@ import main.java.model.AbstractModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
-import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -13,9 +12,6 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 
 public class Utils {
-    public static final Color GREEN = new Color(0, 153, 51);
-    public static final Color RED = new Color(204, 0, 0);
-    public static final Color BLUE = new Color(25, 61, 160);
 
     public static Timestamp getCurrentTime(){
         return new Timestamp(System.currentTimeMillis());

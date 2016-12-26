@@ -31,7 +31,7 @@ public class SupplierDialog extends JDialog {
     public SupplierDialog(JFrame parent) {
         super(parent, Labels.getProperty("suplDialogSuper"), true);
         this.parent = parent;
-        setSize(350, 250);
+        setSize(335, 235);
         setResizable(false);
         setLocationRelativeTo(parent);
 
@@ -169,7 +169,7 @@ public class SupplierDialog extends JDialog {
 
         int space = 5;
         Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-        Border suplBorder = BorderFactory.createTitledBorder(Labels.getProperty("supplier"));
+        Border suplBorder = BorderFactory.createEtchedBorder();
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
         supplPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, suplBorder));
