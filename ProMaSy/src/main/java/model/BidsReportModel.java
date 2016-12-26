@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.gui.Labels;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
@@ -29,13 +31,25 @@ public class BidsReportModel {
         this.cpvUkr = cpvUkr;
         this.orderDescription = orderDescription;
         this.orderDate = orderDate;
-        this.producer = producer;
+        if (producer == null) {
+            this.producer = Labels.getProperty("any");
+        } else {
+            this.producer = producer;
+        }
         this.catNum = catNum;
-        this.supplier = supplier;
+        if (supplier == null) {
+            this.supplier = Labels.getProperty("any");
+        } else {
+            this.supplier = supplier;
+        }
         this.packType = packType;
         this.onePrice = onePrice;
         this.amount = amount;
-        this.reasonForSupplierChoice = reasonForSupplierChoice;
+        if (reasonForSupplierChoice == null) {
+            this.reasonForSupplierChoice = "";
+        } else {
+            this.reasonForSupplierChoice = reasonForSupplierChoice;
+        }
     }
 
     public BidsReportModel() {

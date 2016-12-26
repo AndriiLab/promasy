@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * Created by laban on 04.05.2016.
+ * Model for financial data
  */
 public class FinanceModel extends AbstractModel {
     private int orderNumber;
@@ -87,6 +87,9 @@ public class FinanceModel extends AbstractModel {
 
     @Override
     public String toString() {
-        return orderName;
+        if (orderNumber == 0 && orderName == null) {
+            return "";
+        }
+        return "(" + orderNumber + ") " + orderName;
     }
 }

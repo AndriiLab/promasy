@@ -19,8 +19,6 @@ public class ReasonForSupplierChoiceModel extends AbstractModel {
 
     public ReasonForSupplierChoiceModel() {
         this.reason = "";
-        this.setModelId(0L);
-
     }
 
     public String getReason() {

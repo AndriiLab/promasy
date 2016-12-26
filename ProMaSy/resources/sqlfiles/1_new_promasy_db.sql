@@ -109,8 +109,6 @@ CREATE TABLE producers (
   active        BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO producers (brand_id, brand_name, active) VALUES (0, 'Будь-який', FALSE);
-
 -- Фірми-постачальники продукції
 CREATE TABLE suppliers (
   supplier_id       BIGINT      NOT NULL DEFAULT id_gen() CONSTRAINT suppliers_pk PRIMARY KEY,
@@ -123,8 +121,6 @@ CREATE TABLE suppliers (
   modified_date     TIMESTAMP,
   active            BOOLEAN     NOT NULL DEFAULT TRUE
 );
-
-INSERT INTO suppliers (supplier_id, supplier_name, supplier_tel, active) VALUES (0, 'Будь-який', '', FALSE);
 
 /* Зв'язок між постачальниками та
 виробниками для пропозицій постачальників*/
@@ -150,8 +146,6 @@ CREATE TABLE reasons_for_suppl (
   active        BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
-INSERT INTO reasons_for_suppl (reason_id, reason_name, active) VALUES (0, '', FALSE);
-
 --  Дані про користувачів
 CREATE TABLE employees (
   emp_id        BIGINT      NOT NULL DEFAULT id_gen() UNIQUE,
@@ -162,7 +156,7 @@ CREATE TABLE employees (
   phone_main    VARCHAR(50) NOT NULL, -- Робочий телефон
   phone_reserve VARCHAR(50), -- Запасний телефон
   dep_id        BIGINT      NOT NULL REFERENCES departments (dep_id) ON UPDATE CASCADE,
-  subdep_id     BIGINT,
+  subdep_id     BIGINT REFERENCES subdepartments (subdep_id) ON UPDATE CASCADE,
   roles_id      INT         NOT NULL REFERENCES roles (roles_id) ON UPDATE CASCADE,
   login         VARCHAR(30) NOT NULL UNIQUE,
   password      VARCHAR(64) NOT NULL,

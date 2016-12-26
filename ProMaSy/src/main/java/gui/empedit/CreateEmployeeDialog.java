@@ -265,6 +265,9 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel.setEmpFName(firstName);
         currentEmployeeModel.setEmpMName(middleName);
         currentEmployeeModel.setEmpLName(lastName);
+        currentEmployeeModel.setEmail(email);
+        currentEmployeeModel.setPhoneMain(phoneMain);
+        currentEmployeeModel.setPhoneReserve(phoneReserve);
         currentEmployeeModel.setDepId(departmentModel.getModelId());
         currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
         currentEmployeeModel.setRoleId(roleModel.getRoleId());

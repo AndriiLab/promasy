@@ -27,7 +27,12 @@ public class BidsQueries extends SQLQueries<BidModel>{
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
         prepStmt1.setLong(1, object.getModelId());
         prepStmt1.setLong(2, object.getDepId());
-        prepStmt1.setLong(3, object.getProducerId());
+        long producerId = object.getProducerId();
+        if (producerId == 0L) {
+            prepStmt1.setNull(3, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(3, producerId);
+        }
         prepStmt1.setString(4, object.getCatNum());
         prepStmt1.setString(5, object.getBidDesc());
         prepStmt1.setString(6, object.getCpvCode());
@@ -35,12 +40,22 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt1.setInt(8, object.getAmount());
         prepStmt1.setLong(9, object.getAmUnitId());
         prepStmt1.setLong(10, object.getFinanceId());
-        prepStmt1.setLong(11, object.getSupplierId());
+        long supplierId = object.getSupplierId();
+        if (supplierId == 0L) {
+            prepStmt1.setNull(11, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(11, supplierId);
+        }
         prepStmt1.setLong(12, object.getCreatedBy());
         prepStmt1.setTimestamp(13, object.getCreatedDate());
         prepStmt1.setBoolean(14, object.isActive());
         prepStmt1.setInt(15, object.getStatusId());
-        prepStmt1.setLong(16, object.getReasonId());
+        long reasonId = object.getReasonId();
+        if (reasonId == 0L) {
+            prepStmt1.setNull(16, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(16, reasonId);
+        }
         prepStmt1.executeUpdate();
 
         String query2 = "INSERT INTO bid_status(bid_id, status_id, created_by, created_date) VALUES (?, ?, ?, ?)";
@@ -76,10 +91,10 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
-                "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
+                "LEFT JOIN producers ON producers.brand_id = bids.brand_id " +
                 "INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code " +
                 "INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id " +
-                "INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
+                "LEFT JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
                 "INNER JOIN finance ON finance.order_id = bids.order_id " +
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
@@ -111,10 +126,10 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
-                "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
+                "LEFT JOIN producers ON producers.brand_id = bids.brand_id " +
                 "INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code " +
                 "INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id " +
-                "INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
+                "LEFT JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
                 "INNER JOIN finance ON finance.order_id = bids.order_id " +
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
@@ -149,10 +164,10 @@ public class BidsQueries extends SQLQueries<BidModel>{
                 "END AS TIMESTAMP) AS mod_date " +
                 "FROM bids " +
                 "INNER JOIN departments ON bids.dep_id = departments.dep_id " +
-                "INNER JOIN producers ON producers.brand_id = bids.brand_id " +
+                "LEFT JOIN producers ON producers.brand_id = bids.brand_id " +
                 "INNER JOIN cpv ON cpv.cpv_code = bids.cpv_code " +
                 "INNER JOIN amountunits ON amountunits.am_unit_id = bids.am_unit_id " +
-                "INNER JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
+                "LEFT JOIN suppliers ON bids.supplier_id = suppliers.supplier_id " +
                 "INNER JOIN finance ON finance.order_id = bids.order_id " +
                 "INNER JOIN statuses ON bids.status_id = statuses.status_id " +
                 "INNER JOIN employees AS creator ON bids.created_by = creator.emp_id " +
@@ -179,7 +194,12 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query1 = "UPDATE bids SET dep_id=?, brand_id=?, cat_num=?, bid_desc=?, cpv_code=?,  one_price=?, amount=?, am_unit_id=?, order_id=?, supplier_id=?, modified_by=?, modified_date=?, status_id=?, reason_id=? WHERE bid_id = ? AND active = TRUE";
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
         prepStmt1.setLong(1, object.getDepId());
-        prepStmt1.setLong(2, object.getProducerId());
+        long producerId = object.getProducerId();
+        if (producerId == 0L) {
+            prepStmt1.setNull(2, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(2, producerId);
+        }
         prepStmt1.setString(3, object.getCatNum());
         prepStmt1.setString(4, object.getBidDesc());
         prepStmt1.setString(5, object.getCpvCode());
@@ -187,11 +207,21 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt1.setInt(7, object.getAmount());
         prepStmt1.setLong(8, object.getAmUnitId());
         prepStmt1.setLong(9, object.getFinanceId());
-        prepStmt1.setLong(10, object.getSupplierId());
+        long supplierId = object.getSupplierId();
+        if (supplierId == 0L) {
+            prepStmt1.setNull(10, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(10, supplierId);
+        }
         prepStmt1.setLong(11, object.getModifiedBy());
         prepStmt1.setTimestamp(12, object.getModifiedDate());
         prepStmt1.setInt(13, object.getStatusId());
-        prepStmt1.setLong(14, object.getReasonId());
+        long reasonId = object.getReasonId();
+        if (reasonId == 0L) {
+            prepStmt1.setNull(14, Types.BIGINT);
+        } else {
+            prepStmt1.setLong(14, reasonId);
+        }
         prepStmt1.setLong(15, object.getModelId());
         prepStmt1.executeUpdate();
 

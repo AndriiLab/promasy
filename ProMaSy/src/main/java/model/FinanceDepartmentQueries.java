@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 
 /**
- * Created by laban on 05.05.2016.
+ * CRUD for {@link FinanceDepartmentModel}
  */
 public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel> {
 
@@ -31,7 +31,8 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
     @Override
     public void retrieve() throws SQLException {
         list.clear();
-        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance.order_number, " +
+                "finance_dep.dep_id, departments.dep_name, " +
                     "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                     "finance_dep.order_amount, finance_dep.created_by, " +
                     "finance_dep.created_date, finance_dep.modified_by, " +
@@ -52,7 +53,8 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
 
     public void retrieveByOrderID(long orderID) throws SQLException {
         list.clear();
-        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance.order_number, " +
+                "finance_dep.dep_id, departments.dep_name, " +
                 "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                 "finance_dep.order_amount, finance_dep.created_by, " +
                 "finance_dep.created_date, finance_dep.modified_by, " +
@@ -74,7 +76,8 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
 
     public void retrieveByDepartmentID(long departmentId) throws SQLException {
         list.clear();
-        String query = "SELECT finance_dep.order_id, finance.order_name, finance_dep.dep_id, departments.dep_name, " +
+        String query = "SELECT finance_dep.order_id, finance.order_name, finance.order_number, " +
+                "finance_dep.dep_id, departments.dep_name, " +
                 "finance_dep.emp_id, employees.emp_fname, employees.emp_mname, employees.emp_lname, " +
                 "finance_dep.order_amount, finance_dep.created_by, " +
                 "finance_dep.created_date, finance_dep.modified_by, " +
@@ -134,6 +137,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
             boolean active = results.getBoolean("active");
             long orderId = results.getLong("order_id");
             String orderName =  results.getString("order_name");
+            int orderNumber = results.getInt("order_number");
             long depId = results.getLong("dep_id");
             String depName = results.getString("dep_name");
             long empId = results.getLong("emp_id");
@@ -144,7 +148,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
             BigDecimal totalAmount = results.getBigDecimal("order_amount");
             BigDecimal leftAmount = FinanceQueries.financeLeft(orderId, depId);
 
-            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, depId, depName, empId, empName, totalAmount, leftAmount);
+            FinanceDepartmentModel financeDepartmentModel = new FinanceDepartmentModel(createdBy, createdDate, modifiedBy, modifiedDate, active, orderId, orderName, orderNumber, depId, depName, empId, empName, totalAmount, leftAmount);
             list.add(financeDepartmentModel);
         }
     }

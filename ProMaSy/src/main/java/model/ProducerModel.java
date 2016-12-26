@@ -5,7 +5,7 @@ import main.java.gui.Labels;
 import java.sql.Timestamp;
 
 /**
- * Created by laban on 26.04.2016.
+ *  Model for producer data
  */
 public class ProducerModel extends AbstractModel{
     private String brandName;
@@ -22,7 +22,6 @@ public class ProducerModel extends AbstractModel{
     }
 
     public ProducerModel(){
-        this.setModelId(0L);
         this.brandName = Labels.getProperty("any");
     }
 

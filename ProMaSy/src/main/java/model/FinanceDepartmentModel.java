@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * Created by laban on 04.05.2016.
+ * Model for data of related to department finances
  */
 public class FinanceDepartmentModel extends AbstractModel {
+    private int orderNumber;
     private String orderName;
     private long depId;
     private String depName;
@@ -15,9 +16,10 @@ public class FinanceDepartmentModel extends AbstractModel {
     private BigDecimal totalAmount;
     private BigDecimal leftAmount;
 
-    public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderName, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
+    public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderName, int orderNumber, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
         super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderName = orderName;
+        this.orderNumber = orderNumber;
         this.depId = depId;
         this.depName = depName;
         this.empId = empId;
@@ -93,8 +95,19 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.orderName = orderName;
     }
 
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     @Override
     public String toString() {
-        return orderName;
+        if (orderNumber == 0 && orderName == null) {
+            return "";
+        }
+        return "(" + orderNumber + ") " + orderName;
     }
 }
