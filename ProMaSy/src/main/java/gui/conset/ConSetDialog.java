@@ -35,22 +35,20 @@ public class ConSetDialog extends JDialog {
         layoutControls();
 
         okButton.addActionListener(e -> {
-            if (!String.valueOf(passField.getPassword()).equals("passw")) {
-                int portNumber = (Integer) portSpinner.getValue();
-                String server = serverField.getText();
-                String database = dbField.getText();
-                String schema = schemaField.getText();
-                String user = userField.getText();
-                char[] password = passField.getPassword();
-                setVisible(false);
+            int portNumber = (Integer) portSpinner.getValue();
+            String server = serverField.getText();
+            String database = dbField.getText();
+            String schema = schemaField.getText();
+            String user = userField.getText();
+            char[] password = passField.getPassword();
+            setVisible(false);
 
-                ConnectionSettingsModel model = new ConnectionSettingsModel(server, database, schema, portNumber, user,
-                        String.valueOf(password));
+            ConnectionSettingsModel model = new ConnectionSettingsModel(server, database, schema, portNumber, user,
+                    String.valueOf(password));
 
-                if (prefsListener != null) {
-                    prefsListener.preferencesSetEventOccurred(model);
-                }
-            } else setVisible(false);
+            if (prefsListener != null) {
+                prefsListener.preferencesSetEventOccurred(model);
+            }
         });
 
         cancelButton.addActionListener(e -> setVisible(false));
@@ -165,12 +163,12 @@ public class ConSetDialog extends JDialog {
         this.prefsListener = prefsListener;
     }
 
-    public void setDefaults(String server, String database, String schema, int portNumber, String user) {
+    public void setDefaults(String server, String database, String schema, int portNumber, String user, String password) {
         serverField.setText(server);
         schemaField.setText(schema);
         dbField.setText(database);
         portSpinner.setValue(portNumber);
         userField.setText(user);
-        passField.setText("passw");
+        passField.setText(password);
     }
 }

@@ -42,23 +42,14 @@ public class Controller {
 
         // Preferences class used for storage of connection settings to DB
         prefs = Preferences.userRoot().node("db_con");
-        try {
-            prefs.clear();
-        } catch (BackingStoreException e) {
-            e.printStackTrace();
-        }
 
         // trying to get connection settings form prefs object,
         // if it doesn't exist defaults will be used
-        setConnectionSettings(prefs.get("server", Labels.getProperty("connectionSettings.server")),
-                prefs.get("database", Labels.getProperty("connectionSettings.database")),
-                prefs.get("schema", Labels.getProperty("connectionSettings.schema")),
-                prefs.getInt("port", Labels.getInt("connectionSettings.port")),
-                prefs.get("user", Labels.getProperty("connectionSettings.user")),
-                prefs.get("password", Labels.getProperty("connectionSettings.password")));
+        setConnectionSettings();
 
         // if user entered new settings for connection to DB - putting them to Prefs
         mainFrame.setConSetListener(e -> {
+            System.out.println(e.getServer());
             prefs.put("server", e.getServer());
             prefs.put("host", e.getDatabase());
             prefs.put("schema", e.getSchema());
@@ -70,6 +61,7 @@ public class Controller {
 
             // trying to connect with new settings
             disconnect();
+            setConnectionSettings();
             connect();
             checkFirstRun();
             checkVersion();
@@ -679,9 +671,18 @@ public class Controller {
     }
 
     // sets connection settings to Properties object
+    private void setConnectionSettings() {
+        setConnectionSettings(prefs.get("server", Labels.getProperty("connectionSettings.server")),
+                prefs.get("database", Labels.getProperty("connectionSettings.database")),
+                prefs.get("schema", Labels.getProperty("connectionSettings.schema")),
+                prefs.getInt("port", Labels.getInt("connectionSettings.port")),
+                prefs.get("user", Labels.getProperty("connectionSettings.user")),
+                prefs.get("password", Labels.getProperty("connectionSettings.password")));
+    }
+
     private void setConnectionSettings(String host, String database, String schema, int port, String user,
                                        String password) {
-        mainFrame.setDefaultConnectionSettings(host, database, schema, port, user);
+        mainFrame.setDefaultConnectionSettings(host, database, schema, port, user, password);
         if (conSet == null) {
             conSet = new Properties();
         }
