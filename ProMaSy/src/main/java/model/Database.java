@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public class Database {
 	public static final DBConnector DB = DBConnector.INSTANCE;

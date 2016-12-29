@@ -1,4 +1,4 @@
-package main.java.gui;
+package gui;
 
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;

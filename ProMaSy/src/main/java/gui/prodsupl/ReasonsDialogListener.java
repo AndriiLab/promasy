@@ -1,9 +1,9 @@
-package main.java.gui.prodsupl;
+package gui.prodsupl;
 
-import main.java.model.ReasonForSupplierChoiceModel;
+import model.ReasonForSupplierChoiceModel;
 
 /**
- * Created by laban on 02.12.2016.
+ * Listener for {@link ReasonsDialog}
  */
 public interface ReasonsDialogListener {
     void createReasonEventOccurred(ReasonForSupplierChoiceModel model);

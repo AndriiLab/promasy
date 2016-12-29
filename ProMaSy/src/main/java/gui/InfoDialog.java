@@ -1,4 +1,4 @@
-package main.java.gui;
+package gui;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,7 +13,7 @@ public class InfoDialog extends JDialog {
 
         JTextPane infoPane = new JTextPane();
 		infoPane.setEditable(false);
-		infoPane.setText(Labels.withColon("infoPaneText")+Labels.getProperty("versionNumber"));
+		infoPane.setText(Labels.withColon("infoPaneText") + Labels.getVersion() + "\n" + Labels.withColon("build") + Labels.getBuildDate());
 
         JButton okButton = new JButton(Labels.getProperty("okBtn"));
 		okButton.addActionListener(e -> setVisible(false));

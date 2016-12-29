@@ -1,6 +1,6 @@
-package main.java.gui;
+package gui;
 
-import main.java.model.AbstractModel;
+import model.AbstractModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;

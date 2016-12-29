@@ -3,35 +3,35 @@
   and dialog boxes.
  */
 
-package main.java.gui;
+package gui;
 
+import gui.amunits.AmUnitsDialog;
+import gui.amunits.AmUnitsDialogListener;
+import gui.bids.BidsListPanel;
+import gui.bids.BidsListPanelListener;
+import gui.bids.CreateBidDialog;
+import gui.bids.CreateBidDialogListener;
+import gui.bids.reports.ReportParametersDialog;
+import gui.bids.reports.ReportParametersDialogListener;
+import gui.conset.ConSetDialog;
+import gui.conset.ConSetListener;
+import gui.cpv.CpvDialog;
+import gui.cpv.CpvSearchListener;
+import gui.empedit.CreateEmployeeDialog;
+import gui.empedit.CreateEmployeeDialogListener;
+import gui.empedit.EditEmployeeDialog;
+import gui.empedit.EditEmployeeDialogListener;
+import gui.finance.FinancePanel;
+import gui.finance.FinancePanelListener;
+import gui.instedit.OrganizationDialog;
+import gui.instedit.OrganizationDialogListener;
+import gui.login.LoginDialog;
+import gui.login.LoginListener;
+import gui.prodsupl.*;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
-import main.java.gui.amunits.AmUnitsDialog;
-import main.java.gui.amunits.AmUnitsDialogListener;
-import main.java.gui.bids.BidsListPanel;
-import main.java.gui.bids.BidsListPanelListener;
-import main.java.gui.bids.CreateBidDialog;
-import main.java.gui.bids.CreateBidDialogListener;
-import main.java.gui.bids.reports.ReportParametersDialog;
-import main.java.gui.bids.reports.ReportParametersDialogListener;
-import main.java.gui.conset.ConSetDialog;
-import main.java.gui.conset.ConSetListener;
-import main.java.gui.cpv.CpvDialog;
-import main.java.gui.cpv.CpvSearchListener;
-import main.java.gui.empedit.CreateEmployeeDialog;
-import main.java.gui.empedit.CreateEmployeeDialogListener;
-import main.java.gui.empedit.EditEmployeeDialog;
-import main.java.gui.empedit.EditEmployeeDialogListener;
-import main.java.gui.finance.FinancePanel;
-import main.java.gui.finance.FinancePanelListener;
-import main.java.gui.instedit.OrganizationDialog;
-import main.java.gui.instedit.OrganizationDialogListener;
-import main.java.gui.login.LoginDialog;
-import main.java.gui.login.LoginListener;
-import main.java.gui.prodsupl.*;
-import main.java.model.*;
-import main.java.model.enums.Role;
+import model.*;
+import model.enums.Role;
 
 import javax.swing.*;
 import java.awt.*;

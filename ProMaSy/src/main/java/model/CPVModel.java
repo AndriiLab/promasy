@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public class CPVModel extends AbstractModel {
 	private String cpvId;

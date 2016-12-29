@@ -1,9 +1,9 @@
-package main.java.gui.empedit;
+package gui.empedit;
 
-import main.java.gui.CrEdDelButtons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.model.EmployeeModel;
+import gui.CrEdDelButtons;
+import gui.Labels;
+import gui.MainFrame;
+import model.EmployeeModel;
 
 import javax.swing.*;
 import java.awt.*;

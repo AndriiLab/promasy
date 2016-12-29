@@ -1,10 +1,10 @@
-package main.java.gui.login;
+package gui.login;
 
-import main.java.gui.Icons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.empedit.CreateEmployeeFromLoginListener;
-import main.java.model.enums.Role;
+import gui.Icons;
+import gui.Labels;
+import gui.MainFrame;
+import gui.empedit.CreateEmployeeFromLoginListener;
+import model.enums.Role;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;

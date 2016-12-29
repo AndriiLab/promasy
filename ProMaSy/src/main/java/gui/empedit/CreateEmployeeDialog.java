@@ -1,11 +1,11 @@
-package main.java.gui.empedit;
+package gui.empedit;
 
-import main.java.gui.Icons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.Utils;
-import main.java.model.*;
-import main.java.model.enums.Role;
+import gui.Icons;
+import gui.Labels;
+import gui.MainFrame;
+import gui.Utils;
+import model.*;
+import model.enums.Role;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;

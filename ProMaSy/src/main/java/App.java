@@ -1,11 +1,10 @@
-package main.java;
 /*
  * This is main Promasy class. It implements general method
  * for launching applications based on Swing interface. 
  */
 
-import main.java.controller.Controller;
-import main.java.gui.MainFrame;
+import controller.Controller;
+import gui.MainFrame;
 
 import javax.swing.*;
 

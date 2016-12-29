@@ -1,7 +1,7 @@
-package main.java.gui;
+package gui;
 
 /**
- * Created by laban on 24.06.2016.
+ * Listener for {@link MainFrame}
  */
 public interface MainFrameListener {
     //menu

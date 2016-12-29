@@ -1,10 +1,10 @@
-package main.java.gui.finance;
+package gui.finance;
 
-import main.java.model.FinanceDepartmentModel;
-import main.java.model.FinanceModel;
+import model.FinanceDepartmentModel;
+import model.FinanceModel;
 
 /**
- * Created by laban on 05.05.2016.
+ * Listener for {@link FinancePanel}
  */
 public interface FinancePanelListener {
     void createOrderEventOccurred(FinanceModel model);

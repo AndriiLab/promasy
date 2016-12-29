@@ -1,7 +1,7 @@
-package main.java.gui.empedit;
+package gui.empedit;
 
-import main.java.gui.Labels;
-import main.java.model.EmployeeModel;
+import gui.Labels;
+import model.EmployeeModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;

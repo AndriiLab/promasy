@@ -1,9 +1,9 @@
-package main.java.model;
+package model;
 
 import java.sql.*;
 
 /**
- * Created by laban on 26.04.2016.
+ * CRUD class for {@link ProducerModel}
  */
 public class ProducerQueries extends SQLQueries<ProducerModel> {
 

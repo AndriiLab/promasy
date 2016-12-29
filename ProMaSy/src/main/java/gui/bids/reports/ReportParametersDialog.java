@@ -1,11 +1,11 @@
-package main.java.gui.bids.reports;
+package gui.bids.reports;
 
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.Utils;
-import main.java.model.EmployeeModel;
-import main.java.model.RoleModel;
-import main.java.model.enums.Role;
+import gui.Labels;
+import gui.MainFrame;
+import gui.Utils;
+import model.EmployeeModel;
+import model.RoleModel;
+import model.enums.Role;
 
 import javax.swing.*;
 import javax.swing.border.Border;

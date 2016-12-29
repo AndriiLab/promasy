@@ -1,7 +1,7 @@
-package main.java.gui.conset;
+package gui.conset;
 
-import main.java.gui.Labels;
-import main.java.model.ConnectionSettingsModel;
+import gui.Labels;
+import model.ConnectionSettingsModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;

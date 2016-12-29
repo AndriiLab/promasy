@@ -1,6 +1,6 @@
-package main.java.model;
+package model;
 
-import main.java.gui.Labels;
+import gui.Labels;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

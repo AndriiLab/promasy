@@ -1,7 +1,7 @@
-package main.java.gui.bids.reports;
+package gui.bids.reports;
 
 /**
- * Created by laban on 23.06.2016.
+ * Listener for {@link ReportParametersDialog}
  */
 public interface ReportParametersDialogListener {
     void roleSelectionOccurred(int roleId);

@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,57 +11,11 @@ public class CPVQueries extends SQLQueries<CPVModel> {
 		super("cpv_code", "cpv");
 	}
 
-	@Override
-	public void create(CPVModel object) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void retrieve() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void retrieve(String request, boolean sameLvlShow) throws SQLException {
-		list.clear();
-		
-		PreparedStatement prepStmt = getCPVRequest(request, sameLvlShow);
-		ResultSet results = prepStmt.executeQuery();
-
-		while (results.next()) {
-			String cpvId = results.getString("cpv_code");
-			String cpvUkr = results.getString("cpv_ukr");
-			String cpvEng = results.getString("cpv_eng");
-			int cpvLevel = results.getInt("cpv_level");
-			boolean cpvTerminal = results.getBoolean("terminal");
-
-			CPVModel cpvModel = new CPVModel(cpvId, cpvUkr, cpvEng, cpvLevel, cpvTerminal);
-			list.add(cpvModel);
-		}
-		results.close();
-		prepStmt.close();
-		
-	}
-	
-
-	@Override
-	public void update(CPVModel object) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(CPVModel object) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private static PreparedStatement getCPVRequest(String requestedCpv, boolean sameLvlShow) throws SQLException{
 		int level = 0;
 		Connection con = DBConnector.INSTANCE.getConnection();
 		String query;
-		
+
 		//case: empty request
 		if (requestedCpv.isEmpty()) {
 			// selecting general Divisions
@@ -71,8 +25,8 @@ public class CPVQueries extends SQLQueries<CPVModel> {
 			PreparedStatement prepStmt = con.prepareStatement(query);
 			prepStmt.setString(1, requestedCpv);
 			return prepStmt;
-			
-		//case: first char is digit
+
+			//case: first char is digit
 		} else if (Character.isDigit(requestedCpv.charAt(0))) {
 			if (requestedCpv.length() > 8) {
 				// if more then 8 char, trim to 7 char and till non 0 value found
@@ -118,14 +72,14 @@ public class CPVQueries extends SQLQueries<CPVModel> {
 			if(sameLvlShow){
 				level--;
 			}
-			
-			query = "select cpv_code, cpv_ukr, cpv_eng, cpv_level, terminal from cpv where cpv_code ilike ? and cpv_level > ? and active = true";
+
+			query = "SELECT cpv_code, cpv_ukr, cpv_eng, cpv_level, terminal FROM cpv WHERE cpv_code ILIKE ? AND cpv_level > ? AND active = TRUE";
 			PreparedStatement prepStmt = con.prepareStatement(query);
 			prepStmt.setString(1, requestedCpv);
 			prepStmt.setInt(2, level);
 			return prepStmt;
-		
-		//case: first char is literal
+
+			//case: first char is literal
 		} else {
 			requestedCpv = "%" + requestedCpv + "%";
 			if (Character.UnicodeBlock.CYRILLIC.equals(Character.UnicodeBlock.of(requestedCpv.charAt(1)))) {
@@ -137,5 +91,50 @@ public class CPVQueries extends SQLQueries<CPVModel> {
 			prepStmt.setString(1, requestedCpv);
 			return prepStmt;
 		}
+	}
+
+	@Override
+	public void create(CPVModel object) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void retrieve() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void retrieve(String request, boolean sameLvlShow) throws SQLException {
+		list.clear();
+
+		PreparedStatement prepStmt = getCPVRequest(request, sameLvlShow);
+		ResultSet results = prepStmt.executeQuery();
+
+		while (results.next()) {
+			String cpvId = results.getString("cpv_code");
+			String cpvUkr = results.getString("cpv_ukr");
+			String cpvEng = results.getString("cpv_eng");
+			int cpvLevel = results.getInt("cpv_level");
+			boolean cpvTerminal = results.getBoolean("terminal");
+
+			CPVModel cpvModel = new CPVModel(cpvId, cpvUkr, cpvEng, cpvLevel, cpvTerminal);
+			list.add(cpvModel);
+		}
+		results.close();
+		prepStmt.close();
+
+	}
+
+	@Override
+	public void update(CPVModel object) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void delete(CPVModel object) {
+		// TODO Auto-generated method stub
+
 	}
 }

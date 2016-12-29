@@ -1,6 +1,6 @@
-package main.java.gui.prodsupl;
+package gui.prodsupl;
 
-import main.java.model.ProducerModel;
+import model.ProducerModel;
 
 /**
  * Listener for {@link ReasonsDialog}

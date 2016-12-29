@@ -1,9 +1,9 @@
-package main.java.model;
+package model;
 
 import java.sql.*;
 
 /**
- * Created by laban on 26.04.2016.
+ * CRUD for {@link SupplierModel}
  */
 public class SupplierQueries extends SQLQueries<SupplierModel> {
 

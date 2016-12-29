@@ -1,24 +1,24 @@
 /*
   This class connects MainFrame and Database
  */
-package main.java.controller;
+package controller;
 
-import main.java.gui.*;
-import main.java.gui.amunits.AmUnitsDialogListener;
-import main.java.gui.bids.BidsListPanelListener;
-import main.java.gui.bids.CreateBidDialogListener;
-import main.java.gui.bids.reports.ReportParametersDialogListener;
-import main.java.gui.bids.reports.ReportParametersEvent;
-import main.java.gui.empedit.CreateEmployeeDialogListener;
-import main.java.gui.empedit.CreateEmployeeFromLoginListener;
-import main.java.gui.finance.FinancePanelListener;
-import main.java.gui.instedit.OrganizationDialogListener;
-import main.java.gui.login.LoginListener;
-import main.java.gui.prodsupl.ProducerDialogListener;
-import main.java.gui.prodsupl.ReasonsDialogListener;
-import main.java.gui.prodsupl.SupplierDialogListener;
-import main.java.model.*;
-import main.java.model.enums.Role;
+import gui.*;
+import gui.amunits.AmUnitsDialogListener;
+import gui.bids.BidsListPanelListener;
+import gui.bids.CreateBidDialogListener;
+import gui.bids.reports.ReportParametersDialogListener;
+import gui.bids.reports.ReportParametersEvent;
+import gui.empedit.CreateEmployeeDialogListener;
+import gui.empedit.CreateEmployeeFromLoginListener;
+import gui.finance.FinancePanelListener;
+import gui.instedit.OrganizationDialogListener;
+import gui.login.LoginListener;
+import gui.prodsupl.ProducerDialogListener;
+import gui.prodsupl.ReasonsDialogListener;
+import gui.prodsupl.SupplierDialogListener;
+import model.*;
+import model.enums.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -656,7 +656,7 @@ public class Controller {
     }
 
     private void checkVersion() {
-        Version currentVersion = new Version(Labels.getProperty("versionNumber"));
+        Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
         if (currentVersion.compareTo(dbVersion) == -1) {
             JOptionPane.showMessageDialog(mainFrame,

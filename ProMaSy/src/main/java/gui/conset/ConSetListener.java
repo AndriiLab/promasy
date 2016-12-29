@@ -1,6 +1,6 @@
-package main.java.gui.conset;
+package gui.conset;
 
-import main.java.model.ConnectionSettingsModel;
+import model.ConnectionSettingsModel;
 
 public interface ConSetListener {
 
