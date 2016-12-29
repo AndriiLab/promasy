@@ -1,7 +1,7 @@
-package main.java.gui.bids.reports;
+package gui.bids.reports;
 
 /**
- * Created by laban on 23.06.2016.
+ * Event class for {@link ReportParametersDialog}
  */
 public class ReportParametersEvent {
     private String headPosition;

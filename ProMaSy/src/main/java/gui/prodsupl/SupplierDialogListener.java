@@ -1,9 +1,9 @@
-package main.java.gui.prodsupl;
+package gui.prodsupl;
 
-import main.java.model.SupplierModel;
+import model.SupplierModel;
 
 /**
- * Created by laban on 04.06.2016.
+ * Listener for {@link SupplierDialog}
  */
 public interface SupplierDialogListener {
     void createSuplEventOccurred(SupplierModel model);

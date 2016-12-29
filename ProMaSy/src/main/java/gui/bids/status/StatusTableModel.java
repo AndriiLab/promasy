@@ -1,7 +1,7 @@
-package main.java.gui.bids.status;
+package gui.bids.status;
 
-import main.java.gui.Labels;
-import main.java.model.StatusModel;
+import gui.Labels;
+import model.StatusModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.Timestamp;

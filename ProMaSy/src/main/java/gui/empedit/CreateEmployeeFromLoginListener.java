@@ -1,7 +1,7 @@
-package main.java.gui.empedit;
+package gui.empedit;
 
 /**
- * Listener for {@link main.java.gui.login.LoginDialog}
+ * Listener for {@link gui.login.LoginDialog}
  */
 public interface CreateEmployeeFromLoginListener {
 

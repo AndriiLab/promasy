@@ -1,9 +1,9 @@
-package main.java.gui.cpv;
+package gui.cpv;
 
-import main.java.gui.Icons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.model.CPVModel;
+import gui.Icons;
+import gui.Labels;
+import gui.MainFrame;
+import model.CPVModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;

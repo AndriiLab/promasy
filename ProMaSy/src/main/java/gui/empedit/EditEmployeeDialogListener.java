@@ -1,6 +1,6 @@
-package main.java.gui.empedit;
+package gui.empedit;
 
-import main.java.model.EmployeeModel;
+import model.EmployeeModel;
 
 public interface EditEmployeeDialogListener {
 	void deleteEmployeeEventOccurred(EmployeeModel model);

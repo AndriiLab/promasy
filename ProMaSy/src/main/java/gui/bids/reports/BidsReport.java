@@ -1,8 +1,8 @@
-package main.java.gui.bids.reports;
+package gui.bids.reports;
 
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.model.BidsReportModel;
+import gui.Labels;
+import gui.MainFrame;
+import model.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;

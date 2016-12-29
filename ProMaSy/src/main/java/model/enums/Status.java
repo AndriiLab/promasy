@@ -1,6 +1,6 @@
-package main.java.model.enums;
+package model.enums;
 
-import main.java.gui.Labels;
+import gui.Labels;
 
 /**
  * This Enum holds data about available bid statuses

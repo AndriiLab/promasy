@@ -1,4 +1,4 @@
-package main.java.gui.login;
+package gui.login;
 
 public interface LoginListener {
 

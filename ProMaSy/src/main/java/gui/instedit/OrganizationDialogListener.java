@@ -1,8 +1,8 @@
-package main.java.gui.instedit;
+package gui.instedit;
 
-import main.java.model.DepartmentModel;
-import main.java.model.InstituteModel;
-import main.java.model.SubdepartmentModel;
+import model.DepartmentModel;
+import model.InstituteModel;
+import model.SubdepartmentModel;
 
 public interface OrganizationDialogListener {
 	

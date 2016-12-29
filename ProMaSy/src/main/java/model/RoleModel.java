@@ -1,6 +1,6 @@
-package main.java.model;
+package model;
 
-import main.java.model.enums.Role;
+import model.enums.Role;
 
 public class RoleModel extends AbstractModel{
 	private String rolesName;

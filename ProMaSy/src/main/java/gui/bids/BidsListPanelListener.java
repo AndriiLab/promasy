@@ -1,7 +1,7 @@
-package main.java.gui.bids;
+package gui.bids;
 
-import main.java.model.BidModel;
-import main.java.model.StatusModel;
+import model.BidModel;
+import model.StatusModel;
 
 /**
  * Listener for {@link BidsListPanel}

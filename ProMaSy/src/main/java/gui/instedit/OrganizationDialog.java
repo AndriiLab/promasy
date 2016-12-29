@@ -1,10 +1,10 @@
-package main.java.gui.instedit;
+package gui.instedit;
 
-import main.java.gui.CrEdDelButtons;
-import main.java.gui.Labels;
-import main.java.model.DepartmentModel;
-import main.java.model.InstituteModel;
-import main.java.model.SubdepartmentModel;
+import gui.CrEdDelButtons;
+import gui.Labels;
+import model.DepartmentModel;
+import model.InstituteModel;
+import model.SubdepartmentModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;

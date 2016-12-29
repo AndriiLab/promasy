@@ -1,11 +1,11 @@
-package main.java.gui.bids;
+package gui.bids;
 
-import main.java.gui.Icons;
-import main.java.gui.Labels;
-import main.java.gui.MainFrame;
-import main.java.gui.Utils;
-import main.java.model.*;
-import main.java.model.enums.Status;
+import gui.Icons;
+import gui.Labels;
+import gui.MainFrame;
+import gui.Utils;
+import model.*;
+import model.enums.Status;
 
 import javax.swing.*;
 import javax.swing.border.Border;

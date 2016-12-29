@@ -1,7 +1,7 @@
-package main.java.model;
+package model;
 
 /**
- * Created by AL on 11.10.2016.
+ * POJO for {@link gui.bids.reports.ReportParametersDialog}
  */
 public class ReportParametersData {
     private static ReportParametersData instance = new ReportParametersData();

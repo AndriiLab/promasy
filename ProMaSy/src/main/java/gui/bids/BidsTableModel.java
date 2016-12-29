@@ -1,7 +1,7 @@
-package main.java.gui.bids;
+package gui.bids;
 
-import main.java.gui.Labels;
-import main.java.model.BidModel;
+import gui.Labels;
+import model.BidModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Table main.java.model for {@link BidsListPanel}
+ * Table model for {@link BidsListPanel}
  */
 class BidsTableModel extends AbstractTableModel {
 

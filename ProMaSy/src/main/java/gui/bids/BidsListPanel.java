@@ -1,9 +1,9 @@
-package main.java.gui.bids;
+package gui.bids;
 
-import main.java.gui.*;
-import main.java.gui.bids.reports.BidsReport;
-import main.java.gui.bids.status.StatusDialog;
-import main.java.model.*;
+import gui.*;
+import gui.bids.reports.BidsReport;
+import gui.bids.status.StatusDialog;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;

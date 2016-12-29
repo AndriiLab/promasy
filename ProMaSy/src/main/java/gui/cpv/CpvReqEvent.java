@@ -1,4 +1,4 @@
-package main.java.gui.cpv;
+package gui.cpv;
 
 import java.util.EventObject;
 

@@ -1,4 +1,4 @@
-package main.java.gui;
+package gui;
 
 import java.util.ResourceBundle;
 
@@ -6,8 +6,10 @@ import java.util.ResourceBundle;
  * Getter class for LabelsBundle.properties
  */
 public class Labels {
-    private static final String FILENAME = "LabelsBundle";
-    private static final ResourceBundle LABELS = ResourceBundle.getBundle(FILENAME);
+    private static final String LABELS_BUNDLE = "LabelsBundle";
+    private static final ResourceBundle LABELS = ResourceBundle.getBundle(LABELS_BUNDLE);
+    private static final String VERSION_BUNDLE = "version";
+    private static final ResourceBundle VERSION = ResourceBundle.getBundle(VERSION_BUNDLE);
 
     public static String getProperty(final String key) {
         return LABELS.getString(key);
@@ -29,6 +31,14 @@ public class Labels {
     }
     public static String withThreeDots(final String key) {
         return getProperty(key) + "...";
+    }
+
+    public static String getVersion() {
+        return VERSION.getString("versionNumber");
+    }
+
+    public static String getBuildDate() {
+        return VERSION.getString("buildDate");
     }
 }
 

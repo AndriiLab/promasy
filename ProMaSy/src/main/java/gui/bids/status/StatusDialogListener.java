@@ -1,6 +1,6 @@
-package main.java.gui.bids.status;
+package gui.bids.status;
 
-import main.java.model.StatusModel;
+import model.StatusModel;
 
 /**
  * Listener for {@link StatusDialog}

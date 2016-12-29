@@ -1,9 +1,9 @@
-package main.java.gui.prodsupl;
+package gui.prodsupl;
 
-import main.java.gui.CrEdDelButtons;
-import main.java.gui.Labels;
-import main.java.gui.Utils;
-import main.java.model.SupplierModel;
+import gui.CrEdDelButtons;
+import gui.Labels;
+import gui.Utils;
+import model.SupplierModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;

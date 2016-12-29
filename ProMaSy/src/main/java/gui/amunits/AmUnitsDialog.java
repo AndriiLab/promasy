@@ -1,9 +1,9 @@
-package main.java.gui.amunits;
+package gui.amunits;
 
-import main.java.gui.AbstractComboCEDDialog;
-import main.java.gui.Labels;
-import main.java.gui.Utils;
-import main.java.model.AmountUnitsModel;
+import gui.AbstractComboCEDDialog;
+import gui.Labels;
+import gui.Utils;
+import model.AmountUnitsModel;
 
 import javax.swing.*;
 

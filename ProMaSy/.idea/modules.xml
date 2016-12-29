@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProMaSy.iml" filepath="$PROJECT_DIR$/ProMaSy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ProMaSy.iml" filepath="$PROJECT_DIR$/.idea/modules/ProMaSy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ProMaSy_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ProMaSy_main.iml" group="ProMaSy" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ProMaSy_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ProMaSy_test.iml" group="ProMaSy" />
     </modules>
   </component>
 </project>

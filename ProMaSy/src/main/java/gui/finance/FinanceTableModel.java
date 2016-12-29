@@ -1,7 +1,7 @@
-package main.java.gui.finance;
+package gui.finance;
 
-import main.java.gui.Labels;
-import main.java.model.FinanceModel;
+import gui.Labels;
+import model.FinanceModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 /**
  * Borrowed from http://stackoverflow.com/a/11024200/4682529
@@ -7,16 +7,16 @@ public class Version implements Comparable<Version> {
 
     private String version;
 
-    public final String get() {
-        return this.version;
-    }
-
     public Version(String version) {
         if(version == null)
             throw new IllegalArgumentException("Version can not be null");
         if(!version.matches("[0-9]+(\\.[0-9]+){0,2}"))
             throw new IllegalArgumentException("Invalid version format");
         this.version = version;
+    }
+
+    public final String get() {
+        return this.version;
     }
 
     @Override public int compareTo(Version that) {
@@ -39,13 +39,9 @@ public class Version implements Comparable<Version> {
     }
 
     @Override public boolean equals(Object that) {
-        if(this == that)
+        if (this == that)
             return true;
-        if(that == null)
-            return false;
-        if(this.getClass() != that.getClass())
-            return false;
-        return this.compareTo((Version) that) == 0;
+        return that != null && this.getClass() == that.getClass() && this.compareTo((Version) that) == 0;
     }
 
 }

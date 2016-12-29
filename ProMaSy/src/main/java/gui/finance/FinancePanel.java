@@ -1,9 +1,9 @@
-package main.java.gui.finance;
+package gui.finance;
 
-import main.java.gui.CrEdDelButtons;
-import main.java.gui.Labels;
-import main.java.gui.Utils;
-import main.java.model.*;
+import gui.CrEdDelButtons;
+import gui.Labels;
+import gui.Utils;
+import model.*;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;

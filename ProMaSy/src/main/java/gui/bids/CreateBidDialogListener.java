@@ -1,9 +1,9 @@
-package main.java.gui.bids;
+package gui.bids;
 
-import main.java.model.BidModel;
+import model.BidModel;
 
 /**
- * Created by laban on 04.06.2016.
+ * Listener for {@link CreateBidDialog}
  */
 public interface CreateBidDialogListener {
     void departmentSelectionEventOccurred(long depId);
