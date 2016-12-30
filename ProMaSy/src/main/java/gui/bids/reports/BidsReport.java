@@ -11,22 +11,27 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by laban on 22.06.2016.
+ * Class compiles .jasper file and loads it into {@link JasperViewer}
  */
 public class BidsReport {
 
     public BidsReport(List<BidsReportModel> bidsList, MainFrame parent) {
         JasperPrint jasperPrint;
         try {
-            jasperPrint = JasperFillManager.fillReport("resources\\Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
+            jasperPrint = JasperFillManager.fillReport("reports\\Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-            jasperViewer.setAlwaysOnTop(true);
-            jasperViewer.setVisible(true);
+            EventQueue.invokeLater(() -> {
+                jasperViewer.setVisible(true);
+                jasperViewer.setFitPageZoomRatio();
+                jasperViewer.toFront();
+                jasperViewer.repaint();
+            });
         } catch (JRException e) {
             if (e.getMessage().startsWith("java.io.FileNotFoundException")){
                 //Compile report (.jrxml) to .jasper if it is not compiled
@@ -42,7 +47,7 @@ public class BidsReport {
 
     private static void compileReport(){
         System.out.println("Compiling new report file");
-        File jrxmlFile = new File("resources/Bids_Report.jrxml");
+        File jrxmlFile = new File("reports/Bids_Report.jrxml");
         try {
             JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
         } catch (JRException e) {
