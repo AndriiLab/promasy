@@ -13,14 +13,6 @@ jar {
                 'Main-Class': 'App'
     }
 
-//    doFirst {
-//        from (configurations.runtime.resolve().collect { it.isDirectory() ? it : zipTree(it) }) {
-//            exclude 'META-INF/MANIFEST.MF'
-//            exclude 'META-INF/*.SF'
-//            exclude 'META-INF/*.DSA'
-//            exclude 'META-INF/*.RSA'
-//        }
-//    }
     doFirst {
         from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
             exclude 'META-INF/MANIFEST.MF'
@@ -45,6 +37,10 @@ task createVersionProperties(dependsOn: processResources) {
             p.setProperty('versionNumber', project.version.toString())
             p.setProperty('buildDate', new Timestamp(System.currentTimeMillis()).toString())
             p.store w, null
+        }
+        copy {
+            from "src/main/resources/version.properties"
+            into "$buildDir/resources/main"
         }
     }
 }
