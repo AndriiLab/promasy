@@ -7,31 +7,26 @@ import java.sql.Timestamp;
  * Model for data of related to department finances
  */
 public class FinanceDepartmentModel extends AbstractModel {
-    private int orderNumber;
-    private String orderName;
-    private long depId;
-    private String depName;
-    private long empId;
-    private String empName;
+    private FinanceModel finances;
+    private DepartmentModel department;
+    private EmployeeModel responsibleEmployee;
+
     private BigDecimal totalAmount;
     private BigDecimal leftAmount;
 
-    public FinanceDepartmentModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, String orderName, int orderNumber, long depId, String depName, long empId, String empName, BigDecimal totalAmount, BigDecimal leftAmount) {
+    public FinanceDepartmentModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, long orderId, FinanceModel finances, DepartmentModel department, EmployeeModel responsibleEmployee, BigDecimal totalAmount, BigDecimal leftAmount) {
         super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.orderName = orderName;
-        this.orderNumber = orderNumber;
-        this.depId = depId;
-        this.depName = depName;
-        this.empId = empId;
-        this.empName = empName;
+        this.finances = finances;
+        this.department = department;
+        this.responsibleEmployee = responsibleEmployee;
         this.totalAmount = totalAmount;
         this.leftAmount = leftAmount;
     }
 
-    public FinanceDepartmentModel(long orderId, long depId, long empId, BigDecimal totalAmount) {
+    public FinanceDepartmentModel(long orderId, DepartmentModel department, EmployeeModel responsibleEmployee, BigDecimal totalAmount) {
         setModelId(orderId);
-        this.depId = depId;
-        this.empId = empId;
+        this.department = department;
+        this.responsibleEmployee = responsibleEmployee;
         this.totalAmount = totalAmount;
     }
 
@@ -39,36 +34,28 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     }
 
-    public long getDepId() {
-        return depId;
+    public FinanceModel getFinances() {
+        return finances;
     }
 
-    public void setDepId(long depId) {
-        this.depId = depId;
+    public void setFinances(FinanceModel finances) {
+        this.finances = finances;
     }
 
-    public String getDepName() {
-        return depName;
+    public DepartmentModel getDepartment() {
+        return department;
     }
 
-    public void setDepName(String depName) {
-        this.depName = depName;
+    public void setDepartment(DepartmentModel department) {
+        this.department = department;
     }
 
-    public long getEmpId() {
-        return empId;
+    public EmployeeModel getResponsibleEmployee() {
+        return responsibleEmployee;
     }
 
-    public void setEmpId(long empId) {
-        this.empId = empId;
-    }
-
-    public String getEmpName() {
-        return empName;
-    }
-
-    public void setEmpName(String empName) {
-        this.empName = empName;
+    public void setResponsibleEmployee(EmployeeModel responsibleEmployee) {
+        this.responsibleEmployee = responsibleEmployee;
     }
 
     public BigDecimal getTotalAmount() {
@@ -87,27 +74,8 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.leftAmount = leftAmount;
     }
 
-    public String getOrderName() {
-        return orderName;
-    }
-
-    public void setOrderName(String orderName) {
-        this.orderName = orderName;
-    }
-
-    public int getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
     @Override
     public String toString() {
-        if (orderNumber == 0 && orderName == null) {
-            return "";
-        }
-        return "(" + orderNumber + ") " + orderName;
+        return finances.toString();
     }
 }

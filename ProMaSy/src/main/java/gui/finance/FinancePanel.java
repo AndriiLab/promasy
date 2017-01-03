@@ -167,8 +167,8 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(true);
                         deleteDepOrderButton.setEnabled(true);
-                        Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepId());
-                        Utils.setBoxFromID(employeeBox, selectedDepFinModel.getEmpId());
+                        Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepartment());
+                        Utils.setBoxFromID(employeeBox, selectedDepFinModel.getResponsibleEmployee());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                     }
                 }
@@ -222,8 +222,8 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                 if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                    selectedDepFinModel.setDepId(selectedDepartment.getModelId());
-                    selectedDepFinModel.setEmpId(selectedEmployee.getModelId());
+                    selectedDepFinModel.setDepartment(selectedDepartment.getModelId());
+                    selectedDepFinModel.setResponsibleEmployee(selectedEmployee.getModelId());
                     selectedDepFinModel.setTotalAmount(depFinanceAmount);
                     listener.editDepOrderEventOccurred(selectedDepFinModel);
                 }
@@ -366,7 +366,7 @@ public class FinancePanel extends JPanel {
     public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
-            if (useUserDepartment && LoginData.getInstance().getDepId() == model.getModelId()) {
+            if (useUserDepartment && LoginData.getInstance().getDepartment() == model.getModelId()) {
                 departmentBox.setSelectedItem(model);
             }
         }

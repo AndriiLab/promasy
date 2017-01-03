@@ -15,7 +15,7 @@ public class FinanceModel extends AbstractModel {
     private Date startDate;
     private Date endDate;
 
-    public FinanceModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, long orderId, int orderNumber, String orderName, BigDecimal totalAmount, BigDecimal leftAmount, Date startDate, Date endDate) {
+    public FinanceModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, long orderId, int orderNumber, String orderName, BigDecimal totalAmount, BigDecimal leftAmount, Date startDate, Date endDate) {
         super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.orderNumber = orderNumber;
         this.orderName = orderName;

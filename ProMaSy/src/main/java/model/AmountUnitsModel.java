@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 public class AmountUnitsModel extends AbstractModel{
 	
 	private String amUnitDesc;
-	
-	public AmountUnitsModel(long amUnitId, String amUnitDesc, long createdBy, 
-			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
-			boolean active) {
+
+	public AmountUnitsModel(long amUnitId, String amUnitDesc, EmployeeModel createdBy,
+							Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate,
+							boolean active) {
 		super(amUnitId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.amUnitDesc = amUnitDesc;
 	}

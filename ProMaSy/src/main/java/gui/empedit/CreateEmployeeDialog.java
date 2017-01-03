@@ -268,15 +268,15 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel.setEmail(email);
         currentEmployeeModel.setPhoneMain(phoneMain);
         currentEmployeeModel.setPhoneReserve(phoneReserve);
-        currentEmployeeModel.setDepId(departmentModel.getModelId());
-        currentEmployeeModel.setSubdepId(subdepartmentModel.getModelId());
-        currentEmployeeModel.setRoleId(roleModel.getRoleId());
+        currentEmployeeModel.setDepartment(departmentModel.getModelId());
+        currentEmployeeModel.setSubdepartment(subdepartmentModel.getModelId());
+        currentEmployeeModel.setRole(roleModel.getRoleId());
         currentEmployeeModel.setLogin(login);
         return true;
     }
 
     public void setEmployeeModel(EmployeeModel model) {
-        if (LoginData.getInstance().getRoleId() != Role.ADMIN.getRoleId()) {
+        if (LoginData.getInstance().getRole() != Role.ADMIN.getRoleId()) {
             roleBox.setEnabled(false);
         }
         this.currentEmployeeModel = model;
@@ -287,10 +287,10 @@ public class CreateEmployeeDialog extends JDialog {
         phoneMainField.setText(currentEmployeeModel.getPhoneMain());
         phoneReserveField.setText(currentEmployeeModel.getPhoneReserve());
         loginField.setText(currentEmployeeModel.getLogin());
-        Utils.setBoxFromID(roleBox, currentEmployeeModel.getRoleId());
+        Utils.setBoxFromID(roleBox, currentEmployeeModel.getRole());
         Utils.setBoxFromID(instituteBox, currentEmployeeModel.getInstId());
-        Utils.setBoxFromID(departmentBox, currentEmployeeModel.getDepId());
-        Utils.setBoxFromID(subdepartmentBox, currentEmployeeModel.getSubdepId());
+        Utils.setBoxFromID(departmentBox, currentEmployeeModel.getDepartment());
+        Utils.setBoxFromID(subdepartmentBox, currentEmployeeModel.getSubdepartment());
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("edit"));
         setVisible(true);

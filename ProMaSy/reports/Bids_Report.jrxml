@@ -35,8 +35,8 @@
 	<field name="orderDescription" class="java.lang.String">
 		<fieldDescription><![CDATA[orderDescription]]></fieldDescription>
 	</field>
-	<field name="cpvCode" class="java.lang.String">
-		<fieldDescription><![CDATA[cpvCode]]></fieldDescription>
+    <field name="cpv" class="java.lang.String">
+        <fieldDescription><![CDATA[cpv]]></fieldDescription>
 	</field>
 	<field name="supplier" class="java.lang.String">
 		<fieldDescription><![CDATA[supplier]]></fieldDescription>
@@ -546,7 +546,7 @@
 				<textElement>
 					<paragraph lineSpacing="Single" firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cpvCode}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{cpv}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="90" height="20" uuid="e62f5827-342d-475e-ac36-a3e0feda50d8">

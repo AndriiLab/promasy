@@ -124,7 +124,7 @@ public class BidsListPanel extends JPanel {
             if (financeDepartmentBox.getSelectedItem() != null && listener != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                 if (!isSelectedFinanceDepartmentModelEmpty()) {
-                    listener.financeDepartmentSelectionEventOccurred(selectedFinanceDepartmentModel.getDepId(),
+                    listener.financeDepartmentSelectionEventOccurred(selectedFinanceDepartmentModel.getDepartment(),
                             selectedFinanceDepartmentModel.getModelId());
                 } else if (!isSelectedDepartmentModelEmpty()) {
                     listener.selectAllOrdersBidsEventOccurred(selectedDepartmentModel.getModelId());
@@ -235,7 +235,7 @@ public class BidsListPanel extends JPanel {
         for (DepartmentModel model : db) {
             departmentBox.addItem(model);
             parent.getCreateBidDialog().addToDepartmentBox(model);
-            if (useUserDepartment && LoginData.getInstance().getDepId() == model.getModelId()) {
+            if (useUserDepartment && LoginData.getInstance().getDepartment() == model.getModelId()) {
                 departmentBox.setSelectedItem(model);
             }
         }
@@ -328,7 +328,7 @@ public class BidsListPanel extends JPanel {
             for (int row = 0; row < bidsTable.getRowCount(); row++) {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
                 BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
-                        md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
+                        md.getCpv(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
                         md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
                         md.getReasonName());
                 list.add(reportModel);
@@ -338,7 +338,7 @@ public class BidsListPanel extends JPanel {
         else if (selectedBidModels.isEmpty()) {
             BidModel md = selectedBidModel;
             BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
-                    md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
+                    md.getCpv(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
                     md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
                     md.getReasonName());
             list.add(reportModel);
@@ -347,7 +347,7 @@ public class BidsListPanel extends JPanel {
         else {
             for (BidModel md : selectedBidModels) {
                 BidsReportModel reportModel = new BidsReportModel(md.getDepName(), md.getFinanceName(),
-                        md.getCpvCode(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
+                        md.getCpv(), md.getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducerName(),
                         md.getCatNum(), md.getSupplierName(), md.getAmUnitName(), md.getOnePrice(), md.getAmount(),
                         md.getReasonName());
                 list.add(reportModel);

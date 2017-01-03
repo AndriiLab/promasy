@@ -100,7 +100,7 @@ public class MainFrame extends JFrame {
     }
 
     public void initialize() {
-        int roleId = LoginData.getInstance().getRoleId();
+        int roleId = LoginData.getInstance().getRole();
         //setting layout
         setLayout(new BorderLayout());
 
@@ -232,7 +232,7 @@ public class MainFrame extends JFrame {
 
             settingsMenu.add(conSettItem);
 
-            if (LoginData.getInstance().getRoleId() == Role.ADMIN.getRoleId()) {
+            if (LoginData.getInstance().getRole() == Role.ADMIN.getRoleId()) {
                 JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
                 editEmpItem.setIcon(Icons.USERS);
                 editMenu.add(editEmpItem);

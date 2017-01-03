@@ -14,14 +14,14 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
-		prepStmt.setLong(4, object.getDepId());
-        long subdepId = object.getSubdepId();
+        prepStmt.setLong(4, object.getDepartment());
+        long subdepId = object.getSubdepartment();
         if (subdepId == 0L) {
             prepStmt.setNull(5, Types.BIGINT);
         } else {
             prepStmt.setLong(5, subdepId);
         }
-        prepStmt.setLong(6, object.getRoleId());
+        prepStmt.setLong(6, object.getRole());
         prepStmt.setString(7, object.getLogin());
 		prepStmt.setString(8, object.getPassword());
 		prepStmt.setLong(9, object.getCreatedBy());
@@ -182,14 +182,14 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel>{
 		prepStmt.setString(1, object.getEmpFName());
 		prepStmt.setString(2, object.getEmpMName());
 		prepStmt.setString(3, object.getEmpLName());
-		prepStmt.setLong(4, object.getDepId());
-        long subdepId = object.getSubdepId();
+        prepStmt.setLong(4, object.getDepartment());
+        long subdepId = object.getSubdepartment();
         if (subdepId == 0) {
             prepStmt.setNull(5, Types.BIGINT);
         } else {
             prepStmt.setLong(5, subdepId);
         }
-        prepStmt.setLong(6, object.getRoleId());
+        prepStmt.setLong(6, object.getRole());
         prepStmt.setString(7, object.getLogin());
 		prepStmt.setString(8, object.getPassword());
 		prepStmt.setLong(9, object.getModifiedBy());

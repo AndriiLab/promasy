@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class ReasonForSupplierChoiceModel extends AbstractModel {
     private String reason;
 
-    public ReasonForSupplierChoiceModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate, boolean active, String reason) {
+    public ReasonForSupplierChoiceModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, String reason) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.reason = reason;
     }

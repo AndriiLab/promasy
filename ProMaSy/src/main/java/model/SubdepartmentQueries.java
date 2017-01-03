@@ -16,7 +16,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
 		String query = "INSERT INTO subdepartments(subdep_name, dep_id, created_by, created_date) VALUES (?, ?, ?, ?)";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getSubdepName());
-		prepStmt.setLong(2, object.getDepId());
+		prepStmt.setLong(2, object.getDepartment());
 		prepStmt.setLong(3, object.getCreatedBy());
 		prepStmt.setTimestamp(4, object.getCreatedDate());
 		prepStmt.executeUpdate();

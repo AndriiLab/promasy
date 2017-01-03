@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class ProducerModel extends AbstractModel{
     private String brandName;
 
-    public ProducerModel(long createdBy, Timestamp createdDate, long modifiedBy,
+    public ProducerModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy,
                          Timestamp modifiedDate, boolean active, long brandId,
                          String brandName) {
         super(brandId, createdBy, createdDate, modifiedBy, modifiedDate, active);

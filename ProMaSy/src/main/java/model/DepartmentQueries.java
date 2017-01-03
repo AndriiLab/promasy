@@ -15,7 +15,7 @@ public class DepartmentQueries extends SQLQueries<DepartmentModel>{
 		String query = "INSERT INTO departments(dep_name, inst_id, created_by, created_date) VALUES (?, ?, ?, ?)";
 		PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 		prepStmt.setString(1, object.getDepName());
-		prepStmt.setLong(2, object.getInstId());
+		prepStmt.setLong(2, object.getInstitute());
 		prepStmt.setLong(3, object.getCreatedBy());
 		prepStmt.setTimestamp(4, object.getCreatedDate());
 		prepStmt.executeUpdate();

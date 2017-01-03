@@ -12,7 +12,7 @@ public class SupplierModel extends AbstractModel {
     private String supplierTel;
     private String supplierComments;
 
-    public SupplierModel(long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
+    public SupplierModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate,
                          boolean active, long supplierId, String supplierName, String supplierTel,
                          String supplierComments) {
         super(supplierId, createdBy, createdDate, modifiedBy, modifiedDate, active);

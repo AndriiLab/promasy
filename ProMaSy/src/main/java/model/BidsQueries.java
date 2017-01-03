@@ -26,8 +26,8 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query1 = "INSERT INTO bids(bid_id, dep_id, brand_id, cat_num, bid_desc, cpv_code, one_price, amount, am_unit_id, order_id, supplier_id, created_by, created_date, active, status_id, reason_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
         prepStmt1.setLong(1, object.getModelId());
-        prepStmt1.setLong(2, object.getDepId());
-        long producerId = object.getProducerId();
+        prepStmt1.setLong(2, object.getDepartment());
+        long producerId = object.getProducer();
         if (producerId == 0L) {
             prepStmt1.setNull(3, Types.BIGINT);
         } else {
@@ -35,12 +35,12 @@ public class BidsQueries extends SQLQueries<BidModel>{
         }
         prepStmt1.setString(4, object.getCatNum());
         prepStmt1.setString(5, object.getBidDesc());
-        prepStmt1.setString(6, object.getCpvCode());
+        prepStmt1.setString(6, object.getCpv());
         prepStmt1.setBigDecimal(7, object.getOnePrice());
         prepStmt1.setInt(8, object.getAmount());
-        prepStmt1.setLong(9, object.getAmUnitId());
-        prepStmt1.setLong(10, object.getFinanceId());
-        long supplierId = object.getSupplierId();
+        prepStmt1.setLong(9, object.getAmountUnit());
+        prepStmt1.setLong(10, object.getFinances());
+        long supplierId = object.getSupplier();
         if (supplierId == 0L) {
             prepStmt1.setNull(11, Types.BIGINT);
         } else {
@@ -49,8 +49,8 @@ public class BidsQueries extends SQLQueries<BidModel>{
         prepStmt1.setLong(12, object.getCreatedBy());
         prepStmt1.setTimestamp(13, object.getCreatedDate());
         prepStmt1.setBoolean(14, object.isActive());
-        prepStmt1.setInt(15, object.getStatusId());
-        long reasonId = object.getReasonId();
+        prepStmt1.setInt(15, object.getStatus());
+        long reasonId = object.getReasonForSupplierChoice();
         if (reasonId == 0L) {
             prepStmt1.setNull(16, Types.BIGINT);
         } else {
@@ -61,7 +61,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query2 = "INSERT INTO bid_status(bid_id, status_id, created_by, created_date) VALUES (?, ?, ?, ?)";
         PreparedStatement prepStmt2 = Database.DB.getConnection().prepareStatement(query2);
         prepStmt2.setLong(1, object.getModelId());
-        prepStmt2.setInt(2, object.getStatusId());
+        prepStmt2.setInt(2, object.getStatus());
         prepStmt2.setLong(3, object.getCreatedBy());
         prepStmt2.setTimestamp(4, object.getCreatedDate());
         prepStmt2.executeUpdate();
@@ -193,8 +193,8 @@ public class BidsQueries extends SQLQueries<BidModel>{
 
         String query1 = "UPDATE bids SET dep_id=?, brand_id=?, cat_num=?, bid_desc=?, cpv_code=?,  one_price=?, amount=?, am_unit_id=?, order_id=?, supplier_id=?, modified_by=?, modified_date=?, status_id=?, reason_id=? WHERE bid_id = ? AND active = TRUE";
         PreparedStatement prepStmt1 = Database.DB.getConnection().prepareStatement(query1);
-        prepStmt1.setLong(1, object.getDepId());
-        long producerId = object.getProducerId();
+        prepStmt1.setLong(1, object.getDepartment());
+        long producerId = object.getProducer();
         if (producerId == 0L) {
             prepStmt1.setNull(2, Types.BIGINT);
         } else {
@@ -202,12 +202,12 @@ public class BidsQueries extends SQLQueries<BidModel>{
         }
         prepStmt1.setString(3, object.getCatNum());
         prepStmt1.setString(4, object.getBidDesc());
-        prepStmt1.setString(5, object.getCpvCode());
+        prepStmt1.setString(5, object.getCpv());
         prepStmt1.setBigDecimal(6, object.getOnePrice());
         prepStmt1.setInt(7, object.getAmount());
-        prepStmt1.setLong(8, object.getAmUnitId());
-        prepStmt1.setLong(9, object.getFinanceId());
-        long supplierId = object.getSupplierId();
+        prepStmt1.setLong(8, object.getAmountUnit());
+        prepStmt1.setLong(9, object.getFinances());
+        long supplierId = object.getSupplier();
         if (supplierId == 0L) {
             prepStmt1.setNull(10, Types.BIGINT);
         } else {
@@ -215,8 +215,8 @@ public class BidsQueries extends SQLQueries<BidModel>{
         }
         prepStmt1.setLong(11, object.getModifiedBy());
         prepStmt1.setTimestamp(12, object.getModifiedDate());
-        prepStmt1.setInt(13, object.getStatusId());
-        long reasonId = object.getReasonId();
+        prepStmt1.setInt(13, object.getStatus());
+        long reasonId = object.getReasonForSupplierChoice();
         if (reasonId == 0L) {
             prepStmt1.setNull(14, Types.BIGINT);
         } else {
@@ -228,7 +228,7 @@ public class BidsQueries extends SQLQueries<BidModel>{
         String query2 = "INSERT INTO bid_status(bid_id, status_id, created_by, created_date) VALUES (?, ?, ?, ?)";
         PreparedStatement prepStmt2 = Database.DB.getConnection().prepareStatement(query2);
         prepStmt2.setLong(1, object.getModelId());
-        prepStmt2.setInt(2, object.getStatusId());
+        prepStmt2.setInt(2, object.getStatus());
         prepStmt2.setLong(3, object.getModifiedBy());
         prepStmt2.setTimestamp(4, object.getModifiedDate());
         prepStmt2.executeUpdate();

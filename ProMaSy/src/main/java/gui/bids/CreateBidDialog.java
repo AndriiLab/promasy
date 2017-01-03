@@ -413,17 +413,17 @@ public class CreateBidDialog extends JDialog {
             createdBidModel = new BidModel(selectedDepartmentModel.getModelId(), selectedProducerModel.getModelId(), selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel.getModelId(), selectedFinanceDepartmentModel.getModelId(), selectedSupplierModel.getModelId(), Status.CREATED.getStatusId(), selectedReasonModel.getModelId(), selectedReasonModel.getReason());
 
         } else {
-            createdBidModel.setDepId(selectedDepartmentModel.getModelId());
-            createdBidModel.setProducerId(selectedProducerModel.getModelId());
+            createdBidModel.setDepartment(selectedDepartmentModel.getModelId());
+            createdBidModel.setProducer(selectedProducerModel.getModelId());
             createdBidModel.setCatNum(selectedCatNum);
             createdBidModel.setBidDesc(selectedDescription);
-            createdBidModel.setCpvCode(selectedCPV);
+            createdBidModel.setCpv(selectedCPV);
             createdBidModel.setOnePrice(onePrice);
             createdBidModel.setAmount(amount);
-            createdBidModel.setAmUnitId(selectedAmountUnitsModel.getModelId());
-            createdBidModel.setFinanceId(selectedFinanceDepartmentModel.getModelId());
-            createdBidModel.setSupplierId(selectedSupplierModel.getModelId());
-            createdBidModel.setReasonId(selectedReasonModel.getModelId());
+            createdBidModel.setAmountUnit(selectedAmountUnitsModel.getModelId());
+            createdBidModel.setFinances(selectedFinanceDepartmentModel.getModelId());
+            createdBidModel.setSupplier(selectedSupplierModel.getModelId());
+            createdBidModel.setReasonForSupplierChoice(selectedReasonModel.getModelId());
             createdBidModel.setReasonName(selectedReasonModel.getReason());
         }
         return true;
@@ -440,14 +440,14 @@ public class CreateBidDialog extends JDialog {
     void loadToDialog(BidModel model) {
         setTitle(Labels.getProperty("editBid"));
         okButton.setText(Labels.getProperty("editBid"));
-        Utils.setBoxFromID(departmentBox, model.getDepId());
-        Utils.setBoxFromID(financeDepartmentBox, model.getFinanceId());
-        Utils.setBoxFromID(producerBox, model.getProducerId());
-        Utils.setBoxFromID(supplierBox, model.getSupplierId());
-        Utils.setBoxFromID(reasonForSupplierChoiceBox, model.getReasonId());
-        Utils.setBoxFromID(amUnitsBox, model.getAmUnitId());
+        Utils.setBoxFromID(departmentBox, model.getDepartment());
+        Utils.setBoxFromID(financeDepartmentBox, model.getFinances());
+        Utils.setBoxFromID(producerBox, model.getProducer());
+        Utils.setBoxFromID(supplierBox, model.getSupplier());
+        Utils.setBoxFromID(reasonForSupplierChoiceBox, model.getReasonForSupplierChoice());
+        Utils.setBoxFromID(amUnitsBox, model.getAmountUnit());
         createdBidModel = model;
-        cpvField.setText(createdBidModel.getCpvCode());
+        cpvField.setText(createdBidModel.getCpv());
         catNumberField.setText(createdBidModel.getCatNum());
         descriptionPane.setText(model.getBidDesc());
         amountField.setText(Integer.toString(createdBidModel.getAmount()));

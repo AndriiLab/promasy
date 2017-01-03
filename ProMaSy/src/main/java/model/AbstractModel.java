@@ -5,29 +5,45 @@ import java.sql.Timestamp;
 public abstract class AbstractModel {
 
     private long modelId;
-	private long createdBy;
-	private Timestamp createdDate;
-	private long modifiedBy;
-	private Timestamp modifiedDate;
+    private EmployeeModel createdEmployee;
+    private Timestamp createdDate;
+    private EmployeeModel modifiedEmployee;
+    private Timestamp modifiedDate;
 	private boolean active;
 	
 	AbstractModel() {
-		this.createdBy = 0;
-		this.createdDate = null;
-		this.modifiedBy = 0;
-		this.modifiedDate = null;
+        this.createdEmployee = new EmployeeModel();
+        this.createdDate = null;
+        this.modifiedEmployee = new EmployeeModel();
+        this.modifiedDate = null;
 		this.active = true;
 	}
 
-	AbstractModel(long modelId, long createdBy, Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
-				  boolean active) {
+    AbstractModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate,
+                  boolean active) {
         this.modelId = modelId;
-		this.createdBy = createdBy;
-		this.createdDate = createdDate;
-		this.modifiedBy = modifiedBy;
-		this.modifiedDate = modifiedDate;
+        this.createdEmployee = createdEmployee;
+        this.createdDate = createdDate;
+        this.modifiedEmployee = modifiedEmployee;
+        this.modifiedDate = modifiedDate;
 		this.active = active;
 	}
+
+    public EmployeeModel getCreatedEmployee() {
+        return createdEmployee;
+    }
+
+    public void setCreatedEmployee(EmployeeModel createdEmployee) {
+        this.createdEmployee = createdEmployee;
+    }
+
+    public EmployeeModel getModifiedEmployee() {
+        return modifiedEmployee;
+    }
+
+    public void setModifiedEmployee(EmployeeModel modifiedEmployee) {
+        this.modifiedEmployee = modifiedEmployee;
+    }
 
     public long getModelId() {
         return modelId;
@@ -37,28 +53,12 @@ public abstract class AbstractModel {
         this.modelId = modelId;
     }
 
-    public long getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(long createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
 	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
-	}
-
-	public long getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(long modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public Timestamp getModifiedDate() {
@@ -76,4 +76,22 @@ public abstract class AbstractModel {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+    public String getLastEditPersonName() {
+        if (!modifiedEmployee.getShortName().isEmpty()) {
+            return modifiedEmployee.getShortName();
+        } else if (!createdEmployee.getShortName().isEmpty()) {
+            return createdEmployee.getShortName();
+        }
+        return null;
+    }
+
+    public Timestamp getLastEditDate() {
+        if (modifiedDate != null) {
+            return modifiedDate;
+        } else if (createdDate != null) {
+            return createdDate;
+        }
+        return null;
+    }
 }

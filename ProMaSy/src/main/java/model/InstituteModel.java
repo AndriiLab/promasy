@@ -13,9 +13,9 @@ public class InstituteModel extends AbstractModel {
 		this.instName = instName;
 	}
 
-	public InstituteModel(long instId, String instName,long createdBy, 
-			Timestamp createdDate, long modifiedBy, Timestamp modifiedDate,
-			boolean active) {
+	public InstituteModel(long instId, String instName, EmployeeModel createdBy,
+						  Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate,
+						  boolean active) {
 		super(instId, createdBy, createdDate, modifiedBy, modifiedDate, active);
 		this.instName = instName;
 	}

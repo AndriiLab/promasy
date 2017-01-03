@@ -18,8 +18,8 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 " VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
         prepStmt.setLong(1, object.getModelId());
-        prepStmt.setLong(2, object.getDepId());
-        prepStmt.setLong(3, object.getEmpId());
+        prepStmt.setLong(2, object.getDepartment());
+        prepStmt.setLong(3, object.getResponsibleEmployee());
         prepStmt.setBigDecimal(4, object.getTotalAmount());
         prepStmt.setLong(5, object.getCreatedBy());
         prepStmt.setTimestamp(6, object.getCreatedDate());
@@ -103,13 +103,13 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 " WHERE order_id=? AND dep_id=?";
         PreparedStatement prepStmt = Database.DB.getConnection().prepareStatement(query);
 
-        prepStmt.setLong(1, object.getEmpId());
+        prepStmt.setLong(1, object.getResponsibleEmployee());
         prepStmt.setBigDecimal(2, object.getTotalAmount());
         prepStmt.setLong(3, object.getModifiedBy());
         prepStmt.setTimestamp(4, object.getModifiedDate());
         prepStmt.setBoolean(5, object.isActive());
         prepStmt.setLong(6, object.getModelId());
-        prepStmt.setLong(7, object.getDepId());
+        prepStmt.setLong(7, object.getDepartment());
         prepStmt.executeUpdate();
         prepStmt.close();
     }
@@ -123,7 +123,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         prepStmt.setTimestamp(2, object.getModifiedDate());
         prepStmt.setBoolean(3, object.isActive());
         prepStmt.setLong(4, object.getModelId());
-        prepStmt.setLong(5, object.getDepId());
+        prepStmt.setLong(5, object.getDepartment());
         prepStmt.executeUpdate();
         prepStmt.close();
     }

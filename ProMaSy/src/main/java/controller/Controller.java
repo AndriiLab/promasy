@@ -81,9 +81,9 @@ public class Controller {
                     mainFrame.initialize();
                     initListeners();
                     // if role lower than "Head of department" load data according to department
-                    if (LoginData.getInstance().getRoleId() < Role.HEAD_OF_DEPARTMENT.getRoleId()) {
+                    if (LoginData.getInstance().getRole() < Role.HEAD_OF_DEPARTMENT.getRoleId()) {
                         loadDataToView();
-                    } else loadDataToView(LoginData.getInstance().getDepId());
+                    } else loadDataToView(LoginData.getInstance().getDepartment());
 
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
@@ -274,37 +274,37 @@ public class Controller {
 
             public void createDepEventOccurred(DepartmentModel model) {
                 createDepartment(model);
-                getDepartments(model.getInstId());
+                getDepartments(model.getInstitute());
                 mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
             }
 
             public void editDepEventOccurred(DepartmentModel model) {
                 editDepartment(model);
-                getDepartments(model.getInstId());
+                getDepartments(model.getInstitute());
                 mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
             }
 
             public void deleteDepEventOccurred(DepartmentModel model) {
                 deleteDepartment(model);
-                getDepartments(model.getInstId());
+                getDepartments(model.getInstitute());
                 mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
             }
 
             public void createSubdepEventOccurred(SubdepartmentModel model) {
                 createSubdepartment(model);
-                getSubdepRequest(model.getDepId());
+                getSubdepRequest(model.getDepartment());
                 mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
             }
 
             public void editSubdepEventOccurred(SubdepartmentModel model) {
                 editSubdepartment(model);
-                getSubdepRequest(model.getDepId());
+                getSubdepRequest(model.getDepartment());
                 mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
             }
 
             public void deleteSubdepEventOccurred(SubdepartmentModel model) {
                 deleteSubdepartment(model);
-                getSubdepRequest(model.getDepId());
+                getSubdepRequest(model.getDepartment());
                 mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
             }
         });
