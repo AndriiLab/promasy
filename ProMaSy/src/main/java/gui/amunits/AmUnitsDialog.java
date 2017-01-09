@@ -37,7 +37,7 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
             if (!newName.isEmpty() && privateModel.equals(emptyModel)) {
                 AmountUnitsModel model = new AmountUnitsModel(newName);
                 if (listener != null) {
-                    Utils.setCreated(model);
+                    model.setCreated();
                     listener.persistModelEventOccurred(model);
                 }
             } else if (newName.isEmpty()) {
@@ -50,7 +50,7 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
             if (!newName.isEmpty() && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     privateModel.setAmUnitDesc(newName);
-                    Utils.setUpdated(privateModel);
+                    privateModel.setUpdated();
                     listener.persistModelEventOccurred(privateModel);
                 }
             } else if (newName.isEmpty()) {
@@ -61,7 +61,7 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
 
         deleteButton.addActionListener(e -> {
             if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.getAmUnitDesc()) && listener != null) {
-                Utils.setDeleted(privateModel);
+                privateModel.setDeleted();
                 listener.persistModelEventOccurred(privateModel);
             }
             clearDialog();

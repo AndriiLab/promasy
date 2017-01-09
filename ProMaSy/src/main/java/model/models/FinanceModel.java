@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class FinanceModel extends AbstractModel {
     private Date endDate;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<FinanceDepartmentModel> departmentModels;
+    private List<FinanceDepartmentModel> departmentModels = new ArrayList<>();
 
     public FinanceModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, long orderId, int financeNumber, String financeName, BigDecimal totalAmount, Date startDate, Date endDate, List<FinanceDepartmentModel> departmentModels) {
         super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);

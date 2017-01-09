@@ -3,7 +3,6 @@ package gui.empedit;
 import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.MainFrame;
-import gui.Utils;
 import model.models.EmployeeModel;
 
 import javax.swing.*;
@@ -71,7 +70,7 @@ public class EditEmployeeDialog extends JDialog {
 
         deleteEmployeeButton.addActionListener(e -> {
             if (!selectedModel.equals(emptyEmployeeModel) && ced.deleteEntry(parent, selectedModel.toString())) {
-                Utils.setDeleted(selectedModel);
+                selectedModel.setDeleted();
                 listener.persistModelEventOccurred(selectedModel);
             }
         });

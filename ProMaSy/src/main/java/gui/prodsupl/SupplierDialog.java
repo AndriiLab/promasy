@@ -94,7 +94,7 @@ public class SupplierDialog extends JDialog {
                 if (listener != null) {
                     suplBox.removeAllItems();
                     suplBox.addItem(emptySuplModel);
-                    Utils.setCreated(model);
+                    model.setCreated();
                     listener.persistModelEventOccurred(model);
                     telField.setText("");
                     commentsPane.setText("");
@@ -114,7 +114,7 @@ public class SupplierDialog extends JDialog {
                 privateSuplModel.setSupplierComments(newSuplComment);
                 suplBox.removeAllItems();
                 suplBox.addItem(emptySuplModel);
-                Utils.setUpdated(privateSuplModel);
+                privateSuplModel.setUpdated();
                 listener.persistModelEventOccurred(privateSuplModel);
                 telField.setText("");
                 commentsPane.setText("");
@@ -129,7 +129,7 @@ public class SupplierDialog extends JDialog {
             if (!privateSuplModel.equals(emptySuplModel) && ced.deleteEntry(parent, privateSuplModel.getSupplierName()) && listener != null) {
                 suplBox.removeAllItems();
                 suplBox.addItem(emptySuplModel);
-                Utils.setDeleted(privateSuplModel);
+                privateSuplModel.setDeleted();
                 listener.persistModelEventOccurred(privateSuplModel);
                 telField.setText("");
                 commentsPane.setText("");

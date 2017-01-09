@@ -60,13 +60,13 @@ public class Controller {
             disconnect();
             setConnectionSettings();
             connect();
-            checkFirstRun();
             checkVersion();
+            checkFirstRun();
         });
 
         connect();
-        checkFirstRun();
         checkVersion();
+        checkFirstRun();
 
         // init LoginListener here, because loginDialog appears before the MainFrame
         mainFrame.setLoginListener(new LoginListener() {
@@ -282,6 +282,21 @@ public class Controller {
         });
     }
 
+    private void checkVersion() {
+        Version currentVersion = new Version(Labels.getVersion());
+        Version dbVersion = getDBVersion();
+        if (currentVersion.compareTo(dbVersion) == -1) {
+            JOptionPane.showMessageDialog(mainFrame,
+                    Labels.getProperty("youCantUseThisVersion") + "\n" +
+                            Labels.withColon("yourVersion") + currentVersion.get() + "\n" +
+                            Labels.withColon("newVersion") + dbVersion.get() + "\n" +
+                            Labels.getProperty("askAdminAboutUpdate"),
+                    Labels.getProperty("oldVersionOfApp"),
+                    JOptionPane.ERROR_MESSAGE);
+            close();
+        }
+    }
+
     private void checkFirstRun() {
         if (isFirstRun()) {
             int option = JOptionPane.showConfirmDialog(mainFrame, Labels.getProperty("firstRunLong"), Labels.getProperty("firstRun"), JOptionPane.YES_NO_CANCEL_OPTION);
@@ -307,27 +322,14 @@ public class Controller {
                 close();
             }
         });
-        LoginData.getInstance(new EmployeeModel(0, Role.ADMIN));
+        EmployeeModel firstUser = new EmployeeModel(Role.ADMIN);
+        firstUser.setCreated();
+        createOrUpdate(firstUser);
+        LoginData.getInstance(firstUser);
         mainFrame.initialize();
         initListeners();
         loadDataToView();
-        mainFrame.getCreateEmployeeDialog().setRoleBox(Role.ADMIN);
-        mainFrame.getCreateEmployeeDialog().setVisible(true);
-    }
-
-    private void checkVersion() {
-        Version currentVersion = new Version(Labels.getVersion());
-        Version dbVersion = getDBVersion();
-        if (currentVersion.compareTo(dbVersion) == -1) {
-            JOptionPane.showMessageDialog(mainFrame,
-                    Labels.getProperty("youCantUseThisVersion") + "\n" +
-                            Labels.withColon("yourVersion") + currentVersion.get() + "\n" +
-                            Labels.withColon("newVersion") + dbVersion.get() + "\n" +
-                            Labels.getProperty("askAdminAboutUpdate"),
-                    Labels.getProperty("oldVersionOfApp"),
-                    JOptionPane.ERROR_MESSAGE);
-            close();
-        }
+        mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
     private void logEvent(String message, Color color) {

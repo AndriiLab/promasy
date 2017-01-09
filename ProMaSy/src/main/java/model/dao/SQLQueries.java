@@ -41,7 +41,7 @@ abstract class SQLQueries<T extends AbstractModel> {
         criteriaQuery.select(root);
     }
 
-	public List<T> getList() {
+    public List<T> getList() {
         list.clear();
 
         list = entityManager.createQuery(criteriaQuery).getResultList();

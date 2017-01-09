@@ -180,7 +180,7 @@ public class FinancePanel extends JPanel {
         createOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && listener != null) {
                 FinanceModel model = new FinanceModel(orderNumber, orderName, financeAmount, startDate, endDate);
-                Utils.setCreated(model);
+                model.setCreated();
                 listener.persistModelEventOccurred(model);
             }
             clearFinancePanel();
@@ -195,7 +195,7 @@ public class FinancePanel extends JPanel {
                     selectedFinanceModel.setTotalAmount(financeAmount);
                     selectedFinanceModel.setStartDate(startDate);
                     selectedFinanceModel.setEndDate(endDate);
-                    Utils.setUpdated(selectedFinanceModel);
+                    selectedFinanceModel.setUpdated();
                     listener.persistModelEventOccurred(selectedFinanceModel);
                 }
                 selectedFinanceModel = emptyFinanceModel;
@@ -206,7 +206,7 @@ public class FinancePanel extends JPanel {
 
         deleteOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
-                Utils.setDeleted(selectedFinanceModel);
+                selectedFinanceModel.setDeleted();
                 listener.persistModelEventOccurred(selectedFinanceModel);
             }
             selectedFinanceModel = emptyFinanceModel;
@@ -217,7 +217,7 @@ public class FinancePanel extends JPanel {
         createDepOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
                 FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment, selectedEmployee, depFinanceAmount);
-                Utils.setCreated(model);
+                model.setCreated();
                 listener.persistModelEventOccurred(model);
             }
             clearDepFinPanel();
@@ -229,7 +229,7 @@ public class FinancePanel extends JPanel {
                     selectedDepFinModel.setDepartment(selectedDepartment);
                     selectedDepFinModel.setResponsibleEmployee(selectedEmployee);
                     selectedDepFinModel.setTotalAmount(depFinanceAmount);
-                    Utils.setUpdated(selectedDepFinModel);
+                    selectedDepFinModel.setUpdated();
                     listener.persistModelEventOccurred(selectedDepFinModel);
                 }
                 selectedDepFinModel = emptyFinanceDepartmentModel;
@@ -239,7 +239,7 @@ public class FinancePanel extends JPanel {
 
         deleteDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getDepartment().getDepName()) && listener != null) {
-                Utils.setDeleted(selectedDepFinModel);
+                selectedDepFinModel.setDeleted();
                 listener.persistModelEventOccurred(selectedDepFinModel);
             }
             selectedDepFinModel = emptyFinanceDepartmentModel;

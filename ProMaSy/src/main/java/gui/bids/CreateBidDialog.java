@@ -208,8 +208,8 @@ public class CreateBidDialog extends JDialog {
         okButton.addActionListener(e -> {
                     if (checkFields() && listener != null) {
                         if (inBidEditMode) {
-                            Utils.setUpdated(createdBidModel);
-                        } else Utils.setCreated(createdBidModel);
+                            createdBidModel.setUpdated();
+                        } else createdBidModel.setCreated();
                         listener.persistModelEventOccurred(createdBidModel);
                         clearFieldsAndSetTitle();
                     }

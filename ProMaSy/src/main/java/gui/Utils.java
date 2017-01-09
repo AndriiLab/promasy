@@ -1,7 +1,5 @@
 package gui;
 
-import model.dao.LoginData;
-import model.dao.ServerQueries;
 import model.enums.Role;
 import model.models.AbstractModel;
 
@@ -33,22 +31,6 @@ public class Utils {
                 break;
             }
         }
-    }
-
-    // methods for setting created/modified employee and created/modified date
-    public static <T extends AbstractModel> void setCreated(T model) {
-        model.setCreatedEmployee(LoginData.getInstance().getCreatedEmployee());
-        model.setCreatedDate(ServerQueries.getServerTimestamp());
-    }
-
-    public static <T extends AbstractModel> void setUpdated(T model) {
-        model.setModifiedEmployee(LoginData.getInstance().getModifiedEmployee());
-        model.setModifiedDate(ServerQueries.getServerTimestamp());
-    }
-
-    public static <T extends AbstractModel> void setDeleted(T model) {
-        model.setActive(false);
-        setUpdated(model);
     }
 
     public static void emptyFieldError(JFrame parent, String fieldName) {

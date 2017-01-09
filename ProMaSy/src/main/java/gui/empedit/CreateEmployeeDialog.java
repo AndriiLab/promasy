@@ -46,6 +46,7 @@ public class CreateEmployeeDialog extends JDialog {
     private JPasswordField passwordField;
     private JPasswordField repeatPasswordField;
     private EmployeeModel currentEmployeeModel;
+    private EmployeeModel customUserModel;
 
     public CreateEmployeeDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createNewUser"), true);
@@ -109,29 +110,27 @@ public class CreateEmployeeDialog extends JDialog {
         layoutControls();
 
         instituteBox.addActionListener(e -> {
-            departmentBox.removeAllItems();
             InstituteModel selectedItem = (InstituteModel) instituteBox.getSelectedItem();
-            if (!selectedItem.equals(emptyInstituteModel)) {
-                this.setDepData(selectedItem.getDepartments());
-                departmentBox.setEnabled(true);
-                subdepartmentBox.setEnabled(false);
-            } else {
-                departmentBox.setEnabled(false);
-                subdepartmentBox.setEnabled(false);
+            if (selectedItem != null) {
+                if (!selectedItem.equals(emptyInstituteModel)) {
+                    this.setDepData(selectedItem.getDepartments());
+                    departmentBox.setEnabled(true);
+                    subdepartmentBox.setEnabled(false);
+                } else {
+                    departmentBox.setEnabled(false);
+                    subdepartmentBox.setEnabled(false);
+                }
             }
         });
         departmentBox.addActionListener(e -> {
-            if (departmentBox.getSelectedItem() == null) {
-                departmentBox.addItem(emptyDepartmentModel);
-            }
-            subdepartmentBox.removeAllItems();
-            subdepartmentBox.addItem(emptySubdepartmentModel);
             DepartmentModel selectedItem = (DepartmentModel) departmentBox.getSelectedItem();
-            if (!selectedItem.equals(emptyDepartmentModel)) {
-                this.setSubdepData(selectedItem.getSubdepartments());
-                subdepartmentBox.setEnabled(true);
-            } else {
-                subdepartmentBox.setEnabled(false);
+            if (selectedItem != null) {
+                if (!selectedItem.equals(emptyDepartmentModel)) {
+                    this.setSubdepData(selectedItem.getSubdepartments());
+                    subdepartmentBox.setEnabled(true);
+                } else {
+                    subdepartmentBox.setEnabled(false);
+                }
             }
         });
 
@@ -139,9 +138,9 @@ public class CreateEmployeeDialog extends JDialog {
         okButton.addActionListener(e -> {
             if (isValidFields() && listener != null) {
                 if (currentEmployeeModel.getModelId() == 0) {
-                    Utils.setCreated(currentEmployeeModel);
+                    currentEmployeeModel.setCreated();
                 } else {
-                    Utils.setUpdated(currentEmployeeModel);
+                    currentEmployeeModel.setUpdated();
                 }
                 listener.persistModelEventOccurred(currentEmployeeModel);
                 clearDialog();
@@ -250,6 +249,7 @@ public class CreateEmployeeDialog extends JDialog {
             long salt = Utils.makeSalt();
             String pass = Utils.makePass(password, salt);
             // if model empty createOrUpdate new user
+            if (customUserModel != null) currentEmployeeModel = customUserModel;
             if (currentEmployeeModel.equals(emptyEmployeeModel) && isUniqueUser) {
                 currentEmployeeModel = new EmployeeModel(firstName, middleName, email, phoneMain, phoneReserve, lastName, subdepartmentModel, roleModel, login, pass, salt);
                 return true;
@@ -307,6 +307,8 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setInstData(List<InstituteModel> instDb) {
+        instituteBox.removeAllItems();
+        instituteBox.addItem(emptyInstituteModel);
         for (InstituteModel model : instDb) {
             if (model.isActive()) {
                 instituteBox.addItem(model);
@@ -315,6 +317,8 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setDepData(List<DepartmentModel> depDb) {
+        departmentBox.removeAllItems();
+        departmentBox.addItem(emptyDepartmentModel);
         for (DepartmentModel model : depDb) {
             if (model.isActive()) {
                 departmentBox.addItem(model);
@@ -323,6 +327,8 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setSubdepData(List<SubdepartmentModel> subdepDb) {
+        subdepartmentBox.removeAllItems();
+        subdepartmentBox.addItem(emptySubdepartmentModel);
         for (SubdepartmentModel model : subdepDb) {
             if (model.isActive()) {
                 subdepartmentBox.addItem(model);
@@ -533,5 +539,11 @@ public class CreateEmployeeDialog extends JDialog {
         setLayout(new BorderLayout());
         add(loginAndAffiliationsPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
+    }
+
+    public void createCustomUser(EmployeeModel model) {
+        this.customUserModel = model;
+        setRoleBox(model.getRole());
+        setVisible(true);
     }
 }

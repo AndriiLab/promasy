@@ -3,6 +3,7 @@ package model.models;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class FinanceDepartmentModel extends AbstractModel {
     private EmployeeModel responsibleEmployee;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<BidModel> bids;
+    private List<BidModel> bids = new ArrayList<>();
 
     @Column(name = "finance_amount")
     private BigDecimal totalAmount;

@@ -2,7 +2,6 @@ package gui.prodsupl;
 
 import gui.CrEdDelButtons;
 import gui.Labels;
-import gui.Utils;
 import model.models.ReasonForSupplierChoiceModel;
 
 import javax.swing.*;
@@ -62,7 +61,7 @@ public class ReasonsDialog extends JDialog {
                 if (listener != null) {
                     reasonBox.removeAllItems();
                     reasonBox.addItem(emptyReasonsModel);
-                    Utils.setCreated(model);
+                    model.setCreated();
                     listener.persistModelEventOccurred(model);
                 }
             }
@@ -76,7 +75,7 @@ public class ReasonsDialog extends JDialog {
                     reasonBox.removeAllItems();
                     reasonBox.addItem(emptyReasonsModel);
                     privateReasonModel.setReason(newReasonName);
-                    Utils.setUpdated(privateReasonModel);
+                    privateReasonModel.setUpdated();
                     listener.persistModelEventOccurred(privateReasonModel);
                 }
             }
@@ -88,7 +87,7 @@ public class ReasonsDialog extends JDialog {
             if (!privateReasonModel.equals(emptyReasonsModel) && ced.deleteEntry(parent, privateReasonModel.getReason()) && listener != null) {
                 reasonBox.removeAllItems();
                 reasonBox.addItem(emptyReasonsModel);
-                Utils.setDeleted(privateReasonModel);
+                privateReasonModel.setDeleted();
                 listener.persistModelEventOccurred(privateReasonModel);
             }
             privateReasonModel = emptyReasonsModel;

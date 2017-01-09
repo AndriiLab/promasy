@@ -106,7 +106,7 @@ public class BidsListPanel extends JPanel {
         deleteBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(emptyBidModel) && listener != null) {
                 if (ced.deleteEntry(parent, selectedBidModel.getBidDesc())) {
-                    Utils.setDeleted(selectedBidModel);
+                    selectedBidModel.setDeleted();
                     listener.persistModelEventOccurred(selectedBidModel);
                 }
             } else {

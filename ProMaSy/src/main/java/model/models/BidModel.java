@@ -3,6 +3,7 @@ package model.models;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class BidModel extends AbstractModel{
     private ReasonForSupplierChoiceModel reasonForSupplierChoice;
 
     @OneToMany(mappedBy = "bid", cascade = CascadeType.PERSIST)
-    private List<BidStatusModel> statuses;
+    private List<BidStatusModel> statuses = new ArrayList<>();
 
     @Column(name = "cat_num")
     private String catNum;

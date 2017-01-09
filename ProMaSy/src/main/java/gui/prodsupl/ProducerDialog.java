@@ -36,7 +36,7 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
             if (!newName.isEmpty()) {
                 ProducerModel model = new ProducerModel(newName);
                 if (listener != null) {
-                    Utils.setCreated(model);
+                    model.setCreated();
                     listener.persistModelEventOccurred(model);
                 }
             } else {
@@ -49,7 +49,7 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
             if (!newName.isEmpty() && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     privateModel.setBrandName(newName);
-                    Utils.setUpdated(privateModel);
+                    privateModel.setUpdated();
                     listener.persistModelEventOccurred(privateModel);
                 }
             } else {
@@ -60,7 +60,7 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
 
         deleteButton.addActionListener(e -> {
             if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.getBrandName()) && listener != null) {
-                Utils.setDeleted(privateModel);
+                privateModel.setDeleted();
                 listener.persistModelEventOccurred(privateModel);
             }
             clearDialog();

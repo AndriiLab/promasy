@@ -62,6 +62,10 @@ public class EmployeeModel extends AbstractModel {
     public EmployeeModel() {
     }
 
+    public EmployeeModel(Role role) {
+        this.role = role;
+    }
+
     public EmployeeModel(long modelId, Role role) {
         super.setModelId(modelId);
         this.role = role;

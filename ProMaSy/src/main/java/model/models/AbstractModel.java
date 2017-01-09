@@ -1,5 +1,7 @@
 package model.models;
 
+import model.dao.LoginData;
+import model.dao.ServerQueries;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -135,5 +137,21 @@ public abstract class AbstractModel {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(modelId).hashCode();
+    }
+
+    // methods for setting created/modified employee and created/modified date
+    public void setCreated() {
+        this.setCreatedEmployee(LoginData.getInstance());
+        this.setCreatedDate(ServerQueries.getServerTimestamp());
+    }
+
+    public void setUpdated() {
+        this.setModifiedEmployee(LoginData.getInstance());
+        this.setModifiedDate(ServerQueries.getServerTimestamp());
+    }
+
+    public void setDeleted() {
+        this.setActive(false);
+        setUpdated();
     }
 }

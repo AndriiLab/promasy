@@ -2,7 +2,6 @@ package gui.bids.status;
 
 import gui.Icons;
 import gui.Labels;
-import gui.Utils;
 import model.enums.Status;
 import model.models.BidModel;
 import model.models.BidStatusModel;
@@ -52,9 +51,9 @@ public class StatusDialog extends JDialog {
             if (listener != null) {
                 Status selectedStatus = (Status) statusJComboBox.getSelectedItem();
                 BidStatusModel statusModel = new BidStatusModel(selectedStatus, selectedBidModel);
-                Utils.setCreated(statusModel);
+                statusModel.setCreated();
                 selectedBidModel.addStatus(statusModel);
-                Utils.setUpdated(selectedBidModel);
+                selectedBidModel.setUpdated();
                 listener.persistModelEventOccurred(selectedBidModel);
             }
         });

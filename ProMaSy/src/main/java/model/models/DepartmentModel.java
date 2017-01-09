@@ -2,6 +2,7 @@ package model.models;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,10 +17,10 @@ public class DepartmentModel extends AbstractModel {
     private InstituteModel institute;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
-    private List<SubdepartmentModel> subdepartments;
+    private List<SubdepartmentModel> subdepartments = new ArrayList<>();
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
-    private List<FinanceDepartmentModel> departmentFinances;
+    private List<FinanceDepartmentModel> departmentFinances = new ArrayList<>();
 
     public DepartmentModel() {
         this.depName = "";
