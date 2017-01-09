@@ -1,7 +1,7 @@
 package gui.empedit;
 
 import gui.Labels;
-import model.EmployeeModel;
+import model.models.EmployeeModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -52,14 +52,14 @@ class EmployeeTableModel extends AbstractTableModel{
 		case 0:
 			return model;
 		case 1:
-			return model.getInstName();
-		case 2:
-			return model.getDepName();
-		case 3:
-			return model.getSubdepName();
-		case 4:
-			return model.getRoleName();
-		case 5:
+            return model.getSubdepartment().getDepartment().getInstitute().getInstName();
+            case 2:
+            return model.getSubdepartment().getDepartment().getDepName();
+            case 3:
+            return model.getSubdepartment().getSubdepName();
+            case 4:
+            return model.getRole().toString();
+            case 5:
 			return model.isActive();
 		}
 

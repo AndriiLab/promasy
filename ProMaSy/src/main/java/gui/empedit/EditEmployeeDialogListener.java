@@ -1,7 +1,7 @@
 package gui.empedit;
 
-import model.EmployeeModel;
+import model.models.EmployeeModel;
 
 public interface EditEmployeeDialogListener {
-	void deleteEmployeeEventOccurred(EmployeeModel model);
+    void persistModelEventOccurred(EmployeeModel model);
 }

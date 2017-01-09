@@ -4,9 +4,7 @@
 package controller;
 
 import gui.*;
-import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
-import gui.bids.CreateBidDialogListener;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.bids.reports.ReportParametersEvent;
 import gui.empedit.CreateEmployeeDialogListener;
@@ -14,18 +12,17 @@ import gui.empedit.CreateEmployeeFromLoginListener;
 import gui.finance.FinancePanelListener;
 import gui.instedit.OrganizationDialogListener;
 import gui.login.LoginListener;
-import gui.prodsupl.ProducerDialogListener;
-import gui.prodsupl.ReasonsDialogListener;
-import gui.prodsupl.SupplierDialogListener;
-import model.*;
+import model.dao.Database;
+import model.dao.LoginData;
 import model.enums.Role;
+import model.models.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -80,10 +77,11 @@ public class Controller {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
-                    // if role lower than "Head of department" load data according to department
-                    if (LoginData.getInstance().getRole() < Role.HEAD_OF_DEPARTMENT.getRoleId()) {
-                        loadDataToView();
-                    } else loadDataToView(LoginData.getInstance().getDepartment());
+                    // if role USER or PERSONALLY_LIABLE_EMPLOYEE load data according to department
+                    if (LoginData.getInstance().getRole() == Role.PERSONALLY_LIABLE_EMPLOYEE
+                            || LoginData.getInstance().getRole() == Role.USER) {
+                        loadDataToView(LoginData.getInstance().getSubdepartment().getDepartment().getModelId());
+                    } else loadDataToView();
 
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
@@ -104,7 +102,7 @@ public class Controller {
                 int registrationNumber = registrationsLeft();
                 System.out.println("Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
-                    LoginData.getInstance(new EmployeeModel(registrationNumber, Role.USER.getRoleId()));
+                    LoginData.getInstance(new EmployeeModel(registrationNumber, Role.USER));
                     mainFrame.initialize();
                     initListeners();
                     loadDataToView();
@@ -117,56 +115,33 @@ public class Controller {
     }
 
     private void loadDataToView() {
-        //loading default data into models
-        getCpvRequest("", true);
-        getRolesRequest();
-        getInstRequest();
-        getDepartments(LoginData.getInstance().getInstId());
-        getEmployees();
-        getAmUnits();
-        getProd();
-        getSupl();
-        getReasons();
-        getFinances();
-        getBids();
-        getDepartmentFinancesByOrder(0);
-
-        loadToView();
+        //loading default data into model
+        mainFrame.setCpvModelList(getCpvRequest("", true));
+        mainFrame.setInstituteModelList(getInstRequest());
+//        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
+        mainFrame.setEmployeeModelList(getEmployees());
+        mainFrame.setAmountUnitsModelList(getAmUnits());
+        mainFrame.setProducerModelList(getProd());
+        mainFrame.setSupplierModelList(getSupl());
+        mainFrame.setReasonsModelList(getReasons());
+        mainFrame.setFinanceModelList(getFinances());
+        mainFrame.setBidModelList(getBids());
+        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
     }
 
     private void loadDataToView(long departmentId) {
-        //loading default data into models
-        getCpvRequest("", true);
-        getRolesRequest();
-        getInstRequest();
-        getDepartments(LoginData.getInstance().getInstId());
-        getEmployees(departmentId);
-        getAmUnits();
-        getProd();
-        getSupl();
-        getReasons();
-        getFinances(departmentId);
-        getBids(departmentId);
-        getDepartmentFinancesByOrder(0);
-
-        loadToView();
-    }
-
-    private void loadToView() {
-        // passing loaded data to view
-        mainFrame.setRoleModelList(Database.ROLES.getList());
-        mainFrame.setAmountUnitsModelList(Database.AMOUNTUNITS.getList());
-        mainFrame.setCpvModelList(Database.CPV.getList());
-        mainFrame.setInstituteModelList(Database.INSTITUTES.getList());
-        mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-        mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
-        mainFrame.setProducerModelList(Database.PRODUCERS.getList());
-        mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
-        mainFrame.setReasonsModelList(Database.REASONS.getList());
-        mainFrame.setFinanceModelList(Database.FINANCES.getList());
-        mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
-        mainFrame.setBidModelList(Database.BIDS.getList());
-        mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
+        //loading default data into model
+        mainFrame.setCpvModelList(getCpvRequest("", true));
+        mainFrame.setInstituteModelList(getInstRequest());
+//        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
+        mainFrame.setEmployeeModelList(getEmployees(departmentId));
+        mainFrame.setAmountUnitsModelList(getAmUnits());
+        mainFrame.setProducerModelList(getProd());
+        mainFrame.setSupplierModelList(getSupl());
+        mainFrame.setReasonsModelList(getReasons());
+        mainFrame.setFinanceModelList(getFinances(departmentId));
+        mainFrame.setBidModelList(getBids());
+        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
     }
 
     private void initListeners() {
@@ -181,15 +156,14 @@ public class Controller {
         mainFrame.setMainFrameListener(new MainFrameListener() {
 
             @Override
-            public void searchForPerson(int roleId, long selectedDepartmentId) {
-                getEmployees(roleId, selectedDepartmentId);
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            public void searchForPerson(Role role, long selectedDepartmentId) {
+                mainFrame.setEmployeeModelList(getEmployees(role, selectedDepartmentId));
             }
 
             @Override
-            public void searchForPerson(int roleId) {
-                getEmployees(roleId);
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            public void searchForPerson(Role role) {
+
+                mainFrame.setEmployeeModelList(getEmployees(role));
             }
 
             @Override
@@ -206,34 +180,16 @@ public class Controller {
         mainFrame.setCpvListener(ev -> getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
 
         mainFrame.setEmployeeDialogListener(model -> {
-            deleteEmployee(model);
-            getEmployees();
-            mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            createOrUpdate(model);
+            mainFrame.setEmployeeModelList(getEmployees());
         });
 
         mainFrame.setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
-            public void instSelectionEventOccurred(long instId) {
-                getDepartments(instId);
-                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-            }
 
-            public void depSelectionEventOccurred(long depId) {
-                getSubdepRequest(depId);
-                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-            }
-
-            public void createEmployeeEventOccurred(EmployeeModel model) {
-                setCreated(model);
-                createEmployee(model);
-                getEmployees();
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
-            }
-
-            public void editEmployeeEventOccurred(EmployeeModel model) {
-                setModified(model);
-                editEmployee(model);
-                getEmployees();
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+            @Override
+            public void persistModelEventOccurred(EmployeeModel model) {
+                createOrUpdate(model);
+                mainFrame.setEmployeeModelList(getEmployees());
             }
 
             @Override
@@ -244,366 +200,78 @@ public class Controller {
 
         mainFrame.setOrganizationDialogListener(new OrganizationDialogListener() {
 
-            public void instSelectionEventOccurred(long instId) {
-                getDepartments(instId);
-                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-            }
-
-            public void depSelectionEventOccurred(long depId) {
-                getSubdepRequest(depId);
-                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-            }
-
-            public void createInstEventOccurred(InstituteModel instModel) {
-                createInstitute(instModel);
-                getInstRequest();
-                mainFrame.setInstituteModelList(Database.INSTITUTES.getList());
-            }
-
-            public void editInstEventOccurred(InstituteModel instModel) {
-                editInstitute(instModel);
-                getInstRequest();
-                mainFrame.setInstituteModelList(Database.INSTITUTES.getList());
-            }
-
-            public void deleteInstEventOccurred(InstituteModel instModel) {
-                deleteInstitute(instModel);
-                getInstRequest();
-                mainFrame.setInstituteModelList(Database.INSTITUTES.getList());
-            }
-
-            public void createDepEventOccurred(DepartmentModel model) {
-                createDepartment(model);
-                getDepartments(model.getInstitute());
-                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-            }
-
-            public void editDepEventOccurred(DepartmentModel model) {
-                editDepartment(model);
-                getDepartments(model.getInstitute());
-                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-            }
-
-            public void deleteDepEventOccurred(DepartmentModel model) {
-                deleteDepartment(model);
-                getDepartments(model.getInstitute());
-                mainFrame.setDepartmentModelList(Database.DEPARTMENTS.getList());
-            }
-
-            public void createSubdepEventOccurred(SubdepartmentModel model) {
-                createSubdepartment(model);
-                getSubdepRequest(model.getDepartment());
-                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-            }
-
-            public void editSubdepEventOccurred(SubdepartmentModel model) {
-                editSubdepartment(model);
-                getSubdepRequest(model.getDepartment());
-                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-            }
-
-            public void deleteSubdepEventOccurred(SubdepartmentModel model) {
-                deleteSubdepartment(model);
-                getSubdepRequest(model.getDepartment());
-                mainFrame.setSubdepartmentModelList(Database.SUBDEPARTMENS.getList());
-            }
-        });
-
-        mainFrame.setAmUnitsDialogListener(new AmUnitsDialogListener() {
-            public void createEventOccurred(AmountUnitsModel model) {
-                createAmUnit(model);
-                getAmUnits();
-                mainFrame.setAmountUnitsModelList(Database.AMOUNTUNITS.getList());
-            }
-
-            public void editEventOccurred(AmountUnitsModel model) {
-                editAmUnit(model);
-                getAmUnits();
-                mainFrame.setAmountUnitsModelList(Database.AMOUNTUNITS.getList());
-            }
-
-            public void deleteEventOccurred(AmountUnitsModel model) {
-                deleteAmUnit(model);
-                getAmUnits();
-                mainFrame.setAmountUnitsModelList(Database.AMOUNTUNITS.getList());
-            }
-        });
-
-        mainFrame.setProducerDialogListener(new ProducerDialogListener() {
-            public void createProdEventOccurred(ProducerModel model) {
-                createProd(model);
-                getProd();
-                mainFrame.setProducerModelList(Database.PRODUCERS.getList());
-            }
-
-            public void editProdEventOccurred(ProducerModel model) {
-                editProd(model);
-                getProd();
-                mainFrame.setProducerModelList(Database.PRODUCERS.getList());
-            }
-
-            public void deleteProdEventOccurred(ProducerModel model) {
-                deleteProd(model);
-                getProd();
-                mainFrame.setProducerModelList(Database.PRODUCERS.getList());
-            }
-        });
-
-        mainFrame.setSupplierDialogListener(new SupplierDialogListener() {
-            public void createSuplEventOccurred(SupplierModel model) {
-                createSupl(model);
-                getSupl();
-                mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
-            }
-
-            public void editSuplEventOccurred(SupplierModel model) {
-                editSupl(model);
-                getSupl();
-                mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
-            }
-
-            public void deleteSuplEventOccurred(SupplierModel model) {
-                deleteSupl(model);
-                getSupl();
-                mainFrame.setSupplierModelList(Database.SUPPLIERS.getList());
-            }
-        });
-        mainFrame.setReasonsDialogListener(new ReasonsDialogListener() {
             @Override
-            public void createReasonEventOccurred(ReasonForSupplierChoiceModel model) {
-                createReason(model);
-                getReasons();
-                mainFrame.setReasonsModelList(Database.REASONS.getList());
+            public void persistModelEventOccurred(InstituteModel model) {
+                createOrUpdate(model);
+                mainFrame.setInstituteModelList(getInstRequest());
             }
 
             @Override
-            public void editReasonEventOccurred(ReasonForSupplierChoiceModel model) {
-                editReason(model);
-                getReasons();
-                mainFrame.setReasonsModelList(Database.REASONS.getList());
+            public void persistModelEventOccurred(DepartmentModel model) {
+                createOrUpdate(model);
+                mainFrame.setDepartmentModelList(getDepartments(model.getInstitute().getModelId()));
             }
 
             @Override
-            public void deleteReasonEventOccurred(ReasonForSupplierChoiceModel model) {
-                deleteReason(model);
-                getReasons();
-                mainFrame.setReasonsModelList(Database.REASONS.getList());
+            public void persistModelEventOccurred(SubdepartmentModel model) {
+                createOrUpdate(model);
+                mainFrame.setSubdepartmentModelList(getSubdepRequest(model.getDepartment().getModelId()));
             }
+        });
+
+        mainFrame.setAmUnitsDialogListener(model -> {
+            createOrUpdate(model);
+            mainFrame.setAmountUnitsModelList(getAmUnits());
+        });
+
+        mainFrame.setProducerDialogListener(model -> {
+            createOrUpdate(model);
+            mainFrame.setProducerModelList(getProd());
+        });
+
+        mainFrame.setSupplierDialogListener(model -> {
+            createOrUpdate(model);
+            mainFrame.setSupplierModelList(getSupl());
         });
         mainFrame.setFinancePanelListener(new FinancePanelListener() {
-            public void createOrderEventOccurred(FinanceModel model) {
-                createFinance(model);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
+            @Override
+            public void persistModelEventOccurred(FinanceModel model) {
+                createOrUpdate(model);
+                mainFrame.setFinanceModelList(getFinances());
             }
 
-            public void editOrderEventOccurred(FinanceModel model) {
-                editFinance(model);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-            }
-
-            public void deleteOrderEventOccurred(FinanceModel model) {
-                deleteFinance(model);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-
-            }
-
-            public void departmentSelectionEventOccurred(long departmentId) {
-                getEmployees(departmentId);
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
-            }
-
-            public void orderSelectionEventOccurred(long orderId) {
-                getDepartmentFinancesByOrder(orderId);
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
-            }
-
-            public void createDepOrderEventOccurred(FinanceDepartmentModel model) {
-                createDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getModelId());
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
-            }
-
-            public void editDepOrderEventOccurred(FinanceDepartmentModel model) {
-                editDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getModelId());
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
-            }
-
-            public void deleteDepOrderEventOccurred(FinanceDepartmentModel model) {
-                deleteDepartmentFinances(model);
-                getDepartmentFinancesByOrder(model.getModelId());
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
+            @Override
+            public void persistModelEventOccurred(FinanceDepartmentModel model) {
+                createOrUpdate(model);
+                mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(model.getModelId()));
             }
         });
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
-            public void departmentSelectionEventOccurred(long departmentId) {
-                getDepartmentFinancesByDepartment(departmentId);
-                getBids(departmentId);
-                mainFrame.setFinanceDepartmentModelList(Database.DEPARTMENT_FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
-            }
-
-            public void financeDepartmentSelectionEventOccurred(long departmentId, long orderId) {
-                getBids(departmentId, orderId);
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
-            }
-
-            public void bidDeleteEventOccurred(BidModel model) {
-                setInactive(model);
-                deleteBid(model);
-                getBids();
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
+            @Override
+            public void persistModelEventOccurred(BidModel model) {
+                createOrUpdate(model);
+                mainFrame.setFinanceModelList(getFinances());
+                mainFrame.setBidModelList(getBids());
             }
 
             @Override
-            public void bidDeleteEventOccurred(BidModel model, long departmentId) {
-                setInactive(model);
-                deleteBid(model);
-                getBids(departmentId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
-            }
-
-            @Override
-            public void bidDeleteEventOccurred(BidModel model, long departmentId, long orderId) {
-                setInactive(model);
-                deleteBid(model);
-                getBids(departmentId, orderId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
-            }
-
-            public void selectAllDepartmentsBidsEventOccurred() {
-                getBids();
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
-            }
-
-            public void selectAllOrdersBidsEventOccurred(long departmentId) {
-                getBids(departmentId);
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
-            }
-
-            public void showBidStatusesEventOccured(long modelId) {
-                getBidStatuses(modelId);
-                mainFrame.setBidStatusList(Database.STATUSES.getList());
-            }
-
-            public void statusChangeEventOccured(StatusModel model) {
-                createBidStatus(model);
-                getBidStatuses(model.getBidId());
-                getBids();
-                mainFrame.setBidStatusList(Database.STATUSES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-            }
-
-
-            public void statusChangeEventOccured(StatusModel model, long departmentId) {
-                createBidStatus(model);
-                getBidStatuses(model.getBidId());
-                getBids(departmentId);
-                mainFrame.setBidStatusList(Database.STATUSES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-            }
-
-            public void statusChangeEventOccured(StatusModel model, long departmentId, long orderId) {
-                createBidStatus(model);
-                getBidStatuses(model.getBidId());
-                getBids(departmentId, orderId);
-                mainFrame.setBidStatusList(Database.STATUSES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
+            public void selectAllBidsEventOccurred() {
+                mainFrame.setBidModelList(getBids());
             }
         });
 
-        mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
-            public void departmentSelectionEventOccurred(long depId) {
-                getDepartmentFinancesByDepartment(depId);
-                mainFrame.setFinanceDepartmentModelListToBidDialog(Database.DEPARTMENT_FINANCES.getList());
-            }
-
-            public void bidCreateEventOccurred(BidModel model) {
-                setCreated(model);
-                createBid(model);
-                getBids();
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
-            }
-
-            @Override
-            public void bidCreateEventOccurred(BidModel model, long departmentId) {
-                setCreated(model);
-                createBid(model);
-                getBids(departmentId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
-            }
-
-            @Override
-            public void bidCreateEventOccurred(BidModel model, long departmentId, long orderId) {
-                setCreated(model);
-                createBid(model);
-                getBids(departmentId, orderId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
-            }
-
-            public void bidEditEventOccurred(BidModel model) {
-                setModified(model);
-                editBid(model);
-                getBids();
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(), BigDecimal.ZERO);
-            }
-
-            @Override
-            public void bidEditEventOccurred(BidModel model, long departmentId) {
-                setModified(model);
-                editBid(model);
-                getBids(departmentId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId), BigDecimal.ZERO);
-            }
-
-            @Override
-            public void bidEditEventOccurred(BidModel model, long departmentId, long orderId) {
-                setModified(model);
-                editBid(model);
-                getBids(departmentId, orderId);
-                getFinances();
-                mainFrame.setFinanceModelList(Database.FINANCES.getList());
-                mainFrame.setBidModelList(Database.BIDS.getList());
-                mainFrame.setBidsPanelSum(getBidsSum(departmentId, orderId), getFinancesLeft(departmentId, orderId));
-            }
+        mainFrame.setCreateBidDialogListener(createdBidModel -> {
+            createOrUpdate(createdBidModel);
+            mainFrame.setFinanceModelList(getFinances());
+            mainFrame.setBidModelList(getBids());
         });
 
         mainFrame.setReportParametersDialogListener(new ReportParametersDialogListener() {
-            public void roleSelectionOccurred(int roleId) {
-                getEmployees(roleId);
-                mainFrame.setEmployeeModelList(Database.EMPLOYEES.getList());
+
+            @Override
+            public void roleSelectionOccurred(Role role) {
+                mainFrame.setEmployeeModelList(getEmployees(role));
             }
 
             public void reportParametersSelectionOccurred(ReportParametersEvent ev) {
@@ -639,11 +307,11 @@ public class Controller {
                 close();
             }
         });
-        LoginData.getInstance(new EmployeeModel(0, Role.ADMIN.getRoleId()));
+        LoginData.getInstance(new EmployeeModel(0, Role.ADMIN));
         mainFrame.initialize();
         initListeners();
         loadDataToView();
-        mainFrame.getCreateEmployeeDialog().setRoleBox(false, Role.ADMIN.getRoleId());
+        mainFrame.getCreateEmployeeDialog().setRoleBox(Role.ADMIN);
         mainFrame.getCreateEmployeeDialog().setVisible(true);
     }
 
@@ -714,29 +382,14 @@ public class Controller {
         Database.DB.disconnect();
     }
 
-    // general methods for modifications in DB entries
-    private <T extends AbstractModel> void setCreated(T model) {
-        model.setCreatedBy(LoginData.getInstance().getModelId());
-        model.setCreatedDate(Utils.getCurrentTime());
-    }
-
-    private <T extends AbstractModel> void setModified(T model) {
-        model.setModifiedBy(LoginData.getInstance().getModelId());
-        model.setModifiedDate(Utils.getCurrentTime());
-    }
-
-    private <T extends AbstractModel> void setInactive(T model) {
-        setModified(model);
-        model.setActive(false);
-    }
-
     // methods requesting the DB
     // GETTERS
-    private void getCpvRequest(String cpvRequest, boolean sameLvlShow) {
+    private List<CPVModel> getCpvRequest(String cpvRequest, boolean sameLvlShow) {
         try {
-            Database.CPV.retrieve(cpvRequest, sameLvlShow);
+            return Database.CPV.retrieve(cpvRequest, sameLvlShow);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
@@ -744,7 +397,7 @@ public class Controller {
         try {
             return new Version(Database.VERSIONS.retrieve());
         } catch (SQLException e) {
-            // this error occurs with old settings, so reset it to defaults
+            // this error occurs with old settings, have to reset it to defaults
             try {
                 Preferences.userRoot().node("db_con").clear();
                 disconnect();
@@ -776,48 +429,43 @@ public class Controller {
         }
     }
 
-    private void getRolesRequest() {
+    private List<EmployeeModel> getEmployees() {
         try {
-            Database.ROLES.retrieve();
-        } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("role") + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void getEmployees() {
-        try {
-            Database.EMPLOYEES.retrieve();
+            return Database.EMPLOYEES.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("user") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getEmployees(int roleId) {
+    private List<EmployeeModel> getEmployees(Role role) {
         try {
-            Database.EMPLOYEES.retrieve(roleId);
+            return Database.EMPLOYEES.retrieve(role);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + roleId
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + role
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getEmployees(long depId) {
+    private List<EmployeeModel> getEmployees(long depId) {
         try {
-            Database.EMPLOYEES.retrieve(depId);
+            return Database.EMPLOYEES.retrieve(depId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " dep id: " + depId
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getEmployees(int roleId, long depId) {
+    private List<EmployeeModel> getEmployees(Role role, long depId) {
         try {
-            Database.EMPLOYEES.retrieve(roleId, depId);
+            return Database.EMPLOYEES.retrieve(role, depId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + roleId
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + role
                     + " dep id: " + depId + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
@@ -830,102 +478,113 @@ public class Controller {
         }
     }
 
-    private void getInstRequest() {
+    private List<InstituteModel> getInstRequest() {
         try {
-            Database.INSTITUTES.retrieve();
+            return Database.INSTITUTES.getResults();
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("institute")
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getDepartments(long instId) {
+    private List<DepartmentModel> getDepartments(long instId) {
         try {
-            Database.DEPARTMENTS.retrieve(instId);
+            return Database.DEPARTMENTS.retrieve(instId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("department") + " inst id: " + instId
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getSubdepRequest(long depId) {
+    private List<SubdepartmentModel> getSubdepRequest(long depId) {
         try {
-            Database.SUBDEPARTMENS.retrieve(depId);
+            return Database.SUBDEPARTMENS.retrieve(depId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("subdepartment") + " dep id: " + depId
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getAmUnits() {
+    private List<AmountUnitsModel> getAmUnits() {
         try {
-            Database.AMOUNTUNITS.retrieve();
+            return Database.AMOUNTUNITS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("amount") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getProd() {
+    private List<ProducerModel> getProd() {
         try {
-            Database.PRODUCERS.retrieve();
+            return Database.PRODUCERS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("producer") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getSupl() {
+    private List<SupplierModel> getSupl() {
         try {
-            Database.SUPPLIERS.retrieve();
+            return Database.SUPPLIERS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("suplBorder")
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getReasons() {
+    private List<ReasonForSupplierChoiceModel> getReasons() {
         try {
-            Database.REASONS.retrieve();
+            return Database.REASONS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("reasonForSupplierChoice")
                     + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getFinances() {
+    private List<FinanceModel> getFinances() {
         try {
-            Database.FINANCES.retrieve();
+            return Database.FINANCES.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getFinances(long departmentId) {
+    private List<FinanceModel> getFinances(long departmentId) {
         try {
-            Database.FINANCES.retrieve(departmentId);
+            return Database.FINANCES.retrieve(departmentId);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getDepartmentFinancesByOrder(long orderId) {
+    private List<FinanceDepartmentModel> getDepartmentFinancesByOrder(long orderId) {
         try {
-            Database.DEPARTMENT_FINANCES.retrieveByOrderID(orderId);
+            return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: "
                     + orderId + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getDepartmentFinancesByDepartment(long departmentId) {
+    private List<FinanceDepartmentModel> getDepartmentFinancesByDepartment(long departmentId) {
         try {
-            Database.DEPARTMENT_FINANCES.retrieveByDepartmentID(departmentId);
+            return Database.DEPARTMENT_FINANCES.retrieveByDepartmentId(departmentId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances")
                     + " department Id: " + departmentId + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
@@ -949,77 +608,19 @@ public class Controller {
         }
     }
 
-    private void getBids() {
+    private List<BidModel> getBids() {
         try {
-            Database.BIDS.retrieve();
+            return Database.BIDS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            return null;
         }
     }
 
-    private void getBids(long departmentId) {
+    private void createOrUpdate(EmployeeModel model) {
         try {
-            Database.BIDS.retrieve(departmentId);
-        } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void getBids(long departmentId, long orderId) {
-        try {
-            Database.BIDS.retrieve(departmentId, orderId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("bids") + " order ID: " + orderId
-                    + " department ID: " + departmentId + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private BigDecimal getBidsSum() {
-        try {
-            return Database.BIDS.getSum();
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2")
-                    + Labels.withSpaceBefore("error"));
-        }
-        return BigDecimal.ZERO;
-    }
-
-    private BigDecimal getBidsSum(long departmentId) {
-        try {
-            return Database.BIDS.getSum(departmentId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2")
-                    + Labels.withSpaceBefore("error"));
-        }
-        return BigDecimal.ZERO;
-    }
-
-    private BigDecimal getBidsSum(long departmentId, long orderId) {
-        try {
-            return Database.BIDS.getSum(departmentId, orderId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("totalPrice2")
-                    + Labels.withSpaceBefore("error"));
-        }
-        return BigDecimal.ZERO;
-    }
-
-    private BigDecimal getFinancesLeft(long departmentId, long orderId) {
-        try {
-            return FinanceQueries.financeLeft(orderId, departmentId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("financeLeftByTema") + Labels.withSpaceBefore("error"));
-        }
-        return BigDecimal.ZERO;
-    }
-
-    // CRUD Employees
-    private void createEmployee(EmployeeModel model) {
-        setCreated(model);
-        try {
-            Database.EMPLOYEES.create(model);
+            Database.EMPLOYEES.createOrUpdate(model);
             logEvent(Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1028,33 +629,9 @@ public class Controller {
         }
     }
 
-    private void editEmployee(EmployeeModel model) {
-        setModified(model);
+    private void createOrUpdate(InstituteModel instModel) {
         try {
-            Database.EMPLOYEES.update(model);
-            logEvent(Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editEmployee") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteEmployee(EmployeeModel model) {
-        setInactive(model);
-        try {
-            Database.EMPLOYEES.delete(model);
-            logEvent(Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("deleteEmployee") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Institutes
-    private void createInstitute(InstituteModel instModel) {
-        setCreated(instModel);
-        try {
-            Database.INSTITUTES.create(instModel);
+            Database.INSTITUTES.createOrUpdate(instModel);
             logEvent(Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1062,35 +639,9 @@ public class Controller {
         }
     }
 
-    private void editInstitute(InstituteModel instModel) {
-        setModified(instModel);
+    private void createOrUpdate(DepartmentModel model) {
         try {
-            Database.INSTITUTES.update(instModel);
-            logEvent(Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("editInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
-        }
-
-    }
-
-    private void deleteInstitute(InstituteModel instModel) {
-        setInactive(instModel);
-        try {
-            Database.INSTITUTES.delete(instModel);
-            logEvent(Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delInstitite") + instModel.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Departments
-    private void createDepartment(DepartmentModel model) {
-        setCreated(model);
-        try {
-            Database.DEPARTMENTS.create(model);
+            Database.DEPARTMENTS.createOrUpdate(model);
             logEvent(Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1098,33 +649,9 @@ public class Controller {
         }
     }
 
-    private void editDepartment(DepartmentModel model) {
-        setModified(model);
+    private void createOrUpdate(SubdepartmentModel model) {
         try {
-            Database.DEPARTMENTS.update(model);
-            logEvent(Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editDepartment") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteDepartment(DepartmentModel model) {
-        setInactive(model);
-        try {
-            Database.DEPARTMENTS.delete(model);
-            logEvent(Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delDepartment") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Subdepartments
-    private void createSubdepartment(SubdepartmentModel model) {
-        setCreated(model);
-        try {
-            Database.SUBDEPARTMENS.create(model);
+            Database.SUBDEPARTMENS.createOrUpdate(model);
             logEvent(Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1132,159 +659,45 @@ public class Controller {
         }
     }
 
-    private void editSubdepartment(SubdepartmentModel model) {
-        setModified(model);
+    private void createOrUpdate(AmountUnitsModel model) {
         try {
-            Database.SUBDEPARTMENS.update(model);
-            logEvent(Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("editSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteSubdepartment(SubdepartmentModel model) {
-        setInactive(model);
-        try {
-            Database.SUBDEPARTMENS.delete(model);
-            logEvent(Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Amount and Units
-    private void createAmUnit(AmountUnitsModel model) {
-        setCreated(model);
-        try {
-            Database.AMOUNTUNITS.create(model);
+            Database.AMOUNTUNITS.createOrUpdate(model);
             logEvent(Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
-    private void editAmUnit(AmountUnitsModel model) {
-        setModified(model);
+    private void createOrUpdate(ProducerModel model) {
         try {
-            Database.AMOUNTUNITS.update(model);
-            logEvent(Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteAmUnit(AmountUnitsModel model) {
-        setInactive(model);
-        try {
-            Database.AMOUNTUNITS.delete(model);
-            logEvent(Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Producers
-    private void createProd(ProducerModel model) {
-        setCreated(model);
-        try {
-            Database.PRODUCERS.create(model);
+            Database.PRODUCERS.createOrUpdate(model);
             logEvent(Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
-    private void editProd(ProducerModel model) {
-        setModified(model);
+    private void createOrUpdate(SupplierModel model) {
         try {
-            Database.PRODUCERS.update(model);
-            logEvent(Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editProd") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteProd(ProducerModel model) {
-        setInactive(model);
-        try {
-            Database.PRODUCERS.delete(model);
-            logEvent(Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delProd") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Suppliers
-    private void createSupl(SupplierModel model) {
-        setCreated(model);
-        try {
-            Database.SUPPLIERS.create(model);
+            Database.SUPPLIERS.createOrUpdate(model);
             logEvent(Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
-    private void editSupl(SupplierModel model) {
-        setModified(model);
+    private void createOrUpdate(ReasonForSupplierChoiceModel model) {
         try {
-            Database.SUPPLIERS.update(model);
-            logEvent(Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editSupl") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteSupl(SupplierModel model) {
-        setInactive(model);
-        try {
-            Database.SUPPLIERS.delete(model);
-            logEvent(Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("delSupl") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD for Reasons for reasons why buyer choose selected supplier
-    private void createReason(ReasonForSupplierChoiceModel model) {
-        setCreated(model);
-        try {
-            Database.REASONS.create(model);
+            Database.REASONS.createOrUpdate(model);
             logEvent(Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
         }
     }
 
-    private void editReason(ReasonForSupplierChoiceModel model) {
-        setModified(model);
+    private void createOrUpdate(FinanceModel model) {
         try {
-            Database.REASONS.update(model);
-            logEvent(Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteReason(ReasonForSupplierChoiceModel model) {
-        setInactive(model);
-        try {
-            Database.REASONS.delete(model);
-            logEvent(Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("deleteReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Finances
-    private void createFinance(FinanceModel model) {
-        setCreated(model);
-        try {
-            Database.FINANCES.create(model);
+            Database.FINANCES.createOrUpdate(model);
             logEvent(Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1292,32 +705,9 @@ public class Controller {
         }
     }
 
-    private void editFinance(FinanceModel model) {
-        setModified(model);
+    private void createOrUpdate(FinanceDepartmentModel model) {
         try {
-            Database.FINANCES.update(model);
-            logEvent(Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editOrder") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteFinance(FinanceModel model) {
-        setInactive(model);
-        try {
-            Database.FINANCES.delete(model);
-            logEvent(Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("deleteOrder") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Department Finances
-    private void createDepartmentFinances(FinanceDepartmentModel model) {
-        setCreated(model);
-        try {
-            Database.DEPARTMENT_FINANCES.create(model);
+            Database.DEPARTMENT_FINANCES.createOrUpdate(model);
             logEvent(Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
                     Colors.GREEN);
         } catch (SQLException e) {
@@ -1325,76 +715,13 @@ public class Controller {
         }
     }
 
-    private void editDepartmentFinances(FinanceDepartmentModel model) {
-        setModified(model);
-        try {
-            Database.DEPARTMENT_FINANCES.update(model);
-            logEvent(Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
 
-    private void deleteDepartmentFinances(FinanceDepartmentModel model) {
-        setInactive(model);
+    private void createOrUpdate(BidModel model) {
         try {
-            Database.DEPARTMENT_FINANCES.delete(model);
-            logEvent(Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("deleteDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    // CRUD Bids
-    private void createBid(BidModel model) {
-        setCreated(model);
-        try {
-            Database.BIDS.create(model);
+            Database.BIDS.createOrUpdate(model);
             logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void editBid(BidModel model) {
-        setModified(model);
-        try {
-            Database.BIDS.update(model);
-            logEvent(Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("editBid") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void deleteBid(BidModel model) {
-        setInactive(model);
-        try {
-            Database.BIDS.delete(model);
-            logEvent(Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("deleteBid") + model.toString() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void createBidStatus(StatusModel model) {
-        setCreated(model);
-        try {
-            Database.STATUSES.create(model);
-            logEvent(Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("success"), Colors.GREEN);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            errorLogEvent(e, Labels.withColon("setStatus") + model.getStatusDesc() + " " + LoginData.getInstance().getShortName() + Labels.withSpaceBefore("error"));
-        }
-    }
-
-    private void getBidStatuses(long bidId) {
-        try {
-            Database.STATUSES.retrieve(bidId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            errorLogEvent(e, Labels.withColon("status") + bidId + Labels.withSpaceBefore("error"));
         }
     }
 
@@ -1411,6 +738,7 @@ public class Controller {
     private void close() {
         Database.DB.disconnect();
         mainFrame.dispose();
+        System.exit(0);
     }
 
     // but it calls only in this close() method (except close in login dialog)

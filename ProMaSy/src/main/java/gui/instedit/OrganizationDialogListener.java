@@ -1,31 +1,15 @@
 package gui.instedit;
 
-import model.DepartmentModel;
-import model.InstituteModel;
-import model.SubdepartmentModel;
+import model.models.DepartmentModel;
+import model.models.InstituteModel;
+import model.models.SubdepartmentModel;
 
 public interface OrganizationDialogListener {
-	
-	void instSelectionEventOccurred(long instId);
-	
-	void depSelectionEventOccurred(long depId);
 
-	void createInstEventOccurred(InstituteModel model);
+    void persistModelEventOccurred(InstituteModel model);
 
-	void editInstEventOccurred(InstituteModel model);
+    void persistModelEventOccurred(DepartmentModel model);
 
-	void deleteInstEventOccurred(InstituteModel model);
-
-	void createDepEventOccurred(DepartmentModel model);
-
-	void editDepEventOccurred(DepartmentModel model);
-	
-	void deleteDepEventOccurred(DepartmentModel model);
-	
-	void createSubdepEventOccurred(SubdepartmentModel model);
-
-	void editSubdepEventOccurred(SubdepartmentModel model);
-	
-	void deleteSubdepEventOccurred(SubdepartmentModel model);
+    void persistModelEventOccurred(SubdepartmentModel model);
 
 }

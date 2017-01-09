@@ -1,6 +1,9 @@
 package gui;
 
-import model.AbstractModel;
+import model.dao.LoginData;
+import model.dao.ServerQueries;
+import model.enums.Role;
+import model.models.AbstractModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
@@ -9,23 +12,43 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
 
 public class Utils {
 
-    public static Timestamp getCurrentTime(){
-        return new Timestamp(System.currentTimeMillis());
-    }
-
-    public static void setBoxFromID(JComboBox<? extends AbstractModel> box, long requestedId){
-        if(requestedId != 0){
+    public static void setBoxFromModel(JComboBox<? extends AbstractModel> box, AbstractModel model) {
+        if (model.getModelId() != 0L) {
             for(int i = 0; i<=box.getItemCount(); i++){
-                if(box.getItemAt(i).getModelId() == requestedId){
+                if (box.getItemAt(i).equals(model)) {
                     box.setSelectedIndex(i);
                     break;
                 }
             }
         }
+    }
+
+    public static void setRoleBox(JComboBox<Role> box, Role role) {
+        for (int i = 0; i <= box.getItemCount(); i++) {
+            if (box.getItemAt(i).equals(role)) {
+                box.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
+    // methods for setting created/modified employee and created/modified date
+    public static <T extends AbstractModel> void setCreated(T model) {
+        model.setCreatedEmployee(LoginData.getInstance().getCreatedEmployee());
+        model.setCreatedDate(ServerQueries.getServerTimestamp());
+    }
+
+    public static <T extends AbstractModel> void setUpdated(T model) {
+        model.setModifiedEmployee(LoginData.getInstance().getModifiedEmployee());
+        model.setModifiedDate(ServerQueries.getServerTimestamp());
+    }
+
+    public static <T extends AbstractModel> void setDeleted(T model) {
+        model.setActive(false);
+        setUpdated(model);
     }
 
     public static void emptyFieldError(JFrame parent, String fieldName) {

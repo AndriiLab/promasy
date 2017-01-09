@@ -3,7 +3,7 @@ package gui.prodsupl;
 import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.Utils;
-import model.SupplierModel;
+import model.models.SupplierModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -94,7 +94,8 @@ public class SupplierDialog extends JDialog {
                 if (listener != null) {
                     suplBox.removeAllItems();
                     suplBox.addItem(emptySuplModel);
-                    listener.createSuplEventOccurred(model);
+                    Utils.setCreated(model);
+                    listener.persistModelEventOccurred(model);
                     telField.setText("");
                     commentsPane.setText("");
                 }
@@ -113,7 +114,8 @@ public class SupplierDialog extends JDialog {
                 privateSuplModel.setSupplierComments(newSuplComment);
                 suplBox.removeAllItems();
                 suplBox.addItem(emptySuplModel);
-                listener.editSuplEventOccurred(privateSuplModel);
+                Utils.setUpdated(privateSuplModel);
+                listener.persistModelEventOccurred(privateSuplModel);
                 telField.setText("");
                 commentsPane.setText("");
             }
@@ -127,7 +129,8 @@ public class SupplierDialog extends JDialog {
             if (!privateSuplModel.equals(emptySuplModel) && ced.deleteEntry(parent, privateSuplModel.getSupplierName()) && listener != null) {
                 suplBox.removeAllItems();
                 suplBox.addItem(emptySuplModel);
-                listener.deleteSuplEventOccurred(privateSuplModel);
+                Utils.setDeleted(privateSuplModel);
+                listener.persistModelEventOccurred(privateSuplModel);
                 telField.setText("");
                 commentsPane.setText("");
             }
@@ -137,8 +140,10 @@ public class SupplierDialog extends JDialog {
     }
 
     public void setSuplData(java.util.List<SupplierModel> suplDb) {
-        for (SupplierModel suplModel : suplDb) {
-            suplBox.addItem(suplModel);
+        for (SupplierModel model : suplDb) {
+            if (model.isActive()) {
+                suplBox.addItem(model);
+            }
         }
     }
 

@@ -3,7 +3,8 @@ package gui.finance;
 import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.Utils;
-import model.*;
+import model.dao.LoginData;
+import model.models.*;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,7 +80,7 @@ public class FinancePanel extends JPanel {
         endDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         endDatePicker.setDate(defaultEndDate);
 
-        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("order_ced"));
+        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("finance_ced"));
 
         createOrderButton = cedFinance.getCreateButton();
         editOrderButton = cedFinance.getEditButton();
@@ -101,6 +103,7 @@ public class FinancePanel extends JPanel {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 1);
+                    setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
                     clearDepFinPanel();
                     if (!selectedFinanceModel.equals(emptyFinanceModel)) {
                         editOrderButton.setEnabled(true);
@@ -108,15 +111,12 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(false);
                         deleteDepOrderButton.setEnabled(false);
-                        orderNumberField.setText(String.valueOf(selectedFinanceModel.getOrderNumber()));
-                        orderNameField.setText(selectedFinanceModel.getOrderName());
+                        orderNumberField.setText(String.valueOf(selectedFinanceModel.getFinanceNumber()));
+                        orderNameField.setText(selectedFinanceModel.getFinanceName());
                         financeAmountField.setText(selectedFinanceModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                         startDatePicker.setDate(selectedFinanceModel.getStartDate());
                         endDatePicker.setDate(selectedFinanceModel.getEndDate());
                         selectedOrder = selectedFinanceModel.getModelId();
-                        if (selectedOrder != 0) {
-                            listener.orderSelectionEventOccurred(selectedOrder);
-                        }
                     }
                 }
             }
@@ -126,12 +126,12 @@ public class FinancePanel extends JPanel {
         departmentBox.setPreferredSize(new Dimension(270, 25));
         departmentBox.addItem(emptyDepartmentModel);
         departmentBox.addActionListener(e -> {
-            if (!departmentBox.getSelectedItem().equals(emptyDepartmentModel) && listener != null) {
-                listener.departmentSelectionEventOccurred(((DepartmentModel) departmentBox.getSelectedItem()).getModelId());
-            } else if (departmentBox.getSelectedItem().equals(emptyDepartmentModel)) {
-                employeeBox.removeAllItems();
-                employeeBox.addItem(emptyEmployeeModel);
+            DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
+            List<EmployeeModel> employees = new LinkedList<>();
+            for (SubdepartmentModel model : selectedDepartmentModel.getSubdepartments()) {
+                employees.addAll(model.getEmployees());
             }
+            setEmployeeBoxData(employees);
         });
 
         employeeBox = new JComboBox<>();
@@ -167,8 +167,8 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(true);
                         deleteDepOrderButton.setEnabled(true);
-                        Utils.setBoxFromID(departmentBox, selectedDepFinModel.getDepartment());
-                        Utils.setBoxFromID(employeeBox, selectedDepFinModel.getResponsibleEmployee());
+                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepartment());
+                        Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getResponsibleEmployee());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                     }
                 }
@@ -180,7 +180,8 @@ public class FinancePanel extends JPanel {
         createOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && listener != null) {
                 FinanceModel model = new FinanceModel(orderNumber, orderName, financeAmount, startDate, endDate);
-                listener.createOrderEventOccurred(model);
+                Utils.setCreated(model);
+                listener.persistModelEventOccurred(model);
             }
             clearFinancePanel();
             clearDepFinPanel();
@@ -189,12 +190,13 @@ public class FinancePanel extends JPanel {
         editOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(emptyFinanceModel)) {
                 if (checkFinanceInput() && listener != null) {
-                    selectedFinanceModel.setOrderNumber(orderNumber);
-                    selectedFinanceModel.setOrderName(orderName);
+                    selectedFinanceModel.setFinanceNumber(orderNumber);
+                    selectedFinanceModel.setFinanceName(orderName);
                     selectedFinanceModel.setTotalAmount(financeAmount);
                     selectedFinanceModel.setStartDate(startDate);
                     selectedFinanceModel.setEndDate(endDate);
-                    listener.editOrderEventOccurred(selectedFinanceModel);
+                    Utils.setUpdated(selectedFinanceModel);
+                    listener.persistModelEventOccurred(selectedFinanceModel);
                 }
                 selectedFinanceModel = emptyFinanceModel;
             }
@@ -203,8 +205,9 @@ public class FinancePanel extends JPanel {
         });
 
         deleteOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getOrderName()) && listener != null) {
-                listener.deleteOrderEventOccurred(selectedFinanceModel);
+            if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
+                Utils.setDeleted(selectedFinanceModel);
+                listener.persistModelEventOccurred(selectedFinanceModel);
             }
             selectedFinanceModel = emptyFinanceModel;
             clearFinancePanel();
@@ -213,8 +216,9 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment.getModelId(), selectedEmployee.getModelId(), depFinanceAmount);
-                listener.createDepOrderEventOccurred(model);
+                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment, selectedEmployee, depFinanceAmount);
+                Utils.setCreated(model);
+                listener.persistModelEventOccurred(model);
             }
             clearDepFinPanel();
         });
@@ -222,10 +226,11 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                 if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                    selectedDepFinModel.setDepartment(selectedDepartment.getModelId());
-                    selectedDepFinModel.setResponsibleEmployee(selectedEmployee.getModelId());
+                    selectedDepFinModel.setDepartment(selectedDepartment);
+                    selectedDepFinModel.setResponsibleEmployee(selectedEmployee);
                     selectedDepFinModel.setTotalAmount(depFinanceAmount);
-                    listener.editDepOrderEventOccurred(selectedDepFinModel);
+                    Utils.setUpdated(selectedDepFinModel);
+                    listener.persistModelEventOccurred(selectedDepFinModel);
                 }
                 selectedDepFinModel = emptyFinanceDepartmentModel;
             }
@@ -233,8 +238,9 @@ public class FinancePanel extends JPanel {
         });
 
         deleteDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getOrderName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getDepName()) && listener != null) {
-                listener.deleteDepOrderEventOccurred(selectedDepFinModel);
+            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getDepartment().getDepName()) && listener != null) {
+                Utils.setDeleted(selectedDepFinModel);
+                listener.persistModelEventOccurred(selectedDepFinModel);
             }
             selectedDepFinModel = emptyFinanceDepartmentModel;
             clearDepFinPanel();
@@ -338,7 +344,7 @@ public class FinancePanel extends JPanel {
         refreshFinanceTable();
     }
 
-    public void refreshFinanceTable() {
+    private void refreshFinanceTable() {
         financeTableModel.fireTableDataChanged();
     }
 
@@ -347,11 +353,11 @@ public class FinancePanel extends JPanel {
         refreshDepartmentFinanceTable();
     }
 
-    public void refreshDepartmentFinanceTable() {
+    private void refreshDepartmentFinanceTable() {
         departmentFinanceTableModel.fireTableDataChanged();
     }
 
-    public void setUseUserDepartment(){
+    public void setUseUserDepartment() {
         useUserDepartment = true;
         departmentBox.setEnabled(false);
         employeeBox.setEnabled(false);
@@ -365,9 +371,11 @@ public class FinancePanel extends JPanel {
 
     public void setDepartmentBoxData(List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
-            departmentBox.addItem(model);
-            if (useUserDepartment && LoginData.getInstance().getDepartment() == model.getModelId()) {
-                departmentBox.setSelectedItem(model);
+            if (model.isActive()) {
+                departmentBox.addItem(model);
+                if (useUserDepartment && LoginData.getInstance().getSubdepartment().getDepartment().equals(model)) {
+                    departmentBox.setSelectedItem(model);
+                }
             }
         }
 
@@ -377,7 +385,9 @@ public class FinancePanel extends JPanel {
         employeeBox.removeAllItems();
         employeeBox.addItem(emptyEmployeeModel);
         for (EmployeeModel model : db) {
-            employeeBox.addItem(model);
+            if (model.isActive()) {
+                employeeBox.addItem(model);
+            }
         }
     }
 
@@ -413,7 +423,7 @@ public class FinancePanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("orderNumber") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.getProperty("financeNumber") + ":"), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -423,7 +433,7 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("orderName") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.getProperty("financeName") + ":"), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

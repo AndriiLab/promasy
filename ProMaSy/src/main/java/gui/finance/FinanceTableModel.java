@@ -1,7 +1,7 @@
 package gui.finance;
 
 import gui.Labels;
-import model.FinanceModel;
+import model.models.FinanceModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
@@ -16,8 +16,8 @@ class FinanceTableModel extends AbstractTableModel {
 
     private List<FinanceModel> db;
 
-    private String[] colNames = {Labels.getProperty("orderNumber"),
-            Labels.getProperty("orderName"),
+    private String[] colNames = {Labels.getProperty("financeNumber"),
+            Labels.getProperty("financeName"),
             Labels.getProperty("financeAmount"),
             Labels.getProperty("financeLeft"),
             Labels.getProperty("dateStart"),
@@ -50,7 +50,7 @@ class FinanceTableModel extends AbstractTableModel {
         FinanceModel model = db.get(rowIndex);
         switch (columnIndex){
             case 0:
-                return model.getOrderNumber();
+                return model.getFinanceNumber();
             case 1:
                 return model;
             case 2:

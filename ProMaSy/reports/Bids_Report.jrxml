@@ -183,7 +183,7 @@
 						<font size="14"/>
 					</textElement>
                     <textFieldExpression>
-                        <![CDATA[model.ReportParametersData.getInstance().getDepartmentHead()]]></textFieldExpression>
+                        <![CDATA[model.models.ReportParametersData.getInstance().getDepartmentHead()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="656" y="87" width="146" height="25" uuid="6edd8c9c-0e94-40f2-8f50-cc4f24940184">
@@ -196,7 +196,7 @@
 						<font size="14"/>
 					</textElement>
                     <textFieldExpression>
-                        <![CDATA[model.ReportParametersData.getInstance().getPersonallyLiableEmpl()]]></textFieldExpression>
+                        <![CDATA[model.models.ReportParametersData.getInstance().getPersonallyLiableEmpl()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="656" y="112" width="146" height="25" uuid="3b31f01f-e5eb-4ff1-9f2c-2dacd465f25b">
@@ -209,7 +209,7 @@
 						<font size="14"/>
 					</textElement>
                     <textFieldExpression>
-                        <![CDATA[model.ReportParametersData.getInstance().getAccountant()]]></textFieldExpression>
+                        <![CDATA[model.models.ReportParametersData.getInstance().getAccountant()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="656" y="137" width="146" height="25" uuid="7fa3a4b7-8aa6-4f89-afd9-1ab16092f484">
@@ -222,7 +222,7 @@
 						<font size="14"/>
 					</textElement>
                     <textFieldExpression>
-                        <![CDATA[model.ReportParametersData.getInstance().getEconomist()]]></textFieldExpression>
+                        <![CDATA[model.models.ReportParametersData.getInstance().getEconomist()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="679" y="0" width="123" height="30" uuid="ec69cce1-c66d-4d55-8eb9-6ac6477b39de"/>
@@ -264,7 +264,7 @@
                         <font size="14"/>
                     </textElement>
                     <textFieldExpression>
-                        <![CDATA[model.ReportParametersData.getInstance().getHeadTender()]]></textFieldExpression>
+                        <![CDATA[model.models.ReportParametersData.getInstance().getHeadTender()]]></textFieldExpression>
                 </textField>
 			</band>
 		</groupFooter>
@@ -515,7 +515,7 @@
 					<font size="14"/>
 				</textElement>
                 <textFieldExpression>
-                    <![CDATA[model.ReportParametersData.getInstance().getHeadPosition()]]></textFieldExpression>
+                    <![CDATA[model.models.ReportParametersData.getInstance().getHeadPosition()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="571" y="40" width="119" height="20" uuid="7bde64cb-3228-4b72-a7a1-7e826bab3883">
@@ -528,7 +528,7 @@
 					<font size="14"/>
 				</textElement>
                 <textFieldExpression>
-                    <![CDATA[model.ReportParametersData.getInstance().getHead()]]></textFieldExpression>
+                    <![CDATA[model.models.ReportParametersData.getInstance().getHead()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -687,7 +687,7 @@
 					<font size="10"/>
 				</textElement>
                 <textFieldExpression>
-                    <![CDATA["Замовлення сформоване " + java.time.LocalDate.now() + ". Замовник: " + model.LoginData.getInstance().getShortName() + " Телефон: "+model.LoginData.getInstance().getPhoneMain()]]></textFieldExpression>
+                    <![CDATA["Замовлення сформоване " + java.time.LocalDate.now() + ". Замовник: " + model.dao.LoginData.getInstance().getShortName() + " Телефон: "+model.dao.LoginData.getInstance().getPhoneMain()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="761" y="10" width="41" height="20" uuid="1c3988bf-41ad-46af-893f-e586e6d973be">

@@ -4,6 +4,6 @@ import java.util.EventListener;
 
 public interface CpvSearchListener extends EventListener {
 
-	void cpvEventOccurred(CpvReqEvent ev);
+    void cpvSelectionEventOccurred(CpvReqEvent ev);
 
 }

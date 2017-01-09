@@ -3,7 +3,7 @@ package gui.cpv;
 import gui.Icons;
 import gui.Labels;
 import gui.MainFrame;
-import model.CPVModel;
+import model.models.CPVModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -155,8 +155,8 @@ public class CpvDialog extends JDialog {
         CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
 
 		if (cpvListener != null) {
-			cpvListener.cpvEventOccurred(ev);
-			refresh();
+            cpvListener.cpvSelectionEventOccurred(ev);
+            refresh();
 		}
 	}
 }

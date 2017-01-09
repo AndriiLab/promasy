@@ -1,13 +1,15 @@
 package gui;
 
+import model.models.AbstractModel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Abstract dialog with combo box and create, edit, delete buttons
+ * Abstract dialog with combo box and createOrUpdate, edit, delete buttons
  */
-public abstract class AbstractComboCEDDialog<T> extends JDialog {
+public abstract class AbstractComboCEDDialog<T extends AbstractModel> extends JDialog {
     protected final T emptyModel;
     protected CrEdDelButtons ced;
     protected JButton createButton;
@@ -61,7 +63,9 @@ public abstract class AbstractComboCEDDialog<T> extends JDialog {
         comboBox.removeAllItems();
         comboBox.addItem(emptyModel);
         for (T model : modelDb) {
-            comboBox.addItem(model);
+            if (model.isActive()) {
+                comboBox.addItem(model);
+            }
         }
     }
 

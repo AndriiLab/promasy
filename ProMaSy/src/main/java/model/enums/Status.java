@@ -6,23 +6,17 @@ import gui.Labels;
  * This Enum holds data about available bid statuses
  */
 public enum Status {
-    CREATED(10, Labels.getProperty("created")),
-    SUBMITTED(20, Labels.getProperty("submitted")),
-    POSTED_IN_PROZORRO(50, Labels.getProperty("postedInProzorro")),
-    RECEIVED(60, Labels.getProperty("received")),
-    NOT_RECEIVED(80, Labels.getProperty("notReceived")),
-    DECLINED(90, Labels.getProperty("declined"));
+    CREATED(Labels.getProperty("created")),
+    SUBMITTED(Labels.getProperty("submitted")),
+    POSTED_IN_PROZORRO(Labels.getProperty("postedInProzorro")),
+    RECEIVED(Labels.getProperty("received")),
+    NOT_RECEIVED(Labels.getProperty("notReceived")),
+    DECLINED(Labels.getProperty("declined"));
 
-    private final int statusId;
     private final String statusDesc;
 
-    Status(int statusId, String statusDesc) {
-        this.statusId = statusId;
+    Status(String statusDesc) {
         this.statusDesc = statusDesc;
-    }
-
-    public int getStatusId() {
-        return statusId;
     }
 
     public String getStatusDesc() {

@@ -2,13 +2,14 @@ package gui.bids.status;
 
 import gui.Icons;
 import gui.Labels;
-import model.StatusModel;
+import gui.Utils;
 import model.enums.Status;
+import model.models.BidModel;
+import model.models.BidStatusModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Dialog displays bid status change history and controls for setting new status for the bid
@@ -21,7 +22,7 @@ public class StatusDialog extends JDialog {
     private StatusTableModel statusTableModel;
     private JTable statusTable;
     private StatusDialogListener listener;
-    private long selectedBidId;
+    private BidModel selectedBidModel;
 
     public StatusDialog(JFrame parent) {
         super(parent, Labels.getProperty("bidHistory"), true);
@@ -32,9 +33,6 @@ public class StatusDialog extends JDialog {
         Dimension comboBoxDim = new Dimension(150, 25);
 
         statusTableModel = new StatusTableModel();
-        java.util.List<StatusModel> dummyList = new ArrayList<>();
-        dummyList.add(new StatusModel());
-        statusTableModel.setData(dummyList);
         statusTable = new JTable(statusTableModel);
 
         statusJComboBox = new JComboBox<>(Status.values());
@@ -52,10 +50,12 @@ public class StatusDialog extends JDialog {
 
         setStatusButton.addActionListener(e -> {
             if (listener != null) {
-                int statusId = ((Status) statusJComboBox.getSelectedItem()).getStatusId();
-                String statusDesc = ((Status) statusJComboBox.getSelectedItem()).getStatusDesc();
-                StatusModel model = new StatusModel(selectedBidId, statusId, statusDesc);
-                listener.statusChangeEventOccured(model);
+                Status selectedStatus = (Status) statusJComboBox.getSelectedItem();
+                BidStatusModel statusModel = new BidStatusModel(selectedStatus, selectedBidModel);
+                Utils.setCreated(statusModel);
+                selectedBidModel.addStatus(statusModel);
+                Utils.setUpdated(selectedBidModel);
+                listener.persistModelEventOccurred(selectedBidModel);
             }
         });
 
@@ -64,13 +64,13 @@ public class StatusDialog extends JDialog {
 
     }
 
-    public void setTableData(java.util.List<StatusModel> tableData) {
-        statusTableModel.setData(tableData);
+    public void setTableData(BidModel model) {
+        statusTableModel.setBidModel(model);
         statusTableModel.fireTableDataChanged();
     }
 
-    public void setVisible(boolean b, long selectedBidId) {
-        this.selectedBidId = selectedBidId;
+    public void setVisible(boolean b, BidModel model) {
+        this.selectedBidModel = model;
         super.setVisible(b);
     }
 

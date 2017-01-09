@@ -1,11 +1,10 @@
 package gui.bids.status;
 
-import model.StatusModel;
+import model.models.BidModel;
 
 /**
  * Listener for {@link StatusDialog}
  */
 public interface StatusDialogListener {
-
-    void statusChangeEventOccured(StatusModel model);
+    void persistModelEventOccurred(BidModel bidModel);
 }

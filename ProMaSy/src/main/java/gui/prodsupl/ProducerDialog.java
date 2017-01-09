@@ -3,7 +3,7 @@ package gui.prodsupl;
 import gui.AbstractComboCEDDialog;
 import gui.Labels;
 import gui.Utils;
-import model.ProducerModel;
+import model.models.ProducerModel;
 
 import javax.swing.*;
 
@@ -36,7 +36,8 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
             if (!newName.isEmpty()) {
                 ProducerModel model = new ProducerModel(newName);
                 if (listener != null) {
-                    listener.createProdEventOccurred(model);
+                    Utils.setCreated(model);
+                    listener.persistModelEventOccurred(model);
                 }
             } else {
                 Utils.emptyFieldError(parent, Labels.getProperty("producer"));
@@ -48,7 +49,8 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
             if (!newName.isEmpty() && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     privateModel.setBrandName(newName);
-                    listener.editProdEventOccurred(privateModel);
+                    Utils.setUpdated(privateModel);
+                    listener.persistModelEventOccurred(privateModel);
                 }
             } else {
                 Utils.emptyFieldError(parent, Labels.getProperty("producer"));
@@ -58,7 +60,8 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
 
         deleteButton.addActionListener(e -> {
             if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.getBrandName()) && listener != null) {
-                listener.deleteProdEventOccurred(privateModel);
+                Utils.setDeleted(privateModel);
+                listener.persistModelEventOccurred(privateModel);
             }
             clearDialog();
         });

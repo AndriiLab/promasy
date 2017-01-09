@@ -1,12 +1,10 @@
 package gui.amunits;
 
-import model.AmountUnitsModel;
+import model.models.AmountUnitsModel;
 
 /**
  * Listener for {@link AmUnitsDialog}
  */
 public interface AmUnitsDialogListener {
-    void createEventOccurred(AmountUnitsModel model);
-    void editEventOccurred(AmountUnitsModel model);
-    void deleteEventOccurred(AmountUnitsModel model);
+    void persistModelEventOccurred(AmountUnitsModel model);
 }

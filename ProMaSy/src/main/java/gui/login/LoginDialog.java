@@ -139,7 +139,7 @@ public class LoginDialog extends JDialog {
                 userField.setText("");
                 passwordField.setText("");
                 if (loginListener.isAbleToRegister()) {
-                    parent.getCreateEmployeeDialog().setRoleBox(false, Role.USER.getRoleId());
+                    parent.getCreateEmployeeDialog().setRoleBox(Role.USER);
                     parent.getCreateEmployeeDialog().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(parent, Labels.getProperty("registrationClosed"),

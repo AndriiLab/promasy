@@ -1,12 +1,12 @@
 package gui.prodsupl;
 
-import model.ProducerModel;
+import model.models.ProducerModel;
 
 /**
  * Listener for {@link ReasonsDialog}
  */
 public interface ProducerDialogListener {
-    void createProdEventOccurred(ProducerModel model);
-    void editProdEventOccurred(ProducerModel model);
-    void deleteProdEventOccurred(ProducerModel model);
+
+    void persistModelEventOccurred(ProducerModel model);
+
 }

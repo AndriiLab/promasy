@@ -1,7 +1,7 @@
 package gui.bids;
 
 import gui.Labels;
-import model.BidModel;
+import model.models.BidModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
@@ -64,7 +64,7 @@ class BidsTableModel extends AbstractTableModel {
             case 5:
                 return model.getLastEditDate();
             case 6:
-                return model.getStatusDesc();
+                return model.getLastBidStatusModel().getStatus().getStatusDesc();
         }
 
         return null;

@@ -1,6 +1,6 @@
 package gui.conset;
 
-import model.ConnectionSettingsModel;
+import model.models.ConnectionSettingsModel;
 
 public interface ConSetListener {
 

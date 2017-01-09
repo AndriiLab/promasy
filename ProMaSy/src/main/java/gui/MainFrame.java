@@ -30,8 +30,10 @@ import gui.login.LoginListener;
 import gui.prodsupl.*;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
-import model.*;
+import model.dao.Database;
+import model.dao.LoginData;
 import model.enums.Role;
+import model.models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,38 +102,38 @@ public class MainFrame extends JFrame {
     }
 
     public void initialize() {
-        int roleId = LoginData.getInstance().getRole();
+        Role role = LoginData.getInstance().getRole();
         //setting layout
         setLayout(new BorderLayout());
 
         // init panes according to user roles
-        if (roleId == Role.ADMIN.getRoleId()) {
+        if (role == Role.ADMIN) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.DIRECTOR.getRoleId()) {
+        } else if (role == Role.DIRECTOR) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.DEPUTY_DIRECTOR.getRoleId()) {
+        } else if (role == Role.DEPUTY_DIRECTOR) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.HEAD_OF_TENDER_COMMITTEE.getRoleId()) {
+        } else if (role == Role.HEAD_OF_TENDER_COMMITTEE) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.ACCOUNTANT.getRoleId()) {
+        } else if (role == Role.ACCOUNTANT) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.ECONOMIST.getRoleId()) {
+        } else if (role == Role.ECONOMIST) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.HEAD_OF_DEPARTMENT.getRoleId()) {
+        } else if (role == Role.HEAD_OF_DEPARTMENT) {
             useUserDepartment();
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.PERSONALLY_LIABLE_EMPLOYEE.getRoleId()) {
+        } else if (role == Role.PERSONALLY_LIABLE_EMPLOYEE) {
             useUserDepartment();
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (roleId == Role.USER.getRoleId()) {
+        } else if (role == Role.USER) {
             useUserDepartment();
             setJMenuBar(createMenuBar(false));
             add(bidsListPanel, BorderLayout.CENTER);
@@ -232,7 +234,7 @@ public class MainFrame extends JFrame {
 
             settingsMenu.add(conSettItem);
 
-            if (LoginData.getInstance().getRole() == Role.ADMIN.getRoleId()) {
+            if (LoginData.getInstance().getRole() == Role.ADMIN) {
                 JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
                 editEmpItem.setIcon(Icons.USERS);
                 editMenu.add(editEmpItem);
@@ -323,22 +325,22 @@ public class MainFrame extends JFrame {
     private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
             // search for heads of department (id 5000) in department
-            listener.searchForPerson(Role.HEAD_OF_DEPARTMENT.getRoleId(), bidsListPanel.getSelectedDepartmentId());
+            listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartmentId());
             reportParametersDialog.setDepartmentHeadBoxData(Database.EMPLOYEES.getList());
             // search for personally liable employee (id 6000) in department
-            listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE.getRoleId(), bidsListPanel.getSelectedDepartmentId());
+            listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartmentId());
             reportParametersDialog.setPersonallyLiableEmpBoxData(Database.EMPLOYEES.getList());
             // search for chief accountant (id 4000)
-            listener.searchForPerson(Role.ACCOUNTANT.getRoleId());
+            listener.searchForPerson(Role.ACCOUNTANT);
             reportParametersDialog.setAccountantBoxData(Database.EMPLOYEES.getList());
             // search for chief economist (id 3000)
-            listener.searchForPerson(Role.ECONOMIST.getRoleId());
+            listener.searchForPerson(Role.ECONOMIST);
             reportParametersDialog.setEconomistBoxData(Database.EMPLOYEES.getList());
             // search for HEAD OF TENDER COMMITTEE (id 2500)
-            listener.searchForPerson(Role.HEAD_OF_TENDER_COMMITTEE.getRoleId());
+            listener.searchForPerson(Role.HEAD_OF_TENDER_COMMITTEE);
             reportParametersDialog.setHeadTenderBoxData(Database.EMPLOYEES.getList());
             // search for director (id 1000)
-            listener.searchForPerson(Role.DIRECTOR.getRoleId());
+            listener.searchForPerson(Role.DIRECTOR);
             reportParametersDialog.setHeadBoxData(Database.EMPLOYEES.getList());
             // show dialog with selectors for director, head of department, PLE, accountant, economist, HEAD OF TENDER COMMITTEE
             reportParametersDialog.setVisible(true);
@@ -460,10 +462,6 @@ public class MainFrame extends JFrame {
         reportParametersDialog.setHeadBoxData(employeeModelList);
     }
 
-    public void setRoleModelList(List<RoleModel> roleModelList) {
-        createEmployeeDialog.setRolesData(roleModelList);
-    }
-
     public void setProducerModelList(List<ProducerModel> producerModelList) {
         producerDialog.setData(producerModelList);
         createBidDialog.setProducerBoxData(producerModelList);
@@ -489,16 +487,8 @@ public class MainFrame extends JFrame {
         createBidDialog.setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
-    public void setFinanceDepartmentModelListToBidDialog(List<FinanceDepartmentModel> list) {
-        createBidDialog.setFinanceDepartmentBoxData(list);
-    }
-
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
-    }
-
-    public void setBidStatusList(List<StatusModel> list) {
-        bidsListPanel.setBidStatusTableData(list);
     }
 
     public CreateEmployeeDialog getCreateEmployeeDialog() {

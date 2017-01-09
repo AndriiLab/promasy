@@ -1,12 +1,9 @@
 package gui.empedit;
 
-import model.EmployeeModel;
+import model.models.EmployeeModel;
 
 public interface CreateEmployeeDialogListener {
-	void instSelectionEventOccurred(long instId);
-	void depSelectionEventOccurred(long depId);
-	void createEmployeeEventOccurred(EmployeeModel model);
-	void editEmployeeEventOccurred(EmployeeModel model);
+    void persistModelEventOccurred(EmployeeModel model);
 
     boolean checkUniqueLogin(String login);
 }

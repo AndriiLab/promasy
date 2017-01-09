@@ -1,18 +1,19 @@
 package gui.bids.status;
 
 import gui.Labels;
-import model.StatusModel;
+import model.enums.Status;
+import model.models.BidModel;
+import model.models.BidStatusModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
- * TableModel for holding {@link StatusModel} data
+ * TableModel for holding {@link Status} data
  */
 public class StatusTableModel extends AbstractTableModel {
 
-    private List<StatusModel> db;
+    private BidModel bidModel;
 
     private String[] colNames = {Labels.getProperty("dateModified"),
             Labels.getProperty("status"),
@@ -27,13 +28,13 @@ public class StatusTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
-    public void setData(List<StatusModel> db) {
-        this.db = db;
+    public void setBidModel(BidModel bidModel) {
+        this.bidModel = bidModel;
     }
 
     @Override
     public int getRowCount() {
-        return db.size();
+        return bidModel.getStatuses().size();
     }
 
     @Override
@@ -43,12 +44,12 @@ public class StatusTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        StatusModel model = db.get(rowIndex);
+        BidStatusModel model = bidModel.getStatuses().get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return model.getCreatedDate();
+                return model.getLastEditDate();
             case 1:
-                return model.getStatusDesc();
+                return model.getStatus().getStatusDesc();
             case 2:
                 return model.getLastEditPersonName();
         }

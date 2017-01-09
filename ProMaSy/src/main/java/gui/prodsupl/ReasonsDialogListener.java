@@ -1,14 +1,12 @@
 package gui.prodsupl;
 
-import model.ReasonForSupplierChoiceModel;
+import model.models.ReasonForSupplierChoiceModel;
 
 /**
  * Listener for {@link ReasonsDialog}
  */
 public interface ReasonsDialogListener {
-    void createReasonEventOccurred(ReasonForSupplierChoiceModel model);
 
-    void editReasonEventOccurred(ReasonForSupplierChoiceModel model);
+    void persistModelEventOccurred(ReasonForSupplierChoiceModel model);
 
-    void deleteReasonEventOccurred(ReasonForSupplierChoiceModel model);
 }

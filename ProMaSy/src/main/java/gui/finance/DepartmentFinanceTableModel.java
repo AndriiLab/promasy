@@ -1,7 +1,7 @@
 package gui.finance;
 
 import gui.Labels;
-import model.FinanceDepartmentModel;
+import model.models.FinanceDepartmentModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
@@ -48,9 +48,9 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
         FinanceDepartmentModel model = db.get(rowIndex);
         switch (columnIndex){
             case 0:
-                return model.getDepName();
+                return model.getDepartment().getDepName();
             case 1:
-                return model.getEmpName();
+                return model.getResponsibleEmployee().getShortName();
             case 2:
                 BigDecimal totalAmount = model.getTotalAmount();
                 if (totalAmount == null){

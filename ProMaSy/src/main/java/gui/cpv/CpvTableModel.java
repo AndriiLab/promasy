@@ -1,7 +1,7 @@
 package gui.cpv;
 
 import gui.Labels;
-import model.CPVModel;
+import model.models.CPVModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -10,7 +10,7 @@ class CpvTableModel extends AbstractTableModel {
 
 	private List<CPVModel> db;
 
-    private String[] colNames = {Labels.getProperty("cpvCode"),
+    private String[] colNames = {Labels.getProperty("cpv"),
             Labels.getProperty("ukrainianName"),
             Labels.getProperty("englishName")};
 

@@ -3,7 +3,7 @@ package gui.amunits;
 import gui.AbstractComboCEDDialog;
 import gui.Labels;
 import gui.Utils;
-import model.AmountUnitsModel;
+import model.models.AmountUnitsModel;
 
 import javax.swing.*;
 
@@ -37,7 +37,8 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
             if (!newName.isEmpty() && privateModel.equals(emptyModel)) {
                 AmountUnitsModel model = new AmountUnitsModel(newName);
                 if (listener != null) {
-                    listener.createEventOccurred(model);
+                    Utils.setCreated(model);
+                    listener.persistModelEventOccurred(model);
                 }
             } else if (newName.isEmpty()) {
                 Utils.emptyFieldError(parent, Labels.getProperty("amUnit"));
@@ -49,7 +50,8 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
             if (!newName.isEmpty() && !privateModel.equals(emptyModel)) {
                 if (listener != null) {
                     privateModel.setAmUnitDesc(newName);
-                    listener.editEventOccurred(privateModel);
+                    Utils.setUpdated(privateModel);
+                    listener.persistModelEventOccurred(privateModel);
                 }
             } else if (newName.isEmpty()) {
                 Utils.emptyFieldError(parent, Labels.getProperty("amUnit"));
@@ -59,7 +61,8 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
 
         deleteButton.addActionListener(e -> {
             if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.getAmUnitDesc()) && listener != null) {
-                listener.deleteEventOccurred(privateModel);
+                Utils.setDeleted(privateModel);
+                listener.persistModelEventOccurred(privateModel);
             }
             clearDialog();
         });

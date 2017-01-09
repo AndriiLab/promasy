@@ -2,7 +2,7 @@ package gui.bids.reports;
 
 import gui.Labels;
 import gui.MainFrame;
-import model.BidsReportModel;
+import model.models.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;

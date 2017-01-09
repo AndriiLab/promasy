@@ -2,14 +2,15 @@ package gui.prodsupl;
 
 import gui.CrEdDelButtons;
 import gui.Labels;
-import model.ReasonForSupplierChoiceModel;
+import gui.Utils;
+import model.models.ReasonForSupplierChoiceModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
 /**
- * Created by laban on 02.12.2016.
+ * Class for CRUD of item {@link ReasonForSupplierChoiceModel}
  */
 public class ReasonsDialog extends JDialog {
     private final ReasonForSupplierChoiceModel emptyReasonsModel = new ReasonForSupplierChoiceModel();
@@ -61,7 +62,8 @@ public class ReasonsDialog extends JDialog {
                 if (listener != null) {
                     reasonBox.removeAllItems();
                     reasonBox.addItem(emptyReasonsModel);
-                    listener.createReasonEventOccurred(model);
+                    Utils.setCreated(model);
+                    listener.persistModelEventOccurred(model);
                 }
             }
             privateReasonModel = emptyReasonsModel;
@@ -74,7 +76,8 @@ public class ReasonsDialog extends JDialog {
                     reasonBox.removeAllItems();
                     reasonBox.addItem(emptyReasonsModel);
                     privateReasonModel.setReason(newReasonName);
-                    listener.editReasonEventOccurred(privateReasonModel);
+                    Utils.setUpdated(privateReasonModel);
+                    listener.persistModelEventOccurred(privateReasonModel);
                 }
             }
             privateReasonModel = emptyReasonsModel;
@@ -85,7 +88,8 @@ public class ReasonsDialog extends JDialog {
             if (!privateReasonModel.equals(emptyReasonsModel) && ced.deleteEntry(parent, privateReasonModel.getReason()) && listener != null) {
                 reasonBox.removeAllItems();
                 reasonBox.addItem(emptyReasonsModel);
-                listener.deleteReasonEventOccurred(privateReasonModel);
+                Utils.setDeleted(privateReasonModel);
+                listener.persistModelEventOccurred(privateReasonModel);
             }
             privateReasonModel = emptyReasonsModel;
             newReasonName = "";
@@ -95,8 +99,10 @@ public class ReasonsDialog extends JDialog {
     }
 
     public void setReasonData(java.util.List<ReasonForSupplierChoiceModel> prodDb) {
-        for (ReasonForSupplierChoiceModel prodModel : prodDb) {
-            reasonBox.addItem(prodModel);
+        for (ReasonForSupplierChoiceModel model : prodDb) {
+            if (model.isActive()) {
+                reasonBox.addItem(model);
+            }
         }
     }
 
