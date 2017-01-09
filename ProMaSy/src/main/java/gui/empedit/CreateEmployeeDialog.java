@@ -235,6 +235,10 @@ public class CreateEmployeeDialog extends JDialog {
         }
         departmentModel.setInstitute(instituteModel);
         SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
+        if (subdepartmentModel.equals(emptySubdepartmentModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            return false;
+        }
         subdepartmentModel.setDepartment(departmentModel);
         Role roleModel = (Role) roleBox.getSelectedItem();
         char[] password = passwordField.getPassword();

@@ -151,10 +151,14 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         createDepButton.addActionListener(e -> {
             if (!privateInstModel.equals(emptyInstituteModel) && newDepName != null) {
-                DepartmentModel model = new DepartmentModel(newDepName);
+                DepartmentModel departmentModel = new DepartmentModel(newDepName);
+                //if creating new department always adding new empty subdepartment to model
+                SubdepartmentModel subdepartmentModel = new SubdepartmentModel("<" + Labels.getProperty("emptySubdepartment") + ">");
                 if (orgListener != null) {
-                    model.setCreated();
-                    privateInstModel.addDepartment(model);
+                    subdepartmentModel.setCreated();
+                    departmentModel.setCreated();
+                    departmentModel.addSubdepartment(subdepartmentModel);
+                    privateInstModel.addDepartment(departmentModel);
                     InstituteModel instituteModel = privateInstModel;
                     orgListener.persistModelEventOccurred(instituteModel);
                     Utils.setBoxFromModel(instituteBox, instituteModel);

@@ -322,7 +322,13 @@ public class Controller {
                 close();
             }
         });
-        EmployeeModel firstUser = new EmployeeModel(Role.ADMIN);
+        List<EmployeeModel> employees = getEmployees();
+        EmployeeModel firstUser;
+        if (employees == null || employees.isEmpty()) {
+            firstUser = new EmployeeModel(Role.ADMIN);
+        } else {
+            firstUser = employees.get(0);
+        }
         firstUser.setCreated();
         createOrUpdate(firstUser);
         LoginData.getInstance(firstUser);
