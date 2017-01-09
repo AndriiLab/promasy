@@ -75,12 +75,11 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
 
     //if no users exist - return true
     public boolean isFirstRun() throws SQLException {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
         Query query = em.createQuery("select count(em) from EmployeeModel em");
-        int numberOfUsers = query.getFirstResult();
+        long numberOfUsers = (long) query.getSingleResult();
         em.getTransaction().commit();
-        em.close();
         return numberOfUsers == 0;
     }
 

@@ -75,4 +75,15 @@ public class DepartmentModel extends AbstractModel {
         return depName;
     }
 
+    public void addSubdepartment(SubdepartmentModel model) {
+        model.setDepartment(this);
+        int indexOfModel = subdepartments.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            subdepartments.set(indexOfModel, model);
+        } else {
+            subdepartments.add(model);
+        }
+    }
+
 }

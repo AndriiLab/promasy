@@ -14,7 +14,7 @@ public class VersionQueries {
     public String retrieve() throws SQLException {
         String version;
 
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
 
         Version minimumVersion = em.find(Version.class, 1);
 
@@ -31,8 +31,6 @@ public class VersionQueries {
             em.persist(currentVersion);
 
             em.getTransaction().commit();
-
-            em.close();
         }
 
         return version;
@@ -40,13 +38,12 @@ public class VersionQueries {
 
 
     public void updateVersion() throws SQLException {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
 
         Version minimumVersion = em.find(Version.class, 1);
         minimumVersion.set(Labels.getProperty("versionNumber"));
 
         em.getTransaction().commit();
-        em.close();
     }
 }

@@ -39,7 +39,7 @@ public abstract class AbstractModel {
     @Column(name = "modified_date")
     private Timestamp modifiedDate;
     @Version
-    private int version = 0;
+    private long version = 0;
 
     protected AbstractModel() {
         this.createdEmployee = null;

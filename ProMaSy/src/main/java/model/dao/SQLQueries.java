@@ -25,15 +25,14 @@ abstract class SQLQueries<T extends AbstractModel> {
     }
 
     public void createOrUpdate(T object) throws SQLException {
-        entityManager = Database.DB.getEntityManagerFactory().createEntityManager();
+        entityManager = Database.DB.getEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.merge(object);
+        entityManager.persist(object);
         entityManager.getTransaction().commit();
-        entityManager.close();
     }
 
     void retrieve() throws SQLException {
-        entityManager = Database.DB.getEntityManagerFactory().createEntityManager();
+        entityManager = Database.DB.getEntityManager();
         entityManager.getTransaction().begin();
 
         criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -47,7 +46,6 @@ abstract class SQLQueries<T extends AbstractModel> {
 
         list = entityManager.createQuery(criteriaQuery).getResultList();
         entityManager.getTransaction().commit();
-        entityManager.close();
 
         return Collections.unmodifiableList(list);
     }

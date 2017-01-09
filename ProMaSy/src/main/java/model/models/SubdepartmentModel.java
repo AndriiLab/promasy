@@ -22,9 +22,8 @@ public class SubdepartmentModel extends AbstractModel {
 
     }
 
-    public SubdepartmentModel(String subdepName, DepartmentModel department) {
+    public SubdepartmentModel(String subdepName) {
         this.subdepName = subdepName;
-        this.department = department;
     }
 
     public SubdepartmentModel(long subdepId, String subdepName, DepartmentModel department, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, List<EmployeeModel> employees) {

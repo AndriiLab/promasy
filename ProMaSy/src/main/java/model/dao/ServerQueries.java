@@ -9,11 +9,10 @@ import java.sql.Timestamp;
 public class ServerQueries {
 
     public static Timestamp getServerTimestamp() {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
         Timestamp serverTime = (Timestamp) em.createNativeQuery("SELECT current_timestamp").getSingleResult();
         em.getTransaction().commit();
-        em.close();
 
         return serverTime;
     }

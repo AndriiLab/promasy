@@ -12,7 +12,7 @@ public class RegistrationQueries {
 
     public int getRegistrationNumber() throws SQLException {
         int registrationNumber;
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
 
         RegistrationTicketModel model = em.find(RegistrationTicketModel.class, 1);
 
@@ -25,11 +25,9 @@ public class RegistrationQueries {
             em.getTransaction().begin();
 
             RegistrationTicketModel newModel = new RegistrationTicketModel(registrationNumber);
-            em.merge(newModel);
+            em.persist(newModel);
 
             em.getTransaction().commit();
-
-            em.close();
         }
 
         return registrationNumber;
@@ -40,14 +38,12 @@ public class RegistrationQueries {
             numberOfRegistrationTickets = 0;
         }
 
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
 
         RegistrationTicketModel model = em.find(RegistrationTicketModel.class, 1);
         model.setRegistrationTicketNumber(numberOfRegistrationTickets);
 
         em.getTransaction().commit();
-
-        em.close();
     }
 }

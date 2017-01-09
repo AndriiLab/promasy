@@ -50,14 +50,14 @@ public class InstituteModel extends AbstractModel {
         this.departments = departments;
     }
 
-//    public void addDepartment(DepartmentModel model) {
-//        model.setInstitute(this);
-//        int indexOfModel = departments.indexOf(model);
-//        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
-//        if(indexOfModel != -1){
-//            departments.set(indexOfModel, model);
-//        } else {
-//            departments.add(model);
-//        }
-//    }
+    public void addDepartment(DepartmentModel model) {
+        model.setInstitute(this);
+        int indexOfModel = departments.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            departments.set(indexOfModel, model);
+        } else {
+            departments.add(model);
+        }
+    }
 }

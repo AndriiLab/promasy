@@ -16,13 +16,12 @@ public class DepartmentQueries extends SQLQueries<DepartmentModel>{
     }
 
     public List<DepartmentModel> retrieve(long instituteId) throws SQLException {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
         Query query = em.createQuery("select dm from DepartmentModel dm join dm.institute where dm.institute.modelId = :instituteId and dm.active = true");
         query.setParameter("instituteId", instituteId);
         List<DepartmentModel> list = query.getResultList();
         em.getTransaction().commit();
-        em.close();
 
         return Collections.unmodifiableList(list);
     }

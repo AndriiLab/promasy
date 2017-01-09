@@ -19,7 +19,7 @@ public class CPVQueries {
     public List<CPVModel> retrieve(String requestedCpv, boolean sameLvlShow) throws SQLException {
         list.clear();
 
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CPVModel> criteria = cb.createQuery(CPVModel.class);
         Root<CPVModel> root = criteria.from(CPVModel.class);
@@ -96,8 +96,6 @@ public class CPVQueries {
         }
 
         list = em.createQuery(criteria).getResultList();
-
-        em.close();
 
         return Collections.unmodifiableList(list);
     }

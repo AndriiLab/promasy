@@ -19,25 +19,23 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
     }
 
     public List<FinanceDepartmentModel> retrieveByFinanceId(long financeID) throws SQLException {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
         Query query = em.createQuery("select fdm from FinanceDepartmentModel fdm join fdm.finances where fdm.finances.modelId = :financeId and fdm.active = true");
         query.setParameter("financeId", financeID);
         List<FinanceDepartmentModel> list = query.getResultList();
         em.getTransaction().commit();
-        em.close();
 
         return Collections.unmodifiableList(list);
     }
 
     public List<FinanceDepartmentModel> retrieveByDepartmentId(long departmentId) throws SQLException {
-        EntityManager em = Database.DB.getEntityManagerFactory().createEntityManager();
+        EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
         Query query = em.createQuery("select fdm from FinanceDepartmentModel fdm join fdm.department where fdm.department.modelId = :departmentId and fdm.active = true");
         query.setParameter("departmentId", departmentId);
         List<FinanceDepartmentModel> list = query.getResultList();
         em.getTransaction().commit();
-        em.close();
 
         return Collections.unmodifiableList(list);
     }
