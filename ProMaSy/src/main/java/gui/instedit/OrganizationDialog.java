@@ -153,7 +153,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
             if (!privateInstModel.equals(emptyInstituteModel) && newDepName != null) {
                 DepartmentModel departmentModel = new DepartmentModel(newDepName);
                 //if creating new department always adding new empty subdepartment to model
-                SubdepartmentModel subdepartmentModel = new SubdepartmentModel("<" + Labels.getProperty("emptySubdepartment") + ">");
+                SubdepartmentModel subdepartmentModel = new SubdepartmentModel("<" + Labels.getProperty("null") + ">");
                 if (orgListener != null) {
                     subdepartmentModel.setCreated();
                     departmentModel.setCreated();
@@ -429,6 +429,14 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 }
             }
         }
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && orgListener != null) {
+            orgListener.getAllInstitutes();
+        }
+        super.setVisible(visible);
     }
 
     private void layoutControls() {

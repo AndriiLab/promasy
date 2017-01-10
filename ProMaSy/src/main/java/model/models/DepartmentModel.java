@@ -19,9 +19,6 @@ public class DepartmentModel extends AbstractModel {
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
     private List<SubdepartmentModel> subdepartments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
-    private List<FinanceDepartmentModel> departmentFinances = new ArrayList<>();
-
     public DepartmentModel() {
         this.depName = "";
     }
@@ -32,12 +29,11 @@ public class DepartmentModel extends AbstractModel {
 
     public DepartmentModel(long depId, String depName, InstituteModel institute, EmployeeModel createdBy, Timestamp createdDate,
                            EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active,
-                           List<SubdepartmentModel> subdepartments, List<FinanceDepartmentModel> departmentFinances) {
+                           List<SubdepartmentModel> subdepartments) {
         super(depId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.depName = depName;
         this.institute = institute;
         this.subdepartments = subdepartments;
-        this.departmentFinances = departmentFinances;
     }
 
     public String getDepName() {
@@ -62,14 +58,6 @@ public class DepartmentModel extends AbstractModel {
 
     public void setSubdepartments(List<SubdepartmentModel> subdepartments) {
         this.subdepartments = subdepartments;
-    }
-
-    public List<FinanceDepartmentModel> getDepartmentFinances() {
-        return departmentFinances;
-    }
-
-    public void setDepartmentFinances(List<FinanceDepartmentModel> departmentFinances) {
-        this.departmentFinances = departmentFinances;
     }
 
     public String toString() {

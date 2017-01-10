@@ -168,6 +168,14 @@ public class SupplierDialog extends JDialog {
         return true;
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getAllSuppliers();
+        }
+        super.setVisible(visible);
+    }
+
     private void layoutControls() {
         JPanel supplPanel = new JPanel();
         JPanel buttonsPanel = new JPanel();

@@ -9,4 +9,5 @@ public interface ProducerDialogListener {
 
     void persistModelEventOccurred(ProducerModel model);
 
+    void getAllProducers();
 }

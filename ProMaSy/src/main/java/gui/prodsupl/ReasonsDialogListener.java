@@ -9,4 +9,5 @@ public interface ReasonsDialogListener {
 
     void persistModelEventOccurred(ReasonForSupplierChoiceModel model);
 
+    void getReasonsForSupplierChoice();
 }

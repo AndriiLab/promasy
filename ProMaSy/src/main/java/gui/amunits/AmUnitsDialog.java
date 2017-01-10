@@ -71,4 +71,12 @@ public class AmUnitsDialog extends AbstractComboCEDDialog<AmountUnitsModel> {
     public void setListener(AmUnitsDialogListener listener) {
         this.listener = listener;
     }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getAllAmUnits();
+        }
+        super.setVisible(visible);
+    }
 }

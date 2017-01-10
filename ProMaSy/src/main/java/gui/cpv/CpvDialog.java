@@ -159,4 +159,12 @@ public class CpvDialog extends JDialog {
             refresh();
 		}
 	}
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && cpvListener != null) {
+            cpvListener.getTopCodes();
+        }
+        super.setVisible(visible);
+    }
 }

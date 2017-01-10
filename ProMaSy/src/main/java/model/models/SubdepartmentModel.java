@@ -19,6 +19,9 @@ public class SubdepartmentModel extends AbstractModel {
     @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
     private List<EmployeeModel> employees = new ArrayList<>();
 
+    @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
+    private List<FinanceDepartmentModel> financeDepartments = new ArrayList<>();
+
     public SubdepartmentModel() {
 
     }
@@ -27,11 +30,12 @@ public class SubdepartmentModel extends AbstractModel {
         this.subdepName = subdepName;
     }
 
-    public SubdepartmentModel(long subdepId, String subdepName, DepartmentModel department, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, List<EmployeeModel> employees) {
-        super(subdepId, createdBy, createdDate, modifiedBy, modifiedDate, active);
+    public SubdepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, String subdepName, DepartmentModel department, List<EmployeeModel> employees, List<FinanceDepartmentModel> financeDepartments) {
+        super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.subdepName = subdepName;
         this.department = department;
         this.employees = employees;
+        this.financeDepartments = financeDepartments;
     }
 
     public String getSubdepName() {
@@ -58,6 +62,37 @@ public class SubdepartmentModel extends AbstractModel {
         this.employees = employees;
     }
 
+    public List<FinanceDepartmentModel> getFinanceDepartments() {
+        return financeDepartments;
+    }
+
+    public void setFinanceDepartments(List<FinanceDepartmentModel> financeDepartments) {
+        this.financeDepartments = financeDepartments;
+    }
+
+    public void addEmployee(EmployeeModel model) {
+        model.setSubdepartment(this);
+        int indexOfModel = employees.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            employees.set(indexOfModel, model);
+        } else {
+            employees.add(model);
+        }
+    }
+
+    public void addFinanceDepartmentModel(FinanceDepartmentModel model) {
+        model.setSubdepartment(this);
+        int indexOfModel = financeDepartments.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            financeDepartments.set(indexOfModel, model);
+        } else {
+            financeDepartments.add(model);
+        }
+    }
+
+    @Override
     public String toString() {
         return subdepName;
     }

@@ -119,14 +119,11 @@ public class BidsListPanel extends JPanel {
             editBidButton.setEnabled(false);
             deleteBidButton.setEnabled(false);
             changeStatusButton.setEnabled(false);
-            if (financeDepartmentBox.getSelectedItem() != null && listener != null) {
+            if (financeDepartmentBox.getSelectedItem() != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                 List<BidModel> bids = selectedFinanceDepartmentModel.getBids();
-                if (isSelectedFinanceDepartmentModelEmpty() && !isSelectedDepartmentModelEmpty()) {
-                    List<FinanceDepartmentModel> finances = selectedDepartmentModel.getDepartmentFinances();
-                    for (FinanceDepartmentModel finance : finances) {
-                        bids.addAll(finance.getBids());
-                    }
+                if (isSelectedFinanceDepartmentModelEmpty() && !isSelectedDepartmentModelEmpty() && listener != null) {
+                    listener.getBidsByDepartment(selectedDepartmentModel);
                 }
                 this.setBidsTableData(bids);
                 selectedBidModel = emptyBidModel;
@@ -143,7 +140,7 @@ public class BidsListPanel extends JPanel {
                 financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
                 selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
                 if (!isSelectedDepartmentModelEmpty()) {
-                    this.setFinanceDepartmentBoxData(selectedDepartmentModel.getDepartmentFinances());
+                    listener.getDepartmentFinances(selectedDepartmentModel);
                 } else if (isSelectedDepartmentModelEmpty()) {
                     listener.selectAllBidsEventOccurred();
                 }

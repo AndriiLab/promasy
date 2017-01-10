@@ -7,4 +7,6 @@ import model.models.AmountUnitsModel;
  */
 public interface AmUnitsDialogListener {
     void persistModelEventOccurred(AmountUnitsModel model);
+
+    void getAllAmUnits();
 }

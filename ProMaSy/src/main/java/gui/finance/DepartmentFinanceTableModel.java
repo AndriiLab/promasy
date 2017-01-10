@@ -15,7 +15,7 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
 
     private List<FinanceDepartmentModel> db;
     private String[] colNames = {Labels.getProperty("department"),
-            Labels.getProperty("manager"),
+            Labels.getProperty("subdepartment"),
             Labels.getProperty("financeAmount"),
             Labels.getProperty("financeLeft"),
             "main/java/model"
@@ -48,9 +48,9 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
         FinanceDepartmentModel model = db.get(rowIndex);
         switch (columnIndex){
             case 0:
-                return model.getDepartment().getDepName();
+                return model.getSubdepartment().getDepartment().getDepName();
             case 1:
-                return model.getResponsibleEmployee().getShortName();
+                return model.getSubdepartment().getSubdepName();
             case 2:
                 BigDecimal totalAmount = model.getTotalAmount();
                 if (totalAmount == null){

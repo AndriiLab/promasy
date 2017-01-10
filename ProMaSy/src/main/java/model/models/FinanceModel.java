@@ -117,4 +117,15 @@ public class FinanceModel extends AbstractModel {
         }
         return "(" + financeNumber + ") " + financeName;
     }
+
+    public void addFinanceDepartmentModel(FinanceDepartmentModel model) {
+        model.setFinances(this);
+        int indexOfModel = departmentModels.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            departmentModels.set(indexOfModel, model);
+        } else {
+            departmentModels.add(model);
+        }
+    }
 }

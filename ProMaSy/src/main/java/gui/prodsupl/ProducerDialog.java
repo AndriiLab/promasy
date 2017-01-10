@@ -71,4 +71,11 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
         this.listener = listener;
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getAllProducers();
+        }
+        super.setVisible(visible);
+    }
 }

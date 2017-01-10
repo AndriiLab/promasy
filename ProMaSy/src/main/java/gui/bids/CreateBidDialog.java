@@ -148,8 +148,10 @@ public class CreateBidDialog extends JDialog {
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
             DepartmentModel selectedModel = (DepartmentModel) departmentBox.getSelectedItem();
-            for (FinanceDepartmentModel model : selectedModel.getDepartmentFinances()) {
-                financeDepartmentBox.addItem(model);
+            for (SubdepartmentModel model : selectedModel.getSubdepartments()) {
+                for (FinanceDepartmentModel financeDepartmentModel : model.getFinanceDepartments()) {
+                    financeDepartmentBox.addItem(financeDepartmentModel);
+                }
             }
         });
 
@@ -455,6 +457,14 @@ public class CreateBidDialog extends JDialog {
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
         calculateTotalPrice();
         setVisible(true);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getAllData();
+        }
+        super.setVisible(visible);
     }
 
     private void createLayout() {

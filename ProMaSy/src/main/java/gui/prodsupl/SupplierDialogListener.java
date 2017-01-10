@@ -9,4 +9,5 @@ public interface SupplierDialogListener {
 
     void persistModelEventOccurred(SupplierModel model);
 
+    void getAllSuppliers();
 }

@@ -291,13 +291,14 @@ public class CreateEmployeeDialog extends JDialog {
         phoneMainField.setText(currentEmployeeModel.getPhoneMain());
         phoneReserveField.setText(currentEmployeeModel.getPhoneReserve());
         loginField.setText(currentEmployeeModel.getLogin());
+        setTitle(Labels.getProperty("editEmployee"));
+        okButton.setText(Labels.getProperty("edit"));
+        if (listener != null) listener.loadInstitutes();
         Utils.setRoleBox(roleBox, currentEmployeeModel.getRole());
         Utils.setBoxFromModel(instituteBox, currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
         Utils.setBoxFromModel(departmentBox, currentEmployeeModel.getSubdepartment().getDepartment());
         Utils.setBoxFromModel(subdepartmentBox, currentEmployeeModel.getSubdepartment());
-        setTitle(Labels.getProperty("editEmployee"));
-        okButton.setText(Labels.getProperty("edit"));
-        setVisible(true);
+        super.setVisible(true);
     }
 
     public void setRoleBox(Role role) {
@@ -549,5 +550,13 @@ public class CreateEmployeeDialog extends JDialog {
         this.customUserModel = model;
         setRoleBox(model.getRole());
         setVisible(true);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (listener != null && visible) {
+            listener.loadInstitutes();
+        }
+        super.setVisible(visible);
     }
 }

@@ -19,12 +19,8 @@ public class FinanceDepartmentModel extends AbstractModel {
     private FinanceModel finances;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "dep_id")
-    private DepartmentModel department;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "emp_id")
-    private EmployeeModel responsibleEmployee;
+    @JoinColumn(name = "subdep_id")
+    private SubdepartmentModel subdepartment;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
     private List<BidModel> bids = new ArrayList<>();
@@ -32,20 +28,19 @@ public class FinanceDepartmentModel extends AbstractModel {
     @Column(name = "finance_amount")
     private BigDecimal totalAmount;
 
-    public FinanceDepartmentModel(EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, long orderId, FinanceModel finances, DepartmentModel department, EmployeeModel responsibleEmployee, BigDecimal totalAmount, List<BidModel> bids) {
-        super(orderId, createdBy, createdDate, modifiedBy, modifiedDate, active);
+
+    public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidModel> bids, BigDecimal totalAmount) {
+        super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.finances = finances;
-        this.department = department;
-        this.responsibleEmployee = responsibleEmployee;
-        this.totalAmount = totalAmount;
+        this.subdepartment = subdepartment;
         this.bids = bids;
+        this.totalAmount = totalAmount;
     }
 
-    public FinanceDepartmentModel(long orderId, DepartmentModel department, EmployeeModel responsibleEmployee, BigDecimal totalAmount) {
-        setModelId(orderId);
-        this.department = department;
-        this.responsibleEmployee = responsibleEmployee;
+    public FinanceDepartmentModel(FinanceModel model, SubdepartmentModel subdepartment, BigDecimal totalAmount) {
+        this.finances = model;
         this.totalAmount = totalAmount;
+        this.subdepartment = subdepartment;
     }
 
     public FinanceDepartmentModel() {
@@ -68,28 +63,31 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.finances = finances;
     }
 
-    public DepartmentModel getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(DepartmentModel department) {
-        this.department = department;
-    }
-
-    public EmployeeModel getResponsibleEmployee() {
-        return responsibleEmployee;
-    }
-
-    public void setResponsibleEmployee(EmployeeModel responsibleEmployee) {
-        this.responsibleEmployee = responsibleEmployee;
-    }
-
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public SubdepartmentModel getSubdepartment() {
+        return subdepartment;
+    }
+
+    public void setSubdepartment(SubdepartmentModel subdepartment) {
+        this.subdepartment = subdepartment;
+    }
+
+    public void addBid(BidModel model) {
+        model.setFinances(this);
+        int indexOfModel = bids.indexOf(model);
+        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
+        if (indexOfModel != -1) {
+            bids.set(indexOfModel, model);
+        } else {
+            bids.add(model);
+        }
     }
 
     public BigDecimal getLeftAmount() {

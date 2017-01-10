@@ -4,14 +4,22 @@
 package controller;
 
 import gui.*;
+import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
+import gui.bids.CreateBidDialogListener;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.bids.reports.ReportParametersEvent;
+import gui.cpv.CpvReqEvent;
+import gui.cpv.CpvSearchListener;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.CreateEmployeeFromLoginListener;
+import gui.empedit.EditEmployeeDialogListener;
 import gui.finance.FinancePanelListener;
 import gui.instedit.OrganizationDialogListener;
 import gui.login.LoginListener;
+import gui.prodsupl.ProducerDialogListener;
+import gui.prodsupl.ReasonsDialogListener;
+import gui.prodsupl.SupplierDialogListener;
 import model.dao.Database;
 import model.dao.LoginData;
 import model.enums.Role;
@@ -35,7 +43,6 @@ public class Controller {
 
     public Controller(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        mainFrame.setVisible(false);
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
@@ -72,11 +79,11 @@ public class Controller {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
-                    // if role USER or PERSONALLY_LIABLE_EMPLOYEE load data according to department
-                    if (LoginData.getInstance().getRole() == Role.PERSONALLY_LIABLE_EMPLOYEE
-                            || LoginData.getInstance().getRole() == Role.USER) {
-                        loadDataToView(LoginData.getInstance().getSubdepartment().getDepartment().getModelId());
-                    } else loadDataToView();
+//                    // if role USER or PERSONALLY_LIABLE_EMPLOYEE load data according to department
+//                    if (LoginData.getInstance().getRole() == Role.PERSONALLY_LIABLE_EMPLOYEE
+//                            || LoginData.getInstance().getRole() == Role.USER) {
+//                        loadDataToView(LoginData.getInstance().getSubdepartment().getDepartment().getModelId());
+//                    } else loadDataToView();
 
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
@@ -100,7 +107,6 @@ public class Controller {
                     LoginData.getInstance(new EmployeeModel(registrationNumber, Role.USER));
                     mainFrame.initialize();
                     initListeners();
-                    loadDataToView();
                     return true;
                 } else return false;
             }
@@ -109,35 +115,35 @@ public class Controller {
         mainFrame.showLoginDialog();
     }
 
-    private void loadDataToView() {
-        //loading default data into model
-        mainFrame.setCpvModelList(getCpvRequest("", true));
-        mainFrame.setInstituteModelList(getInstRequest());
+//    private void loadDataToView() {
+//        //loading default data into model
+//        mainFrame.setCpvModelList(getCpvRequest("", true));
+//        mainFrame.setInstituteModelList(getInstRequest());
 //        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
-        mainFrame.setEmployeeModelList(getEmployees());
-        mainFrame.setAmountUnitsModelList(getAmUnits());
-        mainFrame.setProducerModelList(getProd());
-        mainFrame.setSupplierModelList(getSupl());
-        mainFrame.setReasonsModelList(getReasons());
-        mainFrame.setFinanceModelList(getFinances());
-        mainFrame.setBidModelList(getBids());
-        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
-    }
+//        mainFrame.setEmployeeModelList(getEmployees());
+//        mainFrame.setAmountUnitsModelList(getAmUnits());
+//        mainFrame.setProducerModelList(getProd());
+//        mainFrame.setSupplierModelList(getSupl());
+//        mainFrame.setReasonsModelList(getReasons());
+//        mainFrame.setFinanceModelList(getFinances());
+//        mainFrame.setBidModelList(getBids());
+//        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
+//    }
 
-    private void loadDataToView(long departmentId) {
-        //loading default data into model
-        mainFrame.setCpvModelList(getCpvRequest("", true));
-        mainFrame.setInstituteModelList(getInstRequest());
+//    private void loadDataToView(long departmentId) {
+//        //loading default data into model
+//        mainFrame.setCpvModelList(getCpvRequest("", true));
+//        mainFrame.setInstituteModelList(getInstRequest());
 //        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
-        mainFrame.setEmployeeModelList(getEmployees(departmentId));
-        mainFrame.setAmountUnitsModelList(getAmUnits());
-        mainFrame.setProducerModelList(getProd());
-        mainFrame.setSupplierModelList(getSupl());
-        mainFrame.setReasonsModelList(getReasons());
-        mainFrame.setFinanceModelList(getFinances(departmentId));
-        mainFrame.setBidModelList(getBids());
-        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
-    }
+//        mainFrame.setEmployeeModelList(getEmployees(departmentId));
+//        mainFrame.setAmountUnitsModelList(getAmUnits());
+//        mainFrame.setProducerModelList(getProd());
+//        mainFrame.setSupplierModelList(getSupl());
+//        mainFrame.setReasonsModelList(getReasons());
+//        mainFrame.setFinanceModelList(getFinances(departmentId));
+//        mainFrame.setBidModelList(getBids());
+//        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
+//    }
 
     private void initListeners() {
         // adding implementation for closing operation via X-button on window
@@ -170,13 +176,37 @@ public class Controller {
             public void setMinimumVersionEventOccurred() {
                 setCurrentVersionAsMinimum();
             }
+
+            @Override
+            public void selectAllDepartmentsAndFinances(InstituteModel institute) {
+                mainFrame.setDepartmentModelList(getDepartments(institute.getModelId()));
+                mainFrame.setFinanceModelList(getFinances());
+            }
         });
 
-        mainFrame.setCpvListener(ev -> getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
+        mainFrame.setCpvListener(new CpvSearchListener() {
+            @Override
+            public void cpvSelectionEventOccurred(CpvReqEvent ev) {
+                mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
+            }
 
-        mainFrame.setEmployeeDialogListener(model -> {
-            createOrUpdate(model);
-            mainFrame.setEmployeeModelList(getEmployees());
+            @Override
+            public void getTopCodes() {
+                mainFrame.setCpvModelList(getCpvRequest("", true));
+            }
+        });
+
+        mainFrame.setEmployeeDialogListener(new EditEmployeeDialogListener() {
+            @Override
+            public void persistModelEventOccurred(EmployeeModel model) {
+                createOrUpdate(model);
+                mainFrame.setEmployeeModelList(getEmployees());
+            }
+
+            @Override
+            public void getAllEmployees() {
+                mainFrame.setEmployeeModelList(getEmployees());
+            }
         });
 
         mainFrame.setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
@@ -190,6 +220,11 @@ public class Controller {
             @Override
             public boolean checkUniqueLogin(String login) {
                 return isLoginUnique(login);
+            }
+
+            @Override
+            public void loadInstitutes() {
+                mainFrame.setInstituteModelList(getInstRequest());
             }
         });
 
@@ -212,22 +247,65 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setSubdepartmentModelList(getSubdepRequest(model.getDepartment().getModelId()));
             }
+
+            @Override
+            public void getAllInstitutes() {
+                mainFrame.setInstituteModelList(getInstRequest());
+            }
         });
 
-        mainFrame.setAmUnitsDialogListener(model -> {
-            createOrUpdate(model);
-            mainFrame.setAmountUnitsModelList(getAmUnits());
+        mainFrame.setAmUnitsDialogListener(new AmUnitsDialogListener() {
+            @Override
+            public void persistModelEventOccurred(AmountUnitsModel model) {
+                createOrUpdate(model);
+                mainFrame.setAmountUnitsModelList(getAmUnits());
+            }
+
+            @Override
+            public void getAllAmUnits() {
+                mainFrame.setAmountUnitsModelList(getAmUnits());
+            }
         });
 
-        mainFrame.setProducerDialogListener(model -> {
-            createOrUpdate(model);
-            mainFrame.setProducerModelList(getProd());
+        mainFrame.setProducerDialogListener(new ProducerDialogListener() {
+            @Override
+            public void persistModelEventOccurred(ProducerModel model) {
+                createOrUpdate(model);
+                mainFrame.setProducerModelList(getProd());
+            }
+
+            @Override
+            public void getAllProducers() {
+                mainFrame.setProducerModelList(getProd());
+            }
         });
 
-        mainFrame.setSupplierDialogListener(model -> {
-            createOrUpdate(model);
-            mainFrame.setSupplierModelList(getSupl());
+        mainFrame.setSupplierDialogListener(new SupplierDialogListener() {
+            @Override
+            public void persistModelEventOccurred(SupplierModel model) {
+                createOrUpdate(model);
+                mainFrame.setSupplierModelList(getSupl());
+            }
+
+            @Override
+            public void getAllSuppliers() {
+                mainFrame.setSupplierModelList(getSupl());
+            }
         });
+
+        mainFrame.setReasonsDialogListener(new ReasonsDialogListener() {
+            @Override
+            public void persistModelEventOccurred(ReasonForSupplierChoiceModel model) {
+                createOrUpdate(model);
+                mainFrame.setReasonsModelList(getReasons());
+            }
+
+            @Override
+            public void getReasonsForSupplierChoice() {
+                mainFrame.setReasonsModelList(getReasons());
+            }
+        });
+
         mainFrame.setFinancePanelListener(new FinancePanelListener() {
             @Override
             public void persistModelEventOccurred(FinanceModel model) {
@@ -254,12 +332,35 @@ public class Controller {
             public void selectAllBidsEventOccurred() {
                 mainFrame.setBidModelList(getBids());
             }
+
+            @Override
+            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel) {
+                mainFrame.setBidModelList(getBids(selectedDepartmentModel.getModelId()));
+            }
+
+            @Override
+            public void getDepartmentFinances(DepartmentModel selectedDepartmentModel) {
+                mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByDepartment(selectedDepartmentModel.getModelId()));
+            }
         });
 
-        mainFrame.setCreateBidDialogListener(createdBidModel -> {
-            createOrUpdate(createdBidModel);
-            mainFrame.setFinanceModelList(getFinances());
-            mainFrame.setBidModelList(getBids());
+        mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
+            @Override
+            public void persistModelEventOccurred(BidModel createdBidModel) {
+                createOrUpdate(createdBidModel);
+                mainFrame.setFinanceModelList(getFinances());
+                mainFrame.setBidModelList(getBids());
+            }
+
+            @Override
+            public void getAllData() {
+                mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
+                mainFrame.setAmountUnitsModelList(getAmUnits());
+                mainFrame.setProducerModelList(getProd());
+                mainFrame.setSupplierModelList(getSupl());
+                mainFrame.setReasonsModelList(getReasons());
+            }
+
         });
 
         mainFrame.setReportParametersDialogListener(new ReportParametersDialogListener() {
@@ -329,7 +430,6 @@ public class Controller {
         LoginData.getInstance(firstUser);
         mainFrame.initialize();
         initListeners();
-        loadDataToView();
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
@@ -414,9 +514,9 @@ public class Controller {
     private void setCurrentVersionAsMinimum() {
         try {
             Database.VERSIONS.updateVersion();
-            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"), Colors.GREEN);
+            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getVersion(), Colors.GREEN);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getProperty("versionNumber"));
+            errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
         }
     }
 
@@ -611,6 +711,16 @@ public class Controller {
     private List<BidModel> getBids() {
         try {
             return Database.BIDS.getResults();
+        } catch (SQLException e) {
+            errorLogEvent(e,
+                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            return null;
+        }
+    }
+
+    private List<BidModel> getBids(long departmentId) {
+        try {
+            return Database.BIDS.retrieve(departmentId);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));

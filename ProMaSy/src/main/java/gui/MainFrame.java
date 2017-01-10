@@ -40,6 +40,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MainFrame extends JFrame {
@@ -138,9 +139,6 @@ public class MainFrame extends JFrame {
             setJMenuBar(createMenuBar(false));
             add(bidsListPanel, BorderLayout.CENTER);
         }
-
-        // creating MenuBar
-
 
         // setting layout and formating frames on mainframe
         add(toolbar, BorderLayout.PAGE_START);
@@ -243,7 +241,7 @@ public class MainFrame extends JFrame {
                 settingsMenu.addSeparator();
                 settingsMenu.add(setCurrentVersionAsMinimum);
                 setCurrentVersionAsMinimum.addActionListener(e -> {
-                    int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + Labels.withSpaceBefore("versionNumber") + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
+                    int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
                     if (action == JOptionPane.OK_OPTION && listener != null) {
                         listener.setMinimumVersionEventOccurred();
                     }
@@ -453,12 +451,12 @@ public class MainFrame extends JFrame {
 
     public void setSubdepartmentModelList(List<SubdepartmentModel> subdepartmentModelList) {
         createEmployeeDialog.setSubdepData(subdepartmentModelList);
+        financePanel.setSubdepartmentBoxData(subdepartmentModelList);
         editOrgDialog.setSubdepData(subdepartmentModelList);
     }
 
     public void setEmployeeModelList(List<EmployeeModel> employeeModelList) {
         editEmpDialog.setEmpTableData(employeeModelList);
-        financePanel.setEmployeeBoxData(employeeModelList);
         reportParametersDialog.setHeadBoxData(employeeModelList);
     }
 
@@ -501,5 +499,15 @@ public class MainFrame extends JFrame {
 
     public OrganizationDialog getEditOrgDialog() {
         return editOrgDialog;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (listener != null && visible) {
+            listener.selectAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
+            bidsListPanel.setBidsTableData(new LinkedList<>());
+            financePanel.setDepartmentFinanceTableData(new LinkedList<>());
+        }
+        super.setVisible(visible);
     }
 }

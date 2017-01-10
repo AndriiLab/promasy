@@ -1,6 +1,7 @@
 package gui;
 
 import model.enums.Role;
+import model.models.InstituteModel;
 
 /**
  * Listener for {@link MainFrame}
@@ -13,4 +14,6 @@ public interface MainFrameListener {
     void exitEventOccurred();
 
     void setMinimumVersionEventOccurred();
+
+    void selectAllDepartmentsAndFinances(InstituteModel institute);
 }

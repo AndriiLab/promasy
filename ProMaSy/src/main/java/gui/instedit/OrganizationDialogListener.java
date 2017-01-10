@@ -12,4 +12,5 @@ public interface OrganizationDialogListener {
 
     void persistModelEventOccurred(SubdepartmentModel model);
 
+    void getAllInstitutes();
 }

@@ -42,7 +42,7 @@ public class VersionQueries {
         em.getTransaction().begin();
 
         Version minimumVersion = em.find(Version.class, 1);
-        minimumVersion.set(Labels.getProperty("versionNumber"));
+        minimumVersion.set(Labels.getVersion());
 
         em.getTransaction().commit();
     }

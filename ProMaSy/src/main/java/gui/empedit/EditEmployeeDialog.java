@@ -100,4 +100,12 @@ public class EditEmployeeDialog extends JDialog {
     public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){
         this.listener = empListener;
     }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getAllEmployees();
+        }
+        super.setVisible(visible);
+    }
 }

@@ -4,7 +4,10 @@ import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.Utils;
 import model.dao.LoginData;
-import model.models.*;
+import model.models.DepartmentModel;
+import model.models.FinanceDepartmentModel;
+import model.models.FinanceModel;
+import model.models.SubdepartmentModel;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
@@ -17,7 +20,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Year;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +29,7 @@ import java.util.Locale;
 public class FinancePanel extends JPanel {
 
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
+    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
     private final java.util.Date defaultStartDate = (new GregorianCalendar(Year.now().getValue(), 0, 1)).getTime();
     private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
     private final FinanceModel emptyFinanceModel = new FinanceModel();
@@ -43,7 +45,7 @@ public class FinancePanel extends JPanel {
     private JTable financeTable;
     private FinanceTableModel financeTableModel;
     private JComboBox<DepartmentModel> departmentBox;
-    private JComboBox<EmployeeModel> employeeBox;
+    private JComboBox<SubdepartmentModel> subdepartmentBox;
     private JTextField financeDepAmountField;
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
@@ -58,9 +60,8 @@ public class FinancePanel extends JPanel {
     private Date endDate;
     private BigDecimal financeAmount;
     private FinanceModel selectedFinanceModel;
-    private long selectedOrder = 0;
     private DepartmentModel selectedDepartment;
-    private EmployeeModel selectedEmployee;
+    private SubdepartmentModel selectedSubdepartment;
     private BigDecimal depFinanceAmount;
     private FinanceDepartmentModel selectedDepFinModel;
     private boolean useUserDepartment = false;
@@ -89,8 +90,6 @@ public class FinancePanel extends JPanel {
         editOrderButton.setEnabled(false);
         deleteOrderButton.setEnabled(false);
 
-        selectedOrder = 0;
-
         financeTableModel = new FinanceTableModel();
         financeTable = new JTable(financeTableModel);
         financeTable.getColumnModel().getColumn(0).setMaxWidth(150);
@@ -116,7 +115,6 @@ public class FinancePanel extends JPanel {
                         financeAmountField.setText(selectedFinanceModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                         startDatePicker.setDate(selectedFinanceModel.getStartDate());
                         endDatePicker.setDate(selectedFinanceModel.getEndDate());
-                        selectedOrder = selectedFinanceModel.getModelId();
                     }
                 }
             }
@@ -127,16 +125,12 @@ public class FinancePanel extends JPanel {
         departmentBox.addItem(emptyDepartmentModel);
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
-            List<EmployeeModel> employees = new LinkedList<>();
-            for (SubdepartmentModel model : selectedDepartmentModel.getSubdepartments()) {
-                employees.addAll(model.getEmployees());
-            }
-            setEmployeeBoxData(employees);
+            setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
         });
 
-        employeeBox = new JComboBox<>();
-        employeeBox.setPreferredSize(new Dimension(150, 25));
-        employeeBox.addItem(emptyEmployeeModel);
+        subdepartmentBox = new JComboBox<>();
+        subdepartmentBox.setPreferredSize(new Dimension(150, 25));
+        subdepartmentBox.addItem(emptySubdepartmentModel);
 
         financeDepAmountField = new JTextField(10);
 
@@ -167,8 +161,8 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(true);
                         deleteDepOrderButton.setEnabled(true);
-                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getDepartment());
-                        Utils.setBoxFromModel(employeeBox, selectedDepFinModel.getResponsibleEmployee());
+                        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
+                        Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
                         financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
                     }
                 }
@@ -216,8 +210,10 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedOrder, selectedDepartment, selectedEmployee, depFinanceAmount);
+                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedFinanceModel, selectedSubdepartment, depFinanceAmount);
                 model.setCreated();
+                selectedFinanceModel.addFinanceDepartmentModel(model);
+                selectedSubdepartment.addFinanceDepartmentModel(model);
                 listener.persistModelEventOccurred(model);
             }
             clearDepFinPanel();
@@ -226,10 +222,10 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                 if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                    selectedDepFinModel.setDepartment(selectedDepartment);
-                    selectedDepFinModel.setResponsibleEmployee(selectedEmployee);
+                    selectedDepFinModel.setSubdepartment(selectedSubdepartment);
                     selectedDepFinModel.setTotalAmount(depFinanceAmount);
                     selectedDepFinModel.setUpdated();
+                    selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                     listener.persistModelEventOccurred(selectedDepFinModel);
                 }
                 selectedDepFinModel = emptyFinanceDepartmentModel;
@@ -238,8 +234,9 @@ public class FinancePanel extends JPanel {
         });
 
         deleteDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getDepartment().getDepName()) && listener != null) {
+            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName()) && listener != null) {
                 selectedDepFinModel.setDeleted();
+                selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
             }
             selectedDepFinModel = emptyFinanceDepartmentModel;
@@ -262,11 +259,11 @@ public class FinancePanel extends JPanel {
 
     private void clearDepFinPanel() {
         departmentBox.setSelectedIndex(0);
-        employeeBox.setSelectedIndex(0);
+        subdepartmentBox.setSelectedIndex(0);
         financeDepAmountField.setText("");
         depFinanceAmount = null;
         selectedDepartment = emptyDepartmentModel;
-        selectedEmployee = emptyEmployeeModel;
+        selectedSubdepartment = emptySubdepartmentModel;
     }
 
     private boolean checkFinanceInput() {
@@ -311,7 +308,7 @@ public class FinancePanel extends JPanel {
 
     private boolean checkDepFinanceInput() {
         selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
-        selectedEmployee = (EmployeeModel) employeeBox.getSelectedItem();
+        selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         String inpDepFinanceAmount = financeDepAmountField.getText();
         if (inpDepFinanceAmount.contains(",")) {
             inpDepFinanceAmount = inpDepFinanceAmount.replace(",", ".");
@@ -320,8 +317,8 @@ public class FinancePanel extends JPanel {
         if (selectedDepartment.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             return false;
-        } else if (selectedEmployee.equals(emptyEmployeeModel)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("manager"));
+        } else if (selectedSubdepartment.equals(emptySubdepartmentModel)) {
+            Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             return false;
         } else if (inpDepFinanceAmount.length() < 1) {
             Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
@@ -360,7 +357,7 @@ public class FinancePanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         departmentBox.setEnabled(false);
-        employeeBox.setEnabled(false);
+        subdepartmentBox.setEnabled(false);
         createDepOrderButton.setEnabled(false);
         editDepOrderButton.setEnabled(false);
         deleteDepOrderButton.setEnabled(false);
@@ -381,12 +378,12 @@ public class FinancePanel extends JPanel {
 
     }
 
-    public void setEmployeeBoxData(List<EmployeeModel> db) {
-        employeeBox.removeAllItems();
-        employeeBox.addItem(emptyEmployeeModel);
-        for (EmployeeModel model : db) {
+    public void setSubdepartmentBoxData(List<SubdepartmentModel> db) {
+        subdepartmentBox.removeAllItems();
+        subdepartmentBox.addItem(emptySubdepartmentModel);
+        for (SubdepartmentModel model : db) {
             if (model.isActive()) {
-                employeeBox.addItem(model);
+                subdepartmentBox.addItem(model);
             }
         }
     }
@@ -423,7 +420,7 @@ public class FinancePanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("financeNumber") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("financeNumber")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -433,7 +430,7 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("financeName") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("financeName")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -443,7 +440,7 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("financeAmount") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("financeAmount")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -455,7 +452,7 @@ public class FinancePanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("dateStart") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("dateStart")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -465,7 +462,7 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.getProperty("dateEnd") + ":"), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("dateEnd")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -499,7 +496,7 @@ public class FinancePanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addDepOrderPanel.add(new JLabel(Labels.getProperty("department") + ":"), gc);
+        addDepOrderPanel.add(new JLabel(Labels.withColon("department")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -509,17 +506,17 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addDepOrderPanel.add(new JLabel(Labels.getProperty("manager") + ":"), gc);
+        addDepOrderPanel.add(new JLabel(Labels.withColon("subdepartment")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
-        addDepOrderPanel.add(employeeBox, gc);
+        addDepOrderPanel.add(subdepartmentBox, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        addDepOrderPanel.add(new JLabel(Labels.getProperty("financeAmount") + ":"), gc);
+        addDepOrderPanel.add(new JLabel(Labels.withColon("financeAmount")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

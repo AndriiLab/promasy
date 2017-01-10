@@ -109,6 +109,13 @@ public class ReasonsDialog extends JDialog {
         this.listener = listener;
     }
 
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible && listener != null) {
+            listener.getReasonsForSupplierChoice();
+        }
+        super.setVisible(visible);
+    }
 
     private void layoutControls() {
         JPanel prodPanel = new JPanel();

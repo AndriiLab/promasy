@@ -7,4 +7,6 @@ import model.models.BidModel;
  */
 public interface CreateBidDialogListener {
     void persistModelEventOccurred(BidModel createdBidModel);
+
+    void getAllData();
 }

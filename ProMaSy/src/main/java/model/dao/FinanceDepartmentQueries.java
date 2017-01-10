@@ -32,7 +32,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
     public List<FinanceDepartmentModel> retrieveByDepartmentId(long departmentId) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select fdm from FinanceDepartmentModel fdm join fdm.department where fdm.department.modelId = :departmentId and fdm.active = true");
+        Query query = em.createQuery("select fdm from FinanceDepartmentModel fdm join fdm.subdepartment.department where fdm.subdepartment.department.modelId = :departmentId and fdm.active = true");
         query.setParameter("departmentId", departmentId);
         List<FinanceDepartmentModel> list = query.getResultList();
         em.getTransaction().commit();
