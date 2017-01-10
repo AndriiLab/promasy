@@ -7,6 +7,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * Dialog displays program log
@@ -25,9 +26,19 @@ public class LoggerDialog extends JDialog {
         logPane.setText("");
 
         JButton saveButton = new JButton(Labels.getProperty("saveLog"));
+        saveButton.addActionListener(e -> {
+            try {
+                String filePath = Utils.saveLog(logPane.getText());
+                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE);
+                this.setVisible(false);
+            } catch (IOException e1) {
+                //TODO handle exception
+                e1.printStackTrace();
+            }
+        });
 
         JButton closeButton = new JButton(Labels.getProperty("closeBtn"));
-        closeButton.addActionListener(e -> setVisible(false));
+        closeButton.addActionListener(e -> this.setVisible(false));
 
         closeButton.setPreferredSize(saveButton.getPreferredSize());
 
@@ -56,9 +67,9 @@ public class LoggerDialog extends JDialog {
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);
         try {
-            doc.insertString(doc.getLength(), Utils.getSystemTime() + ":   " + status + "\n", style);
+            doc.insertString(doc.getLength(), Utils.getSystemTime() + ":\t" + status + "\n", style);
         } catch (BadLocationException e) {
-            //TODO handle
+            //TODO handle exception
             e.printStackTrace();
         }
     }

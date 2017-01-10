@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Utils {
 
@@ -86,5 +87,15 @@ public class Utils {
         ois.close();
         fis.close();
         return model;
+    }
+
+    public static String saveLog(String log) throws IOException {
+        String fileName = "log_" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Utils.getSystemTime()) + ".txt";
+        FileWriter fw = new FileWriter(fileName);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(log);
+        bw.close();
+        fw.close();
+        return fileName;
     }
 }
