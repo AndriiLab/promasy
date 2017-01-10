@@ -17,7 +17,7 @@ public class StatusTableModel extends AbstractTableModel {
 
     private String[] colNames = {Labels.getProperty("dateModified"),
             Labels.getProperty("status"),
-            Labels.getProperty("user")};
+            Labels.getProperty("role.user")};
 
     public StatusTableModel() {
 

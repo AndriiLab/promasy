@@ -29,7 +29,7 @@ public class LoginDialog extends JDialog {
         setLocationRelativeTo(parent);
 
         userField = new JTextField(13);
-        PromptSupport.setPrompt(Labels.getProperty("user"), userField);
+        PromptSupport.setPrompt(Labels.getProperty("role.user"), userField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, userField);
 
         passwordField = new JPasswordField(13);

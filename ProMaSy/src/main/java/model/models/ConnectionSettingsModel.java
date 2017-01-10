@@ -1,7 +1,9 @@
 package model.models;
 
-public class ConnectionSettingsModel {
-	private String server;
+import java.io.Serializable;
+
+public class ConnectionSettingsModel implements Serializable {
+    private String server;
 	private String database;
 	private String schema;
 	private int portNumber;
@@ -35,4 +37,9 @@ public class ConnectionSettingsModel {
 	public String getPassword() {
 		return password;
 	}
+
+    public String getUrl() {
+        return "jdbc:postgresql://" + server +
+                ":" + portNumber + "/" + database;
+    }
 }

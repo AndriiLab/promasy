@@ -20,7 +20,7 @@ class BidsTableModel extends AbstractTableModel {
                                     Labels.getProperty("amount"),
                                     Labels.getProperty("oneUnitPrice"),
                                     Labels.getProperty("totalPrice"),
-            Labels.getProperty("user"),
+            Labels.getProperty("role.user"),
             Labels.getProperty("dateModified"),
             Labels.getProperty("status")};
 

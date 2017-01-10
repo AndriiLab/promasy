@@ -21,40 +21,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class Controller {
 
-    private Properties conSet;
+    private ConnectionSettingsModel conSet;
     private MainFrame mainFrame;
-    private Preferences prefs;
 
     public Controller(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
         mainFrame.setVisible(false);
 
-        // Preferences class used for storage of connection settings to DB
-        prefs = Preferences.userRoot().node("db_con");
-
-        // trying to get connection settings form prefs object,
+        // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
         setConnectionSettings();
 
         // if user entered new settings for connection to DB - putting them to Prefs
-        mainFrame.setConSetListener(e -> {
-            System.out.println(e.getServer());
-            prefs.put("server", e.getServer());
-            prefs.put("host", e.getDatabase());
-            prefs.put("schema", e.getSchema());
-            prefs.putInt("port", e.getPortNumber());
-            prefs.put("user", e.getUser());
-            prefs.put("password", e.getPassword());
-            setConnectionSettings(e.getServer(), e.getDatabase(), e.getSchema(), e.getPortNumber(),
-                    e.getUser(), e.getPassword());
+        mainFrame.setConSetListener(model -> {
+            try {
+                Utils.saveConnectionSettings(model);
+            } catch (IOException e) {
+                //TODO handle exception
+                e.printStackTrace();
+            }
+            setConnectionSettings(model);
 
             // trying to connect with new settings
             disconnect();
@@ -348,26 +343,23 @@ public class Controller {
 
     // sets connection settings to Properties object
     private void setConnectionSettings() {
-        setConnectionSettings(prefs.get("server", Labels.getProperty("connectionSettings.server")),
-                prefs.get("database", Labels.getProperty("connectionSettings.database")),
-                prefs.get("schema", Labels.getProperty("connectionSettings.schema")),
-                prefs.getInt("port", Labels.getInt("connectionSettings.port")),
-                prefs.get("user", Labels.getProperty("connectionSettings.user")),
-                prefs.get("password", Labels.getProperty("connectionSettings.password")));
+        ConnectionSettingsModel model = null;
+        try {
+            model = Utils.loadConnectionSettings();
+        } catch (FileNotFoundException e) {
+            model = new ConnectionSettingsModel(Labels.getProperty("connectionSettings.server"), Labels.getProperty("connectionSettings.database"), Labels.getProperty("connectionSettings.schema"), Labels.getInt("connectionSettings.port"), Labels.getProperty("connectionSettings.user"), Labels.getProperty("connectionSettings.password"));
+        } catch (IOException e) {
+            // TODO handle exceptions
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        setConnectionSettings(model);
     }
 
-    private void setConnectionSettings(String host, String database, String schema, int port, String user,
-                                       String password) {
-        mainFrame.setDefaultConnectionSettings(host, database, schema, port, user, password);
-        if (conSet == null) {
-            conSet = new Properties();
-        }
-        conSet.setProperty("host", host);
-        conSet.setProperty("port", Integer.toString(port));
-        conSet.setProperty("database", database);
-        conSet.setProperty("user", user);
-        conSet.setProperty("password", password);
-        conSet.setProperty("currentSchema", schema);
+    private void setConnectionSettings(ConnectionSettingsModel model) {
+        this.conSet = model;
+        mainFrame.setDefaultConnectionSettings(model);
     }
 
     // connecting to DB
@@ -442,7 +434,7 @@ public class Controller {
             return Database.EMPLOYEES.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("user") + Labels.withSpaceBefore("error"));
+                    Labels.withColon("request") + Labels.withSpaceBefore("role.user") + Labels.withSpaceBefore("error"));
             return null;
         }
     }
@@ -451,7 +443,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.retrieve(role);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + role
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role id: " + role
                     + Labels.withSpaceBefore("error"));
             return null;
         }
@@ -461,7 +453,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.retrieve(depId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " dep id: " + depId
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " dep id: " + depId
                     + Labels.withSpaceBefore("error"));
             return null;
         }
@@ -471,7 +463,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.retrieve(role, depId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " role id: " + role
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role id: " + role
                     + " dep id: " + depId + Labels.withSpaceBefore("error"));
             return null;
         }
@@ -601,7 +593,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.checkLogin(username, password);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("user") + " :" + username
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " :" + username
                     + Labels.withSpaceBefore("error"));
             return false;
         }

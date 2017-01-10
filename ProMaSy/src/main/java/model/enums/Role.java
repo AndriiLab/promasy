@@ -6,15 +6,15 @@ import gui.Labels;
  * This Enum holds data about available user roles
  */
 public enum Role {
-    ADMIN(Labels.getProperty("administrator")),
-    DIRECTOR(Labels.getProperty("director")),
-    DEPUTY_DIRECTOR(Labels.getProperty("deputyDirector")),
-    HEAD_OF_TENDER_COMMITTEE(Labels.getProperty("headOfTenderCommittee")),
-    ECONOMIST(Labels.getProperty("chiefEconomist")),
-    ACCOUNTANT(Labels.getProperty("chiefAccountant")),
-    HEAD_OF_DEPARTMENT(Labels.getProperty("headOfDepartment")),
-    PERSONALLY_LIABLE_EMPLOYEE(Labels.getProperty("personallyLiableEmployee")),
-    USER(Labels.getProperty("user"));
+    ADMIN(Labels.getProperty("role.admin")),
+    DIRECTOR(Labels.getProperty("role.director")),
+    DEPUTY_DIRECTOR(Labels.getProperty("role.deputyDirector")),
+    HEAD_OF_TENDER_COMMITTEE(Labels.getProperty("role.headOfTenderCommittee")),
+    ECONOMIST(Labels.getProperty("role.economist")),
+    ACCOUNTANT(Labels.getProperty("role.accountant")),
+    HEAD_OF_DEPARTMENT(Labels.getProperty("role.headOfDepartment")),
+    PERSONALLY_LIABLE_EMPLOYEE(Labels.getProperty("role.personallyLiableEmployee")),
+    USER(Labels.getProperty("role.user"));
 
     private final String roleName;
 

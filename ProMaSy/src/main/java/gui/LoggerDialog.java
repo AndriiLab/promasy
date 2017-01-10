@@ -1,7 +1,5 @@
 package gui;
 
-import model.dao.ServerQueries;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
@@ -58,7 +56,7 @@ public class LoggerDialog extends JDialog {
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);
         try {
-            doc.insertString(doc.getLength(), ServerQueries.getServerTimestamp() + ":   " + status + "\n", style);
+            doc.insertString(doc.getLength(), Utils.getSystemTime() + ":   " + status + "\n", style);
         } catch (BadLocationException e) {
             //TODO handle
             e.printStackTrace();

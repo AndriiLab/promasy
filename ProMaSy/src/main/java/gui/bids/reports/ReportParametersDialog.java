@@ -220,15 +220,15 @@ public class ReportParametersDialog extends JDialog {
         selectionPanel.add(roleBox);
         selectionPanel.add(new JLabel(Labels.getProperty("headOrganization")));
         selectionPanel.add(headBox);
-        selectionPanel.add(new JLabel(Labels.getProperty("headOfDepartment")));
+        selectionPanel.add(new JLabel(Labels.getProperty("role.headOfDepartment")));
         selectionPanel.add(departmentHeadBox);
-        selectionPanel.add(new JLabel(Labels.getProperty("personallyLiableEmployee")));
+        selectionPanel.add(new JLabel(Labels.getProperty("role.personallyLiableEmployee")));
         selectionPanel.add(personallyLiableEmpBox);
-        selectionPanel.add(new JLabel(Labels.getProperty("chiefAccountant")));
+        selectionPanel.add(new JLabel(Labels.getProperty("role.accountant")));
         selectionPanel.add(accountantBox);
-        selectionPanel.add(new JLabel(Labels.getProperty("chiefEconomist")));
+        selectionPanel.add(new JLabel(Labels.getProperty("role.economist")));
         selectionPanel.add(economistBox);
-        selectionPanel.add(new JLabel(Labels.getProperty("headOfTenderCommittee")));
+        selectionPanel.add(new JLabel(Labels.getProperty("role.headOfTenderCommittee")));
         selectionPanel.add(headTenderBox);
 
         okButton.setPreferredSize(cancelButton.getPreferredSize());

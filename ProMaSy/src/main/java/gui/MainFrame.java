@@ -276,8 +276,8 @@ public class MainFrame extends JFrame {
     }
 
     //setters
-    public void setDefaultConnectionSettings(String server, String database, String schema, int portNumber, String user, String password) {
-        conSettDialog.setDefaults(server, database, schema, portNumber, user, password);
+    public void setDefaultConnectionSettings(ConnectionSettingsModel model) {
+        conSettDialog.setDefaults(model);
     }
 
     public void setBidsPanelSum(BigDecimal sum, BigDecimal financeLeft) {
@@ -378,7 +378,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setConSetListener(ConSetListener listener) {
-        conSettDialog.setPrefsListener(listener);
+        conSettDialog.setConSetListener(listener);
     }
 
     public void setCpvListener(CpvSearchListener listener) {

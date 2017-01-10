@@ -159,16 +159,16 @@ public class ConSetDialog extends JDialog {
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 
-    public void setPrefsListener(ConSetListener prefsListener) {
+    public void setConSetListener(ConSetListener prefsListener) {
         this.prefsListener = prefsListener;
     }
 
-    public void setDefaults(String server, String database, String schema, int portNumber, String user, String password) {
-        serverField.setText(server);
-        schemaField.setText(schema);
-        dbField.setText(database);
-        portSpinner.setValue(portNumber);
-        userField.setText(user);
-        passField.setText(password);
+    public void setDefaults(ConnectionSettingsModel model) {
+        serverField.setText(model.getServer());
+        schemaField.setText(model.getSchema());
+        dbField.setText(model.getDatabase());
+        portSpinner.setValue(model.getPortNumber());
+        userField.setText(model.getUser());
+        passField.setText(model.getPassword());
     }
 }

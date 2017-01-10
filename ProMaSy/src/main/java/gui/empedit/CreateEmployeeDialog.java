@@ -358,7 +358,7 @@ public class CreateEmployeeDialog extends JDialog {
 
         int space = 5;
         Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-        Border employeeBorder = BorderFactory.createTitledBorder(Labels.getProperty("user"));
+        Border employeeBorder = BorderFactory.createTitledBorder(Labels.getProperty("role.user"));
         Border instituteBorder = BorderFactory.createTitledBorder(Labels.getProperty("associatedOrganization"));
 
         employeePanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, employeeBorder));

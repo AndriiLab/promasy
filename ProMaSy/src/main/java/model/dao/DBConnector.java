@@ -1,12 +1,14 @@
 package model.dao;
 
+import model.models.ConnectionSettingsModel;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum DBConnector {
     INSTANCE;
@@ -19,18 +21,18 @@ public enum DBConnector {
         return entityManager;
     }
 
-    public void connect(Properties prefs) throws Exception {
-        // TODO: 03.01.2017
-//		String url = "jdbc:postgresql://" + conSet.getProperty("host") +
-//				":" + conSet.getProperty("port") + "/" + conSet.getProperty("database");
-//		Map<String, String> connectionProperties = new HashMap<>();
-//		connectionProperties.put("javax.persistence.jdbc.url", url);
-//		connectionProperties.put("javax.persistence.jdbc.user", conSet.getProperty("user"));
-//		connectionProperties.put("javax.persistence.jdbc.password", conSet.getProperty("password"));
-//		connectionProperties.put("hibernate.default_schema", conSet.getProperty("currentSchema"));
-//
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("postgres-test", connectionProperties);
-        entityManagerFactory = Persistence.createEntityManagerFactory("postgres-connect");
+    public void connect(ConnectionSettingsModel conSet) throws Exception {
+        if (conSet != null) {
+            Map<String, String> connectionProperties = new HashMap<>();
+            connectionProperties.put("javax.persistence.jdbc.url", conSet.getUrl());
+            connectionProperties.put("javax.persistence.jdbc.user", conSet.getUser());
+            connectionProperties.put("javax.persistence.jdbc.password", conSet.getPassword());
+            connectionProperties.put("hibernate.default_schema", conSet.getSchema());
+            entityManagerFactory = Persistence.createEntityManagerFactory("postgres-connect", connectionProperties);
+        } else {
+            entityManagerFactory = Persistence.createEntityManagerFactory("postgres-connect");
+        }
+
         entityManager = entityManagerFactory.createEntityManager();
         System.out.println(">>>>>>>>>>>>>>> Connected on schema '" + entityManagerFactory.getProperties().get("hibernate.default_schema") + "' on '" + entityManagerFactory.getProperties().get("javax.persistence.jdbc.url") +
                 "'");

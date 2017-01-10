@@ -2,14 +2,17 @@ package gui;
 
 import model.enums.Role;
 import model.models.AbstractModel;
+import model.models.ConnectionSettingsModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 
 public class Utils {
 
@@ -62,5 +65,26 @@ public class Utils {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static Timestamp getSystemTime() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
+    public static void saveConnectionSettings(ConnectionSettingsModel model) throws IOException {
+        FileOutputStream fos = new FileOutputStream("promasy_settings.ser");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(model);
+        oos.close();
+        fos.close();
+    }
+
+    public static ConnectionSettingsModel loadConnectionSettings() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream("promasy_settings.ser");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        ConnectionSettingsModel model = (ConnectionSettingsModel) ois.readObject();
+        ois.close();
+        fis.close();
+        return model;
     }
 }
