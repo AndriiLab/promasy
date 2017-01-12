@@ -154,14 +154,17 @@ public class SupplierDialog extends JDialog {
     private boolean isSuplDataValid() {
         if (newSuplName.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("name"));
+            suplBox.requestFocusInWindow();
             return false;
         }
         newSuplTel = telField.getText();
         if (newSuplName.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("phone"));
+            telField.requestFocusInWindow();
             return false;
         } else if (newSuplTel.length() > 20) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("telephoneTooLong"), Labels.getProperty("wrongFormat"), JOptionPane.ERROR_MESSAGE);
+            telField.requestFocusInWindow();
             return false;
         }
         newSuplComment = commentsPane.getText();

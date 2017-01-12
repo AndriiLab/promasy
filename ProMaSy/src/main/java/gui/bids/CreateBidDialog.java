@@ -345,41 +345,49 @@ public class CreateBidDialog extends JDialog {
         DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
         if (selectedDepartmentModel.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            departmentBox.requestFocusInWindow();
             return false;
         }
         FinanceDepartmentModel selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
         if (selectedFinanceDepartmentModel.equals(emptyFinanceDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("order"));
+            financeDepartmentBox.requestFocusInWindow();
             return false;
         }
         ProducerModel selectedProducerModel = (ProducerModel) producerBox.getSelectedItem();
         String selectedCatNum = catNumberField.getText();
         if (selectedCPV.equals(emptyCpvModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("cpvCode"));
+            searchCPVButton.requestFocusInWindow();
             return false;
         } else if (selectedCPV.getCpvId().length() != 10) {
             Utils.wrongFormatError(parent, Labels.getProperty("cpvCode"), Labels.getProperty("wrongFormatCPV"));
+            searchCPVButton.requestFocusInWindow();
             return false;
         }
         String selectedDescription = descriptionPane.getText();
         if (selectedDescription.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("description"));
+            descriptionPane.requestFocusInWindow();
             return false;
         }
         SupplierModel selectedSupplierModel = (SupplierModel) supplierBox.getSelectedItem();
         ReasonForSupplierChoiceModel selectedReasonModel = (ReasonForSupplierChoiceModel) reasonForSupplierChoiceBox.getSelectedItem();
         if (!selectedSupplierModel.equals(emptySupplierModel) && selectedReasonModel.equals(emptyReasonForSupplierChoiceModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("reasonForSupplierChoice"));
+            supplierBox.requestFocusInWindow();
             return false;
         }
         AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUnitsBox.getSelectedItem();
         if (selectedAmountUnitsModel.equals(emptyAmountUnitsModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("packing"));
+            amUnitsBox.requestFocusInWindow();
             return false;
         }
         String amountString = amountField.getText();
         if (amountString.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("amount"));
+            amountField.requestFocusInWindow();
             return false;
         }
 
@@ -388,12 +396,14 @@ public class CreateBidDialog extends JDialog {
             amount = Integer.parseInt(amountString);
         } catch (NumberFormatException ex) {
             Utils.wrongFormatError(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
+            amountField.requestFocusInWindow();
             return false;
         }
 
         String onePriceString = oneUnitPriceField.getText();
         if (onePriceString.equals("")) {
             Utils.emptyFieldError(parent, Labels.getProperty("oneUnitPrice"));
+            oneUnitPriceField.requestFocusInWindow();
             return false;
         }
 
@@ -402,11 +412,13 @@ public class CreateBidDialog extends JDialog {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
+            oneUnitPriceField.requestFocusInWindow();
             return false;
         }
 
         if (selectedFinanceDepartmentModel.getLeftAmount().compareTo(totalPrice) < 0) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("insufficientFundsMessage"), Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
+            amountField.requestFocusInWindow();
             return false;
         }
         if (createdBidModel == emptyBidModel) {

@@ -192,28 +192,32 @@ public class CreateEmployeeDialog extends JDialog {
         String lastName = lastNameField.getText();
         if (lastName.length() < 2) {
             Utils.emptyFieldError(parent, Labels.getProperty("lastName"));
+            lastNameField.requestFocusInWindow();
             return false;
         }
         String firstName = nameField.getText();
         if (firstName.length() < 2) {
             Utils.emptyFieldError(parent, Labels.getProperty("firstName"));
+            nameField.requestFocusInWindow();
             return false;
         }
         String middleName = middleNameField.getText();
         if (middleName.length() < 2) {
             Utils.emptyFieldError(parent, Labels.getProperty("middleName"));
-            return false;
-        }
-
-        String email = emailField.getText();
-        if (email.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("email"));
+            middleNameField.requestFocusInWindow();
             return false;
         }
         //TODO add email validator
+        String email = emailField.getText();
+        if (email.length() < 2) {
+            Utils.emptyFieldError(parent, Labels.getProperty("email"));
+            emailField.requestFocusInWindow();
+            return false;
+        }
         String phoneMain = phoneMainField.getText();
         if (phoneMain.length() < 2) {
             Utils.emptyFieldError(parent, Labels.getProperty("phoneMain"));
+            phoneMainField.requestFocusInWindow();
             return false;
         }
         String phoneReserve = phoneReserveField.getText();
@@ -221,22 +225,26 @@ public class CreateEmployeeDialog extends JDialog {
         if (login.length() == 0) {
             loginField.setDisabledTextColor(Color.RED);
             Utils.emptyFieldError(parent, Labels.getProperty("userName"));
+            phoneReserveField.requestFocusInWindow();
             return false;
         }
         InstituteModel instituteModel = (InstituteModel) instituteBox.getSelectedItem();
         if (instituteModel.equals(emptyInstituteModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("institute"));
+            instituteBox.requestFocusInWindow();
             return false;
         }
         DepartmentModel departmentModel = (DepartmentModel) departmentBox.getSelectedItem();
         if (departmentModel.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            departmentBox.requestFocusInWindow();
             return false;
         }
         departmentModel.setInstitute(instituteModel);
         SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         if (subdepartmentModel.equals(emptySubdepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            subdepartmentBox.requestFocusInWindow();
             return false;
         }
         subdepartmentModel.setDepartment(departmentModel);
@@ -247,6 +255,7 @@ public class CreateEmployeeDialog extends JDialog {
         if (currentEmployeeModel.equals(emptyEmployeeModel) || password.length > 0 || repeatPassword.length > 0) {
             if (!Arrays.equals(password, repeatPassword)) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
+                repeatPasswordField.requestFocusInWindow();
                 return false;
             }
             boolean isUniqueUser = listener.checkUniqueLogin(login);
@@ -259,6 +268,7 @@ public class CreateEmployeeDialog extends JDialog {
                 return true;
             } else if (currentEmployeeModel.equals(emptyEmployeeModel) && !isUniqueUser) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
+                loginField.requestFocusInWindow();
                 return false;
             } else {
                 // else - update existing

@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Created by laban on 22.06.2016.
+ * Dialog for report parameters setup
  */
 public class ReportParametersDialog extends JDialog {
 
@@ -47,7 +47,6 @@ public class ReportParametersDialog extends JDialog {
         roleBox = new JComboBox<>(Role.values());
         roleBox.setSize(preferredFieldDim);
         roleBox.addItem(Role.DIRECTOR);
-        roleBox.addItem(Role.DEPUTY_DIRECTOR);
 
         headBox = new JComboBox<>();
         headBox.setSize(preferredFieldDim);
