@@ -46,7 +46,7 @@ public class Utils {
 
     public static void wrongFormatError(JFrame parent, String fieldName, String hints) {
         JOptionPane.showMessageDialog(parent,
-                Labels.getProperty("wrongFormat")+ " \"" + fieldName + "\"\n" + Labels.getProperty("checkInput") + "\"\n" + hints,
+                Labels.getProperty("wrongFormat") + " \"" + fieldName + "\"\n" + Labels.getProperty("checkInput") + "\n" + hints,
                 Labels.getProperty("fieldErr"),
                 JOptionPane.ERROR_MESSAGE);
     }
@@ -97,5 +97,15 @@ public class Utils {
         bw.close();
         fw.close();
         return fileName;
+    }
+
+    public static String formatBigDecimal(String bigDecimal) {
+        if (bigDecimal.contains(",")) {
+            bigDecimal = bigDecimal.replace(",", ".");
+        }
+        if (bigDecimal.contains(" ")) {
+            bigDecimal = bigDecimal.replace(" ", "");
+        }
+        return bigDecimal;
     }
 }

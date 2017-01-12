@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +35,7 @@ public class FinancePanel extends JPanel {
     private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
     private final FinanceModel emptyFinanceModel = new FinanceModel();
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
+    private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new ArrayList<>();
     private JTextField orderNumberField;
     private JTextField orderNameField;
     private JTextField financeAmountField;
@@ -176,61 +178,62 @@ public class FinancePanel extends JPanel {
                 FinanceModel model = new FinanceModel(orderNumber, orderName, financeAmount, startDate, endDate);
                 model.setCreated();
                 listener.persistModelEventOccurred(model);
+                setDepartmentFinanceTableData(emptyDepartmentFinancesList);
+                clearFinancePanel();
+                clearDepFinPanel();
             }
-            clearFinancePanel();
-            clearDepFinPanel();
         });
 
         editOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(emptyFinanceModel)) {
-                if (checkFinanceInput() && listener != null) {
-                    selectedFinanceModel.setFinanceNumber(orderNumber);
-                    selectedFinanceModel.setFinanceName(orderName);
-                    selectedFinanceModel.setTotalAmount(financeAmount);
-                    selectedFinanceModel.setStartDate(startDate);
-                    selectedFinanceModel.setEndDate(endDate);
-                    selectedFinanceModel.setUpdated();
-                    listener.persistModelEventOccurred(selectedFinanceModel);
-                }
+            if (!selectedFinanceModel.equals(emptyFinanceModel) && checkFinanceInput() && listener != null) {
+                selectedFinanceModel.setFinanceNumber(orderNumber);
+                selectedFinanceModel.setFinanceName(orderName);
+                selectedFinanceModel.setTotalAmount(financeAmount);
+                selectedFinanceModel.setStartDate(startDate);
+                selectedFinanceModel.setEndDate(endDate);
+                selectedFinanceModel.setUpdated();
+                listener.persistModelEventOccurred(selectedFinanceModel);
+                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
                 selectedFinanceModel = emptyFinanceModel;
+                clearFinancePanel();
+                clearDepFinPanel();
             }
-            clearFinancePanel();
-            clearDepFinPanel();
         });
 
         deleteOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
                 selectedFinanceModel.setDeleted();
                 listener.persistModelEventOccurred(selectedFinanceModel);
+                setDepartmentFinanceTableData(emptyDepartmentFinancesList);
+                selectedFinanceModel = emptyFinanceModel;
+                clearFinancePanel();
+                clearDepFinPanel();
             }
-            selectedFinanceModel = emptyFinanceModel;
-            clearFinancePanel();
-            clearDepFinPanel();
         });
 
         createDepOrderButton.addActionListener(e -> {
-            if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
+            if (checkFinanceInput() && checkDepFinanceInput() && checkFinancesLeft() && listener != null) {
                 FinanceDepartmentModel model = new FinanceDepartmentModel(selectedFinanceModel, selectedSubdepartment, depFinanceAmount);
                 model.setCreated();
                 selectedFinanceModel.addFinanceDepartmentModel(model);
                 selectedSubdepartment.addFinanceDepartmentModel(model);
                 listener.persistModelEventOccurred(model);
+                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                clearDepFinPanel();
             }
-            clearDepFinPanel();
         });
 
         editDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
-                if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
-                    selectedDepFinModel.setSubdepartment(selectedSubdepartment);
-                    selectedDepFinModel.setTotalAmount(depFinanceAmount);
-                    selectedDepFinModel.setUpdated();
-                    selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
-                    listener.persistModelEventOccurred(selectedDepFinModel);
-                }
+            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && checkFinanceInput() && checkDepFinanceInput() && listener != null) {
+                selectedDepFinModel.setSubdepartment(selectedSubdepartment);
+                selectedDepFinModel.setTotalAmount(depFinanceAmount);
+                selectedDepFinModel.setUpdated();
+                selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
+                listener.persistModelEventOccurred(selectedDepFinModel);
+                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
                 selectedDepFinModel = emptyFinanceDepartmentModel;
+                clearDepFinPanel();
             }
-            clearDepFinPanel();
         });
 
         deleteDepOrderButton.addActionListener(e -> {
@@ -238,9 +241,10 @@ public class FinancePanel extends JPanel {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
+                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                selectedDepFinModel = emptyFinanceDepartmentModel;
+                clearDepFinPanel();
             }
-            selectedDepFinModel = emptyFinanceDepartmentModel;
-            clearDepFinPanel();
         });
     }
 
@@ -270,28 +274,29 @@ public class FinancePanel extends JPanel {
         try {
             orderNumber = Integer.parseInt(orderNumberField.getText());
         } catch (NumberFormatException e) {
-            Utils.wrongFormatError(parent, Labels.getProperty("orderNumber"), Labels.getProperty("integersOnly"));
+            Utils.wrongFormatError(parent, Labels.getProperty("financeNumber"), Labels.getProperty("integersOnly"));
+            orderNumberField.requestFocusInWindow();
             return false;
         }
         orderName = orderNameField.getText();
         startDate = new java.sql.Date(startDatePicker.getDate().getTime());
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());
-        String financeAmountText = financeAmountField.getText();
-        if (financeAmountText.contains(",")) {
-            financeAmountText = financeAmountText.replace(",", ".");
-            financeAmountField.setText(financeAmountText);
-        }
+        String financeAmountText = Utils.formatBigDecimal(financeAmountField.getText());
+        financeAmountField.setText(financeAmountText);
         if (orderName.length() < 1) {
-            Utils.emptyFieldError(parent, Labels.getProperty("orderName"));
+            Utils.emptyFieldError(parent, Labels.getProperty("financeName"));
+            financeAmountField.requestFocusInWindow();
             return false;
         } else if (startDate.after(endDate)) {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("startDateAfterEndDate"),
                     Labels.getProperty("enteredDateError"),
                     JOptionPane.ERROR_MESSAGE);
+            endDatePicker.requestFocusInWindow();
             return false;
         } else if (financeAmountText.length() < 1) {
             Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
+            financeAmountField.requestFocusInWindow();
             return false;
         }
         try {
@@ -301,6 +306,15 @@ public class FinancePanel extends JPanel {
                     Labels.getProperty("financeNumberFormatException"),
                     Labels.getProperty("fieldErr"),
                     JOptionPane.ERROR_MESSAGE);
+            financeAmountField.requestFocusInWindow();
+            return false;
+        }
+        if (financeAmount.compareTo(BigDecimal.ZERO) < 0) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberCannotBeLessZero"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            financeAmountField.requestFocusInWindow();
             return false;
         }
         return true;
@@ -309,19 +323,19 @@ public class FinancePanel extends JPanel {
     private boolean checkDepFinanceInput() {
         selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
         selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-        String inpDepFinanceAmount = financeDepAmountField.getText();
-        if (inpDepFinanceAmount.contains(",")) {
-            inpDepFinanceAmount = inpDepFinanceAmount.replace(",", ".");
-            financeDepAmountField.setText(inpDepFinanceAmount);
-        }
+        String inpDepFinanceAmount = Utils.formatBigDecimal(financeDepAmountField.getText());
+        financeDepAmountField.setText(inpDepFinanceAmount);
         if (selectedDepartment.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            departmentBox.requestFocusInWindow();
             return false;
         } else if (selectedSubdepartment.equals(emptySubdepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            subdepartmentBox.requestFocusInWindow();
             return false;
         } else if (inpDepFinanceAmount.length() < 1) {
             Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
+            financeDepAmountField.requestFocusInWindow();
             return false;
         }
         try {
@@ -331,13 +345,47 @@ public class FinancePanel extends JPanel {
                     Labels.getProperty("financeNumberFormatException"),
                     Labels.getProperty("fieldErr"),
                     JOptionPane.ERROR_MESSAGE);
+            financeDepAmountField.requestFocusInWindow();
+            return false;
+        }
+        if (depFinanceAmount.compareTo(selectedFinanceModel.getTotalAmount()) == 1) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            financeDepAmountField.requestFocusInWindow();
+            return false;
+        } else if (depFinanceAmount.compareTo(BigDecimal.ZERO) < 0) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberCannotBeLessZero"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            financeDepAmountField.requestFocusInWindow();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkFinancesLeft() {
+        BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount();
+        if (depFinanceAmount.compareTo(unassignedAmount) == 1) {
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
+            financeDepAmountField.setText(unassignedAmount.toString());
+            financeDepAmountField.requestFocusInWindow();
             return false;
         }
         return true;
     }
 
     public void setFinanceTableData(List<FinanceModel> db) {
-        financeTableModel.setData(db);
+        //removing all inactive items from list
+        List<FinanceModel> activeList = new ArrayList<>();
+        for (FinanceModel model : db) {
+            if (model.isActive()) {
+                activeList.add(model);
+            }
+        }
+        financeTableModel.setData(activeList);
         refreshFinanceTable();
     }
 
@@ -346,7 +394,14 @@ public class FinancePanel extends JPanel {
     }
 
     public void setDepartmentFinanceTableData(List<FinanceDepartmentModel> db) {
-        departmentFinanceTableModel.setData(db);
+        //removing all inactive items from list
+        List<FinanceDepartmentModel> activeList = new ArrayList<>();
+        for (FinanceDepartmentModel model : db) {
+            if (model.isActive()) {
+                activeList.add(model);
+            }
+        }
+        departmentFinanceTableModel.setData(activeList);
         refreshDepartmentFinanceTable();
     }
 

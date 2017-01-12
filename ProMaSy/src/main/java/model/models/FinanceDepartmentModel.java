@@ -93,7 +93,9 @@ public class FinanceDepartmentModel extends AbstractModel {
     public BigDecimal getLeftAmount() {
         BigDecimal leftAmount = totalAmount;
         for (BidModel bid : bids) {
-            leftAmount = leftAmount.subtract(bid.getTotalPrice());
+            if (bid.isActive()) {
+                leftAmount = leftAmount.subtract(bid.getTotalPrice());
+            }
         }
         return leftAmount;
     }

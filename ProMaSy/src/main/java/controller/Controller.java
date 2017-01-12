@@ -115,36 +115,6 @@ public class Controller {
         mainFrame.showLoginDialog();
     }
 
-//    private void loadDataToView() {
-//        //loading default data into model
-//        mainFrame.setCpvModelList(getCpvRequest("", true));
-//        mainFrame.setInstituteModelList(getInstRequest());
-//        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
-//        mainFrame.setEmployeeModelList(getEmployees());
-//        mainFrame.setAmountUnitsModelList(getAmUnits());
-//        mainFrame.setProducerModelList(getProd());
-//        mainFrame.setSupplierModelList(getSupl());
-//        mainFrame.setReasonsModelList(getReasons());
-//        mainFrame.setFinanceModelList(getFinances());
-//        mainFrame.setBidModelList(getBids());
-//        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
-//    }
-
-//    private void loadDataToView(long departmentId) {
-//        //loading default data into model
-//        mainFrame.setCpvModelList(getCpvRequest("", true));
-//        mainFrame.setInstituteModelList(getInstRequest());
-//        getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId());
-//        mainFrame.setEmployeeModelList(getEmployees(departmentId));
-//        mainFrame.setAmountUnitsModelList(getAmUnits());
-//        mainFrame.setProducerModelList(getProd());
-//        mainFrame.setSupplierModelList(getSupl());
-//        mainFrame.setReasonsModelList(getReasons());
-//        mainFrame.setFinanceModelList(getFinances(departmentId));
-//        mainFrame.setBidModelList(getBids());
-//        mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(0));
-//    }
-
     private void initListeners() {
         // adding implementation for closing operation via X-button on window
         mainFrame.addWindowListener(new WindowAdapter() {

@@ -89,9 +89,21 @@ public class FinanceModel extends AbstractModel {
     public BigDecimal getLeftAmount() {
         BigDecimal leftAmount = totalAmount;
         for (FinanceDepartmentModel model : departmentModels) {
-            leftAmount = leftAmount.subtract(model.getLeftAmount());
+            if (model.isActive()) {
+                leftAmount = leftAmount.subtract(model.getTotalAmount().subtract(model.getLeftAmount()));
+            }
         }
         return leftAmount;
+    }
+
+    public BigDecimal getUnassignedAmount() {
+        BigDecimal unassignedAmount = totalAmount;
+        for (FinanceDepartmentModel model : departmentModels) {
+            if (model.isActive()) {
+                unassignedAmount = unassignedAmount.subtract(model.getTotalAmount());
+            }
+        }
+        return unassignedAmount;
     }
 
     public Date getStartDate() {
