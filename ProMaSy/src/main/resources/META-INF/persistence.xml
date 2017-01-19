@@ -6,9 +6,7 @@
     <persistence-unit name="postgres-connect" transaction-type="RESOURCE_LOCAL">
 
         <class>model.models.AmountUnitsModel</class>
-        <class>model.models.BidMaterialModel</class>
-        <class>model.models.BidEquipmentModel</class>
-        <class>model.models.BidServiceModel</class>
+        <class>model.models.BidModel</class>
         <class>model.models.BidStatusModel</class>
         <class>model.models.CPVModel</class>
         <class>model.models.DepartmentModel</class>
@@ -37,7 +35,7 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
 
             <!-- Create/update tables automatically using mapping metadata -->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <property name="hibernate.format_sql" value="true"/>
         </properties>

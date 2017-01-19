@@ -1,32 +1,23 @@
 package model.enums;
 
 import gui.Labels;
-import model.models.BidEquipmentModel;
-import model.models.BidMaterialModel;
-import model.models.BidModel;
 
 /**
  * Enum holds data about types of bids
  */
 public enum BidType {
-    MATERIALS(Labels.getProperty("bidType.material"), BidMaterialModel.class),
-    EQUIPMENT(Labels.getProperty("bidType.equipment"), BidEquipmentModel.class),
-    SERVICES(Labels.getProperty("bidType.services"), BidEquipmentModel.class);
+    MATERIALS(Labels.getProperty("bidType.material")),
+    EQUIPMENT(Labels.getProperty("bidType.equipment")),
+    SERVICES(Labels.getProperty("bidType.services"));
 
     private String bidTypeName;
-    private Class typeClass;
 
-    <T extends BidModel> BidType(String bidTypeName, Class<T> type) {
+    BidType(String bidTypeName) {
         this.bidTypeName = bidTypeName;
-        this.typeClass = type;
     }
 
     public String getBidTypeName() {
         return bidTypeName;
-    }
-
-    public <T extends BidModel> Class<T> getTypeClass() {
-        return typeClass;
     }
 
     @Override

@@ -44,7 +44,7 @@ public class StatusTableModel<T extends BidModel> extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        BidStatusModel<T> model = (BidStatusModel<T>) bidModel.getStatuses().get(rowIndex);
+        BidStatusModel model = bidModel.getStatuses().get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return model.getLastEditDate();

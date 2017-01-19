@@ -25,13 +25,7 @@ public class FinanceDepartmentModel extends AbstractModel {
     private SubdepartmentModel subdepartment;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<BidMaterialModel> materials = new ArrayList<>();
-
-    @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<BidEquipmentModel> equipment = new ArrayList<>();
-
-    @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<BidServiceModel> services = new ArrayList<>();
+    private List<BidModel> bids = new ArrayList<>();
 
     @Column(name = "total_materials")
     private BigDecimal totalMaterialsAmount;
@@ -42,13 +36,11 @@ public class FinanceDepartmentModel extends AbstractModel {
     @Column(name = "total_services")
     private BigDecimal totalServicesAmount;
 
-    public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidMaterialModel> materials, List<BidEquipmentModel> equipment, List<BidServiceModel> services, BigDecimal totalMaterialsAmount, BigDecimal totalEqupmentAmount, BigDecimal totalServicesAmount) {
+    public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidModel> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEqupmentAmount, BigDecimal totalServicesAmount) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.finances = finances;
         this.subdepartment = subdepartment;
-        this.materials = materials;
-        this.equipment = equipment;
-        this.services = services;
+        this.bids = bids;
         this.totalMaterialsAmount = totalMaterialsAmount;
         this.totalEqupmentAmount = totalEqupmentAmount;
         this.totalServicesAmount = totalServicesAmount;
@@ -65,28 +57,12 @@ public class FinanceDepartmentModel extends AbstractModel {
     public FinanceDepartmentModel() {
     }
 
-    public List<BidMaterialModel> getMaterials() {
-        return materials;
+    public List<BidModel> getBids() {
+        return bids;
     }
 
-    public void setMaterials(List<BidMaterialModel> materials) {
-        this.materials = materials;
-    }
-
-    public List<BidEquipmentModel> getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(List<BidEquipmentModel> equipment) {
-        this.equipment = equipment;
-    }
-
-    public List<BidServiceModel> getServices() {
-        return services;
-    }
-
-    public void setServices(List<BidServiceModel> services) {
-        this.services = services;
+    public void setBids(List<BidModel> bids) {
+        this.bids = bids;
     }
 
     public FinanceModel getFinances() {
@@ -97,17 +73,14 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.finances = finances;
     }
 
-    public List<? extends BidModel> getBids(BidType bidType) {
-        switch (bidType) {
-            case MATERIALS:
-                return materials;
-            case SERVICES:
-                return services;
-            case EQUIPMENT:
-                return equipment;
-            default:
-                return null;
+    public List<BidModel> getBids(BidType bidType) {
+        List<BidModel> bidsByType = new ArrayList<>();
+        for (BidModel bid : bids) {
+            if (bid.getType().equals(bidType)) {
+                bidsByType.add(bid);
+            }
         }
+        return bidsByType;
     }
 
     public SubdepartmentModel getSubdepartment() {
@@ -118,36 +91,14 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.subdepartment = subdepartment;
     }
 
-    public void addMaterialBid(BidMaterialModel model) {
+    public void addBid(BidModel model) {
         model.setFinances(this);
-        int indexOfModel = materials.indexOf(model);
+        int indexOfModel = bids.indexOf(model);
         // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
         if (indexOfModel != -1) {
-            materials.set(indexOfModel, model);
+            bids.set(indexOfModel, model);
         } else {
-            materials.add(model);
-        }
-    }
-
-    public void addEqupmentBid(BidEquipmentModel model) {
-        model.setFinances(this);
-        int indexOfModel = equipment.indexOf(model);
-        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
-        if (indexOfModel != -1) {
-            equipment.set(indexOfModel, model);
-        } else {
-            equipment.add(model);
-        }
-    }
-
-    public void addServiceBid(BidServiceModel model) {
-        model.setFinances(this);
-        int indexOfModel = services.indexOf(model);
-        // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)
-        if (indexOfModel != -1) {
-            services.set(indexOfModel, model);
-        } else {
-            services.add(model);
+            bids.add(model);
         }
     }
 
@@ -188,47 +139,14 @@ public class FinanceDepartmentModel extends AbstractModel {
         }
     }
 
-    public BigDecimal getLeftMaterialsAmount() {
-        BigDecimal leftAmount = totalMaterialsAmount;
-        for (BidMaterialModel bid : materials) {
-            if (bid.isActive()) {
-                leftAmount = leftAmount.subtract(bid.getTotalPrice());
-            }
-        }
-        return leftAmount;
-    }
-
-    public BigDecimal getLeftEqupmentAmount() {
-        BigDecimal leftAmount = totalEqupmentAmount;
-        for (BidEquipmentModel bid : equipment) {
-            if (bid.isActive()) {
-                leftAmount = leftAmount.subtract(bid.getTotalPrice());
-            }
-        }
-        return leftAmount;
-    }
-
-    public BigDecimal getLeftServicesAmount() {
-        BigDecimal leftAmount = totalServicesAmount;
-        for (BidServiceModel bid : services) {
-            if (bid.isActive()) {
-                leftAmount = leftAmount.subtract(bid.getTotalPrice());
-            }
-        }
-        return leftAmount;
-    }
-
     public BigDecimal getLeftAmount(BidType bidType) {
-        switch (bidType) {
-            case MATERIALS:
-                return getLeftMaterialsAmount();
-            case SERVICES:
-                return getLeftServicesAmount();
-            case EQUIPMENT:
-                return getLeftEqupmentAmount();
-            default:
-                return null;
+        BigDecimal leftAmount = getTotalAmount(bidType);
+        for (BidModel bid : bids) {
+            if (bid.getType().equals(bidType) && bid.isActive()) {
+                leftAmount = leftAmount.subtract(bid.getTotalPrice());
+            }
         }
+        return leftAmount;
     }
 
     @Override
@@ -241,13 +159,7 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (BidMaterialModel model : materials) {
-            model.setDeleted();
-        }
-        for (BidEquipmentModel model : equipment) {
-            model.setDeleted();
-        }
-        for (BidServiceModel model : services) {
+        for (BidModel model : bids) {
             model.setDeleted();
         }
         super.setDeleted();

@@ -1,5 +1,7 @@
 package model.models;
 
+import model.enums.BidType;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -10,8 +12,8 @@ import java.util.List;
  * Model for storing data related to the bid
  */
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class BidModel extends AbstractModel {
+@Table(name = "bids")
+public class BidModel extends AbstractModel {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "dep_id")
@@ -41,8 +43,8 @@ public abstract class BidModel extends AbstractModel {
     @JoinColumn(name = "reason_id")
     private ReasonForSupplierChoiceModel reasonForSupplierChoice;
 
-    @OneToMany(targetEntity = BidStatusModel.class, cascade = CascadeType.PERSIST)
-    private List<BidStatusModel<? extends BidModel>> statuses = new ArrayList<>();
+    @OneToMany(mappedBy = "bid", cascade = CascadeType.PERSIST)
+    private List<BidStatusModel> statuses = new ArrayList<>();
 
     @Column(name = "cat_num")
     private String catNum;
@@ -56,7 +58,11 @@ public abstract class BidModel extends AbstractModel {
     @Column(name = "amount")
     private int amount;
 
-    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel<? extends BidModel>> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
+    @Enumerated(EnumType.STRING)
+    private BidType type;
+
+
+    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.department = department;
         this.producer = producer;
@@ -70,9 +76,10 @@ public abstract class BidModel extends AbstractModel {
         this.supplier = supplier;
         this.statuses = statuses;
         this.reasonForSupplierChoice = reasonForSupplierChoice;
+        this.type = type;
     }
 
-    public BidModel(DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel<? extends BidModel>> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
+    public BidModel(DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
         this.department = department;
         this.producer = producer;
         this.catNum = catNum;
@@ -85,9 +92,18 @@ public abstract class BidModel extends AbstractModel {
         this.supplier = supplier;
         this.statuses = statuses;
         this.reasonForSupplierChoice = reasonForSupplierChoice;
+        this.type = type;
     }
 
     public BidModel() {
+    }
+
+    public BidType getType() {
+        return type;
+    }
+
+    public void setType(BidType type) {
+        this.type = type;
     }
 
     public DepartmentModel getDepartment() {
@@ -170,11 +186,11 @@ public abstract class BidModel extends AbstractModel {
         this.supplier = supplier;
     }
 
-    public List<BidStatusModel<? extends BidModel>> getStatuses() {
+    public List<BidStatusModel> getStatuses() {
         return statuses;
     }
 
-    public void setStatuses(List<BidStatusModel<? extends BidModel>> statuses) {
+    public void setStatuses(List<BidStatusModel> statuses) {
         this.statuses = statuses;
     }
 

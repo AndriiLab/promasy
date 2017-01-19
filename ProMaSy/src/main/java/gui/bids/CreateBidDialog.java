@@ -28,7 +28,7 @@ public class CreateBidDialog extends JDialog {
     private final ProducerModel emptyProducerModel = new ProducerModel();
     private final SupplierModel emptySupplierModel = new SupplierModel();
     private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
-    private final BidModel emptyBidModel = null;//TODO
+    private final BidModel emptyBidModel = new BidModel();
     private final ReasonForSupplierChoiceModel emptyReasonForSupplierChoiceModel = new ReasonForSupplierChoiceModel();
     private final CPVModel emptyCpvModel = new CPVModel();
     private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
@@ -226,7 +226,7 @@ public class CreateBidDialog extends JDialog {
                             createdBidModel.setUpdated();
                         } else createdBidModel.setCreated();
 
-                        listener.persistModelEventOccurred(createdBidModel, (BidType) bidTypeBox.getSelectedItem());
+                        listener.persistModelEventOccurred(createdBidModel);
                         clearFieldsAndSetTitle();
                     }
                 }
@@ -454,9 +454,9 @@ public class CreateBidDialog extends JDialog {
         }
 
         if (createdBidModel == emptyBidModel) {
-            List<BidStatusModel<? extends BidModel>> statuses = createdBidModel.getStatuses();
+            List<BidStatusModel> statuses = createdBidModel.getStatuses();
             statuses.add(new BidStatusModel(Status.CREATED, createdBidModel));
-            createdBidModel = new BidEquipmentModel(selectedDepartmentModel, selectedProducerModel, selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel, selectedFinanceDepartmentModel, selectedSupplierModel, statuses, selectedReasonModel);// TODO
+            createdBidModel = new BidModel(selectedDepartmentModel, selectedProducerModel, selectedCatNum, selectedDescription, selectedCPV, onePrice, amount, selectedAmountUnitsModel, selectedFinanceDepartmentModel, selectedSupplierModel, statuses, selectedReasonModel, currentBidType);
         } else {
             createdBidModel.setDepartment(selectedDepartmentModel);
             createdBidModel.setProducer(selectedProducerModel);
@@ -482,13 +482,7 @@ public class CreateBidDialog extends JDialog {
     }
 
     void loadToDialog(BidModel model) {
-        if (model instanceof BidMaterialModel) {
-            setCurrentBidType(BidType.MATERIALS);
-        } else if (model instanceof BidEquipmentModel) {
-            setCurrentBidType(BidType.EQUIPMENT);
-        } else if (model instanceof BidServiceModel) {
-            setCurrentBidType(BidType.SERVICES);
-        }
+        setCurrentBidType(model.getType());
         inBidEditMode = true;
         setTitle(Labels.getProperty("editBid"));
         okButton.setText(Labels.getProperty("editBid"));

@@ -23,7 +23,6 @@ import gui.prodsupl.SupplierDialogListener;
 import model.DefaultValues;
 import model.dao.Database;
 import model.dao.LoginData;
-import model.enums.BidType;
 import model.enums.Role;
 import model.models.*;
 
@@ -294,29 +293,29 @@ public class Controller {
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
             @Override
-            public void persistModelEventOccurred(BidModel model, BidType type) {
-                createOrUpdate(model, type);
+            public void persistModelEventOccurred(BidModel model) {
+                createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids(type));
+                mainFrame.setBidModelList(getBids());
             }
 
             @Override
-            public void selectAllBidsEventOccurred(BidType bidType) {
-                mainFrame.setBidModelList(getBids(bidType));
+            public void selectAllBidsEventOccurred() {
+                mainFrame.setBidModelList(getBids());
             }
 
             @Override
-            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel, BidType bidType) {
-                mainFrame.setBidModelList(getBids(selectedDepartmentModel, bidType));
+            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel) {
+                mainFrame.setBidModelList(getBids(selectedDepartmentModel));
             }
         });
 
         mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
             @Override
-            public void persistModelEventOccurred(BidModel createdBidModel, BidType type) {
-                createOrUpdate(createdBidModel, type);
+            public void persistModelEventOccurred(BidModel createdBidModel) {
+                createOrUpdate(createdBidModel);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids(type));
+                mainFrame.setBidModelList(getBids());
             }
 
             @Override
@@ -686,9 +685,9 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids(BidType type) {
+    private List<BidModel> getBids() {
         try {
-            return Database.BIDS.getResults(type);
+            return Database.BIDS.getResults();
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
@@ -696,9 +695,9 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids(DepartmentModel department, BidType type) {
+    private List<BidModel> getBids(DepartmentModel department) {
         try {
-            return Database.BIDS.retrieve(department, type);
+            return Database.BIDS.retrieve(department);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
@@ -804,9 +803,9 @@ public class Controller {
     }
 
 
-    private void createOrUpdate(BidModel model, BidType type) {
+    private void createOrUpdate(BidModel model) {
         try {
-            Database.BIDS.createOrUpdate(model, type);
+            Database.BIDS.createOrUpdate(model);
             logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));
