@@ -11,9 +11,9 @@ import java.sql.Timestamp;
 /**
  * TableModel for holding {@link Status} data
  */
-public class StatusTableModel extends AbstractTableModel {
+public class StatusTableModel<T extends BidModel> extends AbstractTableModel {
 
-    private BidModel bidModel;
+    private T bidModel;
 
     private String[] colNames = {Labels.getProperty("dateModified"),
             Labels.getProperty("status"),
@@ -28,7 +28,7 @@ public class StatusTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
-    public void setBidModel(BidModel bidModel) {
+    public void setBidModel(T bidModel) {
         this.bidModel = bidModel;
     }
 
@@ -44,7 +44,7 @@ public class StatusTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        BidStatusModel model = bidModel.getStatuses().get(rowIndex);
+        BidStatusModel<T> model = (BidStatusModel<T>) bidModel.getStatuses().get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return model.getLastEditDate();

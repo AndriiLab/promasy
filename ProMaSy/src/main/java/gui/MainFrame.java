@@ -117,7 +117,7 @@ public class MainFrame extends JFrame {
         } else if (role == Role.DEPUTY_DIRECTOR) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
-        } else if (role == Role.HEAD_OF_TENDER_COMMITTEE) {
+        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
             createTabPane();
             setJMenuBar(createMenuBar(true));
         } else if (role == Role.ACCOUNTANT) {
@@ -335,7 +335,7 @@ public class MainFrame extends JFrame {
             listener.searchForPerson(Role.ECONOMIST);
             reportParametersDialog.setEconomistBoxData(Database.EMPLOYEES.getList());
             // search for HEAD OF TENDER COMMITTEE (id 2500)
-            listener.searchForPerson(Role.HEAD_OF_TENDER_COMMITTEE);
+            listener.searchForPerson(Role.SECRETARY_OF_TENDER_COMMITTEE);
             reportParametersDialog.setHeadTenderBoxData(Database.EMPLOYEES.getList());
             // search for director (id 1000)
             listener.searchForPerson(Role.DIRECTOR);

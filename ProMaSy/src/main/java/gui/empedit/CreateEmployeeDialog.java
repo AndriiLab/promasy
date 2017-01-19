@@ -264,7 +264,7 @@ public class CreateEmployeeDialog extends JDialog {
             // if model empty createOrUpdate new user
             if (customUserModel != null) currentEmployeeModel = customUserModel;
             if (currentEmployeeModel.equals(emptyEmployeeModel) && isUniqueUser) {
-                currentEmployeeModel = new EmployeeModel(firstName, middleName, email, phoneMain, phoneReserve, lastName, subdepartmentModel, roleModel, login, pass, salt);
+                currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
                 return true;
             } else if (currentEmployeeModel.equals(emptyEmployeeModel) && !isUniqueUser) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);

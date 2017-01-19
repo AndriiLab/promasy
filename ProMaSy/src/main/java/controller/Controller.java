@@ -20,8 +20,10 @@ import gui.login.LoginListener;
 import gui.prodsupl.ProducerDialogListener;
 import gui.prodsupl.ReasonsDialogListener;
 import gui.prodsupl.SupplierDialogListener;
+import model.DefaultValues;
 import model.dao.Database;
 import model.dao.LoginData;
+import model.enums.BidType;
 import model.enums.Role;
 import model.models.*;
 
@@ -157,12 +159,12 @@ public class Controller {
         mainFrame.setCpvListener(new CpvSearchListener() {
             @Override
             public void cpvSelectionEventOccurred(CpvReqEvent ev) {
-                mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest(), ev.isSameLvlShow()));
+                mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest()));
             }
 
             @Override
             public void getTopCodes() {
-                mainFrame.setCpvModelList(getCpvRequest("", true));
+                mainFrame.setCpvModelList(getCpvRequest(""));
             }
         });
 
@@ -292,34 +294,29 @@ public class Controller {
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
             @Override
-            public void persistModelEventOccurred(BidModel model) {
-                createOrUpdate(model);
+            public void persistModelEventOccurred(BidModel model, BidType type) {
+                createOrUpdate(model, type);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids());
+                mainFrame.setBidModelList(getBids(type));
             }
 
             @Override
-            public void selectAllBidsEventOccurred() {
-                mainFrame.setBidModelList(getBids());
+            public void selectAllBidsEventOccurred(BidType bidType) {
+                mainFrame.setBidModelList(getBids(bidType));
             }
 
             @Override
-            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel) {
-                mainFrame.setBidModelList(getBids(selectedDepartmentModel.getModelId()));
-            }
-
-            @Override
-            public void getDepartmentFinances(DepartmentModel selectedDepartmentModel) {
-                mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByDepartment(selectedDepartmentModel.getModelId()));
+            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel, BidType bidType) {
+                mainFrame.setBidModelList(getBids(selectedDepartmentModel, bidType));
             }
         });
 
         mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
             @Override
-            public void persistModelEventOccurred(BidModel createdBidModel) {
-                createOrUpdate(createdBidModel);
+            public void persistModelEventOccurred(BidModel createdBidModel, BidType type) {
+                createOrUpdate(createdBidModel, type);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids());
+                mainFrame.setBidModelList(getBids(type));
             }
 
             @Override
@@ -400,6 +397,17 @@ public class Controller {
         LoginData.getInstance(firstUser);
         mainFrame.initialize();
         initListeners();
+        //passing institute structure
+        try {
+            DefaultValues.setAmountUnits();
+            DefaultValues.setInstituteStructure();
+            DefaultValues.setCpv();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
@@ -454,9 +462,9 @@ public class Controller {
 
     // methods requesting the DB
     // GETTERS
-    private List<CPVModel> getCpvRequest(String cpvRequest, boolean sameLvlShow) {
+    private List<CPVModel> getCpvRequest(String cpvRequest) {
         try {
-            return Database.CPV.retrieve(cpvRequest, sameLvlShow);
+            return Database.CPV.retrieve(cpvRequest);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("error"));
             return null;
@@ -678,9 +686,9 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids() {
+    private List<BidModel> getBids(BidType type) {
         try {
-            return Database.BIDS.getResults();
+            return Database.BIDS.getResults(type);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
@@ -688,9 +696,9 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids(long departmentId) {
+    private List<BidModel> getBids(DepartmentModel department, BidType type) {
         try {
-            return Database.BIDS.retrieve(departmentId);
+            return Database.BIDS.retrieve(department, type);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
@@ -796,9 +804,9 @@ public class Controller {
     }
 
 
-    private void createOrUpdate(BidModel model) {
+    private void createOrUpdate(BidModel model, BidType type) {
         try {
-            Database.BIDS.createOrUpdate(model);
+            Database.BIDS.createOrUpdate(model, type);
             logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));

@@ -75,4 +75,12 @@ public class DepartmentModel extends AbstractModel {
         }
     }
 
+    @Override
+    public void setDeleted() {
+        for (SubdepartmentModel model : subdepartments) {
+            model.setDeleted();
+        }
+        super.setDeleted();
+    }
+
 }

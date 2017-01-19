@@ -10,8 +10,8 @@ import java.util.List;
  * Model for storing data related to the bid
  */
 @Entity
-@Table(name = "bids")
-public class BidModel extends AbstractModel{
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class BidModel extends AbstractModel {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "dep_id")
@@ -41,8 +41,8 @@ public class BidModel extends AbstractModel{
     @JoinColumn(name = "reason_id")
     private ReasonForSupplierChoiceModel reasonForSupplierChoice;
 
-    @OneToMany(mappedBy = "bid", cascade = CascadeType.PERSIST)
-    private List<BidStatusModel> statuses = new ArrayList<>();
+    @OneToMany(targetEntity = BidStatusModel.class, cascade = CascadeType.PERSIST)
+    private List<BidStatusModel<? extends BidModel>> statuses = new ArrayList<>();
 
     @Column(name = "cat_num")
     private String catNum;
@@ -56,7 +56,7 @@ public class BidModel extends AbstractModel{
     @Column(name = "amount")
     private int amount;
 
-    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
+    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel<? extends BidModel>> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.department = department;
         this.producer = producer;
@@ -72,7 +72,7 @@ public class BidModel extends AbstractModel{
         this.reasonForSupplierChoice = reasonForSupplierChoice;
     }
 
-    public BidModel(DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
+    public BidModel(DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel<? extends BidModel>> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice) {
         this.department = department;
         this.producer = producer;
         this.catNum = catNum;
@@ -88,7 +88,6 @@ public class BidModel extends AbstractModel{
     }
 
     public BidModel() {
-
     }
 
     public DepartmentModel getDepartment() {
@@ -155,7 +154,7 @@ public class BidModel extends AbstractModel{
         this.amountUnit = amountUnit;
     }
 
-    public FinanceDepartmentModel getDepartmrntFinances() {
+    public FinanceDepartmentModel getFinances() {
         return finances;
     }
 
@@ -171,8 +170,12 @@ public class BidModel extends AbstractModel{
         this.supplier = supplier;
     }
 
-    public List<BidStatusModel> getStatuses() {
+    public List<BidStatusModel<? extends BidModel>> getStatuses() {
         return statuses;
+    }
+
+    public void setStatuses(List<BidStatusModel<? extends BidModel>> statuses) {
+        this.statuses = statuses;
     }
 
     public void addStatus(BidStatusModel bidStatusModel) {
@@ -205,5 +208,13 @@ public class BidModel extends AbstractModel{
             }
         }
         return bidStatusModel;
+    }
+
+    @Override
+    public void setDeleted() {
+        for (BidStatusModel model : statuses) {
+            model.setDeleted();
+        }
+        super.setDeleted();
     }
 }

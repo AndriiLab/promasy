@@ -97,4 +97,15 @@ public class SubdepartmentModel extends AbstractModel {
         return subdepName;
     }
 
+    @Override
+    public void setDeleted() {
+        for (EmployeeModel model : employees) {
+            model.setDeleted();
+        }
+        for (FinanceDepartmentModel model : financeDepartments) {
+            model.setDeleted();
+        }
+        super.setDeleted();
+    }
+
 }

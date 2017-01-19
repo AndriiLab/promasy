@@ -16,4 +16,5 @@ public class ServerQueries {
 
         return serverTime;
     }
+
 }

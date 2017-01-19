@@ -1,9 +1,11 @@
 package gui.finance;
 
+import com.sun.istack.internal.Nullable;
 import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.Utils;
 import model.dao.LoginData;
+import model.enums.BidType;
 import model.models.DepartmentModel;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceModel;
@@ -36,9 +38,12 @@ public class FinancePanel extends JPanel {
     private final FinanceModel emptyFinanceModel = new FinanceModel();
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new ArrayList<>();
+    private final String emptyString = "";
     private JTextField orderNumberField;
     private JTextField orderNameField;
-    private JTextField financeAmountField;
+    private JTextField materialsAmountField;
+    private JTextField equipmentAmountField;
+    private JTextField servicesAmountField;
     private JXDatePicker startDatePicker;
     private JXDatePicker endDatePicker;
     private JButton createOrderButton;
@@ -48,7 +53,9 @@ public class FinancePanel extends JPanel {
     private FinanceTableModel financeTableModel;
     private JComboBox<DepartmentModel> departmentBox;
     private JComboBox<SubdepartmentModel> subdepartmentBox;
-    private JTextField financeDepAmountField;
+    private JTextField depMaterialsAmountField;
+    private JTextField depEquipmentAmountField;
+    private JTextField depServicesAmountField;
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
     private JButton deleteDepOrderButton;
@@ -60,11 +67,15 @@ public class FinancePanel extends JPanel {
     private String orderName;
     private Date startDate;
     private Date endDate;
-    private BigDecimal financeAmount;
+    private BigDecimal materialAmount;
+    private BigDecimal equipmentAmount;
+    private BigDecimal servicesAmount;
     private FinanceModel selectedFinanceModel;
     private DepartmentModel selectedDepartment;
     private SubdepartmentModel selectedSubdepartment;
-    private BigDecimal depFinanceAmount;
+    private BigDecimal depMaterialAmount;
+    private BigDecimal depEquipmentAmount;
+    private BigDecimal depServicesAmount;
     private FinanceDepartmentModel selectedDepFinModel;
     private boolean useUserDepartment = false;
 
@@ -75,7 +86,9 @@ public class FinancePanel extends JPanel {
 
         orderNumberField = new JTextField(10);
         orderNameField = new JTextField(15);
-        financeAmountField = new JTextField(10);
+        materialsAmountField = new JTextField(10);
+        equipmentAmountField = new JTextField(10);
+        servicesAmountField = new JTextField(10);
         startDatePicker = new JXDatePicker(Locale.getDefault());
         startDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         startDatePicker.setDate(defaultStartDate);
@@ -104,7 +117,7 @@ public class FinancePanel extends JPanel {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 1);
-                    setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                    setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                     clearDepFinPanel();
                     if (!selectedFinanceModel.equals(emptyFinanceModel)) {
                         editOrderButton.setEnabled(true);
@@ -112,9 +125,12 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(false);
                         deleteDepOrderButton.setEnabled(false);
+                        departmentBox.setEnabled(true);
                         orderNumberField.setText(String.valueOf(selectedFinanceModel.getFinanceNumber()));
                         orderNameField.setText(selectedFinanceModel.getFinanceName());
-                        financeAmountField.setText(selectedFinanceModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
+                        materialsAmountField.setText(selectedFinanceModel.getTotalAmount(BidType.MATERIALS).setScale(2, RoundingMode.CEILING).toString());
+                        equipmentAmountField.setText(selectedFinanceModel.getTotalAmount(BidType.EQUIPMENT).setScale(2, RoundingMode.CEILING).toString());
+                        servicesAmountField.setText(selectedFinanceModel.getTotalAmount(BidType.SERVICES).setScale(2, RoundingMode.CEILING).toString());
                         startDatePicker.setDate(selectedFinanceModel.getStartDate());
                         endDatePicker.setDate(selectedFinanceModel.getEndDate());
                     }
@@ -125,16 +141,21 @@ public class FinancePanel extends JPanel {
         departmentBox = new JComboBox<>();
         departmentBox.setPreferredSize(new Dimension(270, 25));
         departmentBox.addItem(emptyDepartmentModel);
+        departmentBox.setEnabled(false);
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
             setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
+            subdepartmentBox.setEnabled(true);
         });
 
         subdepartmentBox = new JComboBox<>();
         subdepartmentBox.setPreferredSize(new Dimension(150, 25));
+        subdepartmentBox.setEnabled(false);
         subdepartmentBox.addItem(emptySubdepartmentModel);
 
-        financeDepAmountField = new JTextField(10);
+        depMaterialsAmountField = new JTextField(10);
+        depEquipmentAmountField = new JTextField(10);
+        depServicesAmountField = new JTextField(10);
 
         CrEdDelButtons cedDepartmentFinances = new CrEdDelButtons(Labels.getProperty("dep_order_ced"));
         createDepOrderButton = cedDepartmentFinances.getCreateButton();
@@ -165,7 +186,9 @@ public class FinancePanel extends JPanel {
                         deleteDepOrderButton.setEnabled(true);
                         Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
                         Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
-                        financeDepAmountField.setText(selectedDepFinModel.getTotalAmount().setScale(2, RoundingMode.CEILING).toString());
+                        depMaterialsAmountField.setText(selectedDepFinModel.getTotalAmount(BidType.MATERIALS).setScale(2, RoundingMode.CEILING).toString());
+                        depEquipmentAmountField.setText(selectedDepFinModel.getTotalAmount(BidType.EQUIPMENT).setScale(2, RoundingMode.CEILING).toString());
+                        depServicesAmountField.setText(selectedDepFinModel.getTotalAmount(BidType.SERVICES).setScale(2, RoundingMode.CEILING).toString());
                     }
                 }
             }
@@ -175,7 +198,7 @@ public class FinancePanel extends JPanel {
 
         createOrderButton.addActionListener(e -> {
             if (checkFinanceInput() && listener != null) {
-                FinanceModel model = new FinanceModel(orderNumber, orderName, financeAmount, startDate, endDate);
+                FinanceModel model = new FinanceModel(orderNumber, orderName, materialAmount, equipmentAmount, servicesAmount, startDate, endDate);
                 model.setCreated();
                 listener.persistModelEventOccurred(model);
                 setDepartmentFinanceTableData(emptyDepartmentFinancesList);
@@ -188,12 +211,14 @@ public class FinancePanel extends JPanel {
             if (!selectedFinanceModel.equals(emptyFinanceModel) && checkFinanceInput() && listener != null) {
                 selectedFinanceModel.setFinanceNumber(orderNumber);
                 selectedFinanceModel.setFinanceName(orderName);
-                selectedFinanceModel.setTotalAmount(financeAmount);
+                selectedFinanceModel.setTotalMaterials(materialAmount);
+                selectedFinanceModel.setTotalEquipment(equipmentAmount);
+                selectedFinanceModel.setTotalServices(servicesAmount);
                 selectedFinanceModel.setStartDate(startDate);
                 selectedFinanceModel.setEndDate(endDate);
                 selectedFinanceModel.setUpdated();
                 listener.persistModelEventOccurred(selectedFinanceModel);
-                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                 selectedFinanceModel = emptyFinanceModel;
                 clearFinancePanel();
                 clearDepFinPanel();
@@ -212,13 +237,13 @@ public class FinancePanel extends JPanel {
         });
 
         createDepOrderButton.addActionListener(e -> {
-            if (checkFinanceInput() && checkDepFinanceInput() && checkFinancesLeft() && listener != null) {
-                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedFinanceModel, selectedSubdepartment, depFinanceAmount);
+            if (checkFinanceInput() && checkDepFinanceInput() && listener != null) {
+                FinanceDepartmentModel model = new FinanceDepartmentModel(selectedFinanceModel, selectedSubdepartment, depMaterialAmount, depEquipmentAmount, depServicesAmount);
                 model.setCreated();
                 selectedFinanceModel.addFinanceDepartmentModel(model);
                 selectedSubdepartment.addFinanceDepartmentModel(model);
                 listener.persistModelEventOccurred(model);
-                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                 clearDepFinPanel();
             }
         });
@@ -226,11 +251,13 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.addActionListener(e -> {
             if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && checkFinanceInput() && checkDepFinanceInput() && listener != null) {
                 selectedDepFinModel.setSubdepartment(selectedSubdepartment);
-                selectedDepFinModel.setTotalAmount(depFinanceAmount);
+                selectedDepFinModel.setTotalMaterialsAmount(depMaterialAmount);
+                selectedDepFinModel.setTotalEqupmentAmount(depEquipmentAmount);
+                selectedDepFinModel.setTotalServicesAmount(depServicesAmount);
                 selectedDepFinModel.setUpdated();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
-                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                 selectedDepFinModel = emptyFinanceDepartmentModel;
                 clearDepFinPanel();
             }
@@ -241,7 +268,7 @@ public class FinancePanel extends JPanel {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
-                setDepartmentFinanceTableData(selectedFinanceModel.getDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                 selectedDepFinModel = emptyFinanceDepartmentModel;
                 clearDepFinPanel();
             }
@@ -249,25 +276,89 @@ public class FinancePanel extends JPanel {
     }
 
     private void clearFinancePanel() {
-        orderNumberField.setText("");
-        orderNameField.setText("");
-        financeAmountField.setText("");
+        orderNumberField.setText(emptyString);
+        orderNameField.setText(emptyString);
+        materialsAmountField.setText(emptyString);
+        equipmentAmountField.setText(emptyString);
+        servicesAmountField.setText(emptyString);
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
         orderNumber = 0;
-        orderName = "";
+        orderName = emptyString;
         startDate = null;
         endDate = null;
-        financeAmount = null;
+        materialAmount = null;
+        equipmentAmount = null;
+        servicesAmount = null;
     }
 
     private void clearDepFinPanel() {
         departmentBox.setSelectedIndex(0);
         subdepartmentBox.setSelectedIndex(0);
-        financeDepAmountField.setText("");
-        depFinanceAmount = null;
+        depMaterialsAmountField.setText(emptyString);
+        depEquipmentAmountField.setText(emptyString);
+        depServicesAmountField.setText(emptyString);
+        depMaterialAmount = null;
+        depEquipmentAmount = null;
+        depServicesAmount = null;
         selectedDepartment = emptyDepartmentModel;
         selectedSubdepartment = emptySubdepartmentModel;
+    }
+
+    @Nullable
+    private BigDecimal parseBigDecimal(JTextField jTextField, String fieldName) {
+        String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
+        if (targetBigDecimalText.isEmpty()) {
+            Utils.emptyFieldError(parent, fieldName);
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+
+        jTextField.setText(targetBigDecimalText);
+
+        BigDecimal targetBigDecimal;
+        try {
+            targetBigDecimal = new BigDecimal(targetBigDecimalText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberFormatException"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        if (targetBigDecimal.compareTo(BigDecimal.ZERO) < 0) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberCannotBeLessZero"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        return targetBigDecimal;
+    }
+
+    @Nullable
+    private BigDecimal parseSubdepartmentBigDecimal(JTextField jTextField, String fieldName, BidType bidType) {
+        BigDecimal targetBigDecimal = parseBigDecimal(jTextField, fieldName);
+        if (targetBigDecimal == null) {
+            return null;
+        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getTotalAmount(bidType)) == 1) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            jTextField.requestFocusInWindow();
+            return null;
+        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
+            BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
+            jTextField.setText(unassignedAmount.toString());
+            jTextField.requestFocusInWindow();
+            return null;
+        } else
+            return targetBigDecimal;
     }
 
     private boolean checkFinanceInput() {
@@ -281,11 +372,9 @@ public class FinancePanel extends JPanel {
         orderName = orderNameField.getText();
         startDate = new java.sql.Date(startDatePicker.getDate().getTime());
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());
-        String financeAmountText = Utils.formatBigDecimal(financeAmountField.getText());
-        financeAmountField.setText(financeAmountText);
-        if (orderName.length() < 1) {
+        if (orderName.isEmpty()) {
             Utils.emptyFieldError(parent, Labels.getProperty("financeName"));
-            financeAmountField.requestFocusInWindow();
+            orderNameField.requestFocusInWindow();
             return false;
         } else if (startDate.after(endDate)) {
             JOptionPane.showMessageDialog(parent,
@@ -294,37 +383,17 @@ public class FinancePanel extends JPanel {
                     JOptionPane.ERROR_MESSAGE);
             endDatePicker.requestFocusInWindow();
             return false;
-        } else if (financeAmountText.length() < 1) {
-            Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
-            financeAmountField.requestFocusInWindow();
-            return false;
         }
-        try {
-            financeAmount = new BigDecimal(financeAmountText);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(parent,
-                    Labels.getProperty("financeNumberFormatException"),
-                    Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
-            financeAmountField.requestFocusInWindow();
-            return false;
-        }
-        if (financeAmount.compareTo(BigDecimal.ZERO) < 0) {
-            JOptionPane.showMessageDialog(parent,
-                    Labels.getProperty("financeNumberCannotBeLessZero"),
-                    Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
-            financeAmountField.requestFocusInWindow();
-            return false;
-        }
-        return true;
+        materialAmount = parseBigDecimal(materialsAmountField, Labels.getProperty("materialsAmount"));
+        equipmentAmount = parseBigDecimal(equipmentAmountField, Labels.getProperty("equipmentAmount"));
+        servicesAmount = parseBigDecimal(servicesAmountField, Labels.getProperty("servicesAmount"));
+
+        return (materialAmount != null && equipmentAmount != null && servicesAmount != null);
     }
 
     private boolean checkDepFinanceInput() {
         selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
         selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-        String inpDepFinanceAmount = Utils.formatBigDecimal(financeDepAmountField.getText());
-        financeDepAmountField.setText(inpDepFinanceAmount);
         if (selectedDepartment.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
@@ -333,48 +402,11 @@ public class FinancePanel extends JPanel {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
-        } else if (inpDepFinanceAmount.length() < 1) {
-            Utils.emptyFieldError(parent, Labels.getProperty("financeAmount"));
-            financeDepAmountField.requestFocusInWindow();
-            return false;
         }
-        try {
-            depFinanceAmount = new BigDecimal(inpDepFinanceAmount);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(parent,
-                    Labels.getProperty("financeNumberFormatException"),
-                    Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
-            financeDepAmountField.requestFocusInWindow();
-            return false;
-        }
-        if (depFinanceAmount.compareTo(selectedFinanceModel.getTotalAmount()) == 1) {
-            JOptionPane.showMessageDialog(parent,
-                    Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
-                    Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
-            financeDepAmountField.requestFocusInWindow();
-            return false;
-        } else if (depFinanceAmount.compareTo(BigDecimal.ZERO) < 0) {
-            JOptionPane.showMessageDialog(parent,
-                    Labels.getProperty("financeNumberCannotBeLessZero"),
-                    Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
-            financeDepAmountField.requestFocusInWindow();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkFinancesLeft() {
-        BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount();
-        if (depFinanceAmount.compareTo(unassignedAmount) == 1) {
-            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
-            financeDepAmountField.setText(unassignedAmount.toString());
-            financeDepAmountField.requestFocusInWindow();
-            return false;
-        }
-        return true;
+        depMaterialAmount = parseSubdepartmentBigDecimal(depMaterialsAmountField, Labels.getProperty("materialsAmount"), BidType.MATERIALS);
+        depEquipmentAmount = parseSubdepartmentBigDecimal(depEquipmentAmountField, Labels.getProperty("equipmentAmount"), BidType.EQUIPMENT);
+        depServicesAmount = parseSubdepartmentBigDecimal(depServicesAmountField, Labels.getProperty("servicesAmount"), BidType.SERVICES);
+        return (depMaterialAmount != null && depEquipmentAmount != null && depServicesAmount != null);
     }
 
     public void setFinanceTableData(List<FinanceModel> db) {
@@ -495,12 +527,32 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        addOrderPanel.add(new JLabel(Labels.withColon("financeAmount")), gc);
+        addOrderPanel.add(new JLabel(Labels.withColon("materialsAmount")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
-        addOrderPanel.add(financeAmountField, gc);
+        addOrderPanel.add(materialsAmountField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        addOrderPanel.add(new JLabel(Labels.withColon("equipmentAmount")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        addOrderPanel.add(equipmentAmountField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        addOrderPanel.add(new JLabel(Labels.withColon("servicesAmount")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        addOrderPanel.add(servicesAmountField, gc);
 
         /////Next row////
         gc.gridy++;
@@ -571,12 +623,32 @@ public class FinancePanel extends JPanel {
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        addDepOrderPanel.add(new JLabel(Labels.withColon("financeAmount")), gc);
+        addDepOrderPanel.add(new JLabel(Labels.withColon("materialsAmount")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
-        addDepOrderPanel.add(financeDepAmountField, gc);
+        addDepOrderPanel.add(depMaterialsAmountField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        addDepOrderPanel.add(new JLabel(Labels.withColon("equipmentAmount")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        addDepOrderPanel.add(depEquipmentAmountField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        addDepOrderPanel.add(new JLabel(Labels.withColon("servicesAmount")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        addDepOrderPanel.add(depServicesAmountField, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

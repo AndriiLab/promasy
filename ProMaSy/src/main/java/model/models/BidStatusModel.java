@@ -11,26 +11,26 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bid_statuses")
-public class BidStatusModel extends AbstractModel {
+public class BidStatusModel<T extends BidModel> extends AbstractModel {
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, targetEntity = BidModel.class)
     @JoinColumn(name = "bid_id")
-    private BidModel bid;
+    private T bid;
 
     public BidStatusModel() {
     }
 
     public BidStatusModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee,
-                          Timestamp modifiedDate, boolean active, Status status, BidModel bid) {
+                          Timestamp modifiedDate, boolean active, Status status, T bid) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.status = status;
         this.bid = bid;
     }
 
-    public BidStatusModel(Status status, BidModel bid) {
+    public BidStatusModel(Status status, T bid) {
         this.status = status;
         this.bid = bid;
     }
@@ -43,11 +43,11 @@ public class BidStatusModel extends AbstractModel {
         this.status = status;
     }
 
-    public BidModel getBid() {
+    public T getBid() {
         return bid;
     }
 
-    public void setBid(BidModel bid) {
+    public void setBid(T bid) {
         this.bid = bid;
     }
 }

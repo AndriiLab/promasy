@@ -1,6 +1,7 @@
 package gui.finance;
 
 import gui.Labels;
+import model.enums.BidType;
 import model.models.FinanceDepartmentModel;
 
 import javax.swing.table.AbstractTableModel;
@@ -14,14 +15,19 @@ import java.util.List;
 class DepartmentFinanceTableModel extends AbstractTableModel {
 
     private List<FinanceDepartmentModel> db;
-    private String[] colNames = {Labels.getProperty("department"),
+    private String[] colNames = {
+            Labels.getProperty("department"),
             Labels.getProperty("subdepartment"),
-            Labels.getProperty("financeAmount"),
-            Labels.getProperty("financeLeft"),
-            "main/java/model"
+            Labels.getProperty("materialsAmount"),
+            Labels.getProperty("equipmentAmount"),
+            Labels.getProperty("equipmentLeft"),
+            Labels.getProperty("materialsLeft"),
+            Labels.getProperty("servicesAmount"),
+            Labels.getProperty("servicesLeft"),
+            Labels.getProperty("financeName")
     };
 
-    public DepartmentFinanceTableModel(){
+    public DepartmentFinanceTableModel() {
 
     }
 
@@ -40,36 +46,57 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 9;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         FinanceDepartmentModel model = db.get(rowIndex);
-        switch (columnIndex){
+        switch (columnIndex) {
             case 0:
                 return model.getSubdepartment().getDepartment().getDepName();
             case 1:
                 return model.getSubdepartment().getSubdepName();
             case 2:
-                BigDecimal totalAmount = model.getTotalAmount();
-                if (totalAmount == null){
+                BigDecimal materialsAmount = model.getTotalAmount(BidType.MATERIALS);
+                if (materialsAmount == null) {
                     return BigDecimal.ZERO;
-                } else return totalAmount.setScale(2, RoundingMode.CEILING);
+                } else return materialsAmount.setScale(2, RoundingMode.CEILING);
             case 3:
-                BigDecimal leftAmount = model.getLeftAmount();
-                if (leftAmount == null){
+                BigDecimal materialsLeft = model.getLeftAmount(BidType.MATERIALS);
+                if (materialsLeft == null) {
                     return BigDecimal.ZERO;
-                } else return leftAmount.setScale(2, RoundingMode.CEILING);
+                } else return materialsLeft.setScale(2, RoundingMode.CEILING);
             case 4:
+                BigDecimal equipmentAmount = model.getTotalAmount(BidType.EQUIPMENT);
+                if (equipmentAmount == null) {
+                    return BigDecimal.ZERO;
+                } else return equipmentAmount.setScale(2, RoundingMode.CEILING);
+            case 5:
+                BigDecimal equipmentLeft = model.getLeftAmount(BidType.EQUIPMENT);
+                if (equipmentLeft == null) {
+                    return BigDecimal.ZERO;
+                } else return equipmentLeft.setScale(2, RoundingMode.CEILING);
+            case 6:
+                BigDecimal servicesAmount = model.getTotalAmount(BidType.SERVICES);
+                if (servicesAmount == null) {
+                    return BigDecimal.ZERO;
+                } else return servicesAmount.setScale(2, RoundingMode.CEILING);
+            case 7:
+                BigDecimal servicesLeft = model.getLeftAmount(BidType.SERVICES);
+                if (servicesLeft == null) {
+                    return BigDecimal.ZERO;
+                } else return servicesLeft.setScale(2, RoundingMode.CEILING);
+            case 8:
                 return model;
+            default:
+                return null;
         }
-        return null;
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex){
+        switch (columnIndex) {
             case 0:
                 return String.class;
             case 1:
@@ -79,6 +106,14 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
             case 3:
                 return BigDecimal.class;
             case 4:
+                return BigDecimal.class;
+            case 5:
+                return BigDecimal.class;
+            case 6:
+                return BigDecimal.class;
+            case 7:
+                return BigDecimal.class;
+            case 8:
                 return FinanceDepartmentModel.class;
             default:
                 return null;

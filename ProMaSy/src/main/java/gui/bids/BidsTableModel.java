@@ -14,7 +14,7 @@ import java.util.List;
  */
 class BidsTableModel extends AbstractTableModel {
 
-    private List<BidModel> db;
+    private List<? extends BidModel> db;
 
     private String[] colNames = {Labels.getProperty("description"),
                                     Labels.getProperty("amount"),
@@ -33,7 +33,7 @@ class BidsTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
-    public void setData(List<BidModel> db) {
+    public void setData(List<? extends BidModel> db) {
         this.db = db;
     }
 

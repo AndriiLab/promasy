@@ -61,4 +61,12 @@ public class InstituteModel extends AbstractModel {
             departments.add(model);
         }
     }
+
+    @Override
+    public void setDeleted() {
+        for (DepartmentModel model : departments) {
+            model.setDeleted();
+        }
+        super.setDeleted();
+    }
 }

@@ -16,7 +16,7 @@ public class CPVQueries {
 
     private List<CPVModel> list = new ArrayList<>();
 
-    public List<CPVModel> retrieve(String requestedCpv, boolean sameLvlShow) throws SQLException {
+    public List<CPVModel> retrieve(String requestedCpv) throws SQLException {
         list.clear();
 
         EntityManager em = Database.DB.getEntityManager();
@@ -25,15 +25,13 @@ public class CPVQueries {
         Root<CPVModel> root = criteria.from(CPVModel.class);
         criteria.select(root);
 
-        int level = 0;
-
         //case: empty request
         if (requestedCpv.isEmpty()) {
-            // selecting general Divisions
+            // selecting general Groups
             requestedCpv = "__000000-_";
 
             criteria.where(cb.like(root.get(CPVModel_.cpvId), requestedCpv));
-            criteria.where(cb.greaterThan(root.get(CPVModel_.cpvLevel), level));
+            criteria.where(cb.equal(root.get(CPVModel_.cpvLevel), 1));
 
             //case: first char is digit
         } else if (Character.isDigit(requestedCpv.charAt(0))) {
@@ -46,57 +44,55 @@ public class CPVQueries {
             }
 
             if (requestedCpv.length() < 2) {
-                // selecting ParentGroups
+                // selecting ParentGroups (level 1)
                 requestedCpv = "0" + requestedCpv + "_00000-_";
-                level = 1;
             } else if (requestedCpv.length() < 3) {
-                // selecting ParentGroups
+                // selecting ParentGroups (level 1)
                 requestedCpv = requestedCpv + "_00000-_";
-                level = 1;
             } else if (requestedCpv.length() < 4) {
-                // selecting ParentClasses
+                // selecting ParentClasses (level 2)
                 requestedCpv = requestedCpv + "_0000-_";
-                level = 2;
             } else if (requestedCpv.length() < 5) {
-                // selecting ParentCategories
+                // selecting ParentCategories (level 3)
                 requestedCpv = requestedCpv + "_000-_";
-                level = 3;
             } else if (requestedCpv.length() < 6) {
-                // selecting exact Category
+                // selecting exact Category (level 4)
                 requestedCpv = requestedCpv + "_00-_";
-                level = 4;
             } else if (requestedCpv.length() < 7) {
-                // selecting exact Category
+                // selecting exact Category (level 5)
                 requestedCpv = requestedCpv + "_0-_";
-                level = 5;
             } else if (requestedCpv.length() < 8) {
-                // selecting exact Category
+                // selecting exact Category (level 6)
                 requestedCpv = requestedCpv + "_-_";
-                level = 6;
             } else if (requestedCpv.length() < 9) {
-                // selecting exact Category
+                // selecting exact Category (level 7)
                 requestedCpv = requestedCpv + "-_";
-                level = 7;
-            }
-            if (sameLvlShow) {
-                level--;
             }
 
-            criteria.where(cb.like(root.get("cpvId"), requestedCpv));
-            criteria.where(cb.greaterThan(root.get("cpvLevel"), level));
+            criteria.where(cb.like(root.get(CPVModel_.cpvId), requestedCpv));
 
             //case: first char is literal
         } else {
-            requestedCpv = "%" + requestedCpv + "%";
+            //making lowercase regexp '%requestedcpv%'
+            requestedCpv = "%" + requestedCpv.toLowerCase() + "%";
+            //making lowercase like matching
             if (Character.UnicodeBlock.CYRILLIC.equals(Character.UnicodeBlock.of(requestedCpv.charAt(1)))) {
-                criteria.where(cb.like(root.get(CPVModel_.cpvUkr), requestedCpv));
+                criteria.where(cb.like(cb.lower(root.get(CPVModel_.cpvUkr)), requestedCpv));
             } else {
-                criteria.where(cb.like(root.get(CPVModel_.cpvEng), requestedCpv));
+                criteria.where(cb.like(cb.lower(root.get(CPVModel_.cpvEng)), requestedCpv));
             }
         }
 
-        list = em.createQuery(criteria).getResultList();
+        // getting only first 100 results
+        list = em.createQuery(criteria).setMaxResults(100).getResultList();
 
         return Collections.unmodifiableList(list);
+    }
+
+    public void create(CPVModel model) throws SQLException {
+        EntityManager entityManager = Database.DB.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(model);
+        entityManager.getTransaction().commit();
     }
 }
