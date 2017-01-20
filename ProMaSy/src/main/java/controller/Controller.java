@@ -289,6 +289,11 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(model.getModelId()));
             }
+
+            @Override
+            public void loadDepartments() {
+                mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
+            }
         });
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {

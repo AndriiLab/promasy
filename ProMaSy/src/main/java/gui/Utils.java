@@ -1,12 +1,17 @@
 package gui;
 
+import com.sun.istack.internal.Nullable;
+import model.enums.BidType;
 import model.enums.Role;
 import model.models.AbstractModel;
 import model.models.ConnectionSettingsModel;
+import model.models.FinanceModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
+import java.awt.*;
 import java.io.*;
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -16,6 +21,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 public class Utils {
+
+    public static final Dimension COMBOBOX_DIMENSION = new Dimension(225, 20);
 
     public static void setBoxFromModel(JComboBox<? extends AbstractModel> box, AbstractModel model) {
         if (model.getModelId() != 0L) {
@@ -107,5 +114,61 @@ public class Utils {
             bigDecimal = bigDecimal.replace(" ", "");
         }
         return bigDecimal;
+    }
+
+    @Nullable
+    public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
+        String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
+        if (targetBigDecimalText.isEmpty()) {
+            Utils.emptyFieldError(parent, fieldName);
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+
+        jTextField.setText(targetBigDecimalText);
+
+        BigDecimal targetBigDecimal;
+        try {
+            targetBigDecimal = new BigDecimal(targetBigDecimalText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberFormatException"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        if (targetBigDecimal.compareTo(BigDecimal.ZERO) < 0) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("financeNumberCannotBeLessZero"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        return targetBigDecimal;
+    }
+
+    @Nullable
+    public static BigDecimal parseSubdepartmentBigDecimal(JFrame parent, FinanceModel selectedFinanceModel, JTextField jTextField, String fieldName, BidType bidType) {
+        BigDecimal targetBigDecimal = parseBigDecimal(parent, jTextField, fieldName);
+        if (targetBigDecimal == null) {
+            return null;
+        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getTotalAmount(bidType)) == 1) {
+            JOptionPane.showMessageDialog(parent,
+                    Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
+                    Labels.getProperty("fieldErr"),
+                    JOptionPane.ERROR_MESSAGE);
+            jTextField.requestFocusInWindow();
+            return null;
+        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
+            BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
+            jTextField.setText(unassignedAmount.toString());
+            jTextField.requestFocusInWindow();
+            return null;
+        } else
+            return targetBigDecimal;
     }
 }

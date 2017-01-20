@@ -10,4 +10,6 @@ public interface FinancePanelListener {
     void persistModelEventOccurred(FinanceModel model);
 
     void persistModelEventOccurred(FinanceDepartmentModel model);
+
+    void loadDepartments();
 }

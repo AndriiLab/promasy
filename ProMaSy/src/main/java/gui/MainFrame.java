@@ -21,6 +21,8 @@ import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialog;
 import gui.empedit.EditEmployeeDialogListener;
+import gui.finance.CreateDepartmentFinancesDialog;
+import gui.finance.CreateFinanceDialog;
 import gui.finance.FinancePanel;
 import gui.finance.FinancePanelListener;
 import gui.instedit.OrganizationDialog;
@@ -39,7 +41,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,6 +52,8 @@ public class MainFrame extends JFrame {
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
     private CreateEmployeeDialog createEmployeeDialog;
+    private CreateFinanceDialog createFinanceDialog;
+    private CreateDepartmentFinancesDialog createDepartmentFinancesDialog;
     private InfoDialog infoDialog;
     private CpvDialog cpvDialog;
     private StatusPanel statusPanel;
@@ -95,6 +98,8 @@ public class MainFrame extends JFrame {
         cpvDialog = new CpvDialog(this);
         bidsListPanel = new BidsListPanel(this);
         createBidDialog = new CreateBidDialog(this);
+        createFinanceDialog = new CreateFinanceDialog(this);
+        createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
         financePanel = new FinancePanel(this);
         editOrgDialog = new OrganizationDialog(this);
         editEmpDialog = new EditEmployeeDialog(this);
@@ -159,7 +164,6 @@ public class MainFrame extends JFrame {
 
     private void useUserDepartment() {
         bidsListPanel.setUseUserDepartment();
-        financePanel.setUseUserDepartment();
     }
 
     private void createTabPane() {
@@ -276,10 +280,6 @@ public class MainFrame extends JFrame {
     //setters
     public void setDefaultConnectionSettings(ConnectionSettingsModel model) {
         conSettDialog.setDefaults(model);
-    }
-
-    public void setBidsPanelSum(BigDecimal sum, BigDecimal financeLeft) {
-        bidsListPanel.setFinanceLabels(sum, financeLeft);
     }
 
     public void setCpvCode(String selectedCPV) {
@@ -443,7 +443,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setDepartmentModelList(List<DepartmentModel> departmentsList) {
-        financePanel.setDepartmentBoxData(departmentsList);
+        createDepartmentFinancesDialog.setDepartmentBoxData(departmentsList);
         bidsListPanel.setDepartmentBoxData(departmentsList);
         createEmployeeDialog.setDepData(departmentsList);
         editOrgDialog.setDepData(departmentsList);
@@ -451,7 +451,7 @@ public class MainFrame extends JFrame {
 
     public void setSubdepartmentModelList(List<SubdepartmentModel> subdepartmentModelList) {
         createEmployeeDialog.setSubdepData(subdepartmentModelList);
-        financePanel.setSubdepartmentBoxData(subdepartmentModelList);
+        createDepartmentFinancesDialog.setSubdepartmentBoxData(subdepartmentModelList);
         editOrgDialog.setSubdepData(subdepartmentModelList);
     }
 
@@ -499,6 +499,14 @@ public class MainFrame extends JFrame {
 
     public OrganizationDialog getEditOrgDialog() {
         return editOrgDialog;
+    }
+
+    public CreateFinanceDialog getCreateFinanceDialog() {
+        return createFinanceDialog;
+    }
+
+    public CreateDepartmentFinancesDialog getCreateDepartmentFinancesDialog() {
+        return createDepartmentFinancesDialog;
     }
 
     @Override
