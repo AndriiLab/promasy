@@ -147,16 +147,17 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         return (depMaterialAmount != null && depEquipmentAmount != null && depServicesAmount != null);
     }
 
+    public void setListener(FinanceDepartmentDialogListener listener) {
+        this.listener = listener;
+    }
+
+
     public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
         for (DepartmentModel model : db) {
             if (model.isActive()) {
                 departmentBox.addItem(model);
             }
         }
-    }
-
-    public void setListener(FinanceDepartmentDialogListener listener) {
-        this.listener = listener;
     }
 
     public void setSubdepartmentBoxData(java.util.List<SubdepartmentModel> db) {
@@ -169,34 +170,43 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         }
     }
 
-    public void setVisible(FinanceModel model) {
+    public void setVisible(FinanceModel model, boolean isCreate) {
         if (listener != null) {
             listener.loadDepartments();
         }
         this.currentFinanceModel = model;
         this.setLeftAmounts();
-        super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
-        okButton.setText(Labels.getProperty("create"));
+        if (isCreate) {
+            super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
+            okButton.setText(Labels.getProperty("create"));
+        }
         super.setVisible(true);
     }
 
-    public void setFinanceDepartmentModel(FinanceDepartmentModel selectedDepFinModel) {
+    public void editDepartmentModel(FinanceDepartmentModel selectedDepFinModel) {
         this.currentFinanceDepartmentModel = selectedDepFinModel;
-
-        this.setVisible(this.currentFinanceDepartmentModel.getFinances());
-
-        super.setTitle(Labels.withSpaceAfter("editDepartmentForFinance") + currentFinanceModel.toString());
+        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
+        Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
+        depMaterialsAmountField.setText(selectedDepFinModel.getTotalMaterialsAmount().toString());
+        depEquipmentAmountField.setText(selectedDepFinModel.getTotalEqupmentAmount().toString());
+        depServicesAmountField.setText(selectedDepFinModel.getTotalServicesAmount().toString());
+        super.setTitle(Labels.withSpaceAfter("editDepartmentForFinance") + selectedDepFinModel.getFinances().toString());
         okButton.setText(Labels.getProperty("edit"));
+        this.setVisible(this.currentFinanceDepartmentModel.getFinances(), false);
     }
 
     private void setLeftAmounts() {
-        materialsLeft.setText(this.getLeftAmount(BidType.MATERIALS));
-        equpmetLeft.setText(this.getLeftAmount(BidType.EQUIPMENT));
-        servicesLeft.setText(this.getLeftAmount(BidType.SERVICES));
+        materialsLeft.setText(this.getUnassignedAmount(BidType.MATERIALS));
+        equpmetLeft.setText(this.getUnassignedAmount(BidType.EQUIPMENT));
+        servicesLeft.setText(this.getUnassignedAmount(BidType.SERVICES));
     }
 
-    private String getLeftAmount(BidType type) {
-        return currentFinanceModel.getLeftAmount(type).setScale(2, RoundingMode.CEILING).toString();
+    private String getUnassignedAmount(BidType type) {
+        BigDecimal unassignedAmount = currentFinanceModel.getUnassignedAmount(type);
+        if (currentFinanceDepartmentModel.getTotalAmount(type) != null) {
+            unassignedAmount = unassignedAmount.add(currentFinanceDepartmentModel.getTotalAmount(type));
+        }
+        return unassignedAmount.setScale(2, RoundingMode.CEILING).toString();
     }
 
     private void layoutControls() {
@@ -308,7 +318,9 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         financesPanel.add(depServicesAmountField, gc);
 
         JPanel buttonsPanel = new JPanel();
-        okButton.setPreferredSize(cancelButton.getPreferredSize());
+
+        Utils.setPreferredButtonSizes(okButton, cancelButton);
+
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(okButton);
         buttonsPanel.add(cancelButton);

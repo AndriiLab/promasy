@@ -16,13 +16,15 @@ import java.util.List;
 
 public class CpvDialog extends JDialog {
 
-	private JTextField searchField;
+    private final CPVModel emptyCpvModel = new CPVModel();
+    private JTextField searchField;
 	private JButton upButton;
 	private JButton selectButton;
 	private CpvTableModel cpvTableModel;
 	private JTable table;
 	private CpvSearchListener cpvListener;
-	
+    private CPVModel selectedCpvModel;
+
 
 	public CpvDialog (MainFrame parent) {
         super(parent, Labels.getProperty("cpvPanelTab"), true);
@@ -30,7 +32,8 @@ public class CpvDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
-		cpvTableModel = new CpvTableModel();
+        selectedCpvModel = emptyCpvModel;
+        cpvTableModel = new CpvTableModel();
 		table = new JTable(cpvTableModel);
 		JPanel searchPanel = new JPanel();
 		searchField = new JTextField(43);
@@ -92,11 +95,7 @@ public class CpvDialog extends JDialog {
         });
 		
 		selectButton.addActionListener(e -> {
-            String selectedCPV = searchField.getText();
-            if (selectedCPV.length() > 10){
-                selectedCPV =  selectedCPV.substring(0,10);
-            }
-            parent.setCpvCode(selectedCPV);
+            parent.setCpvModel(selectedCpvModel);
             setVisible(false);
         });
 
@@ -107,8 +106,8 @@ public class CpvDialog extends JDialog {
 
 				if (ev.getButton() == MouseEvent.BUTTON1) {
 					upButton.setEnabled(true);
-					CPVModel selectedCpvModel = (CPVModel) cpvTableModel.getValueAt(row, 1);
-					String cpvRequest = selectedCpvModel.getCpvId();
+                    selectedCpvModel = (CPVModel) cpvTableModel.getValueAt(row, 1);
+                    String cpvRequest = selectedCpvModel.getCpvId();
 					boolean isTerminal = selectedCpvModel.isCpvTerminal();
 					searchField.setText(cpvRequest+" "+selectedCpvModel.getCpvUkr());
 					if(!isTerminal){
@@ -141,10 +140,6 @@ public class CpvDialog extends JDialog {
 		cpvTableModel.setData(db);
 	}
 
-	public void refresh() {
-		cpvTableModel.fireTableDataChanged();
-	}
-
 	public void setCpvListener(CpvSearchListener cpvListener) {
 		this.cpvListener = cpvListener;
 
@@ -156,12 +151,13 @@ public class CpvDialog extends JDialog {
 
 		if (cpvListener != null) {
             cpvListener.cpvSelectionEventOccurred(ev);
-            refresh();
-		}
+            cpvTableModel.fireTableDataChanged();
+        }
 	}
 
     @Override
     public void setVisible(boolean visible) {
+        selectedCpvModel = emptyCpvModel;
         if (visible && cpvListener != null) {
             cpvListener.getTopCodes();
         }

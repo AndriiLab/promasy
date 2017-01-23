@@ -124,8 +124,16 @@ public class CreateFinanceDialog extends JDialog {
 
     public void setFinanceModel(FinanceModel selectedFinanceModel) {
         this.currentFinanceModel = selectedFinanceModel;
+        orderNumberField.setText(String.valueOf(currentFinanceModel.getFinanceNumber()));
+        orderNameField.setText(currentFinanceModel.getFinanceName());
+        materialsAmountField.setText(String.valueOf(currentFinanceModel.getTotalMaterials()));
+        equipmentAmountField.setText(String.valueOf(currentFinanceModel.getTotalEquipment()));
+        servicesAmountField.setText(String.valueOf(currentFinanceModel.getTotalServices()));
+        startDatePicker.setDate(currentFinanceModel.getStartDate());
+        endDatePicker.setDate(currentFinanceModel.getEndDate());
         super.setTitle(Labels.getProperty("editFinance"));
         okButton.setText(Labels.getProperty("edit"));
+        this.setVisible(true);
     }
 
     public void setFinanceDialogListener(FinanceDialogListener listener) {
@@ -254,7 +262,7 @@ public class CreateFinanceDialog extends JDialog {
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 
-        okButton.setPreferredSize(cancelButton.getPreferredSize());
+        Utils.setPreferredButtonSizes(okButton, cancelButton);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(okButton);

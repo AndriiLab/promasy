@@ -54,7 +54,6 @@ public class FinancePanel extends JPanel {
 
         financeTableModel = new FinanceTableModel();
         financeTable = new JTable(financeTableModel);
-        financeTable.getColumnModel().getColumn(0).setMaxWidth(150);
         financeTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent ev) {
@@ -62,7 +61,7 @@ public class FinancePanel extends JPanel {
                 financeTable.getSelectionModel().setSelectionInterval(row, row);
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
-                    selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 1);
+                    selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 0);
                     setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
                     if (!selectedFinanceModel.equals(emptyFinanceModel)) {
                         editOrderButton.setEnabled(true);
@@ -86,8 +85,9 @@ public class FinancePanel extends JPanel {
 
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
         depFinanceTable = new JTable(departmentFinanceTableModel);
-        depFinanceTable.getColumnModel().getColumn(0).setMinWidth(230);
-        depFinanceTable.getColumnModel().removeColumn(depFinanceTable.getColumnModel().getColumn(4));
+        depFinanceTable.getColumnModel().getColumn(0).setMinWidth(150);
+        depFinanceTable.getColumnModel().getColumn(1).setMinWidth(100);
+        depFinanceTable.getColumnModel().removeColumn(depFinanceTable.getColumnModel().getColumn(8));
         depFinanceTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent ev) {
@@ -95,7 +95,7 @@ public class FinancePanel extends JPanel {
                 depFinanceTable.getSelectionModel().setSelectionInterval(row, row);
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
-                    selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 4);
+                    selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 8);
                     if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
                         editOrderButton.setEnabled(true);
                         deleteOrderButton.setEnabled(true);
@@ -137,10 +137,15 @@ public class FinancePanel extends JPanel {
         parent.getCreateDepartmentFinancesDialog().setListener(new FinanceDepartmentDialogListener() {
             @Override
             public void persistModelEventOccurred(FinanceModel model) {
+                int selectedFinanceRow = financeTable.getSelectedRow();
                 if (listener != null) {
                     listener.persistModelEventOccurred(model);
                 }
+                financeTable.getSelectionModel().setSelectionInterval(selectedFinanceRow, selectedFinanceRow);
+                selectedFinanceModel = (FinanceModel) financeTable.getValueAt(selectedFinanceRow, 0);
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
             }
+
 
             @Override
             public void loadDepartments() {
@@ -154,15 +159,15 @@ public class FinancePanel extends JPanel {
             if (selectedFinanceModel.equals(emptyFinanceModel)) {
                 Utils.emptyFieldError(parent, Labels.getProperty("finance"));
             } else {
-                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel);
+                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
             }
         });
 
         editDepOrderButton.addActionListener(e -> {
             if (selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
-                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel);
+                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
             } else {
-                parent.getCreateDepartmentFinancesDialog().setFinanceDepartmentModel(selectedDepFinModel);
+                parent.getCreateDepartmentFinancesDialog().editDepartmentModel(selectedDepFinModel);
                 selectedDepFinModel = emptyFinanceDepartmentModel;
             }
         });

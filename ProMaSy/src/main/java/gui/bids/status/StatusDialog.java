@@ -55,6 +55,7 @@ public class StatusDialog extends JDialog {
                 selectedBidModel.addStatus(statusModel);
                 selectedBidModel.setUpdated();
                 listener.persistModelEventOccurred(selectedBidModel);
+                this.setTableData(selectedBidModel);
             }
         });
 
@@ -70,6 +71,7 @@ public class StatusDialog extends JDialog {
 
     public void setVisible(boolean b, BidModel model) {
         this.selectedBidModel = model;
+        this.setTableData(model);
         super.setVisible(b);
     }
 

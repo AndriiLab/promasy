@@ -110,9 +110,9 @@ public abstract class AbstractModel {
     }
 
     public String getLastEditPersonName() {
-        if (!modifiedEmployee.getShortName().isEmpty()) {
+        if (modifiedEmployee != null && !modifiedEmployee.getShortName().isEmpty()) {
             return modifiedEmployee.getShortName();
-        } else if (!createdEmployee.getShortName().isEmpty()) {
+        } else if (createdEmployee != null && !createdEmployee.getShortName().isEmpty()) {
             return createdEmployee.getShortName();
         }
         return null;

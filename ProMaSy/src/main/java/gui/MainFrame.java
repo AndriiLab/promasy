@@ -68,6 +68,7 @@ public class MainFrame extends JFrame {
     private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
     private MainFrameListener listener;
+    private String cpvModel;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -280,10 +281,6 @@ public class MainFrame extends JFrame {
     //setters
     public void setDefaultConnectionSettings(ConnectionSettingsModel model) {
         conSettDialog.setDefaults(model);
-    }
-
-    public void setCpvCode(String selectedCPV) {
-        createBidDialog.setCPVField(selectedCPV);
     }
 
     //windows controls
@@ -517,5 +514,9 @@ public class MainFrame extends JFrame {
             financePanel.setDepartmentFinanceTableData(new LinkedList<>());
         }
         super.setVisible(visible);
+    }
+
+    public void setCpvModel(CPVModel cpvModel) {
+        this.createBidDialog.setSelectedCPV(cpvModel);
     }
 }

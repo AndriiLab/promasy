@@ -19,9 +19,9 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
             Labels.getProperty("department"),
             Labels.getProperty("subdepartment"),
             Labels.getProperty("materialsAmount"),
+            Labels.getProperty("materialsLeft"),
             Labels.getProperty("equipmentAmount"),
             Labels.getProperty("equipmentLeft"),
-            Labels.getProperty("materialsLeft"),
             Labels.getProperty("servicesAmount"),
             Labels.getProperty("servicesLeft"),
             Labels.getProperty("financeName")

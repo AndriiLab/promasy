@@ -171,4 +171,14 @@ public class Utils {
         } else
             return targetBigDecimal;
     }
+
+    public static void setPreferredButtonSizes(JButton button1, JButton button2) {
+        Dimension button1Size = button1.getPreferredSize();
+        Dimension button2Size = button2.getPreferredSize();
+        if (button1Size.getWidth() > button2Size.getWidth()) {
+            button2.setPreferredSize(button1Size);
+        } else {
+            button1.setPreferredSize(button2Size);
+        }
+    }
 }

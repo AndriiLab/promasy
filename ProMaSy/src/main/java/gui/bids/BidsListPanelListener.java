@@ -1,7 +1,10 @@
 package gui.bids;
 
+import model.enums.BidType;
 import model.models.BidModel;
 import model.models.DepartmentModel;
+import model.models.FinanceDepartmentModel;
+import model.models.SubdepartmentModel;
 
 /**
  * Listener for {@link BidsListPanel}
@@ -9,8 +12,11 @@ import model.models.DepartmentModel;
 public interface BidsListPanelListener {
     void persistModelEventOccurred(BidModel model);
 
-    void selectAllBidsEventOccurred();
+    void selectAllBidsEventOccurred(BidType type);
 
-    void getBidsByDepartment(DepartmentModel selectedDepartmentModel);
+    void getBidsByDepartment(BidType type, DepartmentModel selectedDepartmentModel);
 
+    void getBidsBySubdepartment(BidType selectedBidType, SubdepartmentModel selectedSubdepartmentModel);
+
+    void getBidsByFinanceDepartment(BidType selectedBidType, FinanceDepartmentModel selectedFinanceDepartmentModel);
 }

@@ -23,6 +23,7 @@ import gui.prodsupl.SupplierDialogListener;
 import model.DefaultValues;
 import model.dao.Database;
 import model.dao.LoginData;
+import model.enums.BidType;
 import model.enums.Role;
 import model.models.*;
 
@@ -301,17 +302,27 @@ public class Controller {
             public void persistModelEventOccurred(BidModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids());
+                mainFrame.setBidModelList(getBids(model.getType()));
             }
 
             @Override
-            public void selectAllBidsEventOccurred() {
-                mainFrame.setBidModelList(getBids());
+            public void selectAllBidsEventOccurred(BidType type) {
+                mainFrame.setBidModelList(getBids(type));
             }
 
             @Override
-            public void getBidsByDepartment(DepartmentModel selectedDepartmentModel) {
-                mainFrame.setBidModelList(getBids(selectedDepartmentModel));
+            public void getBidsByDepartment(BidType type, DepartmentModel selectedDepartmentModel) {
+                mainFrame.setBidModelList(getBids(type, selectedDepartmentModel));
+            }
+
+            @Override
+            public void getBidsBySubdepartment(BidType type, SubdepartmentModel selectedSubdepartmentModel) {
+                mainFrame.setBidModelList(getBids(type, selectedSubdepartmentModel));
+            }
+
+            @Override
+            public void getBidsByFinanceDepartment(BidType type, FinanceDepartmentModel selectedFinanceDepartmentModel) {
+                mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
             }
         });
 
@@ -320,7 +331,7 @@ public class Controller {
             public void persistModelEventOccurred(BidModel createdBidModel) {
                 createOrUpdate(createdBidModel);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids());
+                mainFrame.setBidModelList(getBids(createdBidModel.getType()));
             }
 
             @Override
@@ -690,9 +701,9 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids() {
+    private List<BidModel> getBids(BidType type) {
         try {
-            return Database.BIDS.getResults();
+            return Database.BIDS.getResults(type);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
@@ -700,9 +711,30 @@ public class Controller {
         }
     }
 
-    private List<BidModel> getBids(DepartmentModel department) {
+    private List<BidModel> getBids(BidType type, DepartmentModel department) {
         try {
-            return Database.BIDS.retrieve(department);
+            return Database.BIDS.retrieve(type, department);
+        } catch (SQLException e) {
+            errorLogEvent(e,
+                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            return null;
+        }
+    }
+
+    private List<BidModel> getBids(BidType type, FinanceDepartmentModel financeDepartmentModel) {
+        try {
+            return Database.BIDS.retrieve(type, financeDepartmentModel);
+        } catch (SQLException e) {
+            errorLogEvent(e,
+                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            return null;
+        }
+    }
+
+    private List<BidModel> getBids(BidType type, SubdepartmentModel model) {
+        try {
+            //todo
+            return Database.BIDS.getResults(type);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
