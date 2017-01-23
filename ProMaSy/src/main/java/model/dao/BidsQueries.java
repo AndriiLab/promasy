@@ -30,7 +30,8 @@ public class BidsQueries extends SQLQueries<BidModel> {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.type), type));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.department), department));
+        //todo
+//        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.department), department));
         return super.getList();
     }
 

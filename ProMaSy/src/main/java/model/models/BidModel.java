@@ -16,10 +16,6 @@ import java.util.List;
 public class BidModel extends AbstractModel {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "dep_id")
-    private DepartmentModel department;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "producer_id")
     private ProducerModel producer;
 
@@ -62,9 +58,8 @@ public class BidModel extends AbstractModel {
     private BidType type;
 
 
-    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
+    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.department = department;
         this.producer = producer;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
@@ -79,8 +74,7 @@ public class BidModel extends AbstractModel {
         this.type = type;
     }
 
-    public BidModel(DepartmentModel department, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
-        this.department = department;
+    public BidModel(ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
         this.producer = producer;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
@@ -104,14 +98,6 @@ public class BidModel extends AbstractModel {
 
     public void setType(BidType type) {
         this.type = type;
-    }
-
-    public DepartmentModel getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(DepartmentModel department) {
-        this.department = department;
     }
 
     public ProducerModel getProducer() {

@@ -474,7 +474,6 @@ public class CreateBidDialog extends JDialog {
             createdBidModel.setType(currentBidType);
         }
 
-        createdBidModel.setDepartment(selectedDepartmentModel);
         createdBidModel.setProducer(selectedProducerModel);
         createdBidModel.setCatNum(selectedCatNum);
         createdBidModel.setBidDesc(selectedDescription);
@@ -494,15 +493,25 @@ public class CreateBidDialog extends JDialog {
     }
 
     void loadToDialog(BidModel model) {
+        if (listener != null) {
+            listener.getAllData();
+        }
         setCurrentBidType(model.getType());
         setTitle(Labels.getProperty("editBid"));
         okButton.setText(Labels.getProperty("editBid"));
-        Utils.setBoxFromModel(departmentBox, model.getDepartment());
+        Utils.setBoxFromModel(departmentBox, model.getFinances().getSubdepartment().getDepartment());
+        Utils.setBoxFromModel(subdepartmentBox, model.getFinances().getSubdepartment());
         Utils.setBoxFromModel(financeDepartmentBox, model.getFinances());
-        Utils.setBoxFromModel(producerBox, model.getProducer());
-        Utils.setBoxFromModel(supplierBox, model.getSupplier());
-        Utils.setBoxFromModel(reasonForSupplierChoiceBox, model.getReasonForSupplierChoice());
         Utils.setBoxFromModel(amUnitsBox, model.getAmountUnit());
+        if (model.getProducer() != null) {
+            Utils.setBoxFromModel(producerBox, model.getProducer());
+        }
+        if (model.getSupplier() != null) {
+            Utils.setBoxFromModel(supplierBox, model.getSupplier());
+        }
+        if (model.getReasonForSupplierChoice() != null) {
+            Utils.setBoxFromModel(reasonForSupplierChoiceBox, model.getReasonForSupplierChoice());
+        }
         createdBidModel = model;
         selectedCPV = createdBidModel.getCpv();
         cpvField.setText(createdBidModel.getCpv().getCpvId());
@@ -511,7 +520,7 @@ public class CreateBidDialog extends JDialog {
         amountField.setText(Integer.toString(createdBidModel.getAmount()));
         oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
         calculateTotalPrice();
-        setVisible(true);
+        super.setVisible(true);
     }
 
     @Override

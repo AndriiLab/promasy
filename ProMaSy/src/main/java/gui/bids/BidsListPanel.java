@@ -394,7 +394,7 @@ public class BidsListPanel extends JPanel {
         if (selectedBidModel.equals(emptyBidModel) && selectedBidModels.isEmpty()) {
             for (int row = 0; row < bidsTable.getRowCount(); row++) {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
-                BidsReportModel reportModel = new BidsReportModel(md.getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
+                BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
                         md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
                         md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
                         md.getReasonForSupplierChoice().getReason());
@@ -404,7 +404,7 @@ public class BidsListPanel extends JPanel {
         // if 1 bid selected
         else if (selectedBidModels.isEmpty()) {
             BidModel md = selectedBidModel;
-            BidsReportModel reportModel = new BidsReportModel(md.getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
+            BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
                     md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
                     md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
                     md.getReasonForSupplierChoice().getReason());
@@ -413,7 +413,7 @@ public class BidsListPanel extends JPanel {
         // if multiple bids selected
         else {
             for (BidModel md : selectedBidModels) {
-                BidsReportModel reportModel = new BidsReportModel(md.getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
+                BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
                         md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
                         md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
                         md.getReasonForSupplierChoice().getReason());
