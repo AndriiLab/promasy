@@ -2,8 +2,10 @@ package gui.bids.reports;
 
 import gui.Labels;
 import gui.MainFrame;
+import gui.Utils;
 import model.enums.Role;
 import model.models.EmployeeModel;
+import model.models.ReportParametersData;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,7 +17,8 @@ import java.util.List;
  */
 public class ReportParametersDialog extends JDialog {
 
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
+    private static final EmployeeModel emptyEmployeeModel = new EmployeeModel();
+    private static final String emptyString = "";
     private JComboBox<Role> roleBox;
     private JComboBox<EmployeeModel> headBox;
     private JComboBox<EmployeeModel> departmentHeadBox;
@@ -33,20 +36,19 @@ public class ReportParametersDialog extends JDialog {
     private String accountantName;
     private String economistName;
     private String headTenderName;
-    private MainFrame parent;
 
     public ReportParametersDialog(MainFrame parent) {
         super(parent, Labels.getProperty("reportParameters"), true);
-        this.parent = parent;
         setSize(330, 390);
         setResizable(false);
-        setLocationRelativeTo(this.parent);
+        setLocationRelativeTo(parent);
 
         Dimension preferredFieldDim = new Dimension(235, 15);
 
-        roleBox = new JComboBox<>(Role.values());
+        roleBox = new JComboBox<>();
         roleBox.setSize(preferredFieldDim);
         roleBox.addItem(Role.DIRECTOR);
+        roleBox.setEnabled(false);
 
         headBox = new JComboBox<>();
         headBox.setSize(preferredFieldDim);
@@ -86,115 +88,65 @@ public class ReportParametersDialog extends JDialog {
         });
 
         okButton.addActionListener(e -> {
-            if (checkBoxes() && listener != null) {
-                listener.reportParametersSelectionOccurred(new ReportParametersEvent(roleName, headName,
-                        departmentHeadName, personallyLiableEmpName, accountantName, economistName, headTenderName));
+            if (listener != null) {
+                setEmployeesData();
+                listener.reportParametersSelectionOccurred();
                 setVisible(false);
                 clear();
             }
         });
 
         cancelButton.addActionListener(e -> {
-
             setVisible(false);
             clear();
         });
     }
 
-    private boolean checkBoxes() {
+    private void setEmployeesData() {
         roleName = roleBox.getSelectedItem().toString();
-
         headName = headBox.getSelectedItem().toString();
-
         departmentHeadName = departmentHeadBox.getSelectedItem().toString();
-
         personallyLiableEmpName = personallyLiableEmpBox.getSelectedItem().toString();
-
         accountantName = accountantBox.getSelectedItem().toString();
-
         economistName = economistBox.getSelectedItem().toString();
-
         headTenderName = headTenderBox.getSelectedItem().toString();
 
-        return true;
+        ReportParametersData.getInstance().setData(roleName, headName, departmentHeadName,
+                personallyLiableEmpName, accountantName, economistName, headTenderName);
     }
 
     private void clear() {
-        roleName = "";
-        headName = "";
-        departmentHeadName = "";
-        personallyLiableEmpName = "";
-        accountantName = "";
-        economistName = "";
-        headTenderName = "";
+        roleName = emptyString;
+        headName = emptyString;
+        departmentHeadName = emptyString;
+        personallyLiableEmpName = emptyString;
+        accountantName = emptyString;
+        economistName = emptyString;
+        headTenderName = emptyString;
     }
 
     public void setHeadBoxData(List<EmployeeModel> db) {
-        headBox.removeAllItems();
-        if (db.isEmpty()) {
-            headBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                if (model.isActive()) {
-                    headBox.addItem(model);
-                }
-            }
-        }
+        Utils.setBoxData(headBox, db, emptyEmployeeModel, false);
     }
 
     public void setDepartmentHeadBoxData(List<EmployeeModel> db) {
-        departmentHeadBox.removeAllItems();
-        if (db.isEmpty()) {
-            departmentHeadBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                departmentHeadBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(departmentHeadBox, db, emptyEmployeeModel, false);
     }
 
     public void setPersonallyLiableEmpBoxData(List<EmployeeModel> db) {
-        personallyLiableEmpBox.removeAllItems();
-        if (db.isEmpty()) {
-            personallyLiableEmpBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                personallyLiableEmpBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(personallyLiableEmpBox, db, emptyEmployeeModel, false);
     }
 
     public void setAccountantBoxData(List<EmployeeModel> db) {
-        accountantBox.removeAllItems();
-        if (db.isEmpty()) {
-            accountantBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                accountantBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(accountantBox, db, emptyEmployeeModel, false);
     }
 
     public void setEconomistBoxData(List<EmployeeModel> db) {
-        economistBox.removeAllItems();
-        if (db.isEmpty()) {
-            economistBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                economistBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(economistBox, db, emptyEmployeeModel, false);
     }
 
     public void setHeadTenderBoxData(List<EmployeeModel> db) {
-        headTenderBox.removeAllItems();
-        if (db.isEmpty()) {
-            headTenderBox.addItem(emptyEmployeeModel);
-        } else {
-            for (EmployeeModel model : db) {
-                headTenderBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(headTenderBox, db, emptyEmployeeModel, false);
     }
 
     public void setListener(ReportParametersDialogListener listener) {

@@ -1,19 +1,26 @@
 package gui;
 
+import model.enums.BidType;
 import model.enums.Role;
+import model.models.EmployeeModel;
 import model.models.InstituteModel;
+
+import java.util.List;
 
 /**
  * Listener for {@link MainFrame}
  */
 public interface MainFrameListener {
     //menu
-    void searchForPerson(Role role, long selectedDepartmentId);
+    List<EmployeeModel> searchForPerson(Role role, long selectedDepartmentId);
 
-    void searchForPerson(Role role);
+    List<EmployeeModel> searchForPerson(Role role);
+
     void exitEventOccurred();
 
     void setMinimumVersionEventOccurred();
 
-    void selectAllDepartmentsAndFinances(InstituteModel institute);
+    void getAllDepartmentsAndFinances(InstituteModel institute);
+
+    void getAllBids(BidType bidType);
 }

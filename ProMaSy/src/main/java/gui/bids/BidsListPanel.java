@@ -23,7 +23,7 @@ public class BidsListPanel extends JPanel {
     private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
     private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
-    private final BidModel emptyBidModel = null; //TODO
+    private final BidModel emptyBidModel = new BidModel();
     private JButton createBidButton;
     private JButton editBidButton;
     private JButton deleteBidButton;
@@ -44,7 +44,7 @@ public class BidsListPanel extends JPanel {
     private DepartmentModel selectedDepartmentModel;
     private SubdepartmentModel selectedSubdepartmentModel;
     private MainFrame parent;
-    private boolean useUserDepartment = false;
+    private boolean useUserDepartment;
     private BidType selectedBidType;
 
     public BidsListPanel(MainFrame parent) {
@@ -53,6 +53,8 @@ public class BidsListPanel extends JPanel {
 
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboDim = new Dimension(200, 20);
+
+        useUserDepartment = false;
 
         selectedBidModel = emptyBidModel;
         selectedBidModels = new LinkedList<>();
@@ -134,8 +136,8 @@ public class BidsListPanel extends JPanel {
             deleteBidButton.setEnabled(false);
             changeStatusButton.setEnabled(false);
             if (listener != null) {
-                financeDepartmentBox.removeAllItems();
-                financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
+                subdepartmentBox.removeAllItems();
+                subdepartmentBox.addItem(emptySubdepartmentModel);
                 selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
                 setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
                 if (isSelectedDepartmentModelEmpty()) {
@@ -152,13 +154,15 @@ public class BidsListPanel extends JPanel {
             changeStatusButton.setEnabled(false);
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
-            selectedSubdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-            setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
-            if (listener != null && isSelectedSubepartmentModelEmpty()) {
-                listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+            if (subdepartmentBox.getSelectedItem() != null) {
+                selectedSubdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
+                setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
+                if (listener != null && isSelectedSubepartmentModelEmpty()) {
+                    listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+                }
+                selectedBidModel = emptyBidModel;
+                selectedBidModels.clear();
             }
-            selectedBidModel = emptyBidModel;
-            selectedBidModels.clear();
         });
 
         financeDepartmentBox.addActionListener(e -> {
@@ -167,8 +171,7 @@ public class BidsListPanel extends JPanel {
             changeStatusButton.setEnabled(false);
             if (financeDepartmentBox.getSelectedItem() != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
-
-                List<? extends BidModel> bids = selectedFinanceDepartmentModel.getBids(selectedBidType);
+                List<BidModel> bids = selectedFinanceDepartmentModel.getBids(selectedBidType);
                 if (isSelectedFinanceDepartmentModelEmpty() && !isSelectedDepartmentModelEmpty() && listener != null) {
                     listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
                 }
@@ -234,6 +237,10 @@ public class BidsListPanel extends JPanel {
         });
     }
 
+    public BidType getSelectedBidType() {
+        return selectedBidType;
+    }
+
     private void setDataToCreateBidDialog() {
         if (!isSelectedFinanceDepartmentModelEmpty()) {
             parent.getCreateBidDialog().setCurrentDepartment(selectedDepartmentModel);
@@ -258,13 +265,17 @@ public class BidsListPanel extends JPanel {
         return selectedFinanceDepartmentModel.equals(emptyFinanceDepartmentModel);
     }
 
-    public void setFinanceLabels(BigDecimal sum, BigDecimal financeLeft) {
+    private void setFinanceLabels() {
+        if (selectedFinanceDepartmentModel.getTotalAmount(selectedBidType) != null) {
+            BigDecimal sum = selectedFinanceDepartmentModel.getTotalAmount(selectedBidType).subtract(selectedFinanceDepartmentModel.getLeftAmount(selectedBidType));
+            BigDecimal financeLeft = selectedFinanceDepartmentModel.getLeftAmount(selectedBidType);
         sumLabel.setText(Labels.withColon("totalPrice2") + " " + sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
-        if (!isSelectedFinanceDepartmentModelEmpty()) {
             financeLeftLabel.setText(Labels.withColon("financeLeftByTema") + " " + financeLeft.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
         } else {
+            sumLabel.setText("");
             financeLeftLabel.setText("");
         }
+
     }
 
     public void setUseUserDepartment() {
@@ -272,6 +283,7 @@ public class BidsListPanel extends JPanel {
         departmentBox.setEnabled(false);
         subdepartmentBox.setEnabled(false);
         parent.getCreateBidDialog().setEnabledDepartmentBox(false);
+        parent.getCreateBidDialog().setEnabledSubdepartmentBox(false);
     }
 
     public void setDepartmentBoxData(List<DepartmentModel> db) {
@@ -287,7 +299,7 @@ public class BidsListPanel extends JPanel {
 
     }
 
-    public void setSubdepartmentBoxData(List<SubdepartmentModel> db) {
+    private void setSubdepartmentBoxData(List<SubdepartmentModel> db) {
         for (SubdepartmentModel model : db) {
             if (model.isActive()) {
                 subdepartmentBox.addItem(model);
@@ -299,28 +311,21 @@ public class BidsListPanel extends JPanel {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-        // bugfix for multiple identical items in combobox
-        if (financeDepartmentBox.getItemCount() > 1) {
-            financeDepartmentBox.removeAllItems();
-            financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
-        }
-        for (FinanceDepartmentModel model : db) {
-            if (model.isActive()) {
-                financeDepartmentBox.addItem(model);
-            }
-        }
+//        // bugfix for multiple identical items in combobox
+//        if (financeDepartmentBox.getItemCount() > 1) {
+//            financeDepartmentBox.removeAllItems();
+//        }
+        Utils.setBoxData(financeDepartmentBox, db, emptyFinanceDepartmentModel, false);
     }
 
     public long getSelectedDepartmentId() {
         return ((DepartmentModel) departmentBox.getSelectedItem()).getModelId();
     }
 
-    public void setBidsTableData(List<? extends BidModel> db) {
+    public void setBidsTableData(List<BidModel> db) {
         bidsTableModel.setData(db);
-        refreshBidsTableData();
-    }
-
-    public void refreshBidsTableData() {
+        this.setFinanceLabels();
+        bidsTable.setAutoCreateRowSorter(true);
         bidsTableModel.fireTableDataChanged();
     }
 
@@ -390,36 +395,42 @@ public class BidsListPanel extends JPanel {
 
     public void printBidList() {
         List<BidsReportModel> list = new ArrayList<>();
-        //if no bids selected
+        //if no bids selected printing all bids
         if (selectedBidModel.equals(emptyBidModel) && selectedBidModels.isEmpty()) {
             for (int row = 0; row < bidsTable.getRowCount(); row++) {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
-                BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
-                        md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
-                        md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
-                        md.getReasonForSupplierChoice().getReason());
-                list.add(reportModel);
+                list.add(createReportModel(md));
             }
         }
         // if 1 bid selected
         else if (selectedBidModels.isEmpty()) {
             BidModel md = selectedBidModel;
-            BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
-                    md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
-                    md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
-                    md.getReasonForSupplierChoice().getReason());
-            list.add(reportModel);
+            list.add(createReportModel(md));
         }
         // if multiple bids selected
         else {
             for (BidModel md : selectedBidModels) {
-                BidsReportModel reportModel = new BidsReportModel(md.getFinances().getSubdepartment().getDepartment().getDepName(), md.getFinances().getFinances().getFinanceName(),
-                        md.getCpv().getCpvId(), md.getCpv().getCpvUkr(), md.getBidDesc(), md.getCreatedDate(), md.getProducer().getBrandName(),
-                        md.getCatNum(), md.getSupplier().getSupplierName(), md.getAmountUnit().getAmUnitDesc(), md.getOnePrice(), md.getAmount(),
-                        md.getReasonForSupplierChoice().getReason());
-                list.add(reportModel);
+                list.add(createReportModel(md));
             }
         }
         new BidsReport(Collections.unmodifiableList(list), parent);
+    }
+
+    private BidsReportModel createReportModel(BidModel md) {
+        return new BidsReportModel(
+                md.getFinances().getSubdepartment().getDepartment().toString(),
+                md.getFinances().getFinances().getFinanceName(),
+                md.getCpv().getCpvId(),
+                md.getCpv().getCpvUkr(),
+                md.getBidDesc(),
+                md.getCreatedDate(),
+                (md.getProducer() != null ? md.getProducer().getBrandName() : ""),
+                (md.getCatNum() != null ? md.getCatNum() : ""),
+                (md.getSupplier() != null ? md.getSupplier().getSupplierName() : ""),
+                md.getAmountUnit().getAmUnitDesc(),
+                md.getOnePrice(),
+                md.getAmount(),
+                (md.getReasonForSupplierChoice() != null ? md.getReasonForSupplierChoice().getReason() : "")
+        );
     }
 }

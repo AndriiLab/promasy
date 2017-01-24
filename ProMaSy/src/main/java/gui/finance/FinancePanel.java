@@ -109,9 +109,7 @@ public class FinancePanel extends JPanel {
 
         createLayout();
 
-        createOrderButton.addActionListener(e -> {
-            parent.getCreateFinanceDialog().setVisible(true);
-        });
+        createOrderButton.addActionListener(e -> parent.getCreateFinanceDialog().setVisible(true));
 
         editOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(emptyFinanceModel)) {
@@ -192,10 +190,7 @@ public class FinancePanel extends JPanel {
             }
         }
         financeTableModel.setData(activeList);
-        refreshFinanceTable();
-    }
-
-    private void refreshFinanceTable() {
+        financeTable.setAutoCreateRowSorter(true);
         financeTableModel.fireTableDataChanged();
     }
 
@@ -208,10 +203,7 @@ public class FinancePanel extends JPanel {
             }
         }
         departmentFinanceTableModel.setData(activeList);
-        refreshDepartmentFinanceTable();
-    }
-
-    private void refreshDepartmentFinanceTable() {
+        depFinanceTable.setAutoCreateRowSorter(true);
         departmentFinanceTableModel.fireTableDataChanged();
     }
 

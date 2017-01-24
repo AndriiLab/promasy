@@ -244,39 +244,15 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     }
 
     public void setInstData(List<InstituteModel> instDb) {
-        instituteBox.removeAllItems();
-        instituteBox.addItem(emptyInstituteModel);
-        if (instDb != null && !instDb.isEmpty()) {
-            for (InstituteModel model : instDb) {
-                if (model.isActive()) {
-                    instituteBox.addItem(model);
-                }
-            }
-        }
+        Utils.setBoxData(instituteBox, instDb, emptyInstituteModel, true);
     }
 
     public void setDepData(List<DepartmentModel> depDb) {
-        departmentBox.removeAllItems();
-        departmentBox.addItem(emptyDepartmentModel);
-        if (depDb != null && !depDb.isEmpty()) {
-            for (DepartmentModel model : depDb) {
-                if (model.isActive()) {
-                    departmentBox.addItem(model);
-                }
-            }
-        }
+        Utils.setBoxData(departmentBox, depDb, emptyDepartmentModel, true);
     }
 
     public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-        subdepartmentBox.removeAllItems();
-        subdepartmentBox.addItem(emptySubdepartmentModel);
-        if (subdepDb != null && !subdepDb.isEmpty()) {
-            for (SubdepartmentModel model : subdepDb) {
-                if (model.isActive()) {
-                    subdepartmentBox.addItem(model);
-                }
-            }
-        }
+        Utils.setBoxData(subdepartmentBox, subdepDb, emptySubdepartmentModel, true);
     }
 
     public void setOrganizationDialogListener(OrganizationDialogListener organizationDialogListener) {

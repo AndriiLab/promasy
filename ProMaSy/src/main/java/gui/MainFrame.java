@@ -32,7 +32,6 @@ import gui.login.LoginListener;
 import gui.prodsupl.*;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
-import model.dao.Database;
 import model.dao.LoginData;
 import model.enums.Role;
 import model.models.*;
@@ -68,7 +67,6 @@ public class MainFrame extends JFrame {
     private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
     private MainFrameListener listener;
-    private String cpvModel;
 
     public MainFrame() {
         // Setting name of the window and its parameters
@@ -320,23 +318,23 @@ public class MainFrame extends JFrame {
     private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
             // search for heads of department (id 5000) in department
-            listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartmentId());
-            reportParametersDialog.setDepartmentHeadBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setDepartmentHeadBoxData(
+                    listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartmentId()));
             // search for personally liable employee (id 6000) in department
-            listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartmentId());
-            reportParametersDialog.setPersonallyLiableEmpBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setPersonallyLiableEmpBoxData(
+                    listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartmentId()));
             // search for chief accountant (id 4000)
-            listener.searchForPerson(Role.ACCOUNTANT);
-            reportParametersDialog.setAccountantBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setAccountantBoxData(
+                    listener.searchForPerson(Role.ACCOUNTANT));
             // search for chief economist (id 3000)
-            listener.searchForPerson(Role.ECONOMIST);
-            reportParametersDialog.setEconomistBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setEconomistBoxData(
+                    listener.searchForPerson(Role.ECONOMIST));
             // search for HEAD OF TENDER COMMITTEE (id 2500)
-            listener.searchForPerson(Role.SECRETARY_OF_TENDER_COMMITTEE);
-            reportParametersDialog.setHeadTenderBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setHeadTenderBoxData(
+                    listener.searchForPerson(Role.SECRETARY_OF_TENDER_COMMITTEE));
             // search for director (id 1000)
-            listener.searchForPerson(Role.DIRECTOR);
-            reportParametersDialog.setHeadBoxData(Database.EMPLOYEES.getList());
+            reportParametersDialog.setHeadBoxData(
+                    listener.searchForPerson(Role.DIRECTOR));
             // show dialog with selectors for director, head of department, PLE, accountant, economist, HEAD OF TENDER COMMITTEE
             reportParametersDialog.setVisible(true);
         }
@@ -454,7 +452,6 @@ public class MainFrame extends JFrame {
 
     public void setEmployeeModelList(List<EmployeeModel> employeeModelList) {
         editEmpDialog.setEmpTableData(employeeModelList);
-        reportParametersDialog.setHeadBoxData(employeeModelList);
     }
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {
@@ -486,6 +483,10 @@ public class MainFrame extends JFrame {
         bidsListPanel.setBidsTableData(bidModelList);
     }
 
+    public void setCpvModel(CPVModel cpvModel) {
+        this.createBidDialog.setSelectedCPV(cpvModel);
+    }
+
     public CreateEmployeeDialog getCreateEmployeeDialog() {
         return createEmployeeDialog;
     }
@@ -509,14 +510,10 @@ public class MainFrame extends JFrame {
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
-            listener.selectAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
-            bidsListPanel.setBidsTableData(new LinkedList<>());
+            listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
+            listener.getAllBids(bidsListPanel.getSelectedBidType());
             financePanel.setDepartmentFinanceTableData(new LinkedList<>());
         }
         super.setVisible(visible);
-    }
-
-    public void setCpvModel(CPVModel cpvModel) {
-        this.createBidDialog.setSelectedCPV(cpvModel);
     }
 }

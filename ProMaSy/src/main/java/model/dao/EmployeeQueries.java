@@ -23,18 +23,26 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
     }
 
     public List<EmployeeModel> retrieve(long departmentId) throws SQLException {
-        super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get("subdepartment.department.modelId"), departmentId));
-        return super.getList();
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId")
+                .setParameter("departmentId", departmentId);
+        List<EmployeeModel> list = (List<EmployeeModel>) query.getResultList();
+        em.getTransaction().commit();
+
+        return list;
     }
 
     public List<EmployeeModel> retrieve(Role role, long departmentId) throws SQLException {
-        super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.role), role));
-        criteriaQuery.where(criteriaBuilder.equal(root.get("subdepartment.department.modelId"), departmentId));
-        return super.getList();
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole")
+                .setParameter("empRole", role)
+                .setParameter("departmentId", departmentId);
+        List<EmployeeModel> list = (List<EmployeeModel>) query.getResultList();
+        em.getTransaction().commit();
+
+        return list;
     }
 
     public long getSalt(String username) throws SQLException {

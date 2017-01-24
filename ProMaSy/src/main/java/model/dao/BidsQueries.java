@@ -1,11 +1,10 @@
 package model.dao;
 
 import model.enums.BidType;
-import model.models.BidModel;
-import model.models.BidModel_;
-import model.models.DepartmentModel;
-import model.models.FinanceDepartmentModel;
+import model.models.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,12 +26,27 @@ public class BidsQueries extends SQLQueries<BidModel> {
     }
 
     public List<BidModel> retrieve(BidType type, DepartmentModel department) throws SQLException {
-        super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.type), type));
-        //todo
-//        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.department), department));
-        return super.getList();
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department.modelId = :departmentId")
+                .setParameter("bidType", type)
+                .setParameter("departmentId", department.getModelId());
+        List<BidModel> list = (List<BidModel>) query.getResultList();
+        em.getTransaction().commit();
+
+        return list;
+    }
+
+    public List<BidModel> retrieve(BidType type, SubdepartmentModel subdepartment) throws SQLException {
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.modelId = :subdepartmentId")
+                .setParameter("bidType", type)
+                .setParameter("subdepartmentId", subdepartment.getModelId());
+        List<BidModel> list = (List<BidModel>) query.getResultList();
+        em.getTransaction().commit();
+
+        return list;
     }
 
     public List<BidModel> getResults(BidType type) throws SQLException {

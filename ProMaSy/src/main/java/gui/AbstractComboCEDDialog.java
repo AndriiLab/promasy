@@ -60,13 +60,7 @@ public abstract class AbstractComboCEDDialog<T extends AbstractModel> extends JD
     }
 
     public void setData(java.util.List<T> modelDb) {
-        comboBox.removeAllItems();
-        comboBox.addItem(emptyModel);
-        for (T model : modelDb) {
-            if (model.isActive()) {
-                comboBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(comboBox, modelDb, emptyModel, true);
     }
 
     private void layoutControls() {

@@ -8,7 +8,6 @@ import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
 import gui.bids.CreateBidDialogListener;
 import gui.bids.reports.ReportParametersDialogListener;
-import gui.bids.reports.ReportParametersEvent;
 import gui.cpv.CpvReqEvent;
 import gui.cpv.CpvSearchListener;
 import gui.empedit.CreateEmployeeDialogListener;
@@ -81,12 +80,6 @@ public class Controller {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
-//                    // if role USER or PERSONALLY_LIABLE_EMPLOYEE load data according to department
-//                    if (LoginData.getInstance().getRole() == Role.PERSONALLY_LIABLE_EMPLOYEE
-//                            || LoginData.getInstance().getRole() == Role.USER) {
-//                        loadDataToView(LoginData.getInstance().getSubdepartment().getDepartment().getModelId());
-//                    } else loadDataToView();
-
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
                 } else if (!isLoginDataValid) {
@@ -129,14 +122,13 @@ public class Controller {
         mainFrame.setMainFrameListener(new MainFrameListener() {
 
             @Override
-            public void searchForPerson(Role role, long selectedDepartmentId) {
-                mainFrame.setEmployeeModelList(getEmployees(role, selectedDepartmentId));
+            public List<EmployeeModel> searchForPerson(Role role, long selectedDepartmentId) {
+                return getEmployees(role, selectedDepartmentId);
             }
 
             @Override
-            public void searchForPerson(Role role) {
-
-                mainFrame.setEmployeeModelList(getEmployees(role));
+            public List<EmployeeModel> searchForPerson(Role role) {
+                return getEmployees(role);
             }
 
             @Override
@@ -150,9 +142,14 @@ public class Controller {
             }
 
             @Override
-            public void selectAllDepartmentsAndFinances(InstituteModel institute) {
+            public void getAllDepartmentsAndFinances(InstituteModel institute) {
                 mainFrame.setDepartmentModelList(getDepartments(institute.getModelId()));
                 mainFrame.setFinanceModelList(getFinances());
+            }
+
+            @Override
+            public void getAllBids(BidType bidType) {
+                mainFrame.setBidModelList(getBids(bidType));
             }
         });
 
@@ -352,9 +349,7 @@ public class Controller {
                 mainFrame.setEmployeeModelList(getEmployees(role));
             }
 
-            public void reportParametersSelectionOccurred(ReportParametersEvent ev) {
-                ReportParametersData.getInstance().setData(ev.getHeadPosition(), ev.getHead(), ev.getDepartmentHead(),
-                        ev.getPersonallyLiableEmpl(), ev.getAccountant(), ev.getEconomist(), ev.getHeadTender());
+            public void reportParametersSelectionOccurred() {
                 mainFrame.bidListPrint();
             }
         });
@@ -542,16 +537,6 @@ public class Controller {
         }
     }
 
-    private List<EmployeeModel> getEmployees(long depId) {
-        try {
-            return Database.EMPLOYEES.retrieve(depId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " dep id: " + depId
-                    + Labels.withSpaceBefore("error"));
-            return null;
-        }
-    }
-
     private List<EmployeeModel> getEmployees(Role role, long depId) {
         try {
             return Database.EMPLOYEES.retrieve(role, depId);
@@ -651,32 +636,12 @@ public class Controller {
         }
     }
 
-    private List<FinanceModel> getFinances(long departmentId) {
-        try {
-            return Database.FINANCES.retrieve(departmentId);
-        } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
-            return null;
-        }
-    }
-
     private List<FinanceDepartmentModel> getDepartmentFinancesByOrder(long orderId) {
         try {
             return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: "
                     + orderId + Labels.withSpaceBefore("error"));
-            return null;
-        }
-    }
-
-    private List<FinanceDepartmentModel> getDepartmentFinancesByDepartment(long departmentId) {
-        try {
-            return Database.DEPARTMENT_FINANCES.retrieveByDepartmentId(departmentId);
-        } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances")
-                    + " department Id: " + departmentId + Labels.withSpaceBefore("error"));
             return null;
         }
     }
@@ -733,8 +698,7 @@ public class Controller {
 
     private List<BidModel> getBids(BidType type, SubdepartmentModel model) {
         try {
-            //todo
-            return Database.BIDS.getResults(type);
+            return Database.BIDS.retrieve(type, model);
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));

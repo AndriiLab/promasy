@@ -22,6 +22,7 @@ import java.util.List;
 
 public class CreateEmployeeDialog extends JDialog {
 
+    private static final String emptyString = "";
     private final InstituteModel emptyInstituteModel = new InstituteModel();
     private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
     private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
@@ -173,17 +174,17 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel = emptyEmployeeModel;
         setTitle(Labels.getProperty("createNewUser"));
         okButton.setText(Labels.getProperty("createUser"));
-        nameField.setText("");
-        middleNameField.setText("");
-        lastNameField.setText("");
-        emailField.setText("");
-        phoneMainField.setText("");
-        phoneReserveField.setText("");
+        nameField.setText(emptyString);
+        middleNameField.setText(emptyString);
+        lastNameField.setText(emptyString);
+        emailField.setText(emptyString);
+        phoneMainField.setText(emptyString);
+        phoneReserveField.setText(emptyString);
         instituteBox.setSelectedIndex(0);
-        roleBox.setSelectedItem("");
-        loginField.setText("");
-        passwordField.setText("");
-        repeatPasswordField.setText("");
+        roleBox.setSelectedItem(emptyString);
+        loginField.setText(emptyString);
+        passwordField.setText(emptyString);
+        repeatPasswordField.setText(emptyString);
         roleBox.setSelectedIndex(0);
         instituteBox.setSelectedIndex(0);
     }
@@ -322,38 +323,19 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setInstData(List<InstituteModel> instDb) {
-        instituteBox.removeAllItems();
-        instituteBox.addItem(emptyInstituteModel);
-        for (InstituteModel model : instDb) {
-            if (model.isActive()) {
-                instituteBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(instituteBox, instDb, emptyInstituteModel, true);
     }
 
     public void setDepData(List<DepartmentModel> depDb) {
-        departmentBox.removeAllItems();
-        departmentBox.addItem(emptyDepartmentModel);
-        for (DepartmentModel model : depDb) {
-            if (model.isActive()) {
-                departmentBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(departmentBox, depDb, emptyDepartmentModel, true);
     }
 
     public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-        subdepartmentBox.removeAllItems();
-        subdepartmentBox.addItem(emptySubdepartmentModel);
-        for (SubdepartmentModel model : subdepDb) {
-            if (model.isActive()) {
-                subdepartmentBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(subdepartmentBox, subdepDb, emptySubdepartmentModel, true);
     }
 
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
         this.listener = listener;
-
     }
 
     public void setLoginListener(CreateEmployeeFromLoginListener loginListener) {

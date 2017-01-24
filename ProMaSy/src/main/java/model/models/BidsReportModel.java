@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 public class BidsReportModel {
 	private String department;
 	private String financeName;
-	private String cpvCode;
-	private String cpvUkr;
-	private String orderDescription;
+    private String cpv;
+    private String cpvUkr;
+    private String orderDescription;
 	private Timestamp orderDate;
 	private String producer;
 	private String catNum;
@@ -21,23 +21,23 @@ public class BidsReportModel {
 	private BigDecimal onePrice;
 	private int amount;
 
-	public BidsReportModel(String department, String financeName, String cpvCode,
+    public BidsReportModel(String department, String financeName, String cpv,
                            String cpvUkr, String orderDescription, Timestamp orderDate, String producer, String catNum,
                            String supplier, String packType, BigDecimal onePrice, int amount, String reasonForSupplierChoice) {
         super();
         this.department = department;
         this.financeName = financeName;
-        this.cpvCode = cpvCode;
+        this.cpv = cpv;
         this.cpvUkr = cpvUkr;
         this.orderDescription = orderDescription;
         this.orderDate = orderDate;
-        if (producer == null) {
+        if (producer == null || producer.equals("")) {
             this.producer = Labels.getProperty("any");
         } else {
             this.producer = producer;
         }
         this.catNum = catNum;
-        if (supplier == null) {
+        if (supplier == null || supplier.equals("")) {
             this.supplier = Labels.getProperty("any");
         } else {
             this.supplier = supplier;
@@ -68,9 +68,9 @@ public class BidsReportModel {
 		return financeName;
 	}
 
-	public String getCpvCode() {
-		return cpvCode;
-	}
+    public String getCpv() {
+        return cpv;
+    }
 
 	public String getCpvUkr() {
 		return cpvUkr;

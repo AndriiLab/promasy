@@ -164,10 +164,18 @@ public class CreateFinanceDialog extends JDialog {
             return false;
         }
         materialAmount = Utils.parseBigDecimal(parent, materialsAmountField, Labels.getProperty("materialsAmount"));
+        if (materialAmount == null) {
+            return false;
+        }
+
         equipmentAmount = Utils.parseBigDecimal(parent, equipmentAmountField, Labels.getProperty("equipmentAmount"));
+        if (equipmentAmount == null) {
+            return false;
+        }
+
         servicesAmount = Utils.parseBigDecimal(parent, servicesAmountField, Labels.getProperty("servicesAmount"));
 
-        return (materialAmount != null && equipmentAmount != null && servicesAmount != null);
+        return servicesAmount != null;
     }
 
     private void layoutControls() {

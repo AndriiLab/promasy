@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.istack.internal.Nullable;
 import model.enums.BidType;
 import model.enums.Role;
 import model.models.AbstractModel;
@@ -106,7 +105,7 @@ public class Utils {
         return fileName;
     }
 
-    public static String formatBigDecimal(String bigDecimal) {
+    private static String formatBigDecimal(String bigDecimal) {
         if (bigDecimal.contains(",")) {
             bigDecimal = bigDecimal.replace(",", ".");
         }
@@ -116,7 +115,6 @@ public class Utils {
         return bigDecimal;
     }
 
-    @Nullable
     public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
         String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
         if (targetBigDecimalText.isEmpty()) {
@@ -150,8 +148,7 @@ public class Utils {
         return targetBigDecimal;
     }
 
-    @Nullable
-    public static BigDecimal parseSubdepartmentBigDecimal(JFrame parent, FinanceModel selectedFinanceModel, JTextField jTextField, String fieldName, BidType bidType) {
+    public static BigDecimal parseSubdepartmentBigDecimal(boolean isCreateMode, JFrame parent, FinanceModel selectedFinanceModel, JTextField jTextField, String fieldName, BidType bidType) {
         BigDecimal targetBigDecimal = parseBigDecimal(parent, jTextField, fieldName);
         if (targetBigDecimal == null) {
             return null;
@@ -162,7 +159,7 @@ public class Utils {
                     JOptionPane.ERROR_MESSAGE);
             jTextField.requestFocusInWindow();
             return null;
-        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
+        } else if (isCreateMode && targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
             BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
             JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
             jTextField.setText(unassignedAmount.toString());
@@ -180,5 +177,22 @@ public class Utils {
         } else {
             button1.setPreferredSize(button2Size);
         }
+    }
+
+    public static <T extends AbstractModel> void setBoxData(JComboBox<T> comboBox, java.util.List<T> db, T emptyModel, boolean isFirstEmpty) {
+        comboBox.removeAllItems();
+        if (isFirstEmpty) {
+            comboBox.addItem(emptyModel);
+        }
+        if (!isFirstEmpty && (db == null || db.isEmpty())) {
+            comboBox.addItem(emptyModel);
+        } else if (db != null && !db.isEmpty()) {
+            for (T model : db) {
+                if (model.isActive()) {
+                    comboBox.addItem(model);
+                }
+            }
+        }
+        comboBox.repaint();
     }
 }

@@ -43,6 +43,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     private JLabel servicesLeft;
     private JButton okButton;
     private JButton cancelButton;
+    private boolean isCreateMode;
 
     public CreateDepartmentFinancesDialog(JFrame parent) {
         super(parent, Labels.getProperty("addDepartmentForFinance"), true);
@@ -54,6 +55,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         this.parent = parent;
 
         currentFinanceDepartmentModel = new FinanceDepartmentModel();
+        isCreateMode = true;
 
         materialsLeft = new JLabel();
         equpmetLeft = new JLabel();
@@ -64,7 +66,9 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         departmentBox.addItem(emptyDepartmentModel);
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
-            setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
+            if (selectedDepartmentModel != null) {
+                setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
+            }
             subdepartmentBox.setEnabled(true);
         });
 
@@ -131,20 +135,30 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
     private boolean checkInput() {
         DepartmentModel selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
-        selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         if (selectedDepartment.equals(emptyDepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
-        } else if (selectedSubdepartment.equals(emptySubdepartmentModel)) {
+        }
+
+        selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
+        if (selectedSubdepartment.equals(emptySubdepartmentModel)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
-        depMaterialAmount = Utils.parseSubdepartmentBigDecimal(parent, currentFinanceModel, depMaterialsAmountField, Labels.getProperty("materialsAmount"), BidType.MATERIALS);
-        depEquipmentAmount = Utils.parseSubdepartmentBigDecimal(parent, currentFinanceModel, depEquipmentAmountField, Labels.getProperty("equipmentAmount"), BidType.EQUIPMENT);
-        depServicesAmount = Utils.parseSubdepartmentBigDecimal(parent, currentFinanceModel, depServicesAmountField, Labels.getProperty("servicesAmount"), BidType.SERVICES);
-        return (depMaterialAmount != null && depEquipmentAmount != null && depServicesAmount != null);
+
+        depMaterialAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depMaterialsAmountField, Labels.getProperty("materialsAmount"), BidType.MATERIALS);
+        if (depMaterialAmount == null) {
+            return false;
+        }
+        depEquipmentAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depEquipmentAmountField, Labels.getProperty("equipmentAmount"), BidType.EQUIPMENT);
+        if (depEquipmentAmount == null) {
+            return false;
+        }
+
+        depServicesAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depServicesAmountField, Labels.getProperty("servicesAmount"), BidType.SERVICES);
+        return depServicesAmount != null;
     }
 
     public void setListener(FinanceDepartmentDialogListener listener) {
@@ -153,30 +167,21 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
 
     public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
-        for (DepartmentModel model : db) {
-            if (model.isActive()) {
-                departmentBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(departmentBox, db, emptyDepartmentModel, false);
     }
 
     public void setSubdepartmentBoxData(java.util.List<SubdepartmentModel> db) {
-        subdepartmentBox.removeAllItems();
-        subdepartmentBox.addItem(emptySubdepartmentModel);
-        for (SubdepartmentModel model : db) {
-            if (model.isActive()) {
-                subdepartmentBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(subdepartmentBox, db, emptySubdepartmentModel, true);
     }
 
     public void setVisible(FinanceModel model, boolean isCreate) {
+        this.isCreateMode = isCreate;
         if (listener != null) {
             listener.loadDepartments();
         }
         this.currentFinanceModel = model;
         this.setLeftAmounts();
-        if (isCreate) {
+        if (isCreateMode) {
             super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
             okButton.setText(Labels.getProperty("create"));
         }
@@ -184,6 +189,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     }
 
     public void editDepartmentModel(FinanceDepartmentModel selectedDepFinModel) {
+        isCreateMode = false;
         this.currentFinanceDepartmentModel = selectedDepFinModel;
         Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
         Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());

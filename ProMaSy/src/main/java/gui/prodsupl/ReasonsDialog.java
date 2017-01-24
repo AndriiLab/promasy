@@ -2,6 +2,7 @@ package gui.prodsupl;
 
 import gui.CrEdDelButtons;
 import gui.Labels;
+import gui.Utils;
 import model.models.ReasonForSupplierChoiceModel;
 
 import javax.swing.*;
@@ -98,11 +99,7 @@ public class ReasonsDialog extends JDialog {
     }
 
     public void setReasonData(java.util.List<ReasonForSupplierChoiceModel> prodDb) {
-        for (ReasonForSupplierChoiceModel model : prodDb) {
-            if (model.isActive()) {
-                reasonBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(reasonBox, prodDb, emptyReasonsModel, false);
     }
 
     public void setListener(ReasonsDialogListener listener) {

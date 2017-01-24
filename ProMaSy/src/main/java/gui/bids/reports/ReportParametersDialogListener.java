@@ -7,5 +7,6 @@ import model.enums.Role;
  */
 public interface ReportParametersDialogListener {
     void roleSelectionOccurred(Role role);
-    void reportParametersSelectionOccurred(ReportParametersEvent ev);
+
+    void reportParametersSelectionOccurred();
 }

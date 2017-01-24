@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2016-12-16T17:09:58 -->
+<!-- 2017-01-24T19:37:29 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -78,11 +78,11 @@
 		<groupFooter>
 			<band height="189">
 				<staticText>
-					<reportElement x="454" y="0" width="220" height="30" uuid="21e447e5-9914-437c-bbfb-561b08983c18"/>
-					<textElement>
+					<reportElement x="440" y="0" width="234" height="30" uuid="21e447e5-9914-437c-bbfb-561b08983c18"/>
+					<textElement textAlignment="Right">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Загальна вартість замовлення:]]></text>
+					<text><![CDATA[Загальна вартість замовлення :]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="415" y="62" width="133" height="25" uuid="bfef4ed2-99f7-49a4-8031-1c2c5d0689fb">
@@ -240,7 +240,7 @@
 					<textElement textAlignment="Right">
 						<font size="14"/>
 					</textElement>
-					<text><![CDATA[Голова тендерного комітету]]></text>
+					<text><![CDATA[Секретар тендерного комітету]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="553" y="162" width="103" height="25" uuid="f1753c53-b109-4b7a-987e-37e602537476">
@@ -471,13 +471,13 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{totalPrice1}+" грн."]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="0" y="10" width="674" height="30" uuid="5eacdd5a-7baf-4264-8294-85af5f2367d9"/>
+				<staticText>
+					<reportElement x="440" y="10" width="234" height="30" uuid="6f542255-649c-4fc4-88a1-9539c6b9ffc4"/>
 					<textElement textAlignment="Right">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Вартість замовлення за темою "+$F{financeName}+":"]]></textFieldExpression>
-				</textField>
+					<text><![CDATA[Вартість замовлення за темою :]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>

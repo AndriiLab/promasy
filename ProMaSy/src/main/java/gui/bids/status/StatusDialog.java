@@ -59,12 +59,10 @@ public class StatusDialog extends JDialog {
             }
         });
 
-
         closeButton.addActionListener(e -> setVisible(false));
-
     }
 
-    public void setTableData(BidModel model) {
+    private void setTableData(BidModel model) {
         statusTableModel.setBidModel(model);
         statusTableModel.fireTableDataChanged();
     }

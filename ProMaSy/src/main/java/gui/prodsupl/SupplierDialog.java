@@ -140,11 +140,7 @@ public class SupplierDialog extends JDialog {
     }
 
     public void setSuplData(java.util.List<SupplierModel> suplDb) {
-        for (SupplierModel model : suplDb) {
-            if (model.isActive()) {
-                suplBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(suplBox, suplDb, emptySuplModel, false);
     }
 
     public void setListener(SupplierDialogListener listener) {

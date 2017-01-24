@@ -68,8 +68,6 @@ public class CreateBidDialog extends JDialog {
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
-        createdBidModel = emptyBidModel;
-
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
 
@@ -272,8 +270,11 @@ public class CreateBidDialog extends JDialog {
         departmentBox.setEnabled(state);
     }
 
+    void setEnabledSubdepartmentBox(boolean state) {
+        subdepartmentBox.setEnabled(state);
+    }
+
     private void clearFieldsAndSetTitle() {
-        createdBidModel = emptyBidModel;
         setVisible(false);
         departmentBox.setSelectedIndex(0);
         financeDepartmentBox.setSelectedIndex(0);
@@ -313,11 +314,7 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-        for (FinanceDepartmentModel model : db) {
-            if (model.isActive()) {
-                financeDepartmentBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(financeDepartmentBox, db, emptyFinanceDepartmentModel, false);
     }
 
     void addToDepartmentBox(DepartmentModel model) {
@@ -325,46 +322,19 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setProducerBoxData(List<ProducerModel> db) {
-        producerBox.removeAllItems();
-        producerBox.addItem(emptyProducerModel);
-        for (ProducerModel model : db) {
-            if (model.isActive()) {
-                producerBox.addItem(model);
-            }
-        }
-        producerBox.repaint();
+        Utils.setBoxData(producerBox, db, emptyProducerModel, true);
     }
 
     public void setSupplierBoxData(List<SupplierModel> db) {
-        supplierBox.removeAllItems();
-        supplierBox.addItem(emptySupplierModel);
-        for (SupplierModel model : db) {
-            if (model.isActive()) {
-                supplierBox.addItem(model);
-            }
-        }
-        supplierBox.repaint();
+        Utils.setBoxData(supplierBox, db, emptySupplierModel, true);
     }
 
     public void setReasonForSupplierChoiceBoxData(List<ReasonForSupplierChoiceModel> db) {
-        reasonForSupplierChoiceBox.removeAllItems();
-        reasonForSupplierChoiceBox.addItem(emptyReasonForSupplierChoiceModel);
-        for (ReasonForSupplierChoiceModel model : db) {
-            if (model.isActive()) {
-                reasonForSupplierChoiceBox.addItem(model);
-            }
-        }
+        Utils.setBoxData(reasonForSupplierChoiceBox, db, emptyReasonForSupplierChoiceModel, true);
     }
 
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
-        amUnitsBox.removeAllItems();
-        amUnitsBox.addItem(emptyAmountUnitsModel);
-        for (AmountUnitsModel model : db) {
-            if (model.isActive()) {
-                amUnitsBox.addItem(model);
-            }
-        }
-        amUnitsBox.repaint();
+        Utils.setBoxData(amUnitsBox, db, emptyAmountUnitsModel, true);
     }
 
     private boolean checkFields() {
@@ -458,9 +428,9 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
 
-        BidType selectedBidType = (BidType) bidTypeBox.getSelectedItem();
+        currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
-        if (selectedFinanceDepartmentModel.getLeftAmount(selectedBidType).compareTo(totalPrice) < 0) {
+        if (selectedFinanceDepartmentModel.getLeftAmount(currentBidType).compareTo(totalPrice) < 0) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("insufficientFundsMessage"), Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
             amountField.requestFocusInWindow();
             return false;
@@ -471,7 +441,6 @@ public class CreateBidDialog extends JDialog {
             BidStatusModel statusModel = new BidStatusModel(Status.CREATED, createdBidModel);
             statusModel.setCreated();
             statuses.add(statusModel);
-            createdBidModel.setType(currentBidType);
         }
 
         createdBidModel.setProducer(selectedProducerModel);
@@ -484,6 +453,7 @@ public class CreateBidDialog extends JDialog {
         createdBidModel.setFinances(selectedFinanceDepartmentModel);
         createdBidModel.setSupplier(selectedSupplierModel);
         createdBidModel.setReasonForSupplierChoice(selectedReasonModel);
+        createdBidModel.setType(currentBidType);
 
         return true;
     }
@@ -523,11 +493,17 @@ public class CreateBidDialog extends JDialog {
         super.setVisible(true);
     }
 
+    public void setSelectedCPV(CPVModel selectedCPV) {
+        this.selectedCPV = selectedCPV;
+        cpvField.setText(selectedCPV.getCpvId());
+    }
+
     @Override
     public void setVisible(boolean visible) {
         if (visible && listener != null) {
             listener.getAllData();
         }
+        createdBidModel = new BidModel();
         super.setVisible(visible);
     }
 
@@ -784,10 +760,5 @@ public class CreateBidDialog extends JDialog {
         add(depOrdersPanel, BorderLayout.NORTH);
         add(createBidPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
-    }
-
-    public void setSelectedCPV(CPVModel selectedCPV) {
-        this.selectedCPV = selectedCPV;
-        cpvField.setText(selectedCPV.getCpvId());
     }
 }
