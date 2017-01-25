@@ -23,7 +23,18 @@
 
         <properties>
             <!-- Database connection settings -->
-            <!-- Check LabelsBundle.properties for default connection settings-->
+
+            <!-- C3P0 pooling -->
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.connection.C3P0ConnectionProvider"/>
+            <property name="hibernate.c3p0.max_size" value="100"/>
+            <property name="hibernate.c3p0.min_size" value="0"/>
+            <property name="hibernate.c3p0.acquire_increment" value="1"/>
+            <property name="hibernate.c3p0.idle_test_period" value="300"/>
+            <property name="hibernate.c3p0.max_statements" value="0"/>
+            <property name="hibernate.c3p0.timeout" value="100"/>
+
+            <!-- !!! Check LabelsBundle.properties for default connection settings-->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
             <property name="javax.persistence.jdbc.user" value="promasy_user"/>

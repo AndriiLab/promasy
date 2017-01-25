@@ -1,7 +1,6 @@
 package model.dao;
 
 import model.models.ConnectionSettingsModel;
-import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
 import javax.persistence.EntityManager;
@@ -36,8 +35,9 @@ public enum DBConnector {
         entityManager = entityManagerFactory.createEntityManager();
         System.out.println(">>>>>>>>>>>>>>> Connected on schema '" + entityManagerFactory.getProperties().get("hibernate.default_schema") + "' on '" + entityManagerFactory.getProperties().get("javax.persistence.jdbc.url") +
                 "'");
-        stat = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
-        stat.setStatisticsEnabled(true);
+        //Logging connection stats
+//        stat = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+//        stat.setStatisticsEnabled(true);
     }
 
     public void disconnect() {
@@ -47,7 +47,8 @@ public enum DBConnector {
         }
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
-            System.out.println(">>>>>>>>>>>>>>> Disconnected successfully\n" + stat.toString().replace(",", ",\n"));
+//            System.out.println(">>>>>>>>>>>>>>> Disconnected successfully\n" + stat.toString().replace(",", ",\n"));
+            System.out.println(">>>>>>>>>>>>>>> Disconnected successfully");
         }
         entityManagerFactory = null;
     }

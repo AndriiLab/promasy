@@ -81,6 +81,12 @@ dependencies {
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.6.Final'
 
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.6.Final'
+
+    // https://mvnrepository.com/artifact/com.mchange/c3p0
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
+
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
     compile 'org.hibernate:hibernate-jpamodelgen:5.2.6.Final'
 
