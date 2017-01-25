@@ -94,13 +94,13 @@ public class CreateDepartmentFinancesDialog extends JDialog {
                 currentFinanceDepartmentModel.setTotalMaterialsAmount(depMaterialAmount);
                 currentFinanceDepartmentModel.setTotalEqupmentAmount(depEquipmentAmount);
                 currentFinanceDepartmentModel.setTotalServicesAmount(depServicesAmount);
-                currentFinanceModel.addFinanceDepartmentModel(currentFinanceDepartmentModel);
                 if (currentFinanceDepartmentModel.getModelId() == 0) {
                     currentFinanceDepartmentModel.setCreated();
                 } else {
                     currentFinanceDepartmentModel.setUpdated();
                 }
-                listener.persistModelEventOccurred(currentFinanceModel);
+                currentFinanceModel.addFinanceDepartmentModel(currentFinanceDepartmentModel);
+                listener.persistModelEventOccurred(currentFinanceDepartmentModel);
                 clear();
             }
         });

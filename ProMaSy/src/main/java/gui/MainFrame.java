@@ -10,7 +10,6 @@ import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanel;
 import gui.bids.BidsListPanelListener;
 import gui.bids.CreateBidDialog;
-import gui.bids.CreateBidDialogListener;
 import gui.bids.reports.ReportParametersDialog;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.conset.ConSetDialog;
@@ -95,8 +94,8 @@ public class MainFrame extends JFrame {
         reasonsDialog = new ReasonsDialog(this);
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
-        bidsListPanel = new BidsListPanel(this);
         createBidDialog = new CreateBidDialog(this);
+        bidsListPanel = new BidsListPanel(this);
         createFinanceDialog = new CreateFinanceDialog(this);
         createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
         financePanel = new FinancePanel(this);
@@ -412,10 +411,6 @@ public class MainFrame extends JFrame {
 
     public void setBidsListPanelListener(BidsListPanelListener listener) {
         bidsListPanel.setBidsListPanelListener(listener);
-    }
-
-    public void setCreateBidDialogListener(CreateBidDialogListener listener) {
-        createBidDialog.setCreateBidDialogListener(listener);
     }
 
     public void setReportParametersDialogListener(ReportParametersDialogListener listener) {

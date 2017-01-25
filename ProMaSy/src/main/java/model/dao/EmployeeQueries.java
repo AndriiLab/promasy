@@ -97,4 +97,13 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
         criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
         return super.getList();
     }
+
+    public EmployeeModel getUserWithId(long id) {
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        EmployeeModel model = em.find(EmployeeModel.class, id);
+        em.getTransaction().commit();
+
+        return model;
+    }
 }

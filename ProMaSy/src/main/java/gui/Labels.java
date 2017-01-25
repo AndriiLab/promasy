@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 public class Labels {
     private static final String LABELS_BUNDLE = "LabelsBundle";
     private static final ResourceBundle LABELS = ResourceBundle.getBundle(LABELS_BUNDLE);
-    private static final String VERSION_BUNDLE = "version";
+    private static final String VERSION_BUNDLE = "PromasyVersion";
     private static final ResourceBundle VERSION = ResourceBundle.getBundle(VERSION_BUNDLE);
 
     public static String getProperty(final String key) {

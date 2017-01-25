@@ -32,14 +32,14 @@ jar {
 
 task createVersionProperties(dependsOn: processResources) {
     doFirst {
-        new File("src/main/resources/version.properties").withWriter { w ->
+        new File("src/main/resources/PromasyVersion.properties").withWriter { w ->
             Properties p = new Properties()
             p.setProperty('versionNumber', project.version.toString())
             p.setProperty('buildDate', new Timestamp(System.currentTimeMillis()).toString())
             p.store w, null
         }
         copy {
-            from "src/main/resources/version.properties"
+            from "src/main/resources/PromasyVersion.properties"
             into "$buildDir/resources/main"
         }
     }

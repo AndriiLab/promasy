@@ -19,4 +19,6 @@ public interface BidsListPanelListener {
     void getBidsBySubdepartment(BidType selectedBidType, SubdepartmentModel selectedSubdepartmentModel);
 
     void getBidsByFinanceDepartment(BidType selectedBidType, FinanceDepartmentModel selectedFinanceDepartmentModel);
+
+    void getAllData();
 }

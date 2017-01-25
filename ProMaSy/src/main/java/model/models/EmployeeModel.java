@@ -66,11 +66,6 @@ public class EmployeeModel extends AbstractModel {
         this.role = role;
     }
 
-    public EmployeeModel(long modelId, Role role) {
-        super.setModelId(modelId);
-        this.role = role;
-    }
-
     public EmployeeModel(String empFName, String empMName, String empLName, String email, String phoneMain, String phoneReserve,
                          SubdepartmentModel subdepartment, Role role, String login, String password, long salt) {
         this.empFName = empFName;

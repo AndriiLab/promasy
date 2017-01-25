@@ -14,21 +14,23 @@ public class RegistrationQueries {
         int registrationNumber;
         EntityManager em = Database.DB.getEntityManager();
 
+        em.getTransaction().begin();
         RegistrationTicketModel model = em.find(RegistrationTicketModel.class, 1);
 
         if (model != null) {
             registrationNumber = model.getRegistrationTicketNumber();
+
+            model.setRegistrationTicketNumber(--registrationNumber);
+
         } else {
             // TODO change to function
             registrationNumber = 100;
 
-            em.getTransaction().begin();
-
-            RegistrationTicketModel newModel = new RegistrationTicketModel(registrationNumber);
-            em.persist(newModel);
-
-            em.getTransaction().commit();
+            model = new RegistrationTicketModel(registrationNumber);
         }
+
+        em.persist(model);
+        em.getTransaction().commit();
 
         return registrationNumber;
     }

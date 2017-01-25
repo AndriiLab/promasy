@@ -23,19 +23,18 @@
 
         <properties>
             <!-- Database connection settings -->
+            <!-- Check LabelsBundle.properties for default connection settings-->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
-            <!--<property name="javax.persistence.jdbc.user" value="promasy_user" />-->
-            <!--<property name="javax.persistence.jdbc.password" value="@ccessp@ss" />-->
-            <property name="javax.persistence.jdbc.user" value="postgres"/>
-            <property name="javax.persistence.jdbc.password" value="PWQcrtUuLNYiCX"/>
-            <property name="hibernate.default_schema" value="promasy_test"/>
+            <property name="javax.persistence.jdbc.user" value="promasy_user"/>
+            <property name="javax.persistence.jdbc.password" value="@ccessp@ss"/>
+            <property name="hibernate.default_schema" value="promasy"/>
 
             <!-- SQL dialect -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
 
             <!-- Create/update tables automatically using mapping metadata -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="validate"/>-->
 
             <property name="hibernate.format_sql" value="true"/>
         </properties>

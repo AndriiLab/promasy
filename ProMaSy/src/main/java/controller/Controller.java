@@ -6,7 +6,6 @@ package controller;
 import gui.*;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
-import gui.bids.CreateBidDialogListener;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.cpv.CpvReqEvent;
 import gui.cpv.CpvSearchListener;
@@ -99,7 +98,7 @@ public class Controller {
                 int registrationNumber = registrationsLeft();
                 System.out.println("Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
-                    LoginData.getInstance(new EmployeeModel(registrationNumber, Role.USER));
+                    LoginData.getInstance(Database.EMPLOYEES.getUserWithId(1L));
                     mainFrame.initialize();
                     initListeners();
                     return true;
@@ -299,7 +298,6 @@ public class Controller {
             public void persistModelEventOccurred(BidModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids(model.getType()));
             }
 
             @Override
@@ -321,16 +319,6 @@ public class Controller {
             public void getBidsByFinanceDepartment(BidType type, FinanceDepartmentModel selectedFinanceDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
             }
-        });
-
-        mainFrame.setCreateBidDialogListener(new CreateBidDialogListener() {
-            @Override
-            public void persistModelEventOccurred(BidModel createdBidModel) {
-                createOrUpdate(createdBidModel);
-                mainFrame.setFinanceModelList(getFinances());
-                mainFrame.setBidModelList(getBids(createdBidModel.getType()));
-            }
-
             @Override
             public void getAllData() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
@@ -339,7 +327,6 @@ public class Controller {
                 mainFrame.setSupplierModelList(getSupl());
                 mainFrame.setReasonsModelList(getReasons());
             }
-
         });
 
         mainFrame.setReportParametersDialogListener(new ReportParametersDialogListener() {

@@ -231,7 +231,8 @@ public class CreateBidDialog extends JDialog {
                         if (createdBidModel.getModelId() != 0L) {
                             createdBidModel.setUpdated();
                         } else createdBidModel.setCreated();
-
+                        FinanceDepartmentModel finDepModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
+                        finDepModel.addBid(createdBidModel);
                         listener.persistModelEventOccurred(createdBidModel);
                         clearFieldsAndSetTitle();
                     }

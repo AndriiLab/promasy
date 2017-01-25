@@ -28,9 +28,9 @@ public class BidsQueries extends SQLQueries<BidModel> {
     public List<BidModel> retrieve(BidType type, DepartmentModel department) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department.modelId = :departmentId")
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department = :department")
                 .setParameter("bidType", type)
-                .setParameter("departmentId", department.getModelId());
+                .setParameter("department", department);
         List<BidModel> list = (List<BidModel>) query.getResultList();
         em.getTransaction().commit();
 
@@ -40,9 +40,9 @@ public class BidsQueries extends SQLQueries<BidModel> {
     public List<BidModel> retrieve(BidType type, SubdepartmentModel subdepartment) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.modelId = :subdepartmentId")
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment = :subdepartment")
                 .setParameter("bidType", type)
-                .setParameter("subdepartmentId", subdepartment.getModelId());
+                .setParameter("subdepartment", subdepartment);
         List<BidModel> list = (List<BidModel>) query.getResultList();
         em.getTransaction().commit();
 

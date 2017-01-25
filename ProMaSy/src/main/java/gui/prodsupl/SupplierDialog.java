@@ -14,6 +14,7 @@ import java.awt.*;
  */
 public class SupplierDialog extends JDialog {
     private final SupplierModel emptySuplModel = new SupplierModel();
+    private final String emptyString = "";
     private JButton okButton;
     private JButton createSupl;
     private JButton editSupl;
@@ -21,9 +22,9 @@ public class SupplierDialog extends JDialog {
     private JComboBox<SupplierModel> suplBox;
     private SupplierDialogListener listener;
     private SupplierModel privateSuplModel;
-    private String newSuplName = "";
-    private String newSuplTel = "";
-    private String newSuplComment = "";
+    private String newSuplName;
+    private String newSuplTel;
+    private String newSuplComment;
     private JTextField telField;
     private JTextPane commentsPane;
     private JFrame parent;
@@ -36,6 +37,10 @@ public class SupplierDialog extends JDialog {
         setLocationRelativeTo(parent);
 
         Dimension comboBoxDim = new Dimension(150, 25);
+
+        newSuplName = emptyString;
+        newSuplTel = emptyString;
+        newSuplComment = emptyString;
 
         privateSuplModel = emptySuplModel;
 
@@ -76,8 +81,8 @@ public class SupplierDialog extends JDialog {
                     editSupl.setEnabled(true);
                     deleteSupl.setEnabled(true);
                 } else if (item.equals(emptySuplModel)) {
-                    telField.setText("");
-                    commentsPane.setText("");
+                    telField.setText(emptyString);
+                    commentsPane.setText(emptyString);
 
                     createSupl.setEnabled(true);
                     editSupl.setEnabled(false);
@@ -92,17 +97,15 @@ public class SupplierDialog extends JDialog {
             if (isSuplDataValid() && privateSuplModel.equals(emptySuplModel)) {
                 SupplierModel model = new SupplierModel(newSuplName, newSuplTel, newSuplComment);
                 if (listener != null) {
-                    suplBox.removeAllItems();
-                    suplBox.addItem(emptySuplModel);
                     model.setCreated();
                     listener.persistModelEventOccurred(model);
-                    telField.setText("");
-                    commentsPane.setText("");
+                    telField.setText(emptyString);
+                    commentsPane.setText(emptyString);
                 }
             }
-            newSuplName = "";
-            newSuplTel = "";
-            newSuplComment = "";
+            newSuplName = emptyString;
+            newSuplTel = emptyString;
+            newSuplComment = emptyString;
             privateSuplModel = emptySuplModel;
         });
 
@@ -112,27 +115,23 @@ public class SupplierDialog extends JDialog {
                 privateSuplModel.setSupplierName(newSuplName);
                 privateSuplModel.setSupplierTel(newSuplTel);
                 privateSuplModel.setSupplierComments(newSuplComment);
-                suplBox.removeAllItems();
-                suplBox.addItem(emptySuplModel);
                 privateSuplModel.setUpdated();
                 listener.persistModelEventOccurred(privateSuplModel);
-                telField.setText("");
-                commentsPane.setText("");
+                telField.setText(emptyString);
+                commentsPane.setText(emptyString);
             }
-            newSuplName = "";
-            newSuplTel = "";
-            newSuplComment = "";
+            newSuplName = emptyString;
+            newSuplTel = emptyString;
+            newSuplComment = emptyString;
             privateSuplModel = emptySuplModel;
         });
 
         deleteSupl.addActionListener(e -> {
             if (!privateSuplModel.equals(emptySuplModel) && ced.deleteEntry(parent, privateSuplModel.getSupplierName()) && listener != null) {
-                suplBox.removeAllItems();
-                suplBox.addItem(emptySuplModel);
                 privateSuplModel.setDeleted();
                 listener.persistModelEventOccurred(privateSuplModel);
-                telField.setText("");
-                commentsPane.setText("");
+                telField.setText(emptyString);
+                commentsPane.setText(emptyString);
             }
         });
 
@@ -140,7 +139,7 @@ public class SupplierDialog extends JDialog {
     }
 
     public void setSuplData(java.util.List<SupplierModel> suplDb) {
-        Utils.setBoxData(suplBox, suplDb, emptySuplModel, false);
+        Utils.setBoxData(suplBox, suplDb, emptySuplModel, true);
     }
 
     public void setListener(SupplierDialogListener listener) {
