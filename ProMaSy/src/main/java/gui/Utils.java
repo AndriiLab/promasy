@@ -4,6 +4,7 @@ import model.enums.BidType;
 import model.enums.Role;
 import model.models.AbstractModel;
 import model.models.ConnectionSettingsModel;
+import model.models.EmptyModel;
 import model.models.FinanceModel;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class Utils {
         } catch (NoSuchAlgorithmException e) {
             //Bad practice
             e.printStackTrace();
-            return "";
+            return EmptyModel.STRING;
         }
     }
 

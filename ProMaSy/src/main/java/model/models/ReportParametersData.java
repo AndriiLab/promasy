@@ -5,13 +5,13 @@ package model.models;
  */
 public class ReportParametersData {
     private static ReportParametersData instance = new ReportParametersData();
-    private String headPosition = "";
-    private String head = "";
-    private String departmentHead = "";
-    private String personallyLiableEmpl = "";
-    private String accountant = "";
-    private String economist = "";
-    private String headTender = "";
+    private String headPosition = EmptyModel.STRING;
+    private String head = EmptyModel.STRING;
+    private String departmentHead = EmptyModel.STRING;
+    private String personallyLiableEmpl = EmptyModel.STRING;
+    private String accountant = EmptyModel.STRING;
+    private String economist = EmptyModel.STRING;
+    private String headTender = EmptyModel.STRING;
 
 
     private ReportParametersData() {

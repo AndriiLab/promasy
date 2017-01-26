@@ -3,6 +3,7 @@ package gui.prodsupl;
 import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.Utils;
+import model.models.EmptyModel;
 import model.models.ReasonForSupplierChoiceModel;
 
 import javax.swing.*;
@@ -13,7 +14,6 @@ import java.awt.*;
  * Class for CRUD of item {@link ReasonForSupplierChoiceModel}
  */
 public class ReasonsDialog extends JDialog {
-    private final ReasonForSupplierChoiceModel emptyReasonsModel = new ReasonForSupplierChoiceModel();
     private JButton okButton;
     private JButton createReason;
     private JButton editReason;
@@ -30,11 +30,11 @@ public class ReasonsDialog extends JDialog {
 
         Dimension comboBoxDim = new Dimension(150, 25);
 
-        privateReasonModel = emptyReasonsModel;
+        privateReasonModel = EmptyModel.REASON_FOR_SUPPLIER_CHOICE;
 
         DefaultComboBoxModel<ReasonForSupplierChoiceModel> prodModel = new DefaultComboBoxModel<>();
         reasonBox = new JComboBox<>(prodModel);
-        reasonBox.addItem(emptyReasonsModel);
+        reasonBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
         reasonBox.setPreferredSize(comboBoxDim);
         reasonBox.setEditable(true);
 
@@ -49,57 +49,57 @@ public class ReasonsDialog extends JDialog {
 
         reasonBox.addActionListener(e -> {
             Object item = reasonBox.getSelectedItem();
-            if (item instanceof ReasonForSupplierChoiceModel && !item.equals(emptyReasonsModel)) {
+            if (item instanceof ReasonForSupplierChoiceModel && !item.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE)) {
                 privateReasonModel = (ReasonForSupplierChoiceModel) item;
-            } else if (item instanceof String && !item.equals("")) {
+            } else if (item instanceof String && !item.equals(EmptyModel.STRING)) {
                 newReasonName = (String) item;
             }
         });
 
         createReason.addActionListener(e -> {
-            if (!newReasonName.equals("")) {
+            if (!newReasonName.equals(EmptyModel.STRING)) {
                 ReasonForSupplierChoiceModel model = new ReasonForSupplierChoiceModel(newReasonName);
                 if (listener != null) {
                     reasonBox.removeAllItems();
-                    reasonBox.addItem(emptyReasonsModel);
+                    reasonBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
                     model.setCreated();
                     listener.persistModelEventOccurred(model);
                 }
             }
-            privateReasonModel = emptyReasonsModel;
-            newReasonName = "";
+            privateReasonModel = EmptyModel.REASON_FOR_SUPPLIER_CHOICE;
+            newReasonName = EmptyModel.STRING;
         });
 
         editReason.addActionListener(e -> {
-            if (newReasonName != null && !newReasonName.equals("") && !privateReasonModel.equals(emptyReasonsModel)) {
+            if (newReasonName != null && !newReasonName.equals(EmptyModel.STRING) && !privateReasonModel.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE)) {
                 if (listener != null) {
                     reasonBox.removeAllItems();
-                    reasonBox.addItem(emptyReasonsModel);
+                    reasonBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
                     privateReasonModel.setReason(newReasonName);
                     privateReasonModel.setUpdated();
                     listener.persistModelEventOccurred(privateReasonModel);
                 }
             }
-            privateReasonModel = emptyReasonsModel;
-            newReasonName = "";
+            privateReasonModel = EmptyModel.REASON_FOR_SUPPLIER_CHOICE;
+            newReasonName = EmptyModel.STRING;
         });
 
         deleteReason.addActionListener(e -> {
-            if (!privateReasonModel.equals(emptyReasonsModel) && ced.deleteEntry(parent, privateReasonModel.getReason()) && listener != null) {
+            if (!privateReasonModel.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE) && ced.deleteEntry(parent, privateReasonModel.getReason()) && listener != null) {
                 reasonBox.removeAllItems();
-                reasonBox.addItem(emptyReasonsModel);
+                reasonBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
                 privateReasonModel.setDeleted();
                 listener.persistModelEventOccurred(privateReasonModel);
             }
-            privateReasonModel = emptyReasonsModel;
-            newReasonName = "";
+            privateReasonModel = EmptyModel.REASON_FOR_SUPPLIER_CHOICE;
+            newReasonName = EmptyModel.STRING;
         });
 
         okButton.addActionListener(e -> setVisible(false));
     }
 
     public void setReasonData(java.util.List<ReasonForSupplierChoiceModel> prodDb) {
-        Utils.setBoxData(reasonBox, prodDb, emptyReasonsModel, false);
+        Utils.setBoxData(reasonBox, prodDb, EmptyModel.REASON_FOR_SUPPLIER_CHOICE, false);
     }
 
     public void setListener(ReasonsDialogListener listener) {

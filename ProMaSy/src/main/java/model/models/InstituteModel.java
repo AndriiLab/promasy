@@ -16,7 +16,7 @@ public class InstituteModel extends AbstractModel {
     private List<DepartmentModel> departments = new ArrayList<>();
 
     public InstituteModel() {
-        this.instName = "";
+        this.instName = EmptyModel.STRING;
     }
 
     public InstituteModel(String instName) {

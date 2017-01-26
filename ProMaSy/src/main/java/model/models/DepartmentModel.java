@@ -20,7 +20,7 @@ public class DepartmentModel extends AbstractModel {
     private List<SubdepartmentModel> subdepartments = new ArrayList<>();
 
     public DepartmentModel() {
-        this.depName = "";
+        this.depName = EmptyModel.STRING;
     }
 
     public DepartmentModel(String depName) {

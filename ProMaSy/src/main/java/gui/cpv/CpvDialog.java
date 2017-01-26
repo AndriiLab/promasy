@@ -4,6 +4,7 @@ import gui.Icons;
 import gui.Labels;
 import gui.MainFrame;
 import model.models.CPVModel;
+import model.models.EmptyModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -16,7 +17,6 @@ import java.util.List;
 
 public class CpvDialog extends JDialog {
 
-    private final CPVModel emptyCpvModel = new CPVModel();
     private JTextField searchField;
 	private JButton upButton;
 	private JButton selectButton;
@@ -25,14 +25,13 @@ public class CpvDialog extends JDialog {
 	private CpvSearchListener cpvListener;
     private CPVModel selectedCpvModel;
 
-
 	public CpvDialog (MainFrame parent) {
         super(parent, Labels.getProperty("cpvPanelTab"), true);
         setSize(800, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
 
-        selectedCpvModel = emptyCpvModel;
+        selectedCpvModel = EmptyModel.CPV;
         cpvTableModel = new CpvTableModel();
 		table = new JTable(cpvTableModel);
 		JPanel searchPanel = new JPanel();
@@ -64,7 +63,7 @@ public class CpvDialog extends JDialog {
         
         homeButton.addActionListener(e -> {
             upButton.setEnabled(false);
-            makeCpvQuery("", true);
+            makeCpvQuery(EmptyModel.STRING, true);
             searchField.setText(null);
             selectButton.setEnabled(false);
         });
@@ -80,7 +79,7 @@ public class CpvDialog extends JDialog {
             }
             cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
             if (cpvRequest.length() <= 1){
-                cpvRequest = "";
+                cpvRequest = EmptyModel.STRING;
                 searchField.setText(null);
                 upButton.setEnabled(false);
             }
@@ -157,7 +156,7 @@ public class CpvDialog extends JDialog {
 
     @Override
     public void setVisible(boolean visible) {
-        selectedCpvModel = emptyCpvModel;
+        selectedCpvModel = EmptyModel.CPV;
         if (visible && cpvListener != null) {
             cpvListener.getTopCodes();
         }

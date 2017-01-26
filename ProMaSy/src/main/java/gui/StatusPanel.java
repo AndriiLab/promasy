@@ -1,5 +1,7 @@
 package gui;
 
+import model.models.EmptyModel;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
@@ -16,11 +18,11 @@ public class StatusPanel extends JPanel {
         setPreferredSize(new Dimension(parent.getWidth(), 20));
         setLayout(new BorderLayout());
 
-        currentUserLabel = new JLabel("");
+        currentUserLabel = new JLabel(EmptyModel.STRING);
         currentUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
         currentUserLabel.setIcon(Icons.USER);
 
-        status = new JLabel("");
+        status = new JLabel(EmptyModel.STRING);
         status.setHorizontalAlignment(SwingConstants.RIGHT);
 
         add(currentUserLabel, BorderLayout.LINE_START);

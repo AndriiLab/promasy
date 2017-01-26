@@ -1,5 +1,7 @@
 package gui;
 
+import model.models.EmptyModel;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
@@ -23,7 +25,7 @@ public class LoggerDialog extends JDialog {
 
         logPane = new JTextPane();
         logPane.setEditable(false);
-        logPane.setText("");
+        logPane.setText(EmptyModel.STRING);
 
         JButton saveButton = new JButton(Labels.getProperty("saveLog"));
         saveButton.addActionListener(e -> {

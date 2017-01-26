@@ -31,13 +31,13 @@ public class BidsReportModel {
         this.cpvUkr = cpvUkr;
         this.orderDescription = orderDescription;
         this.orderDate = orderDate;
-        if (producer == null || producer.equals("")) {
+        if (producer == null || producer.equals(EmptyModel.STRING)) {
             this.producer = Labels.getProperty("any");
         } else {
             this.producer = producer;
         }
         this.catNum = catNum;
-        if (supplier == null || supplier.equals("")) {
+        if (supplier == null || supplier.equals(EmptyModel.STRING)) {
             this.supplier = Labels.getProperty("any");
         } else {
             this.supplier = supplier;
@@ -46,7 +46,7 @@ public class BidsReportModel {
         this.onePrice = onePrice;
         this.amount = amount;
         if (reasonForSupplierChoice == null) {
-            this.reasonForSupplierChoice = "";
+            this.reasonForSupplierChoice = EmptyModel.STRING;
         } else {
             this.reasonForSupplierChoice = reasonForSupplierChoice;
         }

@@ -4,6 +4,7 @@ import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.MainFrame;
 import model.models.EmployeeModel;
+import model.models.EmptyModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,6 @@ import java.util.List;
 
 public class EditEmployeeDialog extends JDialog {
 
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private EditEmployeeDialogListener listener;
     private JButton createEmployeeButton;
     private JButton editEmployeeButton;
@@ -36,7 +36,7 @@ public class EditEmployeeDialog extends JDialog {
         editEmployeeButton.setEnabled(false);
         deleteEmployeeButton.setEnabled(false);
 
-        selectedModel =  emptyEmployeeModel;
+        selectedModel = EmptyModel.EMPLOYEE;
 
         tableModel = new EmployeeTableModel();
         table = new JTable(tableModel);
@@ -63,13 +63,13 @@ public class EditEmployeeDialog extends JDialog {
 
         createEmployeeButton.addActionListener(e -> parent.getCreateEmployeeDialog().setVisible(true));
         editEmployeeButton.addActionListener(e -> {
-            if (!selectedModel.equals(emptyEmployeeModel)){
+            if (!selectedModel.equals(EmptyModel.EMPLOYEE)) {
                 parent.getCreateEmployeeDialog().setEmployeeModel(selectedModel);
             }
         });
 
         deleteEmployeeButton.addActionListener(e -> {
-            if (!selectedModel.equals(emptyEmployeeModel) && ced.deleteEntry(parent, selectedModel.toString())) {
+            if (!selectedModel.equals(EmptyModel.EMPLOYEE) && ced.deleteEntry(parent, selectedModel.toString())) {
                 selectedModel.setDeleted();
                 listener.persistModelEventOccurred(selectedModel);
             }

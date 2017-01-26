@@ -167,7 +167,7 @@ public class FinanceModel extends AbstractModel {
     @Override
     public String toString() {
         if (financeNumber == 0 && financeName == null) {
-            return "";
+            return EmptyModel.STRING;
         }
         return "(" + financeNumber + ") " + financeName;
     }

@@ -3,6 +3,7 @@ package gui.prodsupl;
 import gui.AbstractComboCEDDialog;
 import gui.Labels;
 import gui.Utils;
+import model.models.EmptyModel;
 import model.models.ProducerModel;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class ProducerDialog extends AbstractComboCEDDialog<ProducerModel> {
                     editButton.setEnabled(true);
                     deleteButton.setEnabled(true);
                 }
-            } else if (item instanceof String && !item.equals("")) {
+            } else if (item instanceof String && !item.equals(EmptyModel.STRING)) {
                 newName = (String) item;
             }
         });

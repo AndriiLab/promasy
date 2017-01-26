@@ -5,6 +5,7 @@ import gui.Labels;
 import gui.MainFrame;
 import gui.empedit.CreateEmployeeFromLoginListener;
 import model.enums.Role;
+import model.models.EmptyModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -136,8 +137,8 @@ public class LoginDialog extends JDialog {
                 }
             });
             if (loginListener != null) {
-                userField.setText("");
-                passwordField.setText("");
+                userField.setText(EmptyModel.STRING);
+                passwordField.setText(EmptyModel.STRING);
                 if (loginListener.isAbleToRegister()) {
                     parent.getCreateEmployeeDialog().setRoleBox(Role.USER);
                     parent.getCreateEmployeeDialog().setVisible(true);

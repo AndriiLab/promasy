@@ -5,6 +5,7 @@ import gui.MainFrame;
 import gui.Utils;
 import model.enums.Role;
 import model.models.EmployeeModel;
+import model.models.EmptyModel;
 import model.models.ReportParametersData;
 
 import javax.swing.*;
@@ -17,8 +18,6 @@ import java.util.List;
  */
 public class ReportParametersDialog extends JDialog {
 
-    private static final EmployeeModel emptyEmployeeModel = new EmployeeModel();
-    private static final String emptyString = "";
     private JComboBox<Role> roleBox;
     private JComboBox<EmployeeModel> headBox;
     private JComboBox<EmployeeModel> departmentHeadBox;
@@ -52,27 +51,27 @@ public class ReportParametersDialog extends JDialog {
 
         headBox = new JComboBox<>();
         headBox.setSize(preferredFieldDim);
-        headBox.addItem(emptyEmployeeModel);
+        headBox.addItem(EmptyModel.EMPLOYEE);
 
         departmentHeadBox = new JComboBox<>();
         departmentHeadBox.setSize(preferredFieldDim);
-        departmentHeadBox.addItem(emptyEmployeeModel);
+        departmentHeadBox.addItem(EmptyModel.EMPLOYEE);
 
         personallyLiableEmpBox = new JComboBox<>();
         personallyLiableEmpBox.setSize(preferredFieldDim);
-        personallyLiableEmpBox.addItem(emptyEmployeeModel);
+        personallyLiableEmpBox.addItem(EmptyModel.EMPLOYEE);
 
         accountantBox = new JComboBox<>();
         accountantBox.setSize(preferredFieldDim);
-        accountantBox.addItem(emptyEmployeeModel);
+        accountantBox.addItem(EmptyModel.EMPLOYEE);
 
         economistBox = new JComboBox<>();
         economistBox.setSize(preferredFieldDim);
-        economistBox.addItem(emptyEmployeeModel);
+        economistBox.addItem(EmptyModel.EMPLOYEE);
 
         headTenderBox = new JComboBox<>();
         headTenderBox.setSize(preferredFieldDim);
-        headTenderBox.addItem(emptyEmployeeModel);
+        headTenderBox.addItem(EmptyModel.EMPLOYEE);
 
         okButton = new JButton(Labels.getProperty("print"));
 
@@ -116,37 +115,37 @@ public class ReportParametersDialog extends JDialog {
     }
 
     private void clear() {
-        roleName = emptyString;
-        headName = emptyString;
-        departmentHeadName = emptyString;
-        personallyLiableEmpName = emptyString;
-        accountantName = emptyString;
-        economistName = emptyString;
-        headTenderName = emptyString;
+        roleName = EmptyModel.STRING;
+        headName = EmptyModel.STRING;
+        departmentHeadName = EmptyModel.STRING;
+        personallyLiableEmpName = EmptyModel.STRING;
+        accountantName = EmptyModel.STRING;
+        economistName = EmptyModel.STRING;
+        headTenderName = EmptyModel.STRING;
     }
 
     public void setHeadBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(headBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(headBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setDepartmentHeadBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(departmentHeadBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(departmentHeadBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setPersonallyLiableEmpBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(personallyLiableEmpBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(personallyLiableEmpBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setAccountantBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(accountantBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(accountantBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setEconomistBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(economistBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(economistBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setHeadTenderBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(headTenderBox, db, emptyEmployeeModel, false);
+        Utils.setBoxData(headTenderBox, db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setListener(ReportParametersDialogListener listener) {

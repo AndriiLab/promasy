@@ -6,10 +6,7 @@ import gui.MainFrame;
 import gui.Utils;
 import model.dao.LoginData;
 import model.enums.Role;
-import model.models.DepartmentModel;
-import model.models.EmployeeModel;
-import model.models.InstituteModel;
-import model.models.SubdepartmentModel;
+import model.models.*;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -22,11 +19,6 @@ import java.util.List;
 
 public class CreateEmployeeDialog extends JDialog {
 
-    private static final String emptyString = "";
-    private final InstituteModel emptyInstituteModel = new InstituteModel();
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
-    private final EmployeeModel emptyEmployeeModel = new EmployeeModel();
     private JButton okButton;
     private JButton cancelButton;
     private JButton addOrganizationButton;
@@ -47,7 +39,6 @@ public class CreateEmployeeDialog extends JDialog {
     private JPasswordField passwordField;
     private JPasswordField repeatPasswordField;
     private EmployeeModel currentEmployeeModel;
-    private EmployeeModel customUserModel;
 
     public CreateEmployeeDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createNewUser"), true);
@@ -56,8 +47,6 @@ public class CreateEmployeeDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-
-        currentEmployeeModel = emptyEmployeeModel;
 
         Dimension comboBoxDim = new Dimension(400, 25);
 
@@ -83,14 +72,14 @@ public class CreateEmployeeDialog extends JDialog {
         //Set up institute combo box and edit buttons
         DefaultComboBoxModel<InstituteModel> instModel = new DefaultComboBoxModel<>();
         instituteBox = new JComboBox<>(instModel);
-        instituteBox.addItem(emptyInstituteModel);
+        instituteBox.addItem(EmptyModel.INSTITUTE);
         instituteBox.setEditable(false);
         instituteBox.setPreferredSize(comboBoxDim);
 
         //Set up department combo box and edit buttons
         DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
         departmentBox = new JComboBox<>(depModel);
-        departmentBox.addItem(emptyDepartmentModel);
+        departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.setEditable(false);
         departmentBox.setEnabled(false);
         departmentBox.setPreferredSize(comboBoxDim);
@@ -98,7 +87,7 @@ public class CreateEmployeeDialog extends JDialog {
         //Set up SubDepartment combo box and edit buttons
         DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
         subdepartmentBox = new JComboBox<>(subdepModel);
-        subdepartmentBox.addItem(emptySubdepartmentModel);
+        subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
         subdepartmentBox.setEditable(false);
         subdepartmentBox.setEnabled(false);
         subdepartmentBox.setPreferredSize(comboBoxDim);
@@ -113,7 +102,7 @@ public class CreateEmployeeDialog extends JDialog {
         instituteBox.addActionListener(e -> {
             InstituteModel selectedItem = (InstituteModel) instituteBox.getSelectedItem();
             if (selectedItem != null) {
-                if (!selectedItem.equals(emptyInstituteModel)) {
+                if (!selectedItem.equals(EmptyModel.INSTITUTE)) {
                     this.setDepData(selectedItem.getDepartments());
                     departmentBox.setEnabled(true);
                     subdepartmentBox.setEnabled(false);
@@ -126,7 +115,7 @@ public class CreateEmployeeDialog extends JDialog {
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedItem = (DepartmentModel) departmentBox.getSelectedItem();
             if (selectedItem != null) {
-                if (!selectedItem.equals(emptyDepartmentModel)) {
+                if (!selectedItem.equals(EmptyModel.DEPARTMENT)) {
                     this.setSubdepData(selectedItem.getSubdepartments());
                     subdepartmentBox.setEnabled(true);
                 } else {
@@ -171,20 +160,20 @@ public class CreateEmployeeDialog extends JDialog {
 
     private void clearDialog() {
         setVisible(false);
-        currentEmployeeModel = emptyEmployeeModel;
+        currentEmployeeModel = EmptyModel.EMPLOYEE;
         setTitle(Labels.getProperty("createNewUser"));
         okButton.setText(Labels.getProperty("createUser"));
-        nameField.setText(emptyString);
-        middleNameField.setText(emptyString);
-        lastNameField.setText(emptyString);
-        emailField.setText(emptyString);
-        phoneMainField.setText(emptyString);
-        phoneReserveField.setText(emptyString);
+        nameField.setText(EmptyModel.STRING);
+        middleNameField.setText(EmptyModel.STRING);
+        lastNameField.setText(EmptyModel.STRING);
+        emailField.setText(EmptyModel.STRING);
+        phoneMainField.setText(EmptyModel.STRING);
+        phoneReserveField.setText(EmptyModel.STRING);
         instituteBox.setSelectedIndex(0);
-        roleBox.setSelectedItem(emptyString);
-        loginField.setText(emptyString);
-        passwordField.setText(emptyString);
-        repeatPasswordField.setText(emptyString);
+        roleBox.setSelectedItem(EmptyModel.STRING);
+        loginField.setText(EmptyModel.STRING);
+        passwordField.setText(EmptyModel.STRING);
+        repeatPasswordField.setText(EmptyModel.STRING);
         roleBox.setSelectedIndex(0);
         instituteBox.setSelectedIndex(0);
     }
@@ -208,7 +197,7 @@ public class CreateEmployeeDialog extends JDialog {
             middleNameField.requestFocusInWindow();
             return false;
         }
-        //TODO add email validator
+        //TODO email validator
         String email = emailField.getText();
         if (email.length() < 2) {
             Utils.emptyFieldError(parent, Labels.getProperty("email"));
@@ -230,20 +219,20 @@ public class CreateEmployeeDialog extends JDialog {
             return false;
         }
         InstituteModel instituteModel = (InstituteModel) instituteBox.getSelectedItem();
-        if (instituteModel.equals(emptyInstituteModel)) {
+        if (instituteModel.equals(EmptyModel.INSTITUTE)) {
             Utils.emptyFieldError(parent, Labels.getProperty("institute"));
             instituteBox.requestFocusInWindow();
             return false;
         }
         DepartmentModel departmentModel = (DepartmentModel) departmentBox.getSelectedItem();
-        if (departmentModel.equals(emptyDepartmentModel)) {
+        if (departmentModel.equals(EmptyModel.DEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
         departmentModel.setInstitute(instituteModel);
         SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-        if (subdepartmentModel.equals(emptySubdepartmentModel)) {
+        if (subdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
@@ -253,7 +242,7 @@ public class CreateEmployeeDialog extends JDialog {
         char[] password = passwordField.getPassword();
         char[] repeatPassword = repeatPasswordField.getPassword();
         // Generating new salt in case of creation of new user or password change for old user
-        if (currentEmployeeModel.equals(emptyEmployeeModel) || password.length > 0 || repeatPassword.length > 0) {
+        if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) || password.length > 0 || repeatPassword.length > 0) {
             if (!Arrays.equals(password, repeatPassword)) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
                 repeatPasswordField.requestFocusInWindow();
@@ -263,11 +252,10 @@ public class CreateEmployeeDialog extends JDialog {
             long salt = Utils.makeSalt();
             String pass = Utils.makePass(password, salt);
             // if model empty createOrUpdate new user
-            if (customUserModel != null) currentEmployeeModel = customUserModel;
-            if (currentEmployeeModel.equals(emptyEmployeeModel) && isUniqueUser) {
+            if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && isUniqueUser) {
                 currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
                 return true;
-            } else if (currentEmployeeModel.equals(emptyEmployeeModel) && !isUniqueUser) {
+            } else if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && !isUniqueUser) {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
                 loginField.requestFocusInWindow();
                 return false;
@@ -323,15 +311,15 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setInstData(List<InstituteModel> instDb) {
-        Utils.setBoxData(instituteBox, instDb, emptyInstituteModel, true);
+        Utils.setBoxData(instituteBox, instDb, EmptyModel.INSTITUTE, true);
     }
 
     public void setDepData(List<DepartmentModel> depDb) {
-        Utils.setBoxData(departmentBox, depDb, emptyDepartmentModel, true);
+        Utils.setBoxData(departmentBox, depDb, EmptyModel.DEPARTMENT, true);
     }
 
     public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-        Utils.setBoxData(subdepartmentBox, subdepDb, emptySubdepartmentModel, true);
+        Utils.setBoxData(subdepartmentBox, subdepDb, EmptyModel.SUBDEPARTMENT, true);
     }
 
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
@@ -539,9 +527,12 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void createCustomUser(EmployeeModel model) {
-        this.customUserModel = model;
+        currentEmployeeModel = model;
         setRoleBox(model.getRole());
-        setVisible(true);
+        if (listener != null) {
+            listener.loadInstitutes();
+        }
+        super.setVisible(true);
     }
 
     @Override
@@ -549,6 +540,7 @@ public class CreateEmployeeDialog extends JDialog {
         if (listener != null && visible) {
             listener.loadInstitutes();
         }
+        currentEmployeeModel = new EmployeeModel();
         super.setVisible(visible);
     }
 }

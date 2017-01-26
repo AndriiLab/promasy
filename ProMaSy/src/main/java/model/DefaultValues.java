@@ -459,7 +459,7 @@ public class DefaultValues {
         File ods = new File("reports/cpv.ods");
         final Sheet sheet = SpreadSheet.createFromFile(ods).getSheet(0);
         int i = 1;
-        while (!sheet.getCellAt("A" + (i + 1)).getTextValue().equals("")) {
+        while (!sheet.getCellAt("A" + (i + 1)).getTextValue().equals(EmptyModel.STRING)) {
             i++;
             String cpvCode = sheet.getCellAt("A" + (i)).getTextValue();
             String cpvUkr = sheet.getCellAt("B" + (i)).getTextValue();

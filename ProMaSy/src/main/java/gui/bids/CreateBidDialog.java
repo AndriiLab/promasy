@@ -23,15 +23,6 @@ import java.util.List;
  */
 public class CreateBidDialog extends JDialog {
 
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
-    private final ProducerModel emptyProducerModel = new ProducerModel();
-    private final SupplierModel emptySupplierModel = new SupplierModel();
-    private final AmountUnitsModel emptyAmountUnitsModel = new AmountUnitsModel();
-    private final BidModel emptyBidModel = new BidModel();
-    private final ReasonForSupplierChoiceModel emptyReasonForSupplierChoiceModel = new ReasonForSupplierChoiceModel();
-    private final CPVModel emptyCpvModel = new CPVModel();
-    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
     private JComboBox<DepartmentModel> departmentBox;
     private JComboBox<SubdepartmentModel> subdepartmentBox;
     private JComboBox<BidType> bidTypeBox;
@@ -58,7 +49,7 @@ public class CreateBidDialog extends JDialog {
     private CreateBidDialogListener listener;
     private MainFrame parent;
     private BidType currentBidType;
-    private BigDecimal totalPrice = BigDecimal.ZERO;
+    private BigDecimal totalPrice;
 
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), true);
@@ -68,6 +59,8 @@ public class CreateBidDialog extends JDialog {
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
+        totalPrice = BigDecimal.ZERO;
+
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
 
@@ -75,15 +68,15 @@ public class CreateBidDialog extends JDialog {
 
         departmentBox = new JComboBox<>();
         departmentBox.setPreferredSize(preferredFieldDim);
-        departmentBox.addItem(emptyDepartmentModel);
+        departmentBox.addItem(EmptyModel.DEPARTMENT);
 
         subdepartmentBox = new JComboBox<>();
         subdepartmentBox.setPreferredSize(preferredFieldDim);
-        subdepartmentBox.addItem(emptySubdepartmentModel);
+        subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
         financeDepartmentBox = new JComboBox<>();
         financeDepartmentBox.setPreferredSize(preferredFieldDim);
-        financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
+        financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
 
         bidTypeBox = new JComboBox<>(BidType.values());
         bidTypeBox.setPreferredSize(preferredFieldDim);
@@ -93,15 +86,15 @@ public class CreateBidDialog extends JDialog {
 
         producerBox = new JComboBox<>();
         producerBox.setPreferredSize(preferredFieldDim);
-        producerBox.addItem(emptyProducerModel);
+        producerBox.addItem(EmptyModel.PRODUCER);
 
         supplierBox = new JComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
-        supplierBox.addItem(emptySupplierModel);
+        supplierBox.addItem(EmptyModel.SUPPLIER);
 
         reasonForSupplierChoiceBox = new JComboBox<>();
         reasonForSupplierChoiceBox.setPreferredSize(preferredFieldDim);
-        reasonForSupplierChoiceBox.addItem(emptyReasonForSupplierChoiceModel);
+        reasonForSupplierChoiceBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
 
         amUnitsBox = new JComboBox<>();
         amUnitsBox.setPreferredSize(preferredFieldDim);
@@ -155,7 +148,7 @@ public class CreateBidDialog extends JDialog {
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedModel = (DepartmentModel) departmentBox.getSelectedItem();
             subdepartmentBox.removeAllItems();
-            subdepartmentBox.addItem(emptySubdepartmentModel);
+            subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
             if (selectedModel != null) {
                 for (SubdepartmentModel model : selectedModel.getSubdepartments()) {
                     subdepartmentBox.addItem(model);
@@ -166,7 +159,7 @@ public class CreateBidDialog extends JDialog {
         subdepartmentBox.addActionListener(e -> {
             SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
             financeDepartmentBox.removeAllItems();
-            financeDepartmentBox.addItem(emptyFinanceDepartmentModel);
+            financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentModel != null) {
                 for (FinanceDepartmentModel financeDepartmentModel : subdepartmentModel.getFinanceDepartments()) {
                     financeDepartmentBox.addItem(financeDepartmentModel);
@@ -177,11 +170,11 @@ public class CreateBidDialog extends JDialog {
         producerBox.addActionListener(e -> {
             if (producerBox.getItemCount() > 0) {
                 ProducerModel model = (ProducerModel) producerBox.getSelectedItem();
-                if (!model.equals(emptyProducerModel)) {
+                if (!model.equals(EmptyModel.PRODUCER)) {
                     catNumberField.setEnabled(true);
                 } else {
                     catNumberField.setEnabled(false);
-                    catNumberField.setText("");
+                    catNumberField.setText(EmptyModel.STRING);
                 }
             }
         });
@@ -189,7 +182,7 @@ public class CreateBidDialog extends JDialog {
         supplierBox.addActionListener(e -> {
             if (supplierBox.getItemCount() > 0) {
                 SupplierModel model = (SupplierModel) supplierBox.getSelectedItem();
-                if (!model.equals(emptySupplierModel)) {
+                if (!model.equals(EmptyModel.SUPPLIER)) {
                     addReasonForSupplierChoiceButton.setEnabled(true);
                     reasonForSupplierChoiceBox.setEnabled(true);
                 } else {
@@ -280,13 +273,13 @@ public class CreateBidDialog extends JDialog {
         departmentBox.setSelectedIndex(0);
         financeDepartmentBox.setSelectedIndex(0);
         producerBox.setSelectedIndex(0);
-        cpvField.setText("");
-        catNumberField.setText("");
-        descriptionPane.setText("");
+        cpvField.setText(EmptyModel.STRING);
+        catNumberField.setText(EmptyModel.STRING);
+        descriptionPane.setText(EmptyModel.STRING);
         supplierBox.setSelectedIndex(0);
         amUnitsBox.setSelectedIndex(0);
-        amountField.setText("");
-        oneUnitPriceField.setText("");
+        amountField.setText(EmptyModel.STRING);
+        oneUnitPriceField.setText(EmptyModel.STRING);
         calculateTotalPrice();
         setTitle(Labels.getProperty("createBid"));
         okButton.setText(Labels.getProperty("createBid"));
@@ -315,7 +308,7 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-        Utils.setBoxData(financeDepartmentBox, db, emptyFinanceDepartmentModel, false);
+        Utils.setBoxData(financeDepartmentBox, db, EmptyModel.FINANCE_DEPARTMENT, false);
     }
 
     void addToDepartmentBox(DepartmentModel model) {
@@ -323,47 +316,47 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setProducerBoxData(List<ProducerModel> db) {
-        Utils.setBoxData(producerBox, db, emptyProducerModel, true);
+        Utils.setBoxData(producerBox, db, EmptyModel.PRODUCER, true);
     }
 
     public void setSupplierBoxData(List<SupplierModel> db) {
-        Utils.setBoxData(supplierBox, db, emptySupplierModel, true);
+        Utils.setBoxData(supplierBox, db, EmptyModel.SUPPLIER, true);
     }
 
     public void setReasonForSupplierChoiceBoxData(List<ReasonForSupplierChoiceModel> db) {
-        Utils.setBoxData(reasonForSupplierChoiceBox, db, emptyReasonForSupplierChoiceModel, true);
+        Utils.setBoxData(reasonForSupplierChoiceBox, db, EmptyModel.REASON_FOR_SUPPLIER_CHOICE, true);
     }
 
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
-        Utils.setBoxData(amUnitsBox, db, emptyAmountUnitsModel, true);
+        Utils.setBoxData(amUnitsBox, db, EmptyModel.AMOUNT_UNITS, true);
     }
 
     private boolean checkFields() {
         DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
-        if (selectedDepartmentModel.equals(emptyDepartmentModel)) {
+        if (selectedDepartmentModel.equals(EmptyModel.DEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         SubdepartmentModel selectedSubdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-        if (selectedSubdepartmentModel.equals(emptySubdepartmentModel)) {
+        if (selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
         FinanceDepartmentModel selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
-        if (selectedFinanceDepartmentModel.equals(emptyFinanceDepartmentModel)) {
+        if (selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("order"));
             financeDepartmentBox.requestFocusInWindow();
             return false;
         }
         ProducerModel selectedProducerModel = (ProducerModel) producerBox.getSelectedItem();
-        if (selectedProducerModel.equals(emptyProducerModel)) {
+        if (selectedProducerModel.equals(EmptyModel.PRODUCER)) {
             selectedProducerModel = null;
         }
         String selectedCatNum = catNumberField.getText().isEmpty() ? null : catNumberField.getText();
-        if (selectedCPV.equals(emptyCpvModel)) {
+        if (selectedCPV.equals(EmptyModel.CPV)) {
             Utils.emptyFieldError(parent, Labels.getProperty("cpvCode"));
             searchCPVButton.requestFocusInWindow();
             return false;
@@ -379,11 +372,11 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
         SupplierModel selectedSupplierModel = (SupplierModel) supplierBox.getSelectedItem();
-        if (selectedSupplierModel.equals(emptySupplierModel)) {
+        if (selectedSupplierModel.equals(EmptyModel.SUPPLIER)) {
             selectedSupplierModel = null;
         }
         ReasonForSupplierChoiceModel selectedReasonModel = (ReasonForSupplierChoiceModel) reasonForSupplierChoiceBox.getSelectedItem();
-        if (selectedSupplierModel != null && !selectedSupplierModel.equals(emptySupplierModel) && selectedReasonModel.equals(emptyReasonForSupplierChoiceModel)) {
+        if (selectedSupplierModel != null && !selectedSupplierModel.equals(EmptyModel.SUPPLIER) && selectedReasonModel.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE)) {
             Utils.emptyFieldError(parent, Labels.getProperty("reasonForSupplierChoice"));
             supplierBox.requestFocusInWindow();
             return false;
@@ -392,7 +385,7 @@ public class CreateBidDialog extends JDialog {
         }
 
         AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUnitsBox.getSelectedItem();
-        if (selectedAmountUnitsModel.equals(emptyAmountUnitsModel)) {
+        if (selectedAmountUnitsModel.equals(EmptyModel.AMOUNT_UNITS)) {
             Utils.emptyFieldError(parent, Labels.getProperty("packing"));
             amUnitsBox.requestFocusInWindow();
             return false;
@@ -414,7 +407,7 @@ public class CreateBidDialog extends JDialog {
         }
 
         String onePriceString = oneUnitPriceField.getText();
-        if (onePriceString.equals("")) {
+        if (onePriceString.equals(EmptyModel.STRING)) {
             Utils.emptyFieldError(parent, Labels.getProperty("oneUnitPrice"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
@@ -437,7 +430,7 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
 
-        if (createdBidModel.equals(emptyBidModel)) {
+        if (createdBidModel.equals(EmptyModel.BID)) {
             List<BidStatusModel> statuses = createdBidModel.getStatuses();
             BidStatusModel statusModel = new BidStatusModel(Status.CREATED, createdBidModel);
             statusModel.setCreated();

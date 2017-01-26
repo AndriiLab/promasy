@@ -174,7 +174,7 @@ public class EmployeeModel extends AbstractModel {
             return empLName + " " + empFName.substring(0, 1) + "."
                     + empMName.substring(0, 1) + ".";
         }
-        return "";
+        return EmptyModel.STRING;
     }
 
     public String toString() {

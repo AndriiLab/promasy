@@ -2,6 +2,7 @@ package gui.finance;
 
 import gui.Labels;
 import gui.Utils;
+import model.models.EmptyModel;
 import model.models.FinanceModel;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -101,7 +102,7 @@ public class CreateFinanceDialog extends JDialog {
     }
 
     private void clear() {
-        String emptyString = "";
+        String emptyString = EmptyModel.STRING;
         orderNumberField.setText(emptyString);
         orderNameField.setText(emptyString);
         materialsAmountField.setText(emptyString);

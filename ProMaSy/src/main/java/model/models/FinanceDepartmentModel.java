@@ -152,7 +152,7 @@ public class FinanceDepartmentModel extends AbstractModel {
     @Override
     public String toString() {
         if (finances == null) {
-            return "";
+            return EmptyModel.STRING;
         }
         return finances.toString();
     }

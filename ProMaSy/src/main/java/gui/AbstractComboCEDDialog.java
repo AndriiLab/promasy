@@ -1,6 +1,7 @@
 package gui;
 
 import model.models.AbstractModel;
+import model.models.EmptyModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -30,7 +31,7 @@ public abstract class AbstractComboCEDDialog<T extends AbstractModel> extends JD
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateModel = emptyModel;
-        newName = "";
+        newName = EmptyModel.STRING;
 
         DefaultComboBoxModel<T> prodModel = new DefaultComboBoxModel<>();
         comboBox = new JComboBox<>(prodModel);
@@ -54,7 +55,7 @@ public abstract class AbstractComboCEDDialog<T extends AbstractModel> extends JD
 
     protected void clearDialog() {
         privateModel = emptyModel;
-        newName = "";
+        newName = EmptyModel.STRING;
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
     }

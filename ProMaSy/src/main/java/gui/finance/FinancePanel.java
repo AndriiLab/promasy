@@ -4,6 +4,7 @@ import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import model.models.EmptyModel;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceModel;
 
@@ -19,8 +20,6 @@ import java.util.List;
  */
 public class FinancePanel extends JPanel {
 
-    private final FinanceModel emptyFinanceModel = new FinanceModel();
-    private final FinanceDepartmentModel emptyFinanceDepartmentModel = new FinanceDepartmentModel();
     private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new ArrayList<>();
 
     private JButton createOrderButton;
@@ -41,7 +40,7 @@ public class FinancePanel extends JPanel {
 
     public FinancePanel(MainFrame parent) {
 
-        selectedFinanceModel = emptyFinanceModel;
+        selectedFinanceModel = EmptyModel.FINANCE;
 
         CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("finance_ced"));
 
@@ -63,7 +62,7 @@ public class FinancePanel extends JPanel {
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 0);
                     setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
-                    if (!selectedFinanceModel.equals(emptyFinanceModel)) {
+                    if (!selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                         editOrderButton.setEnabled(true);
                         deleteOrderButton.setEnabled(true);
                         createDepOrderButton.setEnabled(true);
@@ -96,7 +95,7 @@ public class FinancePanel extends JPanel {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedDepFinModel = (FinanceDepartmentModel) depFinanceTable.getModel().getValueAt(row, 8);
-                    if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
+                    if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
                         editOrderButton.setEnabled(true);
                         deleteOrderButton.setEnabled(true);
                         createDepOrderButton.setEnabled(true);
@@ -112,17 +111,17 @@ public class FinancePanel extends JPanel {
         createOrderButton.addActionListener(e -> parent.getCreateFinanceDialog().setVisible(true));
 
         editOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(emptyFinanceModel)) {
+            if (!selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                 parent.getCreateFinanceDialog().setFinanceModel(selectedFinanceModel);
             }
         });
 
         deleteOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(emptyFinanceModel) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
+            if (!selectedFinanceModel.equals(EmptyModel.FINANCE) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
                 selectedFinanceModel.setDeleted();
                 listener.persistModelEventOccurred(selectedFinanceModel);
                 setDepartmentFinanceTableData(emptyDepartmentFinancesList);
-                selectedFinanceModel = emptyFinanceModel;
+                selectedFinanceModel = EmptyModel.FINANCE;
             }
         });
 
@@ -154,7 +153,7 @@ public class FinancePanel extends JPanel {
         });
 
         createDepOrderButton.addActionListener(e -> {
-            if (selectedFinanceModel.equals(emptyFinanceModel)) {
+            if (selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                 Utils.emptyFieldError(parent, Labels.getProperty("finance"));
             } else {
                 parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
@@ -162,21 +161,21 @@ public class FinancePanel extends JPanel {
         });
 
         editDepOrderButton.addActionListener(e -> {
-            if (selectedDepFinModel.equals(emptyFinanceDepartmentModel)) {
+            if (selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
                 parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
             } else {
                 parent.getCreateDepartmentFinancesDialog().editDepartmentModel(selectedDepFinModel);
-                selectedDepFinModel = emptyFinanceDepartmentModel;
+                selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
 
         deleteDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(emptyFinanceDepartmentModel) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName()) && listener != null) {
+            if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName()) && listener != null) {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
                 setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
-                selectedDepFinModel = emptyFinanceDepartmentModel;
+                selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
     }

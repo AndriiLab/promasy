@@ -3,10 +3,7 @@ package gui.finance;
 import gui.Labels;
 import gui.Utils;
 import model.enums.BidType;
-import model.models.DepartmentModel;
-import model.models.FinanceDepartmentModel;
-import model.models.FinanceModel;
-import model.models.SubdepartmentModel;
+import model.models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +16,6 @@ import java.math.RoundingMode;
  * Dialog for creation and updating of {@link FinanceDepartmentModel}
  */
 public class CreateDepartmentFinancesDialog extends JDialog {
-
-    private final DepartmentModel emptyDepartmentModel = new DepartmentModel();
-    private final SubdepartmentModel emptySubdepartmentModel = new SubdepartmentModel();
 
     private SubdepartmentModel selectedSubdepartment;
     private FinanceModel currentFinanceModel;
@@ -63,7 +57,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
         departmentBox = new JComboBox<>();
         departmentBox.setPreferredSize(Utils.COMBOBOX_DIMENSION);
-        departmentBox.addItem(emptyDepartmentModel);
+        departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
             if (selectedDepartmentModel != null) {
@@ -75,7 +69,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         subdepartmentBox = new JComboBox<>();
         subdepartmentBox.setPreferredSize(Utils.COMBOBOX_DIMENSION);
         subdepartmentBox.setEnabled(false);
-        subdepartmentBox.addItem(emptySubdepartmentModel);
+        subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
         depMaterialsAmountField = new JTextField(10);
         depEquipmentAmountField = new JTextField(10);
@@ -118,7 +112,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
     private void clear() {
         super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
-        String emptyString = "";
+        String emptyString = EmptyModel.STRING;
         departmentBox.setSelectedIndex(0);
         subdepartmentBox.setSelectedIndex(0);
         depMaterialsAmountField.setText(emptyString);
@@ -127,7 +121,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         depMaterialAmount = null;
         depEquipmentAmount = null;
         depServicesAmount = null;
-        selectedSubdepartment = emptySubdepartmentModel;
+        selectedSubdepartment = EmptyModel.SUBDEPARTMENT;
         currentFinanceModel = null;
         currentFinanceDepartmentModel = new FinanceDepartmentModel();
         this.setVisible(false);
@@ -135,14 +129,14 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
     private boolean checkInput() {
         DepartmentModel selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
-        if (selectedDepartment.equals(emptyDepartmentModel)) {
+        if (selectedDepartment.equals(EmptyModel.DEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-        if (selectedSubdepartment.equals(emptySubdepartmentModel)) {
+        if (selectedSubdepartment.equals(EmptyModel.SUBDEPARTMENT)) {
             Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
@@ -167,11 +161,11 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
 
     public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
-        Utils.setBoxData(departmentBox, db, emptyDepartmentModel, false);
+        Utils.setBoxData(departmentBox, db, EmptyModel.DEPARTMENT, false);
     }
 
     public void setSubdepartmentBoxData(java.util.List<SubdepartmentModel> db) {
-        Utils.setBoxData(subdepartmentBox, db, emptySubdepartmentModel, true);
+        Utils.setBoxData(subdepartmentBox, db, EmptyModel.SUBDEPARTMENT, true);
     }
 
     public void setVisible(FinanceModel model, boolean isCreate) {
@@ -260,7 +254,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
-        financesPanel.add(new JLabel(""), gc);
+        financesPanel.add(new JLabel(EmptyModel.STRING), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
