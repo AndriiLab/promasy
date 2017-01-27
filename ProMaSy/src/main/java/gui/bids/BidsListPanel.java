@@ -262,14 +262,15 @@ public class BidsListPanel extends JPanel {
     }
 
     private void setDataToCreateBidDialog() {
-        if (!isSelectedFinanceDepartmentModelEmpty()) {
+        parent.getCreateBidDialog().setCurrentBidType(selectedBidType);
+        if (!isSelectedDepartmentModelEmpty()) {
             parent.getCreateBidDialog().setCurrentDepartment(selectedDepartmentModel);
+        }
+        if (!isSelectedSubepartmentModelEmpty()) {
             parent.getCreateBidDialog().setCurrentSubdepartment(selectedSubdepartmentModel);
-            parent.getCreateBidDialog().setCurrentBidType(selectedBidType);
+        }
+        if (!isSelectedFinanceDepartmentModelEmpty()) {
             parent.getCreateBidDialog().setCurrentFinanceDepartment(selectedFinanceDepartmentModel);
-        } else if (!isSelectedDepartmentModelEmpty()) {
-            parent.getCreateBidDialog().setCurrentDepartment(selectedDepartmentModel);
-            parent.getCreateBidDialog().setCurrentBidType(selectedBidType);
         }
     }
 

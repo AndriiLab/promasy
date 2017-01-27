@@ -442,6 +442,7 @@ public class Controller {
         try {
             Database.DB.connect(conSet);
             logEvent(Labels.getProperty("connectedToDB"), Colors.GREEN);
+            mainFrame.getSplashScreen().close();
         } catch (Exception e) {
             e.printStackTrace();
             logEvent(Labels.getProperty("noConnectionToDB"), Colors.RED);

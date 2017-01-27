@@ -1,10 +1,13 @@
 package model.dao;
 
+import model.enums.BidType;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceDepartmentModel_;
+import model.models.FinanceModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -45,5 +48,33 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(FinanceDepartmentModel_.active), true));
         return super.getList();
+    }
+
+    public BigDecimal getTotalAmount(FinanceModel model, BidType type) {
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query;
+        switch (type) {
+            case MATERIALS:
+                query = em.createQuery("select sum(dfm.totalMaterialsAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
+                break;
+            case EQUIPMENT:
+                query = em.createQuery("select sum(dfm.totalEqupmentAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
+                break;
+            case SERVICES:
+                query = em.createQuery("select sum(dfm.totalServicesAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
+                break;
+            default:
+                return BigDecimal.ZERO;
+        }
+        query.setParameter("finances", model);
+        BigDecimal totalAmount = (BigDecimal) query.getSingleResult();
+        em.getTransaction().commit();
+
+        if (totalAmount == null) {
+            totalAmount = BigDecimal.ZERO;
+        }
+
+        return totalAmount;
     }
 }

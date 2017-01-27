@@ -5,6 +5,7 @@ import model.models.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -59,5 +60,21 @@ public class BidsQueries extends SQLQueries<BidModel> {
     @Override
     public List<BidModel> getResults() throws SQLException {
         return null;
+    }
+
+    public BigDecimal getTotalAmount(FinanceDepartmentModel financeDepartmentModel, BidType bidType) {
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select sum(bm.amount * bm.onePrice) from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances = :finances")
+                .setParameter("bidType", bidType)
+                .setParameter("finances", financeDepartmentModel);
+        BigDecimal totalAmount = (BigDecimal) query.getSingleResult();
+        em.getTransaction().commit();
+
+        if (totalAmount == null) {
+            totalAmount = BigDecimal.ZERO;
+        }
+
+        return totalAmount;
     }
 }

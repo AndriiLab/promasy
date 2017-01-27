@@ -24,7 +24,7 @@ public class BidsReport {
     public BidsReport(List<BidsReportModel> bidsList, MainFrame parent) {
         JasperPrint jasperPrint;
         try {
-            jasperPrint = JasperFillManager.fillReport("reports\\Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
+            jasperPrint = JasperFillManager.fillReport("reports/Bids_Report.jasper", new HashMap<>(), new JRBeanCollectionDataSource(bidsList));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             EventQueue.invokeLater(() -> {
                 jasperViewer.setVisible(true);

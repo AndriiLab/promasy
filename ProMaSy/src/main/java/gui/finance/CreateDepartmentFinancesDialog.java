@@ -161,7 +161,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
 
     public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
-        Utils.setBoxData(departmentBox, db, EmptyModel.DEPARTMENT, false);
+        Utils.setBoxData(departmentBox, db, EmptyModel.DEPARTMENT, true);
     }
 
     public void setSubdepartmentBoxData(java.util.List<SubdepartmentModel> db) {

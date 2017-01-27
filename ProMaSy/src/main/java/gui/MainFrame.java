@@ -66,12 +66,16 @@ public class MainFrame extends JFrame {
     private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
     private MainFrameListener listener;
+    private DrawSplashScreen splashScreen;
 
     public MainFrame() {
         // Setting name of the window and its parameters
         super(Labels.getProperty("mainFrameSuper"));
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        splashScreen = new DrawSplashScreen();
+        splashScreen.start();
 
         // registering font for icons
         IconFontSwing.register(FontAwesome.getIconFont());
@@ -500,6 +504,10 @@ public class MainFrame extends JFrame {
 
     public CreateDepartmentFinancesDialog getCreateDepartmentFinancesDialog() {
         return createDepartmentFinancesDialog;
+    }
+
+    public DrawSplashScreen getSplashScreen() {
+        return splashScreen;
     }
 
     @Override

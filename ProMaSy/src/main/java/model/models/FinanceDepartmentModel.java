@@ -1,5 +1,6 @@
 package model.models;
 
+import model.dao.Database;
 import model.enums.BidType;
 
 import javax.persistence.*;
@@ -139,14 +140,12 @@ public class FinanceDepartmentModel extends AbstractModel {
         }
     }
 
+    public BigDecimal getUsedAmount(BidType bidType) {
+        return Database.BIDS.getTotalAmount(this, bidType);
+    }
+
     public BigDecimal getLeftAmount(BidType bidType) {
-        BigDecimal leftAmount = getTotalAmount(bidType);
-        for (BidModel bid : bids) {
-            if (bid.getType().equals(bidType) && bid.isActive()) {
-                leftAmount = leftAmount.subtract(bid.getTotalPrice());
-            }
-        }
-        return leftAmount;
+        return getTotalAmount(bidType).subtract(getUsedAmount(bidType));
     }
 
     @Override
