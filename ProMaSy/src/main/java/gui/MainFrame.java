@@ -117,35 +117,27 @@ public class MainFrame extends JFrame {
         // init panes according to user roles
         if (role == Role.ADMIN) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.DIRECTOR) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.DEPUTY_DIRECTOR) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.ACCOUNTANT) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.ECONOMIST) {
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.HEAD_OF_DEPARTMENT) {
             useUserDepartment();
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.PERSONALLY_LIABLE_EMPLOYEE) {
             useUserDepartment();
             createTabPane();
-            setJMenuBar(createMenuBar(true));
         } else if (role == Role.USER) {
             useUserDepartment();
-            setJMenuBar(createMenuBar(false));
             add(bidsListPanel, BorderLayout.CENTER);
         }
+        setJMenuBar(createMenuBar());
 
         // setting layout and formating frames on mainframe
         add(toolbar, BorderLayout.PAGE_START);
@@ -176,7 +168,7 @@ public class MainFrame extends JFrame {
     }
 
     //This method generates menubar
-    private JMenuBar createMenuBar(boolean isAdvanced) {
+    private JMenuBar createMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
@@ -225,35 +217,31 @@ public class MainFrame extends JFrame {
         infoItem.addActionListener(e -> infoDialog.setVisible(true));
 
         // advanced menu for non users
-        if (isAdvanced) {
+        if (LoginData.getInstance().getRole() == Role.ADMIN) {
             JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
             editOrgItem.setIcon(Icons.ORGANIZATION);
 
             editMenu.add(editOrgItem);
 
-
             JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
             JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("connectionWithDBSettings"));
             conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
-
             settingsMenu.add(conSettItem);
 
-            if (LoginData.getInstance().getRole() == Role.ADMIN) {
-                JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
-                editEmpItem.setIcon(Icons.USERS);
-                editMenu.add(editEmpItem);
+            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
+            editEmpItem.setIcon(Icons.USERS);
+            editMenu.add(editEmpItem);
 
-                JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
-                settingsMenu.addSeparator();
-                settingsMenu.add(setCurrentVersionAsMinimum);
-                setCurrentVersionAsMinimum.addActionListener(e -> {
-                    int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
-                    if (action == JOptionPane.OK_OPTION && listener != null) {
-                        listener.setMinimumVersionEventOccurred();
-                    }
-                });
-                editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
-            }
+            JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
+            settingsMenu.addSeparator();
+            settingsMenu.add(setCurrentVersionAsMinimum);
+            setCurrentVersionAsMinimum.addActionListener(e -> {
+                int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
+                if (action == JOptionPane.OK_OPTION && listener != null) {
+                    listener.setMinimumVersionEventOccurred();
+                }
+            });
+            editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
 
             menuBar.add(settingsMenu);
 
@@ -261,7 +249,6 @@ public class MainFrame extends JFrame {
 
             conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
         }
-
         menuBar.add(helpMenu);
 
         return menuBar;
