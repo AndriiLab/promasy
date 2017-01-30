@@ -18,7 +18,6 @@ import gui.login.LoginListener;
 import gui.prodsupl.ProducerDialogListener;
 import gui.prodsupl.ReasonsDialogListener;
 import gui.prodsupl.SupplierDialogListener;
-import model.DefaultValues;
 import model.dao.Database;
 import model.dao.LoginData;
 import model.enums.BidType;
@@ -319,6 +318,7 @@ public class Controller {
             public void getBidsByFinanceDepartment(BidType type, FinanceDepartmentModel selectedFinanceDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
             }
+
             @Override
             public void getAllData() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
@@ -394,17 +394,6 @@ public class Controller {
         LoginData.getInstance(firstUser);
         mainFrame.initialize();
         initListeners();
-        //passing institute structure
-        try {
-            DefaultValues.setAmountUnits();
-            DefaultValues.setInstituteStructure();
-            DefaultValues.setCpv();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
@@ -437,17 +426,24 @@ public class Controller {
         mainFrame.setDefaultConnectionSettings(model);
     }
 
+    private void closeSplashScreen() {
+        if (mainFrame.getSplashScreen().isVisible()) {
+            mainFrame.getSplashScreen().close();
+        }
+    }
+
     // connecting to DB
     private void connect() {
         try {
             Database.DB.connect(conSet);
             logEvent(Labels.getProperty("connectedToDB"), Colors.GREEN);
-            mainFrame.getSplashScreen().close();
+            closeSplashScreen();
         } catch (Exception e) {
             e.printStackTrace();
             logEvent(Labels.getProperty("noConnectionToDB"), Colors.RED);
             JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
                     Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE);
+            closeSplashScreen();
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
         }

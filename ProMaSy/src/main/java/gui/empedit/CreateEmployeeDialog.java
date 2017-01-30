@@ -281,6 +281,7 @@ public class CreateEmployeeDialog extends JDialog {
     public void setEmployeeModel(EmployeeModel model) {
         if (LoginData.getInstance().getRole() != Role.ADMIN) {
             roleBox.setEnabled(false);
+            addOrganizationButton.setEnabled(false);
         }
         this.currentEmployeeModel = model;
         nameField.setText(currentEmployeeModel.getEmpFName());

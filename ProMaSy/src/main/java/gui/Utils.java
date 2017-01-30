@@ -80,7 +80,7 @@ public class Utils {
     }
 
     public static void saveConnectionSettings(ConnectionSettingsModel model) throws IOException {
-        FileOutputStream fos = new FileOutputStream("promasy_settings.ser");
+        FileOutputStream fos = new FileOutputStream("settings.ser");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(model);
         oos.close();
@@ -88,7 +88,7 @@ public class Utils {
     }
 
     public static ConnectionSettingsModel loadConnectionSettings() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream("promasy_settings.ser");
+        FileInputStream fis = new FileInputStream("settings.ser");
         ObjectInputStream ois = new ObjectInputStream(fis);
         ConnectionSettingsModel model = (ConnectionSettingsModel) ois.readObject();
         ois.close();

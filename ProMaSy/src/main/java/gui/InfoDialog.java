@@ -1,47 +1,34 @@
 package gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class InfoDialog extends JDialog {
 
     public InfoDialog(JFrame parent) {
         super(parent, Labels.getProperty("aboutSoftware"), true);
-        setSize(300, 200);
-		setLocationRelativeTo(parent);
+        setResizable(false);
+        setSize(610, 430);
+        setLocationRelativeTo(parent);
 
-        JTextPane infoPane = new JTextPane();
-		infoPane.setEditable(false);
-		infoPane.setText(Labels.withColon("infoPaneText") + Labels.getVersion() + "\n" + Labels.withColon("build") + Labels.getBuildDate());
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(getClass().getResource("/splash.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        JButton okButton = new JButton(Labels.getProperty("okBtn"));
-		okButton.addActionListener(e -> setVisible(false));
+        Graphics2D g = (Graphics2D) img.getGraphics();
+        DrawSplashScreen.drawVersionAndBuild(g);
 
-		JPanel infoPanel = new JPanel();
-		JPanel buttonPanel = new JPanel();
+        ImageIcon icon = new ImageIcon(img);
 
-		int space = 5;
-		Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-		Border simpleBorder = BorderFactory.createRaisedBevelBorder();
-
-		infoPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, simpleBorder));
-		infoPanel.setLayout(new GridBagLayout());
-
-		GridBagConstraints gc = new GridBagConstraints();
-
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.weightx = 1;
-		gc.weighty = 1;
-		gc.fill = GridBagConstraints.CENTER;
-		infoPanel.add(infoPane);
-
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		buttonPanel.add(okButton, gc);
+        JLabel label = new JLabel(icon);
 
 		setLayout(new BorderLayout());
-		add(infoPanel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-	}
+        add(label, BorderLayout.CENTER);
+    }
 }
