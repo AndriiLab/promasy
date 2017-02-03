@@ -31,6 +31,7 @@ import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -686,7 +687,7 @@ public class Controller {
         } catch (SQLException e) {
             errorLogEvent(e,
                     Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
-            return null;
+            return new LinkedList<>();
         }
     }
 

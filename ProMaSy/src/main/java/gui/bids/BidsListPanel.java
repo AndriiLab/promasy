@@ -5,6 +5,7 @@ import gui.bids.reports.BidsReport;
 import gui.bids.status.StatusDialog;
 import model.dao.LoginData;
 import model.enums.BidType;
+import model.enums.Role;
 import model.models.*;
 
 import javax.swing.*;
@@ -138,8 +139,8 @@ public class BidsListPanel extends JPanel {
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
             setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
-            if (isSelectedDepartmentModelEmpty() && listener != null) {
-                listener.selectAllBidsEventOccurred(selectedBidType);
+            if (listener != null) {
+                getBids();
             }
             selectedBidModel = EmptyModel.BID;
             selectedBidModels.clear();
@@ -153,9 +154,10 @@ public class BidsListPanel extends JPanel {
             financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentBox.getSelectedItem() != null) {
                 selectedSubdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
-                setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
-                if (listener != null && isSelectedSubepartmentModelEmpty()) {
-                    listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+                if (isSelectedSubepartmentModelEmpty() && listener != null) {
+                    getBids();
+                } else {
+                    setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
                 }
                 selectedBidModel = EmptyModel.BID;
                 selectedBidModels.clear();
@@ -169,10 +171,11 @@ public class BidsListPanel extends JPanel {
             if (financeDepartmentBox.getSelectedItem() != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                 List<BidModel> bids = selectedFinanceDepartmentModel.getBids(selectedBidType);
-                if (isSelectedFinanceDepartmentModelEmpty() && !isSelectedDepartmentModelEmpty() && listener != null) {
-                    listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+                if (isSelectedFinanceDepartmentModelEmpty() && listener != null) {
+                    getBids();
+                } else {
+                    setBidsTableData(bids);
                 }
-                this.setBidsTableData(bids);
                 selectedBidModel = EmptyModel.BID;
                 selectedBidModels.clear();
             }
@@ -248,11 +251,11 @@ public class BidsListPanel extends JPanel {
     private void getBids() {
         if (isSelectedDepartmentModelEmpty()) {
             listener.selectAllBidsEventOccurred(selectedBidType);
-        } else if (isSelectedFinanceDepartmentModelEmpty()) {
+        } else if (isSelectedSubepartmentModelEmpty()) {
             listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
-        } else if (!isSelectedFinanceDepartmentModelEmpty() && !isSelectedDepartmentModelEmpty()) {
+        } else if (isSelectedFinanceDepartmentModelEmpty()) {
             listener.getBidsBySubdepartment(selectedBidType, selectedSubdepartmentModel);
-        } else {
+        } else if (!isSelectedFinanceDepartmentModelEmpty()) {
             listener.getBidsByFinanceDepartment(selectedBidType, selectedFinanceDepartmentModel);
         }
     }
@@ -283,7 +286,7 @@ public class BidsListPanel extends JPanel {
     }
 
     private boolean isSelectedFinanceDepartmentModelEmpty() {
-        return selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT);
+        return selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT) && !isSelectedSubepartmentModelEmpty();
     }
 
     private void setFinanceLabels() {
@@ -302,9 +305,11 @@ public class BidsListPanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         departmentBox.setEnabled(false);
-        subdepartmentBox.setEnabled(false);
         parent.getCreateBidDialog().setEnabledDepartmentBox(false);
-        parent.getCreateBidDialog().setEnabledSubdepartmentBox(false);
+        if (LoginData.getInstance().getRole().equals(Role.USER)) {
+            subdepartmentBox.setEnabled(false);
+            parent.getCreateBidDialog().setEnabledSubdepartmentBox(false);
+        }
     }
 
     public void setDepartmentBoxData(List<DepartmentModel> db) {
@@ -332,15 +337,11 @@ public class BidsListPanel extends JPanel {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-//        // bugfix for multiple identical items in combobox
-//        if (financeDepartmentBox.getItemCount() > 1) {
-//            financeDepartmentBox.removeAllItems();
-//        }
-        Utils.setBoxData(financeDepartmentBox, db, EmptyModel.FINANCE_DEPARTMENT, false);
+        Utils.setBoxData(financeDepartmentBox, db, EmptyModel.FINANCE_DEPARTMENT, true);
     }
 
-    public long getSelectedDepartmentId() {
-        return ((DepartmentModel) departmentBox.getSelectedItem()).getModelId();
+    public DepartmentModel getSelectedDepartment() {
+        return (DepartmentModel) departmentBox.getSelectedItem();
     }
 
     public void setBidsTableData(List<BidModel> db) {
