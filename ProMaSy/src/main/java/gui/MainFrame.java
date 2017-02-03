@@ -121,21 +121,25 @@ public class MainFrame extends JFrame {
             createTabPane();
         } else if (role == Role.DEPUTY_DIRECTOR) {
             createTabPane();
-        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
-            createTabPane();
         } else if (role == Role.ACCOUNTANT) {
             createTabPane();
         } else if (role == Role.ECONOMIST) {
             createTabPane();
+        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
+            createTabPane();
+            financePanel.hideCed();
         } else if (role == Role.HEAD_OF_DEPARTMENT) {
             useUserDepartment();
             createTabPane();
+            financePanel.hideCed();
         } else if (role == Role.PERSONALLY_LIABLE_EMPLOYEE) {
             useUserDepartment();
             createTabPane();
+            financePanel.hideCed();
         } else if (role == Role.USER) {
             useUserDepartment();
             add(bidsListPanel, BorderLayout.CENTER);
+            financePanel.hideCed();
         }
         setJMenuBar(createMenuBar());
 
@@ -158,6 +162,7 @@ public class MainFrame extends JFrame {
 
     private void useUserDepartment() {
         bidsListPanel.setUseUserDepartment();
+        financePanel.setUseUserDepartment();
     }
 
     private void createTabPane() {

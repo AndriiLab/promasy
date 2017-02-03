@@ -290,6 +290,11 @@ public class Controller {
             public void loadDepartments() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
             }
+
+            @Override
+            public void getFinancesByDepartment(DepartmentModel department) {
+                mainFrame.setFinanceModelList(getFinanceByDepartment(department));
+            }
         });
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
@@ -620,12 +625,30 @@ public class Controller {
         }
     }
 
+    private List<FinanceModel> getFinanceByDepartment(DepartmentModel departmentModel) {
+        try {
+            return Database.FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+            return null;
+        }
+    }
+
     private List<FinanceDepartmentModel> getDepartmentFinancesByOrder(long orderId) {
         try {
             return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
         } catch (SQLException e) {
             errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: "
                     + orderId + Labels.withSpaceBefore("error"));
+            return null;
+        }
+    }
+
+    private List<FinanceDepartmentModel> getDepartmentFinancesByDepartment(DepartmentModel departmentModel) {
+        try {
+            return Database.DEPARTMENT_FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
+        } catch (SQLException e) {
+            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + Labels.withSpaceBefore("error"));
             return null;
         }
     }

@@ -55,7 +55,7 @@ public class CreateBidDialog extends JDialog {
         super(parent, Labels.getProperty("createBid"), true);
         this.parent = parent;
         setSize(516, 482);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 

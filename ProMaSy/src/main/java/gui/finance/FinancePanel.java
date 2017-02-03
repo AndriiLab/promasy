@@ -4,6 +4,7 @@ import gui.CrEdDelButtons;
 import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import model.dao.LoginData;
 import model.models.EmptyModel;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceModel;
@@ -37,10 +38,12 @@ public class FinancePanel extends JPanel {
 
     private FinanceModel selectedFinanceModel;
     private FinanceDepartmentModel selectedDepFinModel;
+    private boolean useUserDepartment;
 
     public FinancePanel(MainFrame parent) {
 
         selectedFinanceModel = EmptyModel.FINANCE;
+        useUserDepartment = false;
 
         CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("finance_ced"));
 
@@ -198,7 +201,9 @@ public class FinancePanel extends JPanel {
         List<FinanceDepartmentModel> activeList = new ArrayList<>();
         for (FinanceDepartmentModel model : db) {
             if (model.isActive()) {
-                activeList.add(model);
+                if (!useUserDepartment || (useUserDepartment && model.getSubdepartment().getDepartment().equals(LoginData.getInstance().getSubdepartment().getDepartment()))) {
+                    activeList.add(model);
+                }
             }
         }
         departmentFinanceTableModel.setData(activeList);
@@ -208,6 +213,23 @@ public class FinancePanel extends JPanel {
 
     public void setFinancePanelListener(FinancePanelListener listener) {
         this.listener = listener;
+    }
+
+    public void hideCed() {
+        createOrderButton.setVisible(false);
+        editOrderButton.setVisible(false);
+        deleteOrderButton.setVisible(false);
+        createDepOrderButton.setVisible(false);
+        editDepOrderButton.setVisible(false);
+        deleteDepOrderButton.setVisible(false);
+    }
+
+
+    public void setUseUserDepartment() {
+        useUserDepartment = true;
+        if (listener != null) {
+            listener.getFinancesByDepartment(LoginData.getInstance().getSubdepartment().getDepartment());
+        }
     }
 
     private void createLayout() {

@@ -86,7 +86,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
                 currentFinanceDepartmentModel.setFinances(currentFinanceModel);
                 currentFinanceDepartmentModel.setSubdepartment(selectedSubdepartment);
                 currentFinanceDepartmentModel.setTotalMaterialsAmount(depMaterialAmount);
-                currentFinanceDepartmentModel.setTotalEqupmentAmount(depEquipmentAmount);
+                currentFinanceDepartmentModel.setTotalEquipmentAmount(depEquipmentAmount);
                 currentFinanceDepartmentModel.setTotalServicesAmount(depServicesAmount);
                 if (currentFinanceDepartmentModel.getModelId() == 0) {
                     currentFinanceDepartmentModel.setCreated();
@@ -188,7 +188,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
         Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
         depMaterialsAmountField.setText(selectedDepFinModel.getTotalMaterialsAmount().toString());
-        depEquipmentAmountField.setText(selectedDepFinModel.getTotalEqupmentAmount().toString());
+        depEquipmentAmountField.setText(selectedDepFinModel.getTotalEquipmentAmount().toString());
         depServicesAmountField.setText(selectedDepFinModel.getTotalServicesAmount().toString());
         super.setTitle(Labels.withSpaceAfter("editDepartmentForFinance") + selectedDepFinModel.getFinances().toString());
         okButton.setText(Labels.getProperty("edit"));

@@ -32,26 +32,26 @@ public class FinanceDepartmentModel extends AbstractModel {
     private BigDecimal totalMaterialsAmount;
 
     @Column(name = "total_eqipment")
-    private BigDecimal totalEqupmentAmount;
+    private BigDecimal totalEquipmentAmount;
 
     @Column(name = "total_services")
     private BigDecimal totalServicesAmount;
 
-    public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidModel> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEqupmentAmount, BigDecimal totalServicesAmount) {
+    public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidModel> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEquipmentAmount, BigDecimal totalServicesAmount) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.finances = finances;
         this.subdepartment = subdepartment;
         this.bids = bids;
         this.totalMaterialsAmount = totalMaterialsAmount;
-        this.totalEqupmentAmount = totalEqupmentAmount;
+        this.totalEquipmentAmount = totalEquipmentAmount;
         this.totalServicesAmount = totalServicesAmount;
     }
 
-    public FinanceDepartmentModel(FinanceModel model, SubdepartmentModel subdepartment, BigDecimal totalMaterialsAmount, BigDecimal totalEqupmentAmount, BigDecimal totalServicesAmount) {
+    public FinanceDepartmentModel(FinanceModel model, SubdepartmentModel subdepartment, BigDecimal totalMaterialsAmount, BigDecimal totalEquipmentAmount, BigDecimal totalServicesAmount) {
         this.finances = model;
         this.subdepartment = subdepartment;
         this.totalMaterialsAmount = totalMaterialsAmount;
-        this.totalEqupmentAmount = totalEqupmentAmount;
+        this.totalEquipmentAmount = totalEquipmentAmount;
         this.totalServicesAmount = totalServicesAmount;
     }
 
@@ -111,12 +111,12 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.totalMaterialsAmount = totalMaterialsAmount;
     }
 
-    public BigDecimal getTotalEqupmentAmount() {
-        return totalEqupmentAmount;
+    public BigDecimal getTotalEquipmentAmount() {
+        return totalEquipmentAmount;
     }
 
-    public void setTotalEqupmentAmount(BigDecimal totalEqupmentAmount) {
-        this.totalEqupmentAmount = totalEqupmentAmount;
+    public void setTotalEquipmentAmount(BigDecimal totalEqupmentAmount) {
+        this.totalEquipmentAmount = totalEqupmentAmount;
     }
 
     public BigDecimal getTotalServicesAmount() {
@@ -134,7 +134,7 @@ public class FinanceDepartmentModel extends AbstractModel {
             case SERVICES:
                 return totalServicesAmount;
             case EQUIPMENT:
-                return totalEqupmentAmount;
+                return totalEquipmentAmount;
             default:
                 return null;
         }

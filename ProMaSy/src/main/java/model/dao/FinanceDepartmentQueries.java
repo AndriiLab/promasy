@@ -59,7 +59,7 @@ public class FinanceDepartmentQueries extends SQLQueries<FinanceDepartmentModel>
                 query = em.createQuery("select sum(dfm.totalMaterialsAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
                 break;
             case EQUIPMENT:
-                query = em.createQuery("select sum(dfm.totalEqupmentAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
+                query = em.createQuery("select sum(dfm.totalEquipmentAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");
                 break;
             case SERVICES:
                 query = em.createQuery("select sum(dfm.totalServicesAmount) from FinanceDepartmentModel dfm where dfm.active = true and dfm.finances = :finances");

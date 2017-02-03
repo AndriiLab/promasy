@@ -1,5 +1,6 @@
 package gui.finance;
 
+import model.models.DepartmentModel;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceModel;
 
@@ -12,4 +13,6 @@ public interface FinancePanelListener {
     void persistModelEventOccurred(FinanceDepartmentModel model);
 
     void loadDepartments();
+
+    void getFinancesByDepartment(DepartmentModel department);
 }
