@@ -43,6 +43,7 @@ public class CreateBidDialog extends JDialog {
     private JTextField amountField;
     private JTextField oneUnitPriceField;
     private JTextPane descriptionPane;
+    private JScrollPane descriptionScrollPane;
     private BidModel createdBidModel;
     private CPVModel selectedCPV;
     private JLabel totalPriceLabel;
@@ -121,6 +122,8 @@ public class CreateBidDialog extends JDialog {
         addAmUnitsButton.setPreferredSize(buttonDim);
         addAmUnitsButton.setEnabled(true);
 
+        selectedCPV = EmptyModel.CPV;
+
         searchCPVButton = new JButton(Icons.SEARCH);
         searchCPVButton.setToolTipText(Labels.getProperty("cpvPanelTab"));
         searchCPVButton.setPreferredSize(buttonDim);
@@ -135,6 +138,7 @@ public class CreateBidDialog extends JDialog {
         catNumberField.setEnabled(false);
         cpvField = new JTextField();
         cpvField.setPreferredSize(preferredFieldDim);
+        cpvField.setEnabled(false);
         amountField = new JTextField();
         amountField.setPreferredSize(preferredFieldDim);
         oneUnitPriceField = new JTextField();
@@ -142,6 +146,8 @@ public class CreateBidDialog extends JDialog {
         descriptionPane = new JTextPane();
         descriptionPane.setPreferredSize(new Dimension(168, 25));
         descriptionPane.setEditable(true);
+        descriptionScrollPane = new JScrollPane(descriptionPane);
+        descriptionScrollPane.setPreferredSize(preferredFieldDim);
 
         createLayout();
 
@@ -305,6 +311,7 @@ public class CreateBidDialog extends JDialog {
             totalPrice = BigDecimal.ZERO;
             totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
         }
+        descriptionPane.setPreferredSize(new Dimension(168, 25));
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
@@ -357,11 +364,11 @@ public class CreateBidDialog extends JDialog {
         }
         String selectedCatNum = catNumberField.getText().isEmpty() ? null : catNumberField.getText();
         if (selectedCPV.equals(EmptyModel.CPV)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("cpvCode"));
+            Utils.emptyFieldError(parent, Labels.getProperty("cpv"));
             searchCPVButton.requestFocusInWindow();
             return false;
         } else if (selectedCPV.getCpvId().length() != 10) {
-            Utils.wrongFormatError(parent, Labels.getProperty("cpvCode"), Labels.getProperty("wrongFormatCPV"));
+            Utils.wrongFormatError(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
             searchCPVButton.requestFocusInWindow();
             return false;
         }
@@ -637,7 +644,7 @@ public class CreateBidDialog extends JDialog {
         gc.gridwidth = 3;
         gc.ipady = 50;
         gc.insets = smallPadding;
-        createBidPanel.add(new JScrollPane(descriptionPane), gc);
+        createBidPanel.add(descriptionScrollPane, gc);
 
         /// Next row///
         gc.gridy++;

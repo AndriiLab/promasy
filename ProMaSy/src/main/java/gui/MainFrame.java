@@ -118,28 +118,31 @@ public class MainFrame extends JFrame {
         if (role == Role.ADMIN) {
             createTabPane();
         } else if (role == Role.DIRECTOR) {
-            createTabPane();
+//            createTabPane();
+            add(bidsListPanel, BorderLayout.CENTER);
         } else if (role == Role.DEPUTY_DIRECTOR) {
-            createTabPane();
+//            createTabPane();
+            add(bidsListPanel, BorderLayout.CENTER);
+        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
+//            createTabPane();
+            add(bidsListPanel, BorderLayout.CENTER);
         } else if (role == Role.ACCOUNTANT) {
             createTabPane();
         } else if (role == Role.ECONOMIST) {
             createTabPane();
-        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
-            createTabPane();
-            financePanel.hideCed();
         } else if (role == Role.HEAD_OF_DEPARTMENT) {
             useUserDepartment();
-            createTabPane();
-            financePanel.hideCed();
+            //TODO full fix
+//            createTabPane();
+            add(bidsListPanel, BorderLayout.CENTER);
         } else if (role == Role.PERSONALLY_LIABLE_EMPLOYEE) {
             useUserDepartment();
-            createTabPane();
-            financePanel.hideCed();
+            //TODO full fix
+//            createTabPane();
+            add(bidsListPanel, BorderLayout.CENTER);
         } else if (role == Role.USER) {
             useUserDepartment();
             add(bidsListPanel, BorderLayout.CENTER);
-            financePanel.hideCed();
         }
         setJMenuBar(createMenuBar());
 
@@ -162,7 +165,6 @@ public class MainFrame extends JFrame {
 
     private void useUserDepartment() {
         bidsListPanel.setUseUserDepartment();
-        financePanel.setUseUserDepartment();
     }
 
     private void createTabPane() {
@@ -314,10 +316,10 @@ public class MainFrame extends JFrame {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
             // search for heads of department (id 5000) in department
             reportParametersDialog.setDepartmentHeadBoxData(
-                    listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartmentId()));
+                    listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartment().getModelId()));
             // search for personally liable employee (id 6000) in department
             reportParametersDialog.setPersonallyLiableEmpBoxData(
-                    listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartmentId()));
+                    listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartment().getModelId()));
             // search for chief accountant (id 4000)
             reportParametersDialog.setAccountantBoxData(
                     listener.searchForPerson(Role.ACCOUNTANT));
@@ -506,7 +508,9 @@ public class MainFrame extends JFrame {
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
             listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
-            listener.getAllBids(bidsListPanel.getSelectedBidType());
+            if (bidsListPanel.getSelectedDepartment().equals(EmptyModel.DEPARTMENT)) {
+                listener.getAllBids(bidsListPanel.getSelectedBidType());
+            }
             financePanel.setDepartmentFinanceTableData(new LinkedList<>());
         }
         super.setVisible(visible);

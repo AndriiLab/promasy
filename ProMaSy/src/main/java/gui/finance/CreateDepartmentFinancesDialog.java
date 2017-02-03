@@ -170,9 +170,6 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
     public void setVisible(FinanceModel model, boolean isCreate) {
         this.isCreateMode = isCreate;
-        if (listener != null) {
-            listener.loadDepartments();
-        }
         this.currentFinanceModel = model;
         this.setLeftAmounts();
         if (isCreateMode) {
@@ -183,7 +180,6 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     }
 
     public void editDepartmentModel(FinanceDepartmentModel selectedDepFinModel) {
-        isCreateMode = false;
         this.currentFinanceDepartmentModel = selectedDepFinModel;
         Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
         Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
