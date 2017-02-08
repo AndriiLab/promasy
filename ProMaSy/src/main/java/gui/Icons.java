@@ -10,6 +10,7 @@ import javax.swing.*;
  */
 public class Icons {
     public static Icon CREATE = IconFontSwing.buildIcon(FontAwesome.PLUS_CIRCLE, 15, Colors.GREEN);
+    public static Icon COPY = IconFontSwing.buildIcon(FontAwesome.FILES_O, 15, Colors.BLUE);
     public static Icon EDIT = IconFontSwing.buildIcon(FontAwesome.PENCIL, 15, Colors.BLUE);
     public static Icon DELETE = IconFontSwing.buildIcon(FontAwesome.TRASH_O, 15);
     public static Icon PRINT = IconFontSwing.buildIcon(FontAwesome.PRINT, 15);

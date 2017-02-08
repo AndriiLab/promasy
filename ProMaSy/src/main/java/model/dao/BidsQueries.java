@@ -19,11 +19,15 @@ public class BidsQueries extends SQLQueries<BidModel> {
     }
 
     public List<BidModel> retrieve(BidType type, FinanceDepartmentModel financeDepartment) throws SQLException {
-        super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.type), type));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.finances), financeDepartment));
-        return super.getList();
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances = :financeDepartment")
+                .setParameter("bidType", type)
+                .setParameter("financeDepartment", financeDepartment);
+        List<BidModel> list = (List<BidModel>) query.getResultList();
+        em.getTransaction().commit();
+
+        return list;
     }
 
     public List<BidModel> retrieve(BidType type, DepartmentModel department) throws SQLException {

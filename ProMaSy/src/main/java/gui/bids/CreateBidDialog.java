@@ -51,6 +51,7 @@ public class CreateBidDialog extends JDialog {
     private MainFrame parent;
     private BidType currentBidType;
     private BigDecimal totalPrice;
+    private BigDecimal previousSum;
 
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), true);
@@ -431,7 +432,13 @@ public class CreateBidDialog extends JDialog {
 
         currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
-        if (selectedFinanceDepartmentModel.getLeftAmount(currentBidType).compareTo(totalPrice) < 0) {
+        boolean financeCondition;
+        if (previousSum != null) { //if editing bid
+            financeCondition = (selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum)).compareTo(totalPrice) < 0;
+        } else {
+            financeCondition = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).compareTo(totalPrice) < 0;
+        }
+        if (financeCondition) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("insufficientFundsMessage"), Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
             amountField.requestFocusInWindow();
             return false;
@@ -463,13 +470,11 @@ public class CreateBidDialog extends JDialog {
         this.listener = listener;
     }
 
-    void loadToDialog(BidModel model) {
+    void loadToDialog(BidModel model, boolean isEditMode) {
         if (listener != null) {
             listener.getAllData();
         }
         setCurrentBidType(model.getType());
-        setTitle(Labels.getProperty("editBid"));
-        okButton.setText(Labels.getProperty("editBid"));
         Utils.setBoxFromModel(departmentBox, model.getFinances().getSubdepartment().getDepartment());
         Utils.setBoxFromModel(subdepartmentBox, model.getFinances().getSubdepartment());
         Utils.setBoxFromModel(financeDepartmentBox, model.getFinances());
@@ -483,14 +488,22 @@ public class CreateBidDialog extends JDialog {
         if (model.getReasonForSupplierChoice() != null) {
             Utils.setBoxFromModel(reasonForSupplierChoiceBox, model.getReasonForSupplierChoice());
         }
-        createdBidModel = model;
-        selectedCPV = createdBidModel.getCpv();
-        cpvField.setText(createdBidModel.getCpv().getCpvId());
-        catNumberField.setText(createdBidModel.getCatNum());
+        selectedCPV = model.getCpv();
+        cpvField.setText(model.getCpv().getCpvId());
+        catNumberField.setText(model.getCatNum());
         descriptionPane.setText(model.getBidDesc());
-        amountField.setText(Integer.toString(createdBidModel.getAmount()));
-        oneUnitPriceField.setText(createdBidModel.getOnePrice().toString());
+        amountField.setText(Integer.toString(model.getAmount()));
+        oneUnitPriceField.setText(model.getOnePrice().toString());
         calculateTotalPrice();
+        if (isEditMode) {
+            previousSum = model.getTotalPrice();
+            createdBidModel = model;
+            setTitle(Labels.getProperty("editBid"));
+            okButton.setText(Labels.getProperty("editBid"));
+        } else {
+            previousSum = null;
+            createdBidModel = new BidModel();
+        }
         super.setVisible(true);
     }
 
@@ -505,6 +518,7 @@ public class CreateBidDialog extends JDialog {
             listener.getAllData();
         }
         createdBidModel = new BidModel();
+        previousSum = null;
         super.setVisible(visible);
     }
 

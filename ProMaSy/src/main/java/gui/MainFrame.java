@@ -115,35 +115,50 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // init panes according to user roles
-        if (role == Role.ADMIN) {
-            createTabPane();
-        } else if (role == Role.DIRECTOR) {
-//            createTabPane();
-            add(bidsListPanel, BorderLayout.CENTER);
-        } else if (role == Role.DEPUTY_DIRECTOR) {
-//            createTabPane();
-            add(bidsListPanel, BorderLayout.CENTER);
-        } else if (role == Role.SECRETARY_OF_TENDER_COMMITTEE) {
-//            createTabPane();
-            add(bidsListPanel, BorderLayout.CENTER);
-        } else if (role == Role.ACCOUNTANT) {
-            createTabPane();
-        } else if (role == Role.ECONOMIST) {
-            createTabPane();
-        } else if (role == Role.HEAD_OF_DEPARTMENT) {
-            useUserDepartment();
-            //TODO full fix
-//            createTabPane();
-            add(bidsListPanel, BorderLayout.CENTER);
-        } else if (role == Role.PERSONALLY_LIABLE_EMPLOYEE) {
-            useUserDepartment();
-            //TODO full fix
-//            createTabPane();
-            add(bidsListPanel, BorderLayout.CENTER);
-        } else if (role == Role.USER) {
-            useUserDepartment();
-            add(bidsListPanel, BorderLayout.CENTER);
+        switch (role) {
+            case ADMIN:
+                createTabPane();
+                break;
+            case DIRECTOR:
+                createTabPane();
+                break;
+            case DEPUTY_DIRECTOR:
+                createTabPane();
+                break;
+            case ACCOUNTANT:
+                createTabPane();
+                break;
+            case ECONOMIST:
+                createTabPane();
+                break;
+            case SECRETARY_OF_TENDER_COMMITTEE:
+                createTabPane();
+                financePanel.hideCed();
+                break;
+            case HEAD_OF_DEPARTMENT:
+                useUserDepartment();
+//                createTabPane();
+                add(bidsListPanel, BorderLayout.CENTER);
+                financePanel.hideCed();
+                break;
+            case PERSONALLY_LIABLE_EMPLOYEE:
+                useUserDepartment();
+//                createTabPane();
+                add(bidsListPanel, BorderLayout.CENTER);
+                financePanel.hideCed();
+                break;
+            case USER:
+                useUserDepartment();
+                add(bidsListPanel, BorderLayout.CENTER);
+                financePanel.hideCed();
+                break;
+            default:
+                useUserDepartment();
+                add(bidsListPanel, BorderLayout.CENTER);
+                financePanel.hideCed();
+                break;
         }
+
         setJMenuBar(createMenuBar());
 
         // setting layout and formating frames on mainframe
@@ -165,6 +180,7 @@ public class MainFrame extends JFrame {
 
     private void useUserDepartment() {
         bidsListPanel.setUseUserDepartment();
+        financePanel.setUseUserDepartment();
     }
 
     private void createTabPane() {

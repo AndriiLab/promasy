@@ -23,6 +23,7 @@ import java.util.List;
 public class BidsListPanel extends JPanel {
 
     private JButton createBidButton;
+    private JButton copyBidButton;
     private JButton editBidButton;
     private JButton deleteBidButton;
     private JButton changeStatusButton;
@@ -67,7 +68,11 @@ public class BidsListPanel extends JPanel {
         createBidButton = ced.getCreateButton();
         editBidButton = ced.getEditButton();
         deleteBidButton = ced.getDeleteButton();
+        copyBidButton = new JButton(Icons.COPY);
+        copyBidButton.setToolTipText(Labels.withSpaceAfter("copyBid"));
+        copyBidButton.setPreferredSize(buttonDim);
         editBidButton.setEnabled(false);
+        copyBidButton.setEnabled(false);
         deleteBidButton.setEnabled(false);
 
         changeStatusButton = new JButton();
@@ -107,10 +112,20 @@ public class BidsListPanel extends JPanel {
             parent.getCreateBidDialog().setVisible(true);
         });
 
+        copyBidButton.addActionListener(e -> {
+            if (!selectedBidModel.equals(EmptyModel.BID)) {
+                setDataToCreateBidDialog();
+                parent.getCreateBidDialog().loadToDialog(selectedBidModel, false);
+            } else {
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
+            }
+            selectedBidModel = EmptyModel.BID;
+        });
+
         editBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 setDataToCreateBidDialog();
-                parent.getCreateBidDialog().loadToDialog(selectedBidModel);
+                parent.getCreateBidDialog().loadToDialog(selectedBidModel, true);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
             }
@@ -132,9 +147,7 @@ public class BidsListPanel extends JPanel {
         });
 
         departmentBox.addActionListener(e -> {
-            editBidButton.setEnabled(false);
-            deleteBidButton.setEnabled(false);
-            changeStatusButton.setEnabled(false);
+            activateButtons(false);
             selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
@@ -147,9 +160,7 @@ public class BidsListPanel extends JPanel {
         });
 
         subdepartmentBox.addActionListener(e -> {
-            editBidButton.setEnabled(false);
-            deleteBidButton.setEnabled(false);
-            changeStatusButton.setEnabled(false);
+            activateButtons(false);
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentBox.getSelectedItem() != null) {
@@ -165,9 +176,7 @@ public class BidsListPanel extends JPanel {
         });
 
         financeDepartmentBox.addActionListener(e -> {
-            editBidButton.setEnabled(false);
-            deleteBidButton.setEnabled(false);
-            changeStatusButton.setEnabled(false);
+            activateButtons(false);
             if (financeDepartmentBox.getSelectedItem() != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                 List<BidModel> bids = selectedFinanceDepartmentModel.getBids(selectedBidType);
@@ -203,15 +212,11 @@ public class BidsListPanel extends JPanel {
                 selectedBidModels.clear();
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     if (selectedRows.length == 1) {
-                        editBidButton.setEnabled(true);
-                        deleteBidButton.setEnabled(true);
-                        changeStatusButton.setEnabled(true);
+                        activateButtons(true);
 
                         selectedBidModel = (BidModel) bidsTable.getValueAt(selectedRows[0], 0);
                     } else if (selectedRows.length > 1) {
-                        editBidButton.setEnabled(false);
-                        deleteBidButton.setEnabled(false);
-                        changeStatusButton.setEnabled(false);
+                        activateButtons(false);
 
                         for (int row : selectedRows) {
                             selectedBidModels.add((BidModel) bidsTable.getValueAt(row, 0));
@@ -241,11 +246,22 @@ public class BidsListPanel extends JPanel {
 
             @Override
             public void getAllData() {
+                FinanceDepartmentModel selectedModel = selectedFinanceDepartmentModel;
                 if (listener != null) {
                     listener.getAllData();
                 }
+                if (!selectedModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
+                    financeDepartmentBox.setSelectedItem(selectedModel);
+                }
             }
         });
+    }
+
+    private void activateButtons(boolean state) {
+        editBidButton.setEnabled(state);
+        copyBidButton.setEnabled(state);
+        deleteBidButton.setEnabled(state);
+        changeStatusButton.setEnabled(state);
     }
 
     private void getBids() {
@@ -373,6 +389,7 @@ public class BidsListPanel extends JPanel {
         topPanel.setBorder(BorderFactory.createEtchedBorder());
         topPanel.add(createBidButton);
         topPanel.add(editBidButton);
+        topPanel.add(copyBidButton);
         topPanel.add(deleteBidButton);
         topPanel.add(separatorTopPanel);
         topPanel.add(new JLabel(Labels.withColon("finance")));
