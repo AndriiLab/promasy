@@ -3,7 +3,10 @@
  */
 package controller;
 
-import gui.*;
+import gui.Labels;
+import gui.MainFrame;
+import gui.MainFrameListener;
+import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
 import gui.bids.reports.ReportParametersDialogListener;
@@ -25,7 +28,6 @@ import model.enums.Role;
 import model.models.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
@@ -53,8 +55,7 @@ public class Controller {
             try {
                 Utils.saveConnectionSettings(model);
             } catch (IOException e) {
-                //TODO handle exception
-                e.printStackTrace();
+                Logger.errorEvent(mainFrame, e);
             }
             setConnectionSettings(model);
 
@@ -81,7 +82,7 @@ public class Controller {
                     initListeners();
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
-                } else if (!isLoginDataValid) {
+                } else {
                     // if login wasn't successful showing error dialog
                     JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("wrongCredentialsPlsCheck"),
                             Labels.getProperty("loginError"), JOptionPane.ERROR_MESSAGE);
@@ -306,6 +307,12 @@ public class Controller {
             }
 
             @Override
+            public void persistModelEventOccurred(BidStatusModel model) {
+                createOrUpdate(model);
+                mainFrame.setFinanceModelList(getFinances());
+            }
+
+            @Override
             public void selectAllBidsEventOccurred(BidType type) {
                 mainFrame.setBidModelList(getBids(type));
             }
@@ -351,6 +358,7 @@ public class Controller {
     private void checkVersion() {
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
+        Logger.infoEvent(null, "Your vesrion: " + currentVersion.get() + " DB version: " + dbVersion.get());
         if (currentVersion.compareTo(dbVersion) == -1) {
             JOptionPane.showMessageDialog(mainFrame,
                     Labels.getProperty("youCantUseThisVersion") + "\n" +
@@ -403,26 +411,17 @@ public class Controller {
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
-    private void logEvent(String message, Color color) {
-        mainFrame.logEvent(message, color);
-    }
-
-    private void errorLogEvent(Exception exception, String message) {
-        mainFrame.logEvent(exception, message);
-    }
-
     // sets connection settings to Properties object
     private void setConnectionSettings() {
         ConnectionSettingsModel model = null;
         try {
             model = Utils.loadConnectionSettings();
+            Logger.infoEvent(null, "Connection Settings loaded from file");
         } catch (FileNotFoundException e) {
+            Logger.infoEvent(null, "Connection Settings used from defaults");
             model = new ConnectionSettingsModel(Labels.getProperty("connectionSettings.server"), Labels.getProperty("connectionSettings.database"), Labels.getProperty("connectionSettings.schema"), Labels.getInt("connectionSettings.port"), Labels.getProperty("connectionSettings.user"), Labels.getProperty("connectionSettings.password"));
-        } catch (IOException e) {
-            // TODO handle exceptions
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            Logger.errorEvent(mainFrame, e);
         }
         setConnectionSettings(model);
     }
@@ -442,11 +441,10 @@ public class Controller {
     private void connect() {
         try {
             Database.DB.connect(conSet);
-            logEvent(Labels.getProperty("connectedToDB"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.getProperty("connectedToDB"));
             closeSplashScreen();
         } catch (Exception e) {
-            e.printStackTrace();
-            logEvent(Labels.getProperty("noConnectionToDB"), Colors.RED);
+            Logger.errorEvent(mainFrame, Labels.getProperty("noConnectionToDB"), e);
             JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
                     Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE);
             closeSplashScreen();
@@ -458,6 +456,7 @@ public class Controller {
     // disconnecting from DB
     private void disconnect() {
         Database.DB.disconnect();
+        Logger.infoEvent(mainFrame, "Disconnected successfully");
     }
 
     // methods requesting the DB
@@ -466,7 +465,7 @@ public class Controller {
         try {
             return Database.CPV.retrieve(cpvRequest);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("cpvRequest") + cpvRequest + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("cpvRequest") + cpvRequest, e);
             return null;
         }
     }
@@ -481,10 +480,9 @@ public class Controller {
                 disconnect();
                 connect();
             } catch (BackingStoreException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+                Logger.errorEvent(mainFrame, e);
             }
-            errorLogEvent(e, Labels.withColon("versionRequest") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("versionRequest"), e);
         }
         return null;
     }
@@ -492,9 +490,9 @@ public class Controller {
     private void setCurrentVersionAsMinimum() {
         try {
             Database.VERSIONS.updateVersion();
-            logEvent(Labels.withColon("minimumVersionWasSet") + Labels.getVersion(), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
+            Logger.errorEvent(mainFrame, Labels.withColon("error") + Labels.withColon("minimumVersionWasSet") + Labels.getVersion(), e);
         }
     }
 
@@ -502,7 +500,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.isFirstRun();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.errorEvent(mainFrame, e);
             return false;
         }
     }
@@ -511,8 +509,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("role.user") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("role.user"), e);
             return null;
         }
     }
@@ -521,8 +518,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.retrieve(role);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role id: " + role
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role: " + role, e);
             return null;
         }
     }
@@ -531,8 +527,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.retrieve(role, depId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role id: " + role
-                    + " dep id: " + depId + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " role: " + role + " dep id: " + depId, e);
             return null;
         }
     }
@@ -541,7 +536,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.getSalt(login);
         } catch (SQLException e) {
-            errorLogEvent(e, "Salt retrieval error with login: " + login);
+            Logger.errorEvent(mainFrame, "Salt retrieval error with login: " + login, e);
             return 0;
         }
     }
@@ -550,8 +545,7 @@ public class Controller {
         try {
             return Database.INSTITUTES.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("institute")
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("institute"), e);
             return null;
         }
     }
@@ -560,8 +554,7 @@ public class Controller {
         try {
             return Database.DEPARTMENTS.retrieve(instId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("department") + " inst id: " + instId
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("department") + " inst id: " + instId, e);
             return null;
         }
     }
@@ -570,8 +563,7 @@ public class Controller {
         try {
             return Database.SUBDEPARTMENS.retrieve(depId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("subdepartment") + " dep id: " + depId
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("subdepartment") + " dep id: " + depId, e);
             return null;
         }
     }
@@ -580,8 +572,7 @@ public class Controller {
         try {
             return Database.AMOUNTUNITS.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("amount") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("amount"), e);
             return null;
         }
     }
@@ -590,8 +581,7 @@ public class Controller {
         try {
             return Database.PRODUCERS.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("producer") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("producer"), e);
             return null;
         }
     }
@@ -600,8 +590,7 @@ public class Controller {
         try {
             return Database.SUPPLIERS.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("suplBorder")
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("suplBorder"), e);
             return null;
         }
     }
@@ -610,8 +599,7 @@ public class Controller {
         try {
             return Database.REASONS.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("reasonForSupplierChoice")
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("reasonForSupplierChoice"), e);
             return null;
         }
     }
@@ -620,8 +608,7 @@ public class Controller {
         try {
             return Database.FINANCES.getResults();
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("finances"), e);
             return null;
         }
     }
@@ -630,7 +617,7 @@ public class Controller {
         try {
             return Database.FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("finances") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("finances"), e);
             return null;
         }
     }
@@ -639,8 +626,7 @@ public class Controller {
         try {
             return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: "
-                    + orderId + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: " + orderId, e);
             return null;
         }
     }
@@ -649,7 +635,7 @@ public class Controller {
         try {
             return Database.DEPARTMENT_FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances"), e);
             return null;
         }
     }
@@ -659,8 +645,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.checkLogin(username, password);
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " :" + username
-                    + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("role.user") + " :" + username, e);
             return false;
         }
     }
@@ -669,7 +654,7 @@ public class Controller {
         try {
             return Database.EMPLOYEES.checkLogin(username);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.errorEvent(mainFrame, e);
             return false;
         }
     }
@@ -678,8 +663,7 @@ public class Controller {
         try {
             return Database.BIDS.getResults(type);
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("bids"), e);
             return null;
         }
     }
@@ -688,8 +672,7 @@ public class Controller {
         try {
             return Database.BIDS.retrieve(type, department);
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("bids"), e);
             return null;
         }
     }
@@ -698,8 +681,7 @@ public class Controller {
         try {
             return Database.BIDS.retrieve(type, financeDepartmentModel);
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("bids"), e);
             return null;
         }
     }
@@ -708,8 +690,7 @@ public class Controller {
         try {
             return Database.BIDS.retrieve(type, model);
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("request") + Labels.withSpaceBefore("bids") + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("bids"), e);
             return new LinkedList<>();
         }
     }
@@ -717,97 +698,90 @@ public class Controller {
     private void createOrUpdate(EmployeeModel model) {
         try {
             Database.EMPLOYEES.createOrUpdate(model);
-            logEvent(Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateUser") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e,
-                    Labels.withColon("createNewEmployee") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateUser") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(InstituteModel instModel) {
         try {
             Database.INSTITUTES.createOrUpdate(instModel);
-            logEvent(Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateInstitute") + instModel.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addInstitute") + instModel.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateInstitute") + instModel.toString(), e);
         }
     }
 
     private void createOrUpdate(DepartmentModel model) {
         try {
             Database.DEPARTMENTS.createOrUpdate(model);
-            logEvent(Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateDepartment") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addDepartment") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateDepartment") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(SubdepartmentModel model) {
         try {
             Database.SUBDEPARTMENS.createOrUpdate(model);
-            logEvent(Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateSubdepartment") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addSubdepartment") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateSubdepartment") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(AmountUnitsModel model) {
         try {
             Database.AMOUNTUNITS.createOrUpdate(model);
-            logEvent(Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateAmUnit") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addAmUnit") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateAmUnit") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(ProducerModel model) {
         try {
             Database.PRODUCERS.createOrUpdate(model);
-            logEvent(Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateProd") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addProd") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateProd") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(SupplierModel model) {
         try {
             Database.SUPPLIERS.createOrUpdate(model);
-            logEvent(Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateSupl") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addSupl") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateSupl") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(ReasonForSupplierChoiceModel model) {
         try {
             Database.REASONS.createOrUpdate(model);
-            logEvent(Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateReasonForSupplierChoice") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addReasonForSupplierChoice") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateReasonForSupplierChoice") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(FinanceModel model) {
         try {
             Database.FINANCES.createOrUpdate(model);
-            logEvent(Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateOrder") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("createOrder") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateOrder") + model.toString(), e);
         }
     }
 
     private void createOrUpdate(FinanceDepartmentModel model) {
         try {
             Database.DEPARTMENT_FINANCES.createOrUpdate(model);
-            logEvent(Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("success"),
-                    Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateDepOrder") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("addDepOrder") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateDepOrder") + model.toString(), e);
         }
     }
 
@@ -815,9 +789,18 @@ public class Controller {
     private void createOrUpdate(BidModel model) {
         try {
             Database.BIDS.createOrUpdate(model);
-            logEvent(Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("success"), Colors.GREEN);
+            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateUserBid") + model.toString());
         } catch (SQLException e) {
-            errorLogEvent(e, Labels.withColon("createBid") + model.toString() + Labels.withSpaceBefore("error"));
+            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateUserBid") + model.toString(), e);
+        }
+    }
+
+    private void createOrUpdate(BidStatusModel model) {
+        try {
+            Database.BID_STATUSES.createOrUpdate(model);
+            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateStatus") + model.toString());
+        } catch (SQLException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateStatus") + model.toString(), e);
         }
     }
 
@@ -825,14 +808,14 @@ public class Controller {
         try {
             return Database.REGISTRATION.getRegistrationNumber();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.errorEvent(mainFrame, e);
             return 0;
         }
     }
 
     // default close method
     private void close() {
-        Database.DB.disconnect();
+        disconnect();
         mainFrame.dispose();
         System.exit(0);
     }

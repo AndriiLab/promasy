@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Logger;
 import model.enums.BidType;
 import model.enums.Role;
 import model.models.AbstractModel;
@@ -70,7 +71,7 @@ public class Utils {
             return DatatypeConverter.printHexBinary(md.digest());
         } catch (NoSuchAlgorithmException e) {
             //Bad practice
-            e.printStackTrace();
+            Logger.warnEvent(e);
             return EmptyModel.STRING;
         }
     }
@@ -130,6 +131,7 @@ public class Utils {
         try {
             targetBigDecimal = new BigDecimal(targetBigDecimalText);
         } catch (NumberFormatException ex) {
+            Logger.warnEvent(ex);
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberFormatException"),
                     Labels.getProperty("fieldErr"),
@@ -166,8 +168,9 @@ public class Utils {
             jTextField.setText(unassignedAmount.toString());
             jTextField.requestFocusInWindow();
             return null;
-        } else
+        } else {
             return targetBigDecimal;
+        }
     }
 
     public static void setPreferredButtonSizes(JButton button1, JButton button2) {

@@ -1,16 +1,15 @@
 package gui.bids;
 
 import model.enums.BidType;
-import model.models.BidModel;
-import model.models.DepartmentModel;
-import model.models.FinanceDepartmentModel;
-import model.models.SubdepartmentModel;
+import model.models.*;
 
 /**
  * Listener for {@link BidsListPanel}
  */
 public interface BidsListPanelListener {
     void persistModelEventOccurred(BidModel model);
+
+    void persistModelEventOccurred(BidStatusModel model);
 
     void selectAllBidsEventOccurred(BidType type);
 

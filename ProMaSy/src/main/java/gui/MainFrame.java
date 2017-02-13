@@ -161,7 +161,7 @@ public class MainFrame extends JFrame {
 
         setJMenuBar(createMenuBar());
 
-        // setting layout and formating frames on mainframe
+        // setting layout and formatting frames on mainframe
         add(toolbar, BorderLayout.PAGE_START);
         add(statusPanel, BorderLayout.SOUTH);
 
@@ -367,8 +367,7 @@ public class MainFrame extends JFrame {
         loggerDialog.addToLog(message, color);
     }
 
-    public void logEvent(Exception exception, String message) {
-        exception.printStackTrace();
+    public void logError(Exception exception, String message) {
         statusPanel.setStatus(message, Colors.RED);
         loggerDialog.addToLog(message, Colors.RED);
         loggerDialog.addToLog(exception.toString(), Colors.RED);

@@ -25,11 +25,9 @@ public class Toolbar extends JToolBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton clicked = (JButton) e.getSource();
 
-		if (clicked == printBtn) {
-			if (btnListener != null) {
-				btnListener.printEventOccurred();
-			}
-		}
+        if (clicked.equals(printBtn) && btnListener != null) {
+            btnListener.printEventOccurred();
+        }
 
 	}
 

@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Logger;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +10,7 @@ import java.io.IOException;
 
 public class InfoDialog extends JDialog {
 
-    public InfoDialog(JFrame parent) {
+    public InfoDialog(MainFrame parent) {
         super(parent, Labels.getProperty("aboutSoftware"), true);
         setResizable(false);
         setSize(610, 430);
@@ -18,7 +20,7 @@ public class InfoDialog extends JDialog {
         try {
             img = ImageIO.read(getClass().getResource("/splash.png"));
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.errorEvent(parent, e);
         }
 
         Graphics2D g = (Graphics2D) img.getGraphics();

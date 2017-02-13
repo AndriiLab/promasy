@@ -94,7 +94,8 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
     @Override
     public List<EmployeeModel> getResults() throws SQLException {
         super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
+        //show all employees
+//        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
         return super.getList();
     }
 

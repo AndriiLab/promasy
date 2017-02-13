@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Logger;
 import model.models.EmptyModel;
 
 import javax.swing.*;
@@ -18,7 +19,7 @@ public class LoggerDialog extends JDialog {
 
     private JTextPane logPane;
 
-    public LoggerDialog (JFrame parent){
+    public LoggerDialog(MainFrame parent) {
         super(parent, Labels.getProperty("log"), true);
         setSize(500, 300);
         setLocationRelativeTo(parent);
@@ -34,8 +35,7 @@ public class LoggerDialog extends JDialog {
                 JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             } catch (IOException e1) {
-                //TODO handle exception
-                e1.printStackTrace();
+                Logger.errorEvent(parent, e1);
             }
         });
 
@@ -71,8 +71,7 @@ public class LoggerDialog extends JDialog {
         try {
             doc.insertString(doc.getLength(), Utils.getSystemTime() + ":\t" + status + "\n", style);
         } catch (BadLocationException e) {
-            //TODO handle exception
-            e.printStackTrace();
+            Logger.errorEvent(null, e);
         }
     }
 }

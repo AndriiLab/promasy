@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Logger;
 import model.models.EmptyModel;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class StatusPanel extends JPanel {
 
     public void setCurrentUserLabel(String user) {
         currentUserLabel.setText(user);
-        parent.logEvent(Labels.withColon("role.user") + " " + user, Colors.GREEN);
+        Logger.infoEvent(parent, Labels.withColon("role.user") + " " + user);
     }
 
     public void setStatus(String statusInfo, Color color) {

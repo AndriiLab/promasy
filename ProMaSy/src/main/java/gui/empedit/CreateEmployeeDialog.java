@@ -275,6 +275,7 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel.setSubdepartment(subdepartmentModel);
         currentEmployeeModel.setRole(roleModel);
         currentEmployeeModel.setLogin(login);
+        currentEmployeeModel.setActive(true);
         return true;
     }
 

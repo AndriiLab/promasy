@@ -61,32 +61,44 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
                 BigDecimal materialsAmount = model.getTotalAmount(BidType.MATERIALS);
                 if (materialsAmount == null) {
                     return BigDecimal.ZERO;
-                } else return materialsAmount.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return materialsAmount.setScale(2, RoundingMode.CEILING);
+                }
             case 3:
                 BigDecimal materialsLeft = model.getLeftAmount(BidType.MATERIALS);
                 if (materialsLeft == null) {
                     return BigDecimal.ZERO;
-                } else return materialsLeft.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return materialsLeft.setScale(2, RoundingMode.CEILING);
+                }
             case 4:
                 BigDecimal equipmentAmount = model.getTotalAmount(BidType.EQUIPMENT);
                 if (equipmentAmount == null) {
                     return BigDecimal.ZERO;
-                } else return equipmentAmount.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return equipmentAmount.setScale(2, RoundingMode.CEILING);
+                }
             case 5:
                 BigDecimal equipmentLeft = model.getLeftAmount(BidType.EQUIPMENT);
                 if (equipmentLeft == null) {
                     return BigDecimal.ZERO;
-                } else return equipmentLeft.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return equipmentLeft.setScale(2, RoundingMode.CEILING);
+                }
             case 6:
                 BigDecimal servicesAmount = model.getTotalAmount(BidType.SERVICES);
                 if (servicesAmount == null) {
                     return BigDecimal.ZERO;
-                } else return servicesAmount.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return servicesAmount.setScale(2, RoundingMode.CEILING);
+                }
             case 7:
                 BigDecimal servicesLeft = model.getLeftAmount(BidType.SERVICES);
                 if (servicesLeft == null) {
                     return BigDecimal.ZERO;
-                } else return servicesLeft.setScale(2, RoundingMode.CEILING);
+                } else {
+                    return servicesLeft.setScale(2, RoundingMode.CEILING);
+                }
             case 8:
                 return model;
             default:

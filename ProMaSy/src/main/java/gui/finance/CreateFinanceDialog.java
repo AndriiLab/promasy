@@ -1,5 +1,6 @@
 package gui.finance;
 
+import controller.Logger;
 import gui.Labels;
 import gui.Utils;
 import model.models.EmptyModel;
@@ -145,6 +146,7 @@ public class CreateFinanceDialog extends JDialog {
         try {
             orderNumber = Integer.parseInt(orderNumberField.getText());
         } catch (NumberFormatException e) {
+            Logger.warnEvent(e);
             Utils.wrongFormatError(parent, Labels.getProperty("financeNumber"), Labels.getProperty("integersOnly"));
             orderNumberField.requestFocusInWindow();
             return false;

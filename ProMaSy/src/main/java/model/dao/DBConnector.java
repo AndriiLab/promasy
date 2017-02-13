@@ -33,8 +33,6 @@ public enum DBConnector {
         }
 
         entityManager = entityManagerFactory.createEntityManager();
-        System.out.println(">>>>>>>>>>>>>>> Connected on schema '" + entityManagerFactory.getProperties().get("hibernate.default_schema") + "' on '" + entityManagerFactory.getProperties().get("javax.persistence.jdbc.url") +
-                "'");
         //Logging connection stats
 //        stat = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
 //        stat.setStatisticsEnabled(true);
@@ -47,8 +45,7 @@ public enum DBConnector {
         }
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
-//            System.out.println(">>>>>>>>>>>>>>> Disconnected successfully\n" + stat.toString().replace(",", ",\n"));
-            System.out.println(">>>>>>>>>>>>>>> Disconnected successfully");
+//            log.info("Disconnected successfully\n" + stat.toString().replace(",", ",\n"));
         }
         entityManagerFactory = null;
     }

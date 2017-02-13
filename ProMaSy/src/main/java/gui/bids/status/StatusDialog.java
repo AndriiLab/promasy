@@ -1,6 +1,5 @@
 package gui.bids.status;
 
-import gui.Icons;
 import gui.Labels;
 import model.enums.Status;
 import model.models.BidModel;
@@ -17,6 +16,7 @@ public class StatusDialog extends JDialog {
     private JButton setStatusButton;
     private JButton closeButton;
     private JComboBox<Status> statusJComboBox;
+    private DefaultComboBoxModel defaultComboBoxModel;
     private StatusTableModel statusTableModel;
     private JTable statusTable;
     private StatusDialogListener listener;
@@ -27,19 +27,18 @@ public class StatusDialog extends JDialog {
         setSize(450, 300);
         setLocationRelativeTo(parent);
 
-        Dimension buttonDim = new Dimension(25, 25);
         Dimension comboBoxDim = new Dimension(150, 25);
 
         statusTableModel = new StatusTableModel();
         statusTable = new JTable(statusTableModel);
 
-        statusJComboBox = new JComboBox<>(Status.values());
+        defaultComboBoxModel = new DefaultComboBoxModel(Status.values());
+
+        statusJComboBox = new JComboBox<>(defaultComboBoxModel);
         statusJComboBox.setPreferredSize(comboBoxDim);
         statusJComboBox.setEditable(false);
 
-        setStatusButton = new JButton(Icons.SET_STATUS);
-        setStatusButton.setToolTipText(Labels.getProperty("setStatus"));
-        setStatusButton.setPreferredSize(buttonDim);
+        setStatusButton = new JButton(Labels.getProperty("setStatus"));
         setStatusButton.setEnabled(true);
 
         closeButton = new JButton(Labels.getProperty("closeBtn"));
@@ -53,7 +52,7 @@ public class StatusDialog extends JDialog {
                 statusModel.setCreated();
                 selectedBidModel.addStatus(statusModel);
                 selectedBidModel.setUpdated();
-                listener.persistModelEventOccurred(selectedBidModel);
+                listener.persistModelEventOccurred(statusModel);
                 this.setTableData(selectedBidModel);
             }
         });
@@ -63,12 +62,17 @@ public class StatusDialog extends JDialog {
 
     private void setTableData(BidModel model) {
         statusTableModel.setBidModel(model);
+        statusTable.setAutoCreateRowSorter(true);
         statusTableModel.fireTableDataChanged();
     }
 
     public void setVisible(boolean b, BidModel model) {
         this.selectedBidModel = model;
-        this.setTableData(model);
+        setTableData(model);
+        int lastStatusNumber = defaultComboBoxModel.getIndexOf(model.getLastBidStatusModel().getStatus());
+        if (lastStatusNumber != -1 && lastStatusNumber < (defaultComboBoxModel.getSize() - 1)) {
+            statusJComboBox.setSelectedIndex(lastStatusNumber + 1);
+        }
         super.setVisible(b);
     }
 
@@ -87,7 +91,7 @@ public class StatusDialog extends JDialog {
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
         statusPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, statusPanelBorder));
 
-        setStatusPanel.setLayout(new FlowLayout());
+        setStatusPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
         setStatusPanel.add(statusJComboBox);
         setStatusPanel.add(setStatusButton);
 

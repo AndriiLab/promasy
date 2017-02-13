@@ -14,7 +14,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -229,7 +231,6 @@ public class BidsListPanel extends JPanel {
 
         statusDialog.setStatusDialogListener(model -> {
             if (listener != null) {
-                selectedFinanceDepartmentModel.addBid(model);
                 listener.persistModelEventOccurred(model);
                 getBids();
             }
@@ -428,7 +429,7 @@ public class BidsListPanel extends JPanel {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("emptyTableErrorExtended"),
                     Labels.getProperty("emptyTableError"), JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (Objects.equals(departmentBox.getSelectedItem().toString(), EmptyModel.STRING)) {
+        } else if ((departmentBox.getSelectedItem().toString()).equals(EmptyModel.STRING)) {
             Utils.emptyFieldError(parent, Labels.getProperty("department"));
             return false;
         } else if (financeDepartmentBox.getSelectedItem().toString() == null) {

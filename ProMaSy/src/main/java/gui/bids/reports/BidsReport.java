@@ -1,5 +1,6 @@
 package gui.bids.reports;
 
+import controller.Logger;
 import gui.Labels;
 import gui.MainFrame;
 import model.models.BidsReportModel;
@@ -34,12 +35,13 @@ public class BidsReport {
             });
         } catch (JRException e) {
             if (e.getMessage().startsWith("java.io.FileNotFoundException")){
+                Logger.warnEvent(e);
                 //Compile report (.jrxml) to .jasper if it is not compiled
                 compileReport();
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupComplete"), Labels.getProperty("printInfo"), JOptionPane.INFORMATION_MESSAGE);
             } else {
+                Logger.errorEvent(parent, Labels.getProperty("printError"), e);
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupError"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE);
-                parent.logEvent(e, Labels.getProperty("printError"));
             }
 
         }
@@ -51,7 +53,7 @@ public class BidsReport {
         try {
             JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
         } catch (JRException e) {
-            e.printStackTrace();
+            Logger.warnEvent(e);
         }
     }
 }

@@ -1,5 +1,6 @@
 package gui.bids;
 
+import controller.Logger;
 import gui.Icons;
 import gui.Labels;
 import gui.MainFrame;
@@ -305,6 +306,7 @@ public class CreateBidDialog extends JDialog {
                 totalPrice = onePrice.multiply(amount);
                 totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
             } catch (NumberFormatException ex) {
+                Logger.warnEvent(ex);
                 totalPrice = BigDecimal.ZERO;
                 totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
             }
@@ -355,7 +357,7 @@ public class CreateBidDialog extends JDialog {
         }
         FinanceDepartmentModel selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
         if (selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("order"));
+            Utils.emptyFieldError(parent, Labels.getProperty("finance"));
             financeDepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -409,6 +411,7 @@ public class CreateBidDialog extends JDialog {
         try {
             amount = Integer.parseInt(amountString);
         } catch (NumberFormatException ex) {
+            Logger.warnEvent(ex);
             Utils.wrongFormatError(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
             amountField.requestFocusInWindow();
             return false;
@@ -425,6 +428,7 @@ public class CreateBidDialog extends JDialog {
         try {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
+            Logger.warnEvent(ex);
             Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
             oneUnitPriceField.requestFocusInWindow();
             return false;

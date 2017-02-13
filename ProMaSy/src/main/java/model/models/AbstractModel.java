@@ -129,7 +129,9 @@ public abstract class AbstractModel {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AbstractModel)) return false;
+        if (!(obj instanceof AbstractModel)) {
+            return false;
+        }
         AbstractModel otherModel = (AbstractModel) obj;
         return new EqualsBuilder().append(modelId, otherModel.getModelId()).isEquals();
     }

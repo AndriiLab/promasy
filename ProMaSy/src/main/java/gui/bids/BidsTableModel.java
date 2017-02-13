@@ -74,7 +74,7 @@ class BidsTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex){
             case 0:
-                return String.class;
+                return BidModel.class;
             case 1:
                 return Integer.class;
             case 2:
