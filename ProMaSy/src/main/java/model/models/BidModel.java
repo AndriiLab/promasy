@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -203,13 +204,15 @@ public class BidModel extends AbstractModel {
     }
 
     public BidStatusModel getLastBidStatusModel() {
-        BidStatusModel bidStatusModel = statuses.get(0);
-        for (BidStatusModel model : statuses) {
-            if (model.getCreatedDate().after(bidStatusModel.getCreatedDate())) {
-                bidStatusModel = model;
+        return Collections.max(statuses, (thisModel, thatModel) -> {
+            if (thisModel.getCreatedDate().after(thatModel.getCreatedDate())) {
+                return 1;
+            } else if (thisModel.getCreatedDate().before(thatModel.getCreatedDate())) {
+                return -1;
+            } else {
+                return 0;
             }
-        }
-        return bidStatusModel;
+        });
     }
 
     @Override

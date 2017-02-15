@@ -10,9 +10,8 @@ public class ConnectionSettingsModel implements Serializable {
 	private String user;
 	private String password;
 
-    public ConnectionSettingsModel(String server, String database, String schema, int portNumber, String user,
-								   String password) {
-		this.server = server;
+    public ConnectionSettingsModel(String server, String database, String schema, int portNumber, String user, String password) {
+        this.server = server;
 		this.schema = schema;
 		this.database = database;
 		this.portNumber = portNumber;
