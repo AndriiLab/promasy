@@ -798,9 +798,9 @@ public class Controller {
     private void createOrUpdate(BidStatusModel model) {
         try {
             Database.BID_STATUSES.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateStatus") + model.toString());
+            Logger.infoEvent(mainFrame, Labels.withColon("statusWasSet") + model.getStatus().toString());
         } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateStatus") + model.toString(), e);
+            Logger.errorEvent(mainFrame, Labels.withColon("statusWasSet") + model.getStatus().toString(), e);
         }
     }
 
