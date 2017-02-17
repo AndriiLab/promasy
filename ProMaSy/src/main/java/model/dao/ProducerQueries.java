@@ -19,6 +19,7 @@ public class ProducerQueries extends SQLQueries<ProducerModel> {
     public List<ProducerModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(ProducerModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ProducerModel_.brandName)));
         return super.getList();
     }
 }

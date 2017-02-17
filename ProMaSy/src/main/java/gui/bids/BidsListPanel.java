@@ -112,26 +112,30 @@ public class BidsListPanel extends JPanel {
         createBidButton.addActionListener(e -> {
             setDataToCreateBidDialog();
             parent.getCreateBidDialog().setVisible(true);
+            activateButtons(false);
+            clearSelectedBidModels();
         });
 
         copyBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 setDataToCreateBidDialog();
                 parent.getCreateBidDialog().loadToDialog(selectedBidModel, false);
+                activateButtons(false);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
             }
-            selectedBidModel = EmptyModel.BID;
+            clearSelectedBidModels();
         });
 
         editBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 setDataToCreateBidDialog();
                 parent.getCreateBidDialog().loadToDialog(selectedBidModel, true);
+                activateButtons(false);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
             }
-            selectedBidModel = EmptyModel.BID;
+            clearSelectedBidModels();
         });
 
         deleteBidButton.addActionListener(e -> {
@@ -142,10 +146,11 @@ public class BidsListPanel extends JPanel {
                     listener.persistModelEventOccurred(selectedBidModel);
                     getBids();
                 }
+                activateButtons(false);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
             }
-            selectedBidModel = EmptyModel.BID;
+            clearSelectedBidModels();
         });
 
         departmentBox.addActionListener(e -> {
@@ -157,8 +162,7 @@ public class BidsListPanel extends JPanel {
             if (listener != null) {
                 getBids();
             }
-            selectedBidModel = EmptyModel.BID;
-            selectedBidModels.clear();
+            clearSelectedBidModels();
         });
 
         subdepartmentBox.addActionListener(e -> {
@@ -172,8 +176,7 @@ public class BidsListPanel extends JPanel {
                 } else {
                     setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
                 }
-                selectedBidModel = EmptyModel.BID;
-                selectedBidModels.clear();
+                clearSelectedBidModels();
             }
         });
 
@@ -187,8 +190,7 @@ public class BidsListPanel extends JPanel {
                 } else {
                     setBidsTableData(bids);
                 }
-                selectedBidModel = EmptyModel.BID;
-                selectedBidModels.clear();
+                clearSelectedBidModels();
             }
         });
 
@@ -211,7 +213,7 @@ public class BidsListPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent ev) {
                 int[] selectedRows = bidsTable.getSelectedRows();
-                selectedBidModels.clear();
+                clearSelectedBidModels();
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     if (selectedRows.length == 1) {
                         activateButtons(true);
@@ -256,6 +258,11 @@ public class BidsListPanel extends JPanel {
                 }
             }
         });
+    }
+
+    private void clearSelectedBidModels() {
+        selectedBidModel = EmptyModel.BID;
+        selectedBidModels.clear();
     }
 
     private void activateButtons(boolean state) {
@@ -316,7 +323,6 @@ public class BidsListPanel extends JPanel {
             sumLabel.setText(EmptyModel.STRING);
             financeLeftLabel.setText(EmptyModel.STRING);
         }
-
     }
 
     public void setUseUserDepartment() {

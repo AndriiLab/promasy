@@ -173,15 +173,35 @@ public class Utils {
         }
     }
 
+    /**
+     * Optimizes sizes of buttons
+     * If button1 larger than button2 it sets size of button1 to button2 and vice versa
+     *
+     * @param button1 {@link JButton}
+     * @param button2 {@link JButton}
+     */
+
     public static void setPreferredButtonSizes(JButton button1, JButton button2) {
         Dimension button1Size = button1.getPreferredSize();
         Dimension button2Size = button2.getPreferredSize();
         if (button1Size.getWidth() > button2Size.getWidth()) {
             button2.setPreferredSize(button1Size);
-        } else {
+        } else if (button1Size.getWidth() < button2Size.getWidth()) {
             button1.setPreferredSize(button2Size);
         }
     }
+
+    /**
+     * Function sets {@link JComboBox} with data with special parameters.
+     *  First it removes all objects from comboBox and adds emptyModel (if selected)
+     *  Next it adds only models where model.isActive()
+     *
+     * @param comboBox      combo box, where data has to be set
+     * @param db            parametrized list, which holds extended from {@link AbstractModel} objects
+     * @param emptyModel    model with default data of extended from {@link AbstractModel} object
+     * @param isFirstEmpty  add first emptyModel to comboBox
+     * @param <T>           class extended from {@link AbstractModel}
+     */
 
     public static <T extends AbstractModel> void setBoxData(JComboBox<T> comboBox, java.util.List<T> db, T emptyModel, boolean isFirstEmpty) {
         comboBox.removeAllItems();
@@ -198,5 +218,24 @@ public class Utils {
             }
         }
         comboBox.repaint();
+    }
+
+    /**
+     * Function determines row with searchObject in given table
+     *
+     * @param table             {@link JTable} with objects
+     * @param columnWithObjects number of coumn, where searchObjects stored
+     * @param searchObject      object, which row to be determined
+     * @return number of column with object in table or -1 if searchObject doesn't exist in table
+     */
+
+    public static int getRowWithObject(JTable table, int columnWithObjects, Object searchObject) {
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Object tableObject = table.getValueAt(i, columnWithObjects);
+            if (tableObject == searchObject) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

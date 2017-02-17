@@ -15,17 +15,27 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
         super(EmployeeModel.class);
     }
 
+    @Override
+    public List<EmployeeModel> getResults() throws SQLException {
+        super.retrieve();
+        //show all employees
+//        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(EmployeeModel_.empLName)), criteriaBuilder.asc(root.get(EmployeeModel_.empFName)));
+        return super.getList();
+    }
+
     public List<EmployeeModel> retrieve(Role role) throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
         criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.role), role));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(EmployeeModel_.empLName)), criteriaBuilder.asc(root.get(EmployeeModel_.empFName)));
         return super.getList();
     }
 
     public List<EmployeeModel> retrieve(long departmentId) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId")
+        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId order by em.empLName, em.empFName")
                 .setParameter("departmentId", departmentId);
         List<EmployeeModel> list = (List<EmployeeModel>) query.getResultList();
         em.getTransaction().commit();
@@ -36,7 +46,7 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
     public List<EmployeeModel> retrieve(Role role, long departmentId) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole")
+        Query query = em.createQuery("select em from EmployeeModel em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole order by em.empLName, em.empFName")
                 .setParameter("empRole", role)
                 .setParameter("departmentId", departmentId);
         List<EmployeeModel> list = (List<EmployeeModel>) query.getResultList();
@@ -89,14 +99,6 @@ public class EmployeeQueries extends SQLQueries<EmployeeModel> {
         long numberOfUsers = (long) query.getSingleResult();
         em.getTransaction().commit();
         return numberOfUsers == 0;
-    }
-
-    @Override
-    public List<EmployeeModel> getResults() throws SQLException {
-        super.retrieve();
-        //show all employees
-//        criteriaQuery.where(criteriaBuilder.equal(root.get(EmployeeModel_.active), true));
-        return super.getList();
     }
 
     public EmployeeModel getUserWithId(long id) {

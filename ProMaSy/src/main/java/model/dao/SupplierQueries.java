@@ -19,6 +19,7 @@ public class SupplierQueries extends SQLQueries<SupplierModel> {
     public List<SupplierModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(SupplierModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(SupplierModel_.supplierName)));
         return super.getList();
     }
 }

@@ -21,7 +21,7 @@ public class BidsQueries extends SQLQueries<BidModel> {
     public List<BidModel> retrieve(BidType type, FinanceDepartmentModel financeDepartment) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances = :financeDepartment")
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances = :financeDepartment order by coalesce(bm.modifiedDate, bm.createdDate) desc")
                 .setParameter("bidType", type)
                 .setParameter("financeDepartment", financeDepartment);
         List<BidModel> list = (List<BidModel>) query.getResultList();
@@ -33,7 +33,7 @@ public class BidsQueries extends SQLQueries<BidModel> {
     public List<BidModel> retrieve(BidType type, DepartmentModel department) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department = :department")
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department = :department order by coalesce(bm.modifiedDate, bm.createdDate) desc")
                 .setParameter("bidType", type)
                 .setParameter("department", department);
         List<BidModel> list = (List<BidModel>) query.getResultList();
@@ -45,7 +45,7 @@ public class BidsQueries extends SQLQueries<BidModel> {
     public List<BidModel> retrieve(BidType type, SubdepartmentModel subdepartment) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment = :subdepartment")
+        Query query = em.createQuery("select bm from BidModel bm where bm.active = true and bm.type = :bidType and bm.finances.subdepartment = :subdepartment order by coalesce(bm.modifiedDate, bm.createdDate) desc")
                 .setParameter("bidType", type)
                 .setParameter("subdepartment", subdepartment);
         List<BidModel> list = (List<BidModel>) query.getResultList();
@@ -58,6 +58,7 @@ public class BidsQueries extends SQLQueries<BidModel> {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.type), type));
+        criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.coalesce(root.get(BidModel_.modifiedDate), root.get(BidModel_.createdDate))));
         return super.getList();
     }
 

@@ -58,16 +58,8 @@ public class SubdepartmentModel extends AbstractModel {
         return employees;
     }
 
-    public void setEmployees(List<EmployeeModel> employees) {
-        this.employees = employees;
-    }
-
     public List<FinanceDepartmentModel> getFinanceDepartments() {
         return financeDepartments;
-    }
-
-    public void setFinanceDepartments(List<FinanceDepartmentModel> financeDepartments) {
-        this.financeDepartments = financeDepartments;
     }
 
     public void addEmployee(EmployeeModel model) {

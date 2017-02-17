@@ -68,11 +68,21 @@ public class FinanceModel extends AbstractModel {
     }
 
     public List<FinanceDepartmentModel> getFinanceDepartmentModels() {
-        return financeDepartmentModels;
-    }
+        //two stage sort, first by department, then by subdepartment
+        financeDepartmentModels.sort((o1, o2) -> {
+            String dep1 = o1.getSubdepartment().getDepartment().getDepName();
+            String dep2 = o2.getSubdepartment().getDepartment().getDepName();
+            int depComp = dep1.compareTo(dep2);
 
-    public void setFinanceDepartmentModels(List<FinanceDepartmentModel> departmentModels) {
-        this.financeDepartmentModels = departmentModels;
+            if (depComp != 0) {
+                return depComp;
+            } else {
+                String subdep1 = o1.getSubdepartment().getSubdepName();
+                String subdep2 = o2.getSubdepartment().getSubdepName();
+                return subdep1.compareTo(subdep2);
+            }
+        });
+        return financeDepartmentModels;
     }
 
     public int getFinanceNumber() {

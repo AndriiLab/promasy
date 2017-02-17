@@ -22,13 +22,14 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(FinanceModel_.active), true));
         criteriaQuery.where(criteriaBuilder.equal(root.get("department.modelId"), departmentId));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(FinanceModel_.financeNumber)));
         return super.getList();
     }
 
     public List<FinanceModel> retrieveByDepartmentId(long departmentId) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select fm from FinanceModel fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fm.active = true");
+        Query query = em.createQuery("select fm from FinanceModel fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fm.active = true order by fm.financeNumber");
         query.setParameter("departmentId", departmentId);
         List<FinanceModel> list = query.getResultList();
         em.getTransaction().commit();
@@ -40,6 +41,7 @@ public class FinanceQueries extends SQLQueries<FinanceModel> {
     public List<FinanceModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(FinanceModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(FinanceModel_.financeNumber)));
         return super.getList();
     }
 }

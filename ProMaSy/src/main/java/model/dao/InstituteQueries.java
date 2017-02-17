@@ -16,6 +16,7 @@ public class InstituteQueries extends SQLQueries<InstituteModel>{
     public List<InstituteModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(InstituteModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(InstituteModel_.instName)));
         return super.getList();
     }
 }

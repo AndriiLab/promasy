@@ -18,7 +18,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
     public List<SubdepartmentModel> retrieve(long departmentId) throws SQLException {
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();
-        Query query = em.createQuery("select sdm from SubdepartmentModel sdm join sdm.department where sdm.department.modelId = :departmentId and sdm.active = true");
+        Query query = em.createQuery("select sdm from SubdepartmentModel sdm join sdm.department where sdm.department.modelId = :departmentId and sdm.active = true order by sdm.subdepName");
         query.setParameter("departmentId", departmentId);
         List<SubdepartmentModel> list = query.getResultList();
         em.getTransaction().commit();
@@ -30,6 +30,7 @@ public class SubdepartmentQueries extends SQLQueries<SubdepartmentModel>{
     public List<SubdepartmentModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(SubdepartmentModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(SubdepartmentModel_.subdepName)));
         return super.getList();
     }
 }

@@ -83,6 +83,9 @@ public class CPVQueries {
             }
         }
 
+        //ascending sorting by cpv code
+        criteria.orderBy(cb.asc(root.get(CPVModel_.cpvId)));
+
         // getting only first 100 results
         list = em.createQuery(criteria).setMaxResults(100).getResultList();
 

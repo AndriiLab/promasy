@@ -19,6 +19,7 @@ public class ReasonsForSupplierChoiceQueries extends SQLQueries<ReasonForSupplie
     public List<ReasonForSupplierChoiceModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(ReasonForSupplierChoiceModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ReasonForSupplierChoiceModel_.reason)));
         return super.getList();
     }
 }

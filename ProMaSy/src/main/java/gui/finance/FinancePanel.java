@@ -137,7 +137,7 @@ public class FinancePanel extends JPanel {
         parent.getCreateDepartmentFinancesDialog().setListener(new FinanceDepartmentDialogListener() {
             @Override
             public void persistModelEventOccurred(FinanceDepartmentModel model) {
-                int selectedFinanceRow = financeTable.getSelectedRow();
+                int selectedFinanceRow = Utils.getRowWithObject(financeTable, 0, selectedFinanceModel);
                 if (listener != null) {
                     listener.persistModelEventOccurred(model);
                 }

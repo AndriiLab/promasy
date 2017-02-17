@@ -16,6 +16,7 @@ public class AmountUnitsQueries extends SQLQueries<AmountUnitsModel>{
     public List<AmountUnitsModel> getResults() throws SQLException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(AmountUnitsModel_.active), true));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(AmountUnitsModel_.amUnitDesc)));
         return super.getList();
     }
 }

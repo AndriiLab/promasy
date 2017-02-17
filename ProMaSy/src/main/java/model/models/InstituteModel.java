@@ -3,6 +3,7 @@ package model.models;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -44,11 +45,8 @@ public class InstituteModel extends AbstractModel {
     }
 
     public List<DepartmentModel> getDepartments() {
+        departments.sort(Comparator.comparing(DepartmentModel::getDepName));
         return departments;
-    }
-
-    public void setDepartments(List<DepartmentModel> departments) {
-        this.departments = departments;
     }
 
     public void addDepartment(DepartmentModel model) {
