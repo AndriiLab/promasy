@@ -35,6 +35,11 @@ public class BidStatusModel extends AbstractModel {
         this.bid = bid;
     }
 
+    @Override
+    public void setDescription(String description) {
+
+    }
+
     public Status getStatus() {
         return status;
     }

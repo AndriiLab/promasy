@@ -67,6 +67,11 @@ public class FinanceModel extends AbstractModel {
     public FinanceModel() {
     }
 
+    @Override
+    public void setDescription(String financeName) {
+        this.financeName = financeName;
+    }
+
     public List<FinanceDepartmentModel> getFinanceDepartmentModels() {
         //two stage sort, first by department, then by subdepartment
         financeDepartmentModels.sort((o1, o2) -> {

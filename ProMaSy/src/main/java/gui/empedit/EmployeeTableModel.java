@@ -1,6 +1,6 @@
 package gui.empedit;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.models.EmployeeModel;
 
 import javax.swing.table.AbstractTableModel;

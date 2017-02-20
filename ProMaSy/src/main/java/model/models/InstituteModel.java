@@ -32,6 +32,11 @@ public class InstituteModel extends AbstractModel {
         this.departments = departments;
     }
 
+    @Override
+    public void setDescription(String instName) {
+        this.instName = instName;
+    }
+
     public String getInstName() {
         return instName;
     }

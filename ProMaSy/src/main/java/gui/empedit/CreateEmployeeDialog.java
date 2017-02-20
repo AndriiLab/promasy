@@ -1,9 +1,11 @@
 package gui.empedit;
 
-import gui.Icons;
-import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Icons;
+import gui.commons.Labels;
+import gui.components.PJComboBox;
+import gui.components.PJOptionPane;
 import model.dao.LoginData;
 import model.enums.Role;
 import model.models.*;
@@ -31,10 +33,10 @@ public class CreateEmployeeDialog extends JDialog {
     private JTextField emailField;
     private JTextField phoneMainField;
     private JTextField phoneReserveField;
-    private JComboBox<InstituteModel> instituteBox;
-    private JComboBox<DepartmentModel> departmentBox;
-    private JComboBox<SubdepartmentModel> subdepartmentBox;
-    private JComboBox<Role> roleBox;
+    private PJComboBox<InstituteModel> instituteBox;
+    private PJComboBox<DepartmentModel> departmentBox;
+    private PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private PJComboBox<Role> roleBox;
     private JTextField loginField;
     private JPasswordField passwordField;
     private JPasswordField repeatPasswordField;
@@ -65,20 +67,20 @@ public class CreateEmployeeDialog extends JDialog {
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, repeatPasswordField);
 
         //Set up roles combo box
-        roleBox = new JComboBox<>(Role.values());
+        roleBox = new PJComboBox<>(Role.values());
         roleBox.setEditable(false);
         roleBox.setPreferredSize(comboBoxDim);
 
         //Set up institute combo box and edit buttons
         DefaultComboBoxModel<InstituteModel> instModel = new DefaultComboBoxModel<>();
-        instituteBox = new JComboBox<>(instModel);
+        instituteBox = new PJComboBox<>(instModel);
         instituteBox.addItem(EmptyModel.INSTITUTE);
         instituteBox.setEditable(false);
         instituteBox.setPreferredSize(comboBoxDim);
 
         //Set up department combo box and edit buttons
         DefaultComboBoxModel<DepartmentModel> depModel = new DefaultComboBoxModel<>();
-        departmentBox = new JComboBox<>(depModel);
+        departmentBox = new PJComboBox<>(depModel);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.setEditable(false);
         departmentBox.setEnabled(false);
@@ -86,7 +88,7 @@ public class CreateEmployeeDialog extends JDialog {
 
         //Set up SubDepartment combo box and edit buttons
         DefaultComboBoxModel<SubdepartmentModel> subdepModel = new DefaultComboBoxModel<>();
-        subdepartmentBox = new JComboBox<>(subdepModel);
+        subdepartmentBox = new PJComboBox<>(subdepModel);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
         subdepartmentBox.setEditable(false);
         subdepartmentBox.setEnabled(false);
@@ -181,32 +183,32 @@ public class CreateEmployeeDialog extends JDialog {
     private boolean isValidFields() {
         String lastName = lastNameField.getText();
         if (lastName.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("lastName"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("lastName"));
             lastNameField.requestFocusInWindow();
             return false;
         }
         String firstName = nameField.getText();
         if (firstName.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("firstName"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("firstName"));
             nameField.requestFocusInWindow();
             return false;
         }
         String middleName = middleNameField.getText();
         if (middleName.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("middleName"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("middleName"));
             middleNameField.requestFocusInWindow();
             return false;
         }
         //TODO email validator
         String email = emailField.getText();
         if (email.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("email"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("email"));
             emailField.requestFocusInWindow();
             return false;
         }
         String phoneMain = phoneMainField.getText();
         if (phoneMain.length() < 2) {
-            Utils.emptyFieldError(parent, Labels.getProperty("phoneMain"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("phoneMain"));
             phoneMainField.requestFocusInWindow();
             return false;
         }
@@ -214,26 +216,26 @@ public class CreateEmployeeDialog extends JDialog {
         String login = loginField.getText();
         if (login.length() == 0) {
             loginField.setDisabledTextColor(Color.RED);
-            Utils.emptyFieldError(parent, Labels.getProperty("userName"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("userName"));
             phoneReserveField.requestFocusInWindow();
             return false;
         }
         InstituteModel instituteModel = (InstituteModel) instituteBox.getSelectedItem();
         if (instituteModel.equals(EmptyModel.INSTITUTE)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("institute"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("institute"));
             instituteBox.requestFocusInWindow();
             return false;
         }
         DepartmentModel departmentModel = (DepartmentModel) departmentBox.getSelectedItem();
         if (departmentModel.equals(EmptyModel.DEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
         departmentModel.setInstitute(instituteModel);
         SubdepartmentModel subdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         if (subdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -251,6 +253,13 @@ public class CreateEmployeeDialog extends JDialog {
             boolean isUniqueUser = listener.checkUniqueLogin(login);
             long salt = Utils.makeSalt();
             String pass = Utils.makePass(password, salt);
+            if (pass == null) {
+                PJOptionPane.criticalError(parent);
+                if (loginListener != null) {
+                    loginListener.cancelEvent();
+                }
+                return false;
+            }
             // if model empty createOrUpdate new user
             if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && isUniqueUser) {
                 currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
@@ -295,15 +304,15 @@ public class CreateEmployeeDialog extends JDialog {
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("edit"));
         if (listener != null) listener.loadInstitutes();
-        Utils.setRoleBox(roleBox, currentEmployeeModel.getRole());
-        Utils.setBoxFromModel(instituteBox, currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
-        Utils.setBoxFromModel(departmentBox, currentEmployeeModel.getSubdepartment().getDepartment());
-        Utils.setBoxFromModel(subdepartmentBox, currentEmployeeModel.getSubdepartment());
+        roleBox.setSelectedObject(currentEmployeeModel.getRole());
+        instituteBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
+        departmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment());
+        subdepartmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment());
         super.setVisible(true);
     }
 
     public void setRoleBox(Role role) {
-        Utils.setRoleBox(roleBox, role);
+        roleBox.setSelectedObject(role);
         roleBox.setEnabled(false);
         if (role == Role.ADMIN) {
             addOrganizationButton.setEnabled(true);
@@ -313,15 +322,15 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setInstData(List<InstituteModel> instDb) {
-        Utils.setBoxData(instituteBox, instDb, EmptyModel.INSTITUTE, true);
+        instituteBox.setBoxData(instDb, EmptyModel.INSTITUTE, true);
     }
 
     public void setDepData(List<DepartmentModel> depDb) {
-        Utils.setBoxData(departmentBox, depDb, EmptyModel.DEPARTMENT, true);
+        departmentBox.setBoxData(depDb, EmptyModel.DEPARTMENT, true);
     }
 
     public void setSubdepData(List<SubdepartmentModel> subdepDb) {
-        Utils.setBoxData(subdepartmentBox, subdepDb, EmptyModel.SUBDEPARTMENT, true);
+        subdepartmentBox.setBoxData(subdepDb, EmptyModel.SUBDEPARTMENT, true);
     }
 
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {

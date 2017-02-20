@@ -65,6 +65,4 @@ public class ReportParametersData {
 				+ departmentHead + ", personallyLiableEmpl=" + personallyLiableEmpl + ", accountant=" + accountant
 				+ ", economist=" + economist + "]";
 	}
-    
-    
 }

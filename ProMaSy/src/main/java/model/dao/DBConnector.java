@@ -45,7 +45,7 @@ public enum DBConnector {
         }
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
-//            log.info("Disconnected successfully\n" + stat.toString().replace(",", ",\n"));
+//            Logger.infoEvent(null, stat.toString().replace(",", ",\n"));
         }
         entityManagerFactory = null;
     }

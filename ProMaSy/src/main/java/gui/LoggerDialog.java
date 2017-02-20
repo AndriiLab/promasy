@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Labels;
 import model.models.EmptyModel;
 
 import javax.swing.*;
@@ -10,7 +11,11 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Dialog displays program log
@@ -31,7 +36,7 @@ public class LoggerDialog extends JDialog {
         JButton saveButton = new JButton(Labels.getProperty("saveLog"));
         saveButton.addActionListener(e -> {
             try {
-                String filePath = Utils.saveLog(logPane.getText());
+                String filePath = saveLog(logPane.getText());
                 JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             } catch (IOException e1) {
@@ -64,14 +69,29 @@ public class LoggerDialog extends JDialog {
 
     }
 
+    private static String saveLog(String log) throws IOException {
+        String fileName = "log_" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(getSystemTime()) + ".txt";
+        FileWriter fw = new FileWriter(fileName);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(log);
+        bw.close();
+        fw.close();
+        return fileName;
+    }
+
+    private static Timestamp getSystemTime() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
     public void addToLog (String status, Color color) {
         StyledDocument doc = logPane.getStyledDocument();
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);
         try {
-            doc.insertString(doc.getLength(), Utils.getSystemTime() + ":\t" + status + "\n", style);
+            doc.insertString(doc.getLength(), getSystemTime() + ":\t" + status + "\n", style);
         } catch (BadLocationException e) {
             Logger.errorEvent(null, e);
         }
     }
+
 }

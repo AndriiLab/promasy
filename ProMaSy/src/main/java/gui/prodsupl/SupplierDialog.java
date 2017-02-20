@@ -1,8 +1,9 @@
 package gui.prodsupl;
 
-import gui.CrEdDelButtons;
-import gui.Labels;
-import gui.Utils;
+import gui.commons.Labels;
+import gui.components.CEDButtons;
+import gui.components.PJComboBox;
+import gui.components.PJOptionPane;
 import model.models.EmptyModel;
 import model.models.SupplierModel;
 
@@ -18,7 +19,7 @@ public class SupplierDialog extends JDialog {
     private JButton createSupl;
     private JButton editSupl;
     private JButton deleteSupl;
-    private JComboBox<SupplierModel> suplBox;
+    private PJComboBox<SupplierModel> suplBox;
     private SupplierDialogListener listener;
     private SupplierModel privateSuplModel;
     private String newSuplName;
@@ -44,12 +45,12 @@ public class SupplierDialog extends JDialog {
         privateSuplModel = EmptyModel.SUPPLIER;
 
         DefaultComboBoxModel<SupplierModel> suplModel = new DefaultComboBoxModel<>();
-        suplBox = new JComboBox<>(suplModel);
+        suplBox = new PJComboBox<>(suplModel);
         suplBox.addItem(EmptyModel.SUPPLIER);
         suplBox.setPreferredSize(comboBoxDim);
         suplBox.setEditable(true);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("supplier_ced"));
+        CEDButtons ced = new CEDButtons(Labels.getProperty("supplier_ced"));
         createSupl = ced.getCreateButton();
         editSupl = ced.getEditButton();
         deleteSupl = ced.getDeleteButton();
@@ -138,7 +139,7 @@ public class SupplierDialog extends JDialog {
     }
 
     public void setSuplData(java.util.List<SupplierModel> suplDb) {
-        Utils.setBoxData(suplBox, suplDb, EmptyModel.SUPPLIER, true);
+        suplBox.setBoxData(suplDb, EmptyModel.SUPPLIER, true);
     }
 
     public void setListener(SupplierDialogListener listener) {
@@ -147,13 +148,13 @@ public class SupplierDialog extends JDialog {
 
     private boolean isSuplDataValid() {
         if (newSuplName.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("name"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("name"));
             suplBox.requestFocusInWindow();
             return false;
         }
         newSuplTel = telField.getText();
         if (newSuplName.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("phone"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("phone"));
             telField.requestFocusInWindow();
             return false;
         } else if (newSuplTel.length() > 20) {

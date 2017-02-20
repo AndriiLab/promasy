@@ -1,8 +1,8 @@
 package gui.bids.reports;
 
 import controller.Logger;
-import gui.Labels;
 import gui.MainFrame;
+import gui.commons.Labels;
 import model.models.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;

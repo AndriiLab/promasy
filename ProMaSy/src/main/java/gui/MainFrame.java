@@ -12,6 +12,9 @@ import gui.bids.BidsListPanelListener;
 import gui.bids.CreateBidDialog;
 import gui.bids.reports.ReportParametersDialog;
 import gui.bids.reports.ReportParametersDialogListener;
+import gui.commons.Colors;
+import gui.commons.Icons;
+import gui.commons.Labels;
 import gui.conset.ConSetDialog;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvDialog;
@@ -92,13 +95,13 @@ public class MainFrame extends JFrame {
         statusPanel = new StatusPanel(this);
 
         //initializing other common windows
+        createBidDialog = new CreateBidDialog(this);
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
         supplierDialog = new SupplierDialog(this);
         reasonsDialog = new ReasonsDialog(this);
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
-        createBidDialog = new CreateBidDialog(this);
         bidsListPanel = new BidsListPanel(this);
         createFinanceDialog = new CreateFinanceDialog(this);
         createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
@@ -195,7 +198,7 @@ public class MainFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
-        JMenuItem printItem = new JMenuItem(Labels.getProperty("print"));
+        JMenuItem printItem = new JMenuItem(Labels.withThreeDots("print"));
         printItem.setIcon(Icons.PRINT);
         JMenuItem exitItem = new JMenuItem(Labels.getProperty("exit"));
         fileMenu.add(printItem);
@@ -218,7 +221,7 @@ public class MainFrame extends JFrame {
         editMenu.add(editCurrentUserItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
-        JMenuItem infoItem = new JMenuItem(Labels.withThreeDots("aboutSoftware"));
+        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware"));
         infoItem.setIcon(Icons.ABOUT);
         helpMenu.add(infoItem);
 
@@ -324,8 +327,7 @@ public class MainFrame extends JFrame {
     }
 
     public void showCpvDialog(String cpv) {
-        cpvDialog.makeCpvQuery(cpv, true);
-        cpvDialog.setVisible(true);
+        cpvDialog.showWithCode(cpv);
     }
 
     private void showReportParametersDialog() {
@@ -474,7 +476,7 @@ public class MainFrame extends JFrame {
 
     public void setReasonsModelList(List<ReasonForSupplierChoiceModel> reasonsModelList) {
         createBidDialog.setReasonForSupplierChoiceBoxData(reasonsModelList);
-        reasonsDialog.setReasonData(reasonsModelList);
+        reasonsDialog.setData(reasonsModelList);
     }
 
     public void setFinanceModelList(List<FinanceModel> financeModelList) {

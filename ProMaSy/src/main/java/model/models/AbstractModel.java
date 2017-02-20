@@ -65,7 +65,7 @@ public abstract class AbstractModel {
         return createdEmployee;
     }
 
-    public void setCreatedEmployee(EmployeeModel createdEmployee) {
+    private void setCreatedEmployee(EmployeeModel createdEmployee) {
         this.createdEmployee = createdEmployee;
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractModel {
         return modifiedEmployee;
     }
 
-    public void setModifiedEmployee(EmployeeModel modifiedEmployee) {
+    private void setModifiedEmployee(EmployeeModel modifiedEmployee) {
         this.modifiedEmployee = modifiedEmployee;
     }
 
@@ -126,6 +126,8 @@ public abstract class AbstractModel {
         }
         return null;
     }
+
+    public abstract void setDescription(String description);
 
     @Override
     public boolean equals(Object obj) {

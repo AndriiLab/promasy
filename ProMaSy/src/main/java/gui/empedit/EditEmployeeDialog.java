@@ -1,8 +1,8 @@
 package gui.empedit;
 
-import gui.CrEdDelButtons;
-import gui.Labels;
 import gui.MainFrame;
+import gui.commons.Labels;
+import gui.components.CEDButtons;
 import model.models.EmployeeModel;
 import model.models.EmptyModel;
 
@@ -29,7 +29,7 @@ public class EditEmployeeDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("user_ced"));
+        CEDButtons ced = new CEDButtons(Labels.getProperty("user_ced"));
         createEmployeeButton = ced.getCreateButton();
         editEmployeeButton = ced.getEditButton();
         deleteEmployeeButton = ced.getDeleteButton();

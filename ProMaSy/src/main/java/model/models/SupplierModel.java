@@ -1,6 +1,6 @@
 package model.models;
 
-import gui.Labels;
+import gui.commons.Labels;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +42,11 @@ public class SupplierModel extends AbstractModel {
 
     public SupplierModel(){
         this.supplierName = Labels.getProperty("any");
+    }
+
+    @Override
+    public void setDescription(String supplierName) {
+        this.supplierName = supplierName;
     }
 
     public String getSupplierName() {

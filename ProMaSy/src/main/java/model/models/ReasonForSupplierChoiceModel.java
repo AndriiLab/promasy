@@ -28,6 +28,11 @@ public class ReasonForSupplierChoiceModel extends AbstractModel {
         this.reason = EmptyModel.STRING;
     }
 
+    @Override
+    public void setDescription(String reason) {
+        this.reason = reason;
+    }
+
     public String getReason() {
         return reason;
     }

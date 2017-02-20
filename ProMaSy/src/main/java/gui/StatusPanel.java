@@ -1,6 +1,8 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Icons;
+import gui.commons.Labels;
 import model.models.EmptyModel;
 
 import javax.swing.*;

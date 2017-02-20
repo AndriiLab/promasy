@@ -93,6 +93,11 @@ public class BidModel extends AbstractModel {
     public BidModel() {
     }
 
+    @Override
+    public void setDescription(String description) {
+        this.bidDesc = description;
+    }
+
     public BidType getType() {
         return type;
     }
@@ -175,10 +180,6 @@ public class BidModel extends AbstractModel {
 
     public List<BidStatusModel> getStatuses() {
         return statuses;
-    }
-
-    public void setStatuses(List<BidStatusModel> statuses) {
-        this.statuses = statuses;
     }
 
     public void addStatus(BidStatusModel bidStatusModel) {

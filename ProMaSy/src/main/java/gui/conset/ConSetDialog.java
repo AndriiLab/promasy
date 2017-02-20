@@ -1,6 +1,6 @@
 package gui.conset;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.models.ConnectionSettingsModel;
 
 import javax.swing.*;

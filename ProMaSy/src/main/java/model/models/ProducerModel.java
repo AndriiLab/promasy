@@ -1,6 +1,6 @@
 package model.models;
 
-import gui.Labels;
+import gui.commons.Labels;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +31,11 @@ public class ProducerModel extends AbstractModel{
 
     public ProducerModel(){
         this.brandName = Labels.getProperty("any");
+    }
+
+    @Override
+    public void setDescription(String producerName) {
+        this.brandName = producerName;
     }
 
     public String getBrandName() {

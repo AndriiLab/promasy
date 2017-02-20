@@ -1,6 +1,6 @@
 package model.enums;
 
-import gui.Labels;
+import gui.commons.Labels;
 
 /**
  * Enum holds data about available user roles

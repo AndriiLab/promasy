@@ -1,5 +1,6 @@
-package gui;
+package gui.commons;
 
+import javax.swing.*;
 import java.util.ResourceBundle;
 
 /**
@@ -10,6 +11,12 @@ public class Labels {
     private static final ResourceBundle LABELS = ResourceBundle.getBundle(LABELS_BUNDLE);
     private static final String VERSION_BUNDLE = "PromasyVersion";
     private static final ResourceBundle VERSION = ResourceBundle.getBundle(VERSION_BUNDLE);
+
+    static {
+        UIManager.put("OptionPane.yesButtonText", getProperty("yes"));
+        UIManager.put("OptionPane.noButtonText", getProperty("no"));
+        UIManager.put("OptionPane.cancelButtonText", getProperty("cancel"));
+    }
 
     public static String getProperty(final String key) {
         return LABELS.getString(key);

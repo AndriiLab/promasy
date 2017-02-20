@@ -1,6 +1,6 @@
 package gui.bids.status;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.enums.Status;
 import model.models.BidModel;
 import model.models.BidStatusModel;

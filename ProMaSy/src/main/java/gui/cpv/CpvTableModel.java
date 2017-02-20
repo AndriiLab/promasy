@@ -1,6 +1,6 @@
 package gui.cpv;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.models.CPVModel;
 
 import javax.swing.table.AbstractTableModel;

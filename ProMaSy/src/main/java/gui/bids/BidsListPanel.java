@@ -1,8 +1,13 @@
 package gui.bids;
 
-import gui.*;
+import gui.MainFrame;
 import gui.bids.reports.BidsReport;
 import gui.bids.status.StatusDialog;
+import gui.commons.Icons;
+import gui.commons.Labels;
+import gui.components.CEDButtons;
+import gui.components.PJComboBox;
+import gui.components.PJOptionPane;
 import model.dao.LoginData;
 import model.enums.BidType;
 import model.enums.Role;
@@ -29,10 +34,10 @@ public class BidsListPanel extends JPanel {
     private JButton editBidButton;
     private JButton deleteBidButton;
     private JButton changeStatusButton;
-    private JComboBox<DepartmentModel> departmentBox;
-    private JComboBox<SubdepartmentModel> subdepartmentBox;
-    private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
-    private JComboBox<BidType> bidTypeBox;
+    private PJComboBox<DepartmentModel> departmentBox;
+    private PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private PJComboBox<FinanceDepartmentModel> financeDepartmentBox;
+    private PJComboBox<BidType> bidTypeBox;
     private BidsTableModel bidsTableModel;
     private JTable bidsTable;
     private BidsListPanelListener listener;
@@ -66,7 +71,7 @@ public class BidsListPanel extends JPanel {
 
         statusDialog = new StatusDialog(parent);
 
-        CrEdDelButtons ced = new CrEdDelButtons(Labels.getProperty("bid_ced"));
+        CEDButtons ced = new CEDButtons(Labels.getProperty("bid_ced"));
         createBidButton = ced.getCreateButton();
         editBidButton = ced.getEditButton();
         deleteBidButton = ced.getDeleteButton();
@@ -83,19 +88,19 @@ public class BidsListPanel extends JPanel {
         changeStatusButton.setPreferredSize(buttonDim);
         changeStatusButton.setEnabled(false);
 
-        departmentBox = new JComboBox<>();
+        departmentBox = new PJComboBox<>();
         departmentBox.setPreferredSize(comboDim);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
 
-        subdepartmentBox = new JComboBox<>();
+        subdepartmentBox = new PJComboBox<>();
         subdepartmentBox.setPreferredSize(comboDim);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
-        financeDepartmentBox = new JComboBox<>();
+        financeDepartmentBox = new PJComboBox<>();
         financeDepartmentBox.setPreferredSize(comboDim);
         financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
 
-        bidTypeBox = new JComboBox<>(BidType.values());
+        bidTypeBox = new PJComboBox<>(BidType.values());
         bidTypeBox.setPreferredSize(comboDim);
         bidTypeBox.setSelectedItem(BidType.MATERIALS);
 
@@ -360,7 +365,7 @@ public class BidsListPanel extends JPanel {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-        Utils.setBoxData(financeDepartmentBox, db, EmptyModel.FINANCE_DEPARTMENT, true);
+        financeDepartmentBox.setBoxData(db, EmptyModel.FINANCE_DEPARTMENT, true);
     }
 
     public DepartmentModel getSelectedDepartment() {
@@ -436,10 +441,10 @@ public class BidsListPanel extends JPanel {
                     Labels.getProperty("emptyTableError"), JOptionPane.ERROR_MESSAGE);
             return false;
         } else if ((departmentBox.getSelectedItem().toString()).equals(EmptyModel.STRING)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
             return false;
         } else if (financeDepartmentBox.getSelectedItem().toString() == null) {
-            Utils.emptyFieldError(parent, Labels.getProperty("order"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("order"));
             return false;
         }
         return true;

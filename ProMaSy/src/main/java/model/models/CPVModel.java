@@ -36,50 +36,23 @@ public class CPVModel {
 
     public CPVModel() {
     }
-
 	public String getCpvId() {
 		return cpvId;
 	}
-
-	public void setCpvId(String cpvId) {
-		this.cpvId = cpvId;
-	}
-
 	public String getCpvUkr() {
 		return cpvUkr;
 	}
-
-	public void setCpvUkr(String cpvUkr) {
-		this.cpvUkr = cpvUkr;
-	}
-
 	public String getCpvEng() {
 		return cpvEng;
 	}
-
-	public void setCpvEng(String cpvEng) {
-		this.cpvEng = cpvEng;
-	}
-
 	public int getCpvLevel() {
 		return cpvLevel;
 	}
-
-	public void setCpvLevel(int cpvLevel) {
-		this.cpvLevel = cpvLevel;
-	}
-
 	public boolean isCpvTerminal() {
 		return cpvTerminal;
 	}
-
-	public void setCpvTerminal(boolean cpvTerminal) {
-		this.cpvTerminal = cpvTerminal;
-	}
-
 	@Override
 	public String toString() {
 		return cpvUkr;
 	}
-
 }

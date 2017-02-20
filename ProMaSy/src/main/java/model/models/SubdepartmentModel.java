@@ -23,7 +23,6 @@ public class SubdepartmentModel extends AbstractModel {
     private List<FinanceDepartmentModel> financeDepartments = new ArrayList<>();
 
     public SubdepartmentModel() {
-
     }
 
     public SubdepartmentModel(String subdepName) {
@@ -36,6 +35,11 @@ public class SubdepartmentModel extends AbstractModel {
         this.department = department;
         this.employees = employees;
         this.financeDepartments = financeDepartments;
+    }
+
+    @Override
+    public void setDescription(String subdepName) {
+        this.subdepName = subdepName;
     }
 
     public String getSubdepName() {

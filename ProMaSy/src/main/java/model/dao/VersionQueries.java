@@ -1,6 +1,6 @@
 package model.dao;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.models.Version;
 
 import javax.persistence.EntityManager;

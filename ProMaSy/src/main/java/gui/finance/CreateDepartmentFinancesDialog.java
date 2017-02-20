@@ -1,7 +1,9 @@
 package gui.finance;
 
-import gui.Labels;
 import gui.Utils;
+import gui.commons.Labels;
+import gui.components.PJComboBox;
+import gui.components.PJOptionPane;
 import model.enums.BidType;
 import model.models.*;
 
@@ -27,8 +29,8 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     private FinanceDepartmentDialogListener listener;
 
     private JFrame parent;
-    private JComboBox<DepartmentModel> departmentBox;
-    private JComboBox<SubdepartmentModel> subdepartmentBox;
+    private PJComboBox<DepartmentModel> departmentBox;
+    private PJComboBox<SubdepartmentModel> subdepartmentBox;
     private JTextField depMaterialsAmountField;
     private JTextField depEquipmentAmountField;
     private JTextField depServicesAmountField;
@@ -55,8 +57,8 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         equpmetLeft = new JLabel();
         servicesLeft = new JLabel();
 
-        departmentBox = new JComboBox<>();
-        departmentBox.setPreferredSize(Utils.COMBOBOX_DIMENSION);
+        departmentBox = new PJComboBox<>();
+        departmentBox.setPreferredSize(PJComboBox.COMBOBOX_DIMENSION);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.addActionListener(e -> {
             DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
@@ -66,8 +68,8 @@ public class CreateDepartmentFinancesDialog extends JDialog {
             subdepartmentBox.setEnabled(true);
         });
 
-        subdepartmentBox = new JComboBox<>();
-        subdepartmentBox.setPreferredSize(Utils.COMBOBOX_DIMENSION);
+        subdepartmentBox = new PJComboBox<>();
+        subdepartmentBox.setPreferredSize(PJComboBox.COMBOBOX_DIMENSION);
         subdepartmentBox.setEnabled(false);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
@@ -130,14 +132,14 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     private boolean checkInput() {
         DepartmentModel selectedDepartment = (DepartmentModel) departmentBox.getSelectedItem();
         if (selectedDepartment.equals(EmptyModel.DEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         selectedSubdepartment = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         if (selectedSubdepartment.equals(EmptyModel.SUBDEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -161,11 +163,11 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
 
     public void setDepartmentBoxData(java.util.List<DepartmentModel> db) {
-        Utils.setBoxData(departmentBox, db, EmptyModel.DEPARTMENT, true);
+        departmentBox.setBoxData(db, EmptyModel.DEPARTMENT, true);
     }
 
     public void setSubdepartmentBoxData(java.util.List<SubdepartmentModel> db) {
-        Utils.setBoxData(subdepartmentBox, db, EmptyModel.SUBDEPARTMENT, true);
+        subdepartmentBox.setBoxData(db, EmptyModel.SUBDEPARTMENT, true);
     }
 
     public void setVisible(FinanceModel model, boolean isCreate) {
@@ -181,8 +183,8 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
     public void editDepartmentModel(FinanceDepartmentModel selectedDepFinModel) {
         this.currentFinanceDepartmentModel = selectedDepFinModel;
-        Utils.setBoxFromModel(departmentBox, selectedDepFinModel.getSubdepartment().getDepartment());
-        Utils.setBoxFromModel(subdepartmentBox, selectedDepFinModel.getSubdepartment());
+        departmentBox.setSelectedModel(selectedDepFinModel.getSubdepartment().getDepartment());
+        subdepartmentBox.setSelectedModel(selectedDepFinModel.getSubdepartment());
         depMaterialsAmountField.setText(selectedDepFinModel.getTotalMaterialsAmount().toString());
         depEquipmentAmountField.setText(selectedDepFinModel.getTotalEquipmentAmount().toString());
         depServicesAmountField.setText(selectedDepFinModel.getTotalServicesAmount().toString());

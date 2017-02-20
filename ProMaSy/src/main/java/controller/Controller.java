@@ -3,13 +3,14 @@
  */
 package controller;
 
-import gui.Labels;
 import gui.MainFrame;
 import gui.MainFrameListener;
 import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
 import gui.bids.reports.ReportParametersDialogListener;
+import gui.commons.Labels;
+import gui.components.PJOptionPane;
 import gui.cpv.CpvReqEvent;
 import gui.cpv.CpvSearchListener;
 import gui.empedit.CreateEmployeeDialogListener;
@@ -75,6 +76,10 @@ public class Controller {
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = Utils.makePass(password, getSalt(user));
+                if (pass == null) {
+                    PJOptionPane.criticalError(mainFrame);
+                    close();
+                }
                 boolean isLoginDataValid = checkLogin(user, pass);
                 if (isLoginDataValid) {
                     // if login was successful init MainFrame and make it visible
@@ -231,7 +236,7 @@ public class Controller {
             }
 
             @Override
-            public void getAllAmUnits() {
+            public void getAllEntries() {
                 mainFrame.setAmountUnitsModelList(getAmUnits());
             }
         });
@@ -244,7 +249,7 @@ public class Controller {
             }
 
             @Override
-            public void getAllProducers() {
+            public void getAllEntries() {
                 mainFrame.setProducerModelList(getProd());
             }
         });
@@ -270,7 +275,7 @@ public class Controller {
             }
 
             @Override
-            public void getReasonsForSupplierChoice() {
+            public void getAllEntries() {
                 mainFrame.setReasonsModelList(getReasons());
             }
         });
@@ -823,8 +828,8 @@ public class Controller {
     // but it calls only in this close() method (except close in login dialog)
     private void closeDialog() {
         int action = JOptionPane.showConfirmDialog(this.mainFrame, Labels.getProperty("doYouWantExit"),
-                Labels.getProperty("exitFromProgram"), JOptionPane.OK_CANCEL_OPTION);
-        if (action == JOptionPane.OK_OPTION) {
+                Labels.getProperty("exitFromProgram"), JOptionPane.YES_NO_OPTION);
+        if (action == JOptionPane.YES_OPTION) {
             close();
         }
     }

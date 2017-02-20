@@ -1,5 +1,7 @@
 package gui;
 
+import gui.commons.Labels;
+
 import java.awt.*;
 
 /**

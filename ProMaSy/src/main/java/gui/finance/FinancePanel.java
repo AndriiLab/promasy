@@ -1,9 +1,10 @@
 package gui.finance;
 
-import gui.CrEdDelButtons;
-import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Labels;
+import gui.components.CEDButtons;
+import gui.components.PJOptionPane;
 import model.dao.LoginData;
 import model.models.EmptyModel;
 import model.models.FinanceDepartmentModel;
@@ -45,7 +46,7 @@ public class FinancePanel extends JPanel {
         selectedFinanceModel = EmptyModel.FINANCE;
         useUserDepartment = false;
 
-        CrEdDelButtons cedFinance = new CrEdDelButtons(Labels.getProperty("finance_ced"));
+        CEDButtons cedFinance = new CEDButtons(Labels.getProperty("finance_ced"));
 
         createOrderButton = cedFinance.getCreateButton();
         editOrderButton = cedFinance.getEditButton();
@@ -76,7 +77,7 @@ public class FinancePanel extends JPanel {
             }
         });
 
-        CrEdDelButtons cedDepartmentFinances = new CrEdDelButtons(Labels.getProperty("dep_order_ced"));
+        CEDButtons cedDepartmentFinances = new CEDButtons(Labels.getProperty("dep_order_ced"));
         createDepOrderButton = cedDepartmentFinances.getCreateButton();
         editDepOrderButton = cedDepartmentFinances.getEditButton();
         deleteDepOrderButton = cedDepartmentFinances.getDeleteButton();
@@ -157,7 +158,7 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton.addActionListener(e -> {
             if (selectedFinanceModel.equals(EmptyModel.FINANCE)) {
-                Utils.emptyFieldError(parent, Labels.getProperty("finance"));
+                PJOptionPane.emptyField(parent, Labels.getProperty("finance"));
             } else {
                 parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
             }

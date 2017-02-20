@@ -1,11 +1,10 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Labels;
+import gui.components.PJOptionPane;
 import model.enums.BidType;
-import model.enums.Role;
-import model.models.AbstractModel;
 import model.models.ConnectionSettingsModel;
-import model.models.EmptyModel;
 import model.models.FinanceModel;
 
 import javax.swing.*;
@@ -18,45 +17,43 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 public class Utils {
+    /**
+     * Optimizes sizes of buttons
+     * If button1 larger than button2 it sets size of button1 to button2 and vice versa
+     *
+     * @param button1 {@link JButton}
+     * @param button2 {@link JButton}
+     */
 
-    public static final Dimension COMBOBOX_DIMENSION = new Dimension(225, 20);
-
-    public static void setBoxFromModel(JComboBox<? extends AbstractModel> box, AbstractModel model) {
-        if (model.getModelId() != 0L) {
-            for(int i = 0; i<=box.getItemCount(); i++){
-                if (box.getItemAt(i).equals(model)) {
-                    box.setSelectedIndex(i);
-                    break;
-                }
-            }
+    public static void setPreferredButtonSizes(JButton button1, JButton button2) {
+        Dimension button1Size = button1.getPreferredSize();
+        Dimension button2Size = button2.getPreferredSize();
+        if (button1Size.getWidth() > button2Size.getWidth()) {
+            button2.setPreferredSize(button1Size);
+        } else if (button1Size.getWidth() < button2Size.getWidth()) {
+            button1.setPreferredSize(button2Size);
         }
     }
 
-    public static void setRoleBox(JComboBox<Role> box, Role role) {
-        for (int i = 0; i <= box.getItemCount(); i++) {
-            if (box.getItemAt(i).equals(role)) {
-                box.setSelectedIndex(i);
-                break;
+    /**
+     * Function determines row with searchObject in given table
+     *
+     * @param table             {@link JTable} with objects
+     * @param columnWithObjects number of coumn, where searchObjects stored
+     * @param searchObject      object, which row to be determined
+     * @return number of column with object in table or -1 if searchObject doesn't exist in table
+     */
+
+    public static int getRowWithObject(JTable table, int columnWithObjects, Object searchObject) {
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Object tableObject = table.getValueAt(i, columnWithObjects);
+            if (tableObject == searchObject) {
+                return i;
             }
         }
-    }
-
-    public static void emptyFieldError(JFrame parent, String fieldName) {
-        JOptionPane.showMessageDialog(parent,
-                Labels.getProperty("enterDataIntoField") + " \"" + fieldName + "\"",
-                Labels.getProperty("fieldCannotBeEmpty") + " \"" + fieldName + "\"",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void wrongFormatError(JFrame parent, String fieldName, String hints) {
-        JOptionPane.showMessageDialog(parent,
-                Labels.getProperty("wrongFormat") + " \"" + fieldName + "\"\n" + Labels.getProperty("checkInput") + "\n" + hints,
-                Labels.getProperty("fieldErr"),
-                JOptionPane.ERROR_MESSAGE);
+        return -1;
     }
 
     public static long makeSalt(){
@@ -70,14 +67,9 @@ public class Utils {
             md.update(ByteBuffer.allocate(Long.BYTES).putLong(salt).array());
             return DatatypeConverter.printHexBinary(md.digest());
         } catch (NoSuchAlgorithmException e) {
-            //Bad practice
             Logger.warnEvent(e);
-            return EmptyModel.STRING;
+            return null;
         }
-    }
-
-    public static Timestamp getSystemTime() {
-        return new Timestamp(System.currentTimeMillis());
     }
 
     public static void saveConnectionSettings(ConnectionSettingsModel model) throws IOException {
@@ -97,16 +89,6 @@ public class Utils {
         return model;
     }
 
-    public static String saveLog(String log) throws IOException {
-        String fileName = "log_" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(Utils.getSystemTime()) + ".txt";
-        FileWriter fw = new FileWriter(fileName);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(log);
-        bw.close();
-        fw.close();
-        return fileName;
-    }
-
     private static String formatBigDecimal(String bigDecimal) {
         if (bigDecimal.contains(",")) {
             bigDecimal = bigDecimal.replace(",", ".");
@@ -120,7 +102,7 @@ public class Utils {
     public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
         String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
         if (targetBigDecimalText.isEmpty()) {
-            Utils.emptyFieldError(parent, fieldName);
+            PJOptionPane.emptyField(parent, fieldName);
             jTextField.requestFocusInWindow();
             return null;
         }
@@ -171,71 +153,5 @@ public class Utils {
         } else {
             return targetBigDecimal;
         }
-    }
-
-    /**
-     * Optimizes sizes of buttons
-     * If button1 larger than button2 it sets size of button1 to button2 and vice versa
-     *
-     * @param button1 {@link JButton}
-     * @param button2 {@link JButton}
-     */
-
-    public static void setPreferredButtonSizes(JButton button1, JButton button2) {
-        Dimension button1Size = button1.getPreferredSize();
-        Dimension button2Size = button2.getPreferredSize();
-        if (button1Size.getWidth() > button2Size.getWidth()) {
-            button2.setPreferredSize(button1Size);
-        } else if (button1Size.getWidth() < button2Size.getWidth()) {
-            button1.setPreferredSize(button2Size);
-        }
-    }
-
-    /**
-     * Function sets {@link JComboBox} with data with special parameters.
-     *  First it removes all objects from comboBox and adds emptyModel (if selected)
-     *  Next it adds only models where model.isActive()
-     *
-     * @param comboBox      combo box, where data has to be set
-     * @param db            parametrized list, which holds extended from {@link AbstractModel} objects
-     * @param emptyModel    model with default data of extended from {@link AbstractModel} object
-     * @param isFirstEmpty  add first emptyModel to comboBox
-     * @param <T>           class extended from {@link AbstractModel}
-     */
-
-    public static <T extends AbstractModel> void setBoxData(JComboBox<T> comboBox, java.util.List<T> db, T emptyModel, boolean isFirstEmpty) {
-        comboBox.removeAllItems();
-        if (isFirstEmpty) {
-            comboBox.addItem(emptyModel);
-        }
-        if (!isFirstEmpty && (db == null || db.isEmpty())) {
-            comboBox.addItem(emptyModel);
-        } else if (db != null && !db.isEmpty()) {
-            for (T model : db) {
-                if (model.isActive()) {
-                    comboBox.addItem(model);
-                }
-            }
-        }
-        comboBox.repaint();
-    }
-
-    /**
-     * Function determines row with searchObject in given table
-     *
-     * @param table             {@link JTable} with objects
-     * @param columnWithObjects number of coumn, where searchObjects stored
-     * @param searchObject      object, which row to be determined
-     * @return number of column with object in table or -1 if searchObject doesn't exist in table
-     */
-
-    public static int getRowWithObject(JTable table, int columnWithObjects, Object searchObject) {
-        for (int i = 0; i < table.getRowCount(); i++) {
-            Object tableObject = table.getValueAt(i, columnWithObjects);
-            if (tableObject == searchObject) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

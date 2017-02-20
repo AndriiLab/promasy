@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Labels;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

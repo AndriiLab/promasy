@@ -1,8 +1,8 @@
 package gui.login;
 
-import gui.Icons;
-import gui.Labels;
 import gui.MainFrame;
+import gui.commons.Icons;
+import gui.commons.Labels;
 import gui.empedit.CreateEmployeeFromLoginListener;
 import model.enums.Role;
 import model.models.EmptyModel;

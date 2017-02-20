@@ -1,6 +1,7 @@
 package gui.bids;
 
-import gui.Labels;
+import gui.commons.Labels;
+import model.enums.Status;
 import model.models.BidModel;
 
 import javax.swing.table.AbstractTableModel;
@@ -64,7 +65,7 @@ class BidsTableModel extends AbstractTableModel {
             case 5:
                 return model.getLastEditDate();
             case 6:
-                return model.getLastBidStatusModel().getStatus().getStatusDesc();
+                return model.getLastBidStatusModel().getStatus();
         }
 
         return null;
@@ -86,7 +87,7 @@ class BidsTableModel extends AbstractTableModel {
             case 5:
                 return Timestamp.class;
             case 6:
-                return String.class;
+                return Status.class;
             default:
                 return null;
         }

@@ -19,5 +19,4 @@ public class EmptyModel {
     public static final SupplierModel SUPPLIER = new SupplierModel();
 
     public static final String STRING = "";
-
 }

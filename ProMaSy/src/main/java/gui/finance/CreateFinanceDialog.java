@@ -1,8 +1,9 @@
 package gui.finance;
 
 import controller.Logger;
-import gui.Labels;
 import gui.Utils;
+import gui.commons.Labels;
+import gui.components.PJOptionPane;
 import model.models.EmptyModel;
 import model.models.FinanceModel;
 import org.jdesktop.swingx.JXDatePicker;
@@ -147,7 +148,7 @@ public class CreateFinanceDialog extends JDialog {
             orderNumber = Integer.parseInt(orderNumberField.getText());
         } catch (NumberFormatException e) {
             Logger.warnEvent(e);
-            Utils.wrongFormatError(parent, Labels.getProperty("financeNumber"), Labels.getProperty("integersOnly"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("financeNumber"), Labels.getProperty("integersOnly"));
             orderNumberField.requestFocusInWindow();
             return false;
         }
@@ -155,7 +156,7 @@ public class CreateFinanceDialog extends JDialog {
         startDate = new java.sql.Date(startDatePicker.getDate().getTime());
         endDate = new java.sql.Date(endDatePicker.getDate().getTime());
         if (orderName.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("financeName"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("financeName"));
             orderNameField.requestFocusInWindow();
             return false;
         } else if (startDate.after(endDate)) {

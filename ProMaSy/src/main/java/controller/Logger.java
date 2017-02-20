@@ -1,8 +1,8 @@
 package controller;
 
-import gui.Colors;
-import gui.Labels;
 import gui.MainFrame;
+import gui.commons.Colors;
+import gui.commons.Labels;
 import org.apache.log4j.LogManager;
 
 /**

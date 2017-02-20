@@ -1,8 +1,8 @@
 package gui.bids.reports;
 
-import gui.Labels;
 import gui.MainFrame;
-import gui.Utils;
+import gui.commons.Labels;
+import gui.components.PJComboBox;
 import model.enums.Role;
 import model.models.EmployeeModel;
 import model.models.EmptyModel;
@@ -18,13 +18,13 @@ import java.util.List;
  */
 public class ReportParametersDialog extends JDialog {
 
-    private JComboBox<Role> roleBox;
-    private JComboBox<EmployeeModel> headBox;
-    private JComboBox<EmployeeModel> departmentHeadBox;
-    private JComboBox<EmployeeModel> personallyLiableEmpBox;
-    private JComboBox<EmployeeModel> accountantBox;
-    private JComboBox<EmployeeModel> economistBox;
-    private JComboBox<EmployeeModel> headTenderBox;
+    private PJComboBox<Role> roleBox;
+    private PJComboBox<EmployeeModel> headBox;
+    private PJComboBox<EmployeeModel> departmentHeadBox;
+    private PJComboBox<EmployeeModel> personallyLiableEmpBox;
+    private PJComboBox<EmployeeModel> accountantBox;
+    private PJComboBox<EmployeeModel> economistBox;
+    private PJComboBox<EmployeeModel> headTenderBox;
     private JButton okButton;
     private JButton cancelButton;
     private ReportParametersDialogListener listener;
@@ -44,32 +44,32 @@ public class ReportParametersDialog extends JDialog {
 
         Dimension preferredFieldDim = new Dimension(235, 15);
 
-        roleBox = new JComboBox<>();
+        roleBox = new PJComboBox<>();
         roleBox.setSize(preferredFieldDim);
         roleBox.addItem(Role.DIRECTOR);
         roleBox.setEnabled(false);
 
-        headBox = new JComboBox<>();
+        headBox = new PJComboBox<>();
         headBox.setSize(preferredFieldDim);
         headBox.addItem(EmptyModel.EMPLOYEE);
 
-        departmentHeadBox = new JComboBox<>();
+        departmentHeadBox = new PJComboBox<>();
         departmentHeadBox.setSize(preferredFieldDim);
         departmentHeadBox.addItem(EmptyModel.EMPLOYEE);
 
-        personallyLiableEmpBox = new JComboBox<>();
+        personallyLiableEmpBox = new PJComboBox<>();
         personallyLiableEmpBox.setSize(preferredFieldDim);
         personallyLiableEmpBox.addItem(EmptyModel.EMPLOYEE);
 
-        accountantBox = new JComboBox<>();
+        accountantBox = new PJComboBox<>();
         accountantBox.setSize(preferredFieldDim);
         accountantBox.addItem(EmptyModel.EMPLOYEE);
 
-        economistBox = new JComboBox<>();
+        economistBox = new PJComboBox<>();
         economistBox.setSize(preferredFieldDim);
         economistBox.addItem(EmptyModel.EMPLOYEE);
 
-        headTenderBox = new JComboBox<>();
+        headTenderBox = new PJComboBox<>();
         headTenderBox.setSize(preferredFieldDim);
         headTenderBox.addItem(EmptyModel.EMPLOYEE);
 
@@ -125,27 +125,27 @@ public class ReportParametersDialog extends JDialog {
     }
 
     public void setHeadBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(headBox, db, EmptyModel.EMPLOYEE, false);
+        headBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setDepartmentHeadBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(departmentHeadBox, db, EmptyModel.EMPLOYEE, false);
+        departmentHeadBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setPersonallyLiableEmpBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(personallyLiableEmpBox, db, EmptyModel.EMPLOYEE, false);
+        personallyLiableEmpBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setAccountantBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(accountantBox, db, EmptyModel.EMPLOYEE, false);
+        accountantBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setEconomistBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(economistBox, db, EmptyModel.EMPLOYEE, false);
+        economistBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setHeadTenderBoxData(List<EmployeeModel> db) {
-        Utils.setBoxData(headTenderBox, db, EmptyModel.EMPLOYEE, false);
+        headTenderBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
     public void setListener(ReportParametersDialogListener listener) {

@@ -1,6 +1,6 @@
 package gui.finance;
 
-import gui.Labels;
+import gui.commons.Labels;
 import model.enums.BidType;
 import model.models.FinanceModel;
 

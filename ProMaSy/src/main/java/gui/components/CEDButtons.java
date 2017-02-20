@@ -1,4 +1,7 @@
-package gui;
+package gui.components;
+
+import gui.commons.Icons;
+import gui.commons.Labels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,14 +9,14 @@ import java.awt.*;
 /**
  * Creates standard buttons "Create", "Edit" and "Delete"
  */
-public class CrEdDelButtons {
+public class CEDButtons {
 
     private JButton createButton;
     private JButton editButton;
     private JButton deleteButton;
     private String propertyName;
 
-    public CrEdDelButtons(String propertyName) {
+    public CEDButtons(String propertyName) {
         this.propertyName = propertyName;
         Dimension buttonDim = new Dimension(25, 25);
 
@@ -46,6 +49,6 @@ public class CrEdDelButtons {
     }
 
     public boolean deleteEntry(JFrame parent, String entryName) {
-        return (JOptionPane.showConfirmDialog(parent, Labels.withSpaceAfter("confirmDeleteLong") + propertyName + " '" + entryName + "'?", Labels.withSpaceAfter("delete") + propertyName, JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION);
+        return PJOptionPane.deleteEntry(parent, propertyName, entryName);
     }
 }

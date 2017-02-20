@@ -1,10 +1,12 @@
 package gui.bids;
 
 import controller.Logger;
-import gui.Icons;
-import gui.Labels;
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Icons;
+import gui.commons.Labels;
+import gui.components.PJComboBox;
+import gui.components.PJOptionPane;
 import model.enums.BidType;
 import model.enums.Status;
 import model.models.*;
@@ -24,14 +26,14 @@ import java.util.List;
  */
 public class CreateBidDialog extends JDialog {
 
-    private JComboBox<DepartmentModel> departmentBox;
-    private JComboBox<SubdepartmentModel> subdepartmentBox;
-    private JComboBox<BidType> bidTypeBox;
-    private JComboBox<FinanceDepartmentModel> financeDepartmentBox;
-    private JComboBox<ProducerModel> producerBox;
-    private JComboBox<SupplierModel> supplierBox;
-    private JComboBox<AmountUnitsModel> amUnitsBox;
-    private JComboBox<ReasonForSupplierChoiceModel> reasonForSupplierChoiceBox;
+    private PJComboBox<DepartmentModel> departmentBox;
+    private PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private PJComboBox<BidType> bidTypeBox;
+    private PJComboBox<FinanceDepartmentModel> financeDepartmentBox;
+    private PJComboBox<ProducerModel> producerBox;
+    private PJComboBox<SupplierModel> supplierBox;
+    private PJComboBox<AmountUnitsModel> amUnitsBox;
+    private PJComboBox<ReasonForSupplierChoiceModel> reasonForSupplierChoiceBox;
     private JButton addProducerButton;
     private JButton addSupplierButton;
     private JButton searchCPVButton;
@@ -58,7 +60,7 @@ public class CreateBidDialog extends JDialog {
         super(parent, Labels.getProperty("createBid"), true);
         this.parent = parent;
         setSize(516, 482);
-        setResizable(true);
+        setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
@@ -69,37 +71,37 @@ public class CreateBidDialog extends JDialog {
 
         Dimension preferredFieldDim = new Dimension(235, 20);
 
-        departmentBox = new JComboBox<>();
+        departmentBox = new PJComboBox<>();
         departmentBox.setPreferredSize(preferredFieldDim);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
 
-        subdepartmentBox = new JComboBox<>();
+        subdepartmentBox = new PJComboBox<>();
         subdepartmentBox.setPreferredSize(preferredFieldDim);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
-        financeDepartmentBox = new JComboBox<>();
+        financeDepartmentBox = new PJComboBox<>();
         financeDepartmentBox.setPreferredSize(preferredFieldDim);
         financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
 
-        bidTypeBox = new JComboBox<>(BidType.values());
+        bidTypeBox = new PJComboBox<>(BidType.values());
         bidTypeBox.setPreferredSize(preferredFieldDim);
         currentBidType = BidType.MATERIALS;
 
         preferredFieldDim.setSize(170, 25);
 
-        producerBox = new JComboBox<>();
+        producerBox = new PJComboBox<>();
         producerBox.setPreferredSize(preferredFieldDim);
         producerBox.addItem(EmptyModel.PRODUCER);
 
-        supplierBox = new JComboBox<>();
+        supplierBox = new PJComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
         supplierBox.addItem(EmptyModel.SUPPLIER);
 
-        reasonForSupplierChoiceBox = new JComboBox<>();
+        reasonForSupplierChoiceBox = new PJComboBox<>();
         reasonForSupplierChoiceBox.setPreferredSize(preferredFieldDim);
         reasonForSupplierChoiceBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
 
-        amUnitsBox = new JComboBox<>();
+        amUnitsBox = new PJComboBox<>();
         amUnitsBox.setPreferredSize(preferredFieldDim);
 
         Dimension buttonDim = new Dimension(25, 25);
@@ -252,15 +254,15 @@ public class CreateBidDialog extends JDialog {
     }
 
     void setCurrentDepartment(DepartmentModel currentDepartment) {
-        Utils.setBoxFromModel(departmentBox, currentDepartment);
+        departmentBox.setSelectedModel(currentDepartment);
     }
 
     void setCurrentSubdepartment(SubdepartmentModel subdepartmentModel) {
-        Utils.setBoxFromModel(subdepartmentBox, subdepartmentModel);
+        subdepartmentBox.setSelectedModel(subdepartmentModel);
     }
 
     void setCurrentFinanceDepartment(FinanceDepartmentModel currentFinanceDepartment) {
-        Utils.setBoxFromModel(financeDepartmentBox, currentFinanceDepartment);
+        financeDepartmentBox.setSelectedModel(currentFinanceDepartment);
     }
 
     void setCurrentBidType(BidType type) {
@@ -318,7 +320,7 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
-        Utils.setBoxData(financeDepartmentBox, db, EmptyModel.FINANCE_DEPARTMENT, false);
+        financeDepartmentBox.setBoxData(db, EmptyModel.FINANCE_DEPARTMENT, false);
     }
 
     void addToDepartmentBox(DepartmentModel model) {
@@ -326,38 +328,38 @@ public class CreateBidDialog extends JDialog {
     }
 
     public void setProducerBoxData(List<ProducerModel> db) {
-        Utils.setBoxData(producerBox, db, EmptyModel.PRODUCER, true);
+        producerBox.setBoxData(db, EmptyModel.PRODUCER, true);
     }
 
     public void setSupplierBoxData(List<SupplierModel> db) {
-        Utils.setBoxData(supplierBox, db, EmptyModel.SUPPLIER, true);
+        supplierBox.setBoxData(db, EmptyModel.SUPPLIER, true);
     }
 
     public void setReasonForSupplierChoiceBoxData(List<ReasonForSupplierChoiceModel> db) {
-        Utils.setBoxData(reasonForSupplierChoiceBox, db, EmptyModel.REASON_FOR_SUPPLIER_CHOICE, true);
+        reasonForSupplierChoiceBox.setBoxData(db, EmptyModel.REASON_FOR_SUPPLIER_CHOICE, true);
     }
 
     public void setAmUnitsBoxData(List<AmountUnitsModel> db) {
-        Utils.setBoxData(amUnitsBox, db, EmptyModel.AMOUNT_UNITS, true);
+        amUnitsBox.setBoxData(db, EmptyModel.AMOUNT_UNITS, true);
     }
 
     private boolean checkFields() {
         DepartmentModel selectedDepartmentModel = (DepartmentModel) departmentBox.getSelectedItem();
         if (selectedDepartmentModel.equals(EmptyModel.DEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("department"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         SubdepartmentModel selectedSubdepartmentModel = (SubdepartmentModel) subdepartmentBox.getSelectedItem();
         if (selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("subdepartment"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
         FinanceDepartmentModel selectedFinanceDepartmentModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
         if (selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("finance"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("finance"));
             financeDepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -367,17 +369,17 @@ public class CreateBidDialog extends JDialog {
         }
         String selectedCatNum = catNumberField.getText().isEmpty() ? null : catNumberField.getText();
         if (selectedCPV.equals(EmptyModel.CPV)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("cpv"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("cpv"));
             searchCPVButton.requestFocusInWindow();
             return false;
         } else if (selectedCPV.getCpvId().length() != 10) {
-            Utils.wrongFormatError(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
             searchCPVButton.requestFocusInWindow();
             return false;
         }
         String selectedDescription = descriptionPane.getText();
         if (selectedDescription.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("description"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("description"));
             descriptionPane.requestFocusInWindow();
             return false;
         }
@@ -387,7 +389,7 @@ public class CreateBidDialog extends JDialog {
         }
         ReasonForSupplierChoiceModel selectedReasonModel = (ReasonForSupplierChoiceModel) reasonForSupplierChoiceBox.getSelectedItem();
         if (selectedSupplierModel != null && !selectedSupplierModel.equals(EmptyModel.SUPPLIER) && selectedReasonModel.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("reasonForSupplierChoice"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("reasonForSupplierChoice"));
             supplierBox.requestFocusInWindow();
             return false;
         } else if (selectedSupplierModel == null) {
@@ -396,13 +398,13 @@ public class CreateBidDialog extends JDialog {
 
         AmountUnitsModel selectedAmountUnitsModel = (AmountUnitsModel) amUnitsBox.getSelectedItem();
         if (selectedAmountUnitsModel.equals(EmptyModel.AMOUNT_UNITS)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("packing"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("packing"));
             amUnitsBox.requestFocusInWindow();
             return false;
         }
         String amountString = amountField.getText();
         if (amountString.isEmpty()) {
-            Utils.emptyFieldError(parent, Labels.getProperty("amount"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("amount"));
             amountField.requestFocusInWindow();
             return false;
         }
@@ -412,14 +414,14 @@ public class CreateBidDialog extends JDialog {
             amount = Integer.parseInt(amountString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);
-            Utils.wrongFormatError(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
             amountField.requestFocusInWindow();
             return false;
         }
 
         String onePriceString = oneUnitPriceField.getText();
         if (onePriceString.equals(EmptyModel.STRING)) {
-            Utils.emptyFieldError(parent, Labels.getProperty("oneUnitPrice"));
+            PJOptionPane.emptyField(parent, Labels.getProperty("oneUnitPrice"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
         }
@@ -429,7 +431,7 @@ public class CreateBidDialog extends JDialog {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);
-            Utils.wrongFormatError(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
         }
@@ -470,6 +472,22 @@ public class CreateBidDialog extends JDialog {
         return true;
     }
 
+    public PJComboBox<AmountUnitsModel> getAmUnitsBox() {
+        return amUnitsBox;
+    }
+
+    public PJComboBox<ProducerModel> getProducerBox() {
+        return producerBox;
+    }
+
+    public PJComboBox<SupplierModel> getSupplierBox() {
+        return supplierBox;
+    }
+
+    public PJComboBox<ReasonForSupplierChoiceModel> getReasonForSupplierChoiceBox() {
+        return reasonForSupplierChoiceBox;
+    }
+
     public void setCreateBidDialogListener(CreateBidDialogListener listener) {
         this.listener = listener;
     }
@@ -479,18 +497,18 @@ public class CreateBidDialog extends JDialog {
             listener.getAllData();
         }
         setCurrentBidType(model.getType());
-        Utils.setBoxFromModel(departmentBox, model.getFinances().getSubdepartment().getDepartment());
-        Utils.setBoxFromModel(subdepartmentBox, model.getFinances().getSubdepartment());
-        Utils.setBoxFromModel(financeDepartmentBox, model.getFinances());
-        Utils.setBoxFromModel(amUnitsBox, model.getAmountUnit());
+        departmentBox.setSelectedModel(model.getFinances().getSubdepartment().getDepartment());
+        subdepartmentBox.setSelectedModel(model.getFinances().getSubdepartment());
+        financeDepartmentBox.setSelectedModel(model.getFinances());
+        amUnitsBox.setSelectedModel(model.getAmountUnit());
         if (model.getProducer() != null) {
-            Utils.setBoxFromModel(producerBox, model.getProducer());
+            producerBox.setSelectedModel(model.getProducer());
         }
         if (model.getSupplier() != null) {
-            Utils.setBoxFromModel(supplierBox, model.getSupplier());
+            supplierBox.setSelectedModel(model.getSupplier());
         }
         if (model.getReasonForSupplierChoice() != null) {
-            Utils.setBoxFromModel(reasonForSupplierChoiceBox, model.getReasonForSupplierChoice());
+            reasonForSupplierChoiceBox.setSelectedModel(model.getReasonForSupplierChoice());
         }
         selectedCPV = model.getCpv();
         cpvField.setText(model.getCpv().getCpvId());

@@ -37,6 +37,11 @@ public class DepartmentModel extends AbstractModel {
         this.subdepartments = subdepartments;
     }
 
+    @Override
+    public void setDescription(String description) {
+        this.depName = description;
+    }
+
     public String getDepName() {
         return depName;
     }

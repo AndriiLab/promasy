@@ -58,6 +58,11 @@ public class FinanceDepartmentModel extends AbstractModel {
     public FinanceDepartmentModel() {
     }
 
+    @Override
+    public void setDescription(String description) {
+
+    }
+
     public List<BidModel> getBids() {
         return bids;
     }

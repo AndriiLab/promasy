@@ -81,6 +81,11 @@ public class EmployeeModel extends AbstractModel {
         this.salt = salt;
     }
 
+    @Override
+    public void setDescription(String lastName) {
+        this.empLName = lastName;
+    }
+
     public String getEmpFName() {
         return empFName;
     }

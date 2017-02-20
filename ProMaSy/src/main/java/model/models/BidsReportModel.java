@@ -1,6 +1,6 @@
 package model.models;
 
-import gui.Labels;
+import gui.commons.Labels;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

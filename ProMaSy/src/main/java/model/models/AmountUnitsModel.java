@@ -27,6 +27,11 @@ public class AmountUnitsModel extends AbstractModel{
 
     }
 
+    @Override
+    public void setDescription(String description) {
+        this.amUnitDesc = description;
+    }
+
     public String getAmUnitDesc() {
         return amUnitDesc;
     }

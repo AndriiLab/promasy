@@ -1,5 +1,8 @@
 package gui;
 
+import gui.commons.Icons;
+import gui.commons.Labels;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
