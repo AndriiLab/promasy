@@ -9,32 +9,34 @@ import model.models.EmptyModel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Abstract dialog with combo box and createOrUpdate, edit, delete buttons
  */
-public abstract class AbstractCEDDialog<T extends AbstractModel, U extends AbstractCEDDialogListener<T>> extends JDialog {
-    private final T emptyModel;
+public abstract class AbstractCEDDialog<T extends AbstractModel, U extends AbstractCEDDialogListener<T>> extends JDialog implements ActionListener {
+    protected final T emptyModel;
+    protected JButton createButton;
+    protected JButton editButton;
+    protected JButton deleteButton;
+    protected PJComboBox<T> comboBox;
+    protected T privateModel;
+    protected String newName;
+    protected JButton applyButton;
+    protected JButton closeButton;
+    protected MainFrame parent;
+    protected String oldName;
+    protected U listener;
     private CEDButtons ced;
-    private JButton createButton;
-    private JButton editButton;
-    private JButton deleteButton;
-    private PJComboBox<T> comboBox;
-    private T privateModel;
     private Class<T> clazz;
-    private String newName;
-    private JButton applyButton;
-    private JButton closeButton;
-    private MainFrame parent;
-    private String oldName;
-    private U listener;
 
-    public AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+    public AbstractCEDDialog(Class<T> clazz, MainFrame parent, Dimension windowDimension, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
         super(parent, windowLabel, true);
         this.clazz = clazz;
         this.parent = parent;
         emptyModel = createNewInstance();
-        setSize(271, 128);
+        setSize(windowDimension);
         setLocationRelativeTo(parent);
         setResizable(false);
 
@@ -59,26 +61,9 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         closeButton = new JButton(Labels.getProperty("closeBtn"));
         applyButton = new JButton(Labels.getProperty("apply"));
 
-        layoutControls();
-
         closeButton.addActionListener(e -> setVisible(false));
 
-        comboBox.addActionListener(e -> {
-            Object item = ((JComboBox) e.getSource()).getSelectedItem();
-            if (clazz.isInstance(item)) {
-                privateModel = (T) item;
-                oldName = privateModel.toString();
-                if (privateModel.equals(emptyModel)) {
-                    editButton.setEnabled(false);
-                    deleteButton.setEnabled(false);
-                } else {
-                    editButton.setEnabled(true);
-                    deleteButton.setEnabled(true);
-                }
-            } else if (item instanceof String) {
-                newName = (String) item;
-            }
-        });
+        comboBox.addActionListener(this);
 
         createButton.addActionListener(e -> createOrUpdate(parent));
 
@@ -93,9 +78,41 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         });
 
         applyButton.addActionListener(e -> {
-            parentComboBox.setSelectedModel(createOrUpdate(parent));
-            setVisible(false);
+            T model = createOrUpdate(parent);
+            if (model.getLastEditDate() != null) {
+                parentComboBox.setSelectedModel(model);
+                setVisible(false);
+            } else {
+                PJOptionPane.emptyModelSelected(parent, nameCED);
+            }
+
         });
+    }
+
+    public AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+        this(clazz, parent, new Dimension(271, 128), windowLabel, nameCED, parentComboBox);
+        layoutControls();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if (obj instanceof PJComboBox) {
+            Object item = ((PJComboBox) e.getSource()).getSelectedItem();
+            if (clazz.isInstance(item)) {
+                privateModel = (T) item;
+                oldName = privateModel.toString();
+                if (privateModel.equals(emptyModel)) {
+                    editButton.setEnabled(false);
+                    deleteButton.setEnabled(false);
+                } else {
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
+                }
+            } else if (item instanceof String) {
+                newName = (String) item;
+            }
+        }
     }
 
     private T createNewInstance() {
@@ -115,8 +132,8 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         deleteButton.setEnabled(false);
     }
 
-    private T createOrUpdate(MainFrame parent) {
-        T returnModel = emptyModel;
+    protected T createOrUpdate(MainFrame parent) {
+        T returnModel = privateModel;
         if (!newName.isEmpty() && listener != null) {
             //if box is not empty by default set to create new model
             int choice = JOptionPane.NO_OPTION;
@@ -139,8 +156,6 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
                 listener.persistModelEventOccurred(model);
             }
             // if cancel pressed - do nothing
-        } else {
-            PJOptionPane.emptyField(parent, null);
         }
         clearDialog();
 
@@ -155,7 +170,7 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         this.listener = listener;
     }
 
-    private void layoutControls() {
+    protected void layoutControls() {
         JPanel prodPanel = new JPanel();
         JPanel buttonsPanel = new JPanel();
 

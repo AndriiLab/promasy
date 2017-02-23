@@ -470,7 +470,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setSupplierModelList(List<SupplierModel> supplierModelList) {
-        supplierDialog.setSuplData(supplierModelList);
+        supplierDialog.setData(supplierModelList);
         createBidDialog.setSupplierBoxData(supplierModelList);
     }
 

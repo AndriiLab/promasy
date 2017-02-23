@@ -438,14 +438,14 @@ public class CreateBidDialog extends JDialog {
 
         currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
-        boolean financeCondition;
+        BigDecimal financeLeft;
         if (previousSum != null) { //if editing bid
-            financeCondition = (selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum)).compareTo(totalPrice) < 0;
+            financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum);
         } else {
-            financeCondition = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).compareTo(totalPrice) < 0;
+            financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType);
         }
-        if (financeCondition) {
-            JOptionPane.showMessageDialog(parent, Labels.getProperty("insufficientFundsMessage"), Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
+        if (financeLeft.compareTo(totalPrice) < 0) {
+            PJOptionPane.insufficientFunds(parent, financeLeft, currentBidType);
             amountField.requestFocusInWindow();
             return false;
         }

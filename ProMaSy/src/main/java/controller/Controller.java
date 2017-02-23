@@ -262,7 +262,7 @@ public class Controller {
             }
 
             @Override
-            public void getAllSuppliers() {
+            public void getAllEntries() {
                 mainFrame.setSupplierModelList(getSupl());
             }
         });

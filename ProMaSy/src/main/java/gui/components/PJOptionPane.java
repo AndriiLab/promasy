@@ -1,9 +1,12 @@
 package gui.components;
 
+import gui.MainFrame;
 import gui.commons.Labels;
+import model.enums.BidType;
 import model.models.EmptyModel;
 
 import javax.swing.*;
+import java.math.BigDecimal;
 
 /**
  * Dialogs with various errors
@@ -45,4 +48,16 @@ public class PJOptionPane {
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    public static void emptyModelSelected(JFrame parent, String name) {
+        JOptionPane.showMessageDialog(parent,
+                Labels.withSpaceAfter("youDidNotChooseModel") + name,
+                Labels.getProperty("fieldErr"),
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void insufficientFunds(MainFrame parent, BigDecimal financeLeft, BidType currentBid) {
+        JOptionPane.showMessageDialog(parent,
+                Labels.withSpaceAfter("insufficientFundsMessage") + currentBid.toString() + ": " + financeLeft.toString() + Labels.withSpaceBefore("uah"),
+                Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
+    }
 }

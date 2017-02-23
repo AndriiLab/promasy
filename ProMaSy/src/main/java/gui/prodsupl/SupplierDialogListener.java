@@ -1,13 +1,10 @@
 package gui.prodsupl;
 
+import gui.components.AbstractCEDDialogListener;
 import model.models.SupplierModel;
 
 /**
  * Listener for {@link SupplierDialog}
  */
-public interface SupplierDialogListener {
-
-    void persistModelEventOccurred(SupplierModel model);
-
-    void getAllSuppliers();
+public interface SupplierDialogListener extends AbstractCEDDialogListener<SupplierModel> {
 }

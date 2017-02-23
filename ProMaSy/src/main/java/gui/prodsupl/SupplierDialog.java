@@ -1,7 +1,8 @@
 package gui.prodsupl;
 
+import gui.MainFrame;
 import gui.commons.Labels;
-import gui.components.CEDButtons;
+import gui.components.AbstractCEDDialog;
 import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
 import model.models.EmptyModel;
@@ -10,150 +11,66 @@ import model.models.SupplierModel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * Creates dialog for suppliers CRUD
  */
-public class SupplierDialog extends JDialog {
-    private JButton okButton;
-    private JButton createSupl;
-    private JButton editSupl;
-    private JButton deleteSupl;
-    private PJComboBox<SupplierModel> suplBox;
-    private SupplierDialogListener listener;
-    private SupplierModel privateSuplModel;
-    private String newSuplName;
+public class SupplierDialog extends AbstractCEDDialog<SupplierModel, SupplierDialogListener> {
     private String newSuplTel;
     private String newSuplComment;
     private JTextField telField;
     private JTextPane commentsPane;
-    private JFrame parent;
 
-    public SupplierDialog(JFrame parent) {
-        super(parent, Labels.getProperty("suplDialogSuper"), true);
-        this.parent = parent;
-        setSize(335, 235);
-        setResizable(false);
-        setLocationRelativeTo(parent);
+    public SupplierDialog(MainFrame parent) {
+        super(SupplierModel.class, parent, new Dimension(335, 235), Labels.getProperty("suplDialogSuper"), Labels.getProperty("supplier_ced"), parent.getCreateBidDialog().getSupplierBox());
 
-        Dimension comboBoxDim = new Dimension(150, 25);
-
-        newSuplName = EmptyModel.STRING;
         newSuplTel = EmptyModel.STRING;
         newSuplComment = EmptyModel.STRING;
 
-        privateSuplModel = EmptyModel.SUPPLIER;
-
-        DefaultComboBoxModel<SupplierModel> suplModel = new DefaultComboBoxModel<>();
-        suplBox = new PJComboBox<>(suplModel);
-        suplBox.addItem(EmptyModel.SUPPLIER);
-        suplBox.setPreferredSize(comboBoxDim);
-        suplBox.setEditable(true);
-
-        CEDButtons ced = new CEDButtons(Labels.getProperty("supplier_ced"));
-        createSupl = ced.getCreateButton();
-        editSupl = ced.getEditButton();
-        deleteSupl = ced.getDeleteButton();
-        editSupl.setEnabled(false);
-        deleteSupl.setEnabled(false);
-
         telField = new JTextField(13);
-        telField.setPreferredSize(comboBoxDim);
+        telField.setPreferredSize(new Dimension(150, 25));
         telField.setEditable(true);
 
         commentsPane = new JTextPane();
         commentsPane.setPreferredSize(new Dimension(140, 75));
 
-        okButton = new JButton(Labels.getProperty("closeBtn"));
-
         layoutControls();
+    }
 
-        suplBox.addActionListener(e -> {
-            Object item = ((JComboBox) e.getSource()).getSelectedItem();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object obj = e.getSource();
+        if (obj instanceof PJComboBox) {
+            Object item = ((PJComboBox) e.getSource()).getSelectedItem();
             if (item instanceof SupplierModel) {
-                if (!item.equals(EmptyModel.SUPPLIER)) {
-                    privateSuplModel = (SupplierModel) item;
-                    telField.setText(privateSuplModel.getSupplierTel());
-                    commentsPane.setText(privateSuplModel.getSupplierComments());
-                    newSuplName = privateSuplModel.getSupplierName();
-
-                    createSupl.setEnabled(false);
-                    editSupl.setEnabled(true);
-                    deleteSupl.setEnabled(true);
-                } else if (item.equals(EmptyModel.SUPPLIER)) {
+                privateModel = (SupplierModel) item;
+                if (privateModel.equals(emptyModel)) {
                     telField.setText(EmptyModel.STRING);
                     commentsPane.setText(EmptyModel.STRING);
-
-                    createSupl.setEnabled(true);
-                    editSupl.setEnabled(false);
-                    deleteSupl.setEnabled(false);
+                    editButton.setEnabled(false);
+                    deleteButton.setEnabled(false);
+                } else {
+                    oldName = privateModel.toString();
+                    telField.setText(privateModel.getSupplierTel());
+                    commentsPane.setText(privateModel.getSupplierComments());
+                    editButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
                 }
             } else if (item instanceof String) {
-                newSuplName = (String) item;
+                newName = (String) item;
             }
-        });
-
-        createSupl.addActionListener(e -> {
-            if (isSuplDataValid() && privateSuplModel.equals(EmptyModel.SUPPLIER)) {
-                SupplierModel model = new SupplierModel(newSuplName, newSuplTel, newSuplComment);
-                if (listener != null) {
-                    model.setCreated();
-                    listener.persistModelEventOccurred(model);
-                    telField.setText(EmptyModel.STRING);
-                    commentsPane.setText(EmptyModel.STRING);
-                }
-            }
-            newSuplName = EmptyModel.STRING;
-            newSuplTel = EmptyModel.STRING;
-            newSuplComment = EmptyModel.STRING;
-            privateSuplModel = EmptyModel.SUPPLIER;
-        });
-
-        editSupl.addActionListener(e -> {
-            if (isSuplDataValid() && !privateSuplModel.equals(EmptyModel.SUPPLIER)
-                    && listener != null) {
-                privateSuplModel.setSupplierName(newSuplName);
-                privateSuplModel.setSupplierTel(newSuplTel);
-                privateSuplModel.setSupplierComments(newSuplComment);
-                privateSuplModel.setUpdated();
-                listener.persistModelEventOccurred(privateSuplModel);
-                telField.setText(EmptyModel.STRING);
-                commentsPane.setText(EmptyModel.STRING);
-            }
-            newSuplName = EmptyModel.STRING;
-            newSuplTel = EmptyModel.STRING;
-            newSuplComment = EmptyModel.STRING;
-            privateSuplModel = EmptyModel.SUPPLIER;
-        });
-
-        deleteSupl.addActionListener(e -> {
-            if (!privateSuplModel.equals(EmptyModel.SUPPLIER) && ced.deleteEntry(parent, privateSuplModel.getSupplierName()) && listener != null) {
-                privateSuplModel.setDeleted();
-                listener.persistModelEventOccurred(privateSuplModel);
-                telField.setText(EmptyModel.STRING);
-                commentsPane.setText(EmptyModel.STRING);
-            }
-        });
-
-        okButton.addActionListener(e -> setVisible(false));
-    }
-
-    public void setSuplData(java.util.List<SupplierModel> suplDb) {
-        suplBox.setBoxData(suplDb, EmptyModel.SUPPLIER, true);
-    }
-
-    public void setListener(SupplierDialogListener listener) {
-        this.listener = listener;
+        }
     }
 
     private boolean isSuplDataValid() {
-        if (newSuplName.isEmpty()) {
+        if (newName.isEmpty()) {
             PJOptionPane.emptyField(parent, Labels.getProperty("name"));
-            suplBox.requestFocusInWindow();
+            comboBox.requestFocusInWindow();
             return false;
         }
         newSuplTel = telField.getText();
-        if (newSuplName.isEmpty()) {
+        if (newSuplTel.isEmpty()) {
             PJOptionPane.emptyField(parent, Labels.getProperty("phone"));
             telField.requestFocusInWindow();
             return false;
@@ -167,14 +84,48 @@ public class SupplierDialog extends JDialog {
     }
 
     @Override
-    public void setVisible(boolean visible) {
-        if (visible && listener != null) {
-            listener.getAllSuppliers();
+    protected SupplierModel createOrUpdate(MainFrame parent) {
+        SupplierModel returnModel = privateModel;
+        if (!newName.isEmpty() && isSuplDataValid() && listener != null) {
+            //if box is not empty by default set to create new model
+            int choice = JOptionPane.NO_OPTION;
+            //if not a new model was selected - show dialog to confirm edit
+            if (!privateModel.equals(emptyModel)) {
+                choice = PJOptionPane.renameEntry(parent, oldName, newName);
+            }
+            //it edit confirmed - updating model
+            if (choice == JOptionPane.YES_OPTION) {
+                privateModel.setDescription(newName);
+                privateModel.setSupplierTel(newSuplTel);
+                privateModel.setSupplierComments(newSuplComment);
+                privateModel.setUpdated();
+                returnModel = privateModel;
+                listener.persistModelEventOccurred(privateModel);
+            } else if (choice == JOptionPane.NO_OPTION) {
+                //if edit is not confirmed or model does not exist - creating new model with specified name
+                SupplierModel model = new SupplierModel(newName, newSuplTel, newSuplComment);
+                model.setDescription(newName);
+                model.setCreated();
+                returnModel = model;
+                listener.persistModelEventOccurred(model);
+            }
+            // if cancel pressed - do nothing
         }
-        super.setVisible(visible);
+        clearDialog();
+
+        return returnModel;
     }
 
-    private void layoutControls() {
+    @Override
+    protected void clearDialog() {
+        newSuplTel = EmptyModel.STRING;
+        newSuplComment = EmptyModel.STRING;
+        telField.setText(EmptyModel.STRING);
+        commentsPane.setText(EmptyModel.STRING);
+    }
+
+    @Override
+    protected void layoutControls() {
         JPanel supplPanel = new JPanel();
         JPanel buttonsPanel = new JPanel();
 
@@ -203,22 +154,22 @@ public class SupplierDialog extends JDialog {
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        supplPanel.add(suplBox, gc);
+        supplPanel.add(comboBox, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        supplPanel.add(createSupl, gc);
+        supplPanel.add(createButton, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        supplPanel.add(editSupl, gc);
+        supplPanel.add(editButton, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = noPadding;
-        supplPanel.add(deleteSupl, gc);
+        supplPanel.add(deleteButton, gc);
 
         ///////Next row///////////
         gc.gridy++;
@@ -247,7 +198,8 @@ public class SupplierDialog extends JDialog {
         supplPanel.add(new JScrollPane(commentsPane), gc);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonsPanel.add(okButton);
+        buttonsPanel.add(applyButton);
+        buttonsPanel.add(closeButton);
 
         setLayout(new BorderLayout());
         add(supplPanel, BorderLayout.CENTER);

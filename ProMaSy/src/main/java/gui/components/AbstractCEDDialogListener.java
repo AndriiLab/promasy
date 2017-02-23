@@ -7,6 +7,5 @@ import model.models.AbstractModel;
  */
 public interface AbstractCEDDialogListener<T extends AbstractModel> {
     void persistModelEventOccurred(T model);
-
     void getAllEntries();
 }
