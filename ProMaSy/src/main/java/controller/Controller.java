@@ -8,6 +8,7 @@ import gui.MainFrameListener;
 import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
+import gui.bids.reports.BidsReport;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -46,6 +48,13 @@ public class Controller {
 
     public Controller(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+
+        //precompiling report files
+        try {
+            BidsReport.compileReportFileIfNew(mainFrame);
+        } catch (IOException e) {
+            Logger.errorEvent(mainFrame, e);
+        }
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
@@ -102,7 +111,7 @@ public class Controller {
             // creating new user
             public boolean isAbleToRegister() {
                 int registrationNumber = registrationsLeft();
-                System.out.println("Ticket number: " + registrationNumber);
+                Logger.infoEvent(mainFrame, "Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
                     LoginData.getInstance(Database.EMPLOYEES.getUserWithId(1L));
                     mainFrame.initialize();
@@ -354,8 +363,8 @@ public class Controller {
                 mainFrame.setEmployeeModelList(getEmployees(role));
             }
 
-            public void reportParametersSelectionOccurred() {
-                mainFrame.bidListPrint();
+            public void reportParametersSelectionOccurred(Map<String, Object> parameters) {
+                mainFrame.bidListPrint(parameters);
             }
         });
     }

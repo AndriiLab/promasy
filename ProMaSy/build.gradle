@@ -102,6 +102,17 @@ task createVersionProperties(dependsOn: processResources) {
     }
 }
 
+task setConsoleCyrillicSupport(dependsOn: processResources){
+    doLast{
+        Properties props = new Properties()
+        File propsFile = new File("$buildDir/resources/main/log4j.properties")
+        props.load(propsFile.newDataInputStream())
+        props.setProperty('log4j.appender.stdout.encoding', 'CP866')
+        props.store(propsFile.newWriter(), null)
+    }
+}
+
 classes {
     dependsOn createVersionProperties
+    dependsOn setConsoleCyrillicSupport
 }

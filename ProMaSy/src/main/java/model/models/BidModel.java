@@ -5,6 +5,7 @@ import model.enums.BidType;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -222,5 +223,25 @@ public class BidModel extends AbstractModel {
             model.setDeleted();
         }
         super.setDeleted();
+    }
+
+    public BidsReportModel generateReportModel() {
+        return new BidsReportModel(
+                finances.getSubdepartment().getDepartment().getDepName(),
+                finances.getSubdepartment().getSubdepName(),
+                finances.getFinances().getFinanceName(),
+                type.getBidTypeName(),
+                cpv.getCpvId(),
+                cpv.getCpvUkr(),
+                bidDesc,
+                getLastEditDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd\nHH:mm")),
+                (producer != null ? producer.getBrandName() : EmptyModel.STRING),
+                (catNum != null ? catNum : EmptyModel.STRING),
+                (supplier != null ? supplier.getSupplierName() : EmptyModel.STRING),
+                (reasonForSupplierChoice != null ? reasonForSupplierChoice.getReason() : EmptyModel.STRING),
+                amountUnit.getAmUnitDesc(),
+                onePrice,
+                amount
+        );
     }
 }

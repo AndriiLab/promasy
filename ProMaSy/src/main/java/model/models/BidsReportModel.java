@@ -4,16 +4,17 @@ import gui.commons.Labels;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Timestamp;
 
 public class BidsReportModel {
 	private String department;
-	private String financeName;
+    private String subdepartment;
+    private String financeName;
+    private String financeType;
     private String cpv;
     private String cpvUkr;
     private String orderDescription;
-	private Timestamp orderDate;
-	private String producer;
+    private String orderDate;
+    private String producer;
 	private String catNum;
 	private String supplier;
     private String reasonForSupplierChoice;
@@ -21,12 +22,11 @@ public class BidsReportModel {
 	private BigDecimal onePrice;
 	private int amount;
 
-    public BidsReportModel(String department, String financeName, String cpv,
-                           String cpvUkr, String orderDescription, Timestamp orderDate, String producer, String catNum,
-                           String supplier, String packType, BigDecimal onePrice, int amount, String reasonForSupplierChoice) {
-        super();
+    public BidsReportModel(String department, String subdepartment, String financeName, String financeType, String cpv, String cpvUkr, String orderDescription, String orderDate, String producer, String catNum, String supplier, String reasonForSupplierChoice, String packType, BigDecimal onePrice, int amount) {
         this.department = department;
+        this.subdepartment = subdepartment;
         this.financeName = financeName;
+        this.financeType = financeType;
         this.cpv = cpv;
         this.cpvUkr = cpvUkr;
         this.orderDescription = orderDescription;
@@ -53,62 +53,69 @@ public class BidsReportModel {
     }
 
     public BidsReportModel() {
+    }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public String getSubdepartment() {
+        return subdepartment;
+    }
+
+    public String getFinanceName() {
+        return financeName;
+    }
+
+    public String getFinanceType() {
+        return financeType;
+    }
+
+    public String getCpv() {
+        return cpv;
+    }
+
+    public String getCpvUkr() {
+        return cpvUkr;
+    }
+
+    public String getOrderDescription() {
+        return orderDescription;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public String getCatNum() {
+        return catNum;
+    }
+
+    public String getSupplier() {
+        return supplier;
     }
 
     public String getReasonForSupplierChoice() {
         return reasonForSupplierChoice;
     }
 
-	public String getDepartment() {
-		return department;
-	}
-
-	public String getFinanceName() {
-		return financeName;
-	}
-
-    public String getCpv() {
-        return cpv;
+    public String getPackType() {
+        return packType;
     }
 
-	public String getCpvUkr() {
-		return cpvUkr;
-	}
+    public BigDecimal getOnePrice() {
+        return onePrice;
+    }
 
-	public String getOrderDescription() {
-		return orderDescription;
-	}
+    public int getAmount() {
+        return amount;
+    }
 
-	public Timestamp getOrderDate() {
-		return orderDate;
-	}
-
-	public String getProducer() {
-		return producer;
-	}
-
-	public String getCatNum() {
-		return catNum;
-	}
-
-	public String getSupplier() {
-		return supplier;
-	}
-
-	public String getPackType() {
-		return packType;
-	}
-
-	public BigDecimal getOnePrice() {
-		return onePrice.setScale(2, RoundingMode.CEILING);
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-	
-	public BigDecimal getTotalPrice(){
-		return (onePrice.multiply(BigDecimal.valueOf(amount))).setScale(2, RoundingMode.CEILING);
+    public BigDecimal getTotalPrice() {
+        return (onePrice.multiply(BigDecimal.valueOf(amount))).setScale(2, RoundingMode.CEILING);
 	}
 }

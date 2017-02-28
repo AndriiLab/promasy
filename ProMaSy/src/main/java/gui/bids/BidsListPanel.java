@@ -7,7 +7,6 @@ import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJComboBox;
-import gui.components.PJOptionPane;
 import model.dao.LoginData;
 import model.enums.BidType;
 import model.enums.Role;
@@ -19,9 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -204,6 +201,7 @@ public class BidsListPanel extends JPanel {
             if (listener != null) {
                 getBids();
             }
+            clearSelectedBidModels();
         });
 
         changeStatusButton.addActionListener(e -> {
@@ -440,54 +438,30 @@ public class BidsListPanel extends JPanel {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("emptyTableErrorExtended"),
                     Labels.getProperty("emptyTableError"), JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if ((departmentBox.getSelectedItem().toString()).equals(EmptyModel.STRING)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
-            return false;
-        } else if (financeDepartmentBox.getSelectedItem().toString() == null) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("order"));
-            return false;
         }
         return true;
     }
 
-    public void printBidList() {
+    public void printBidList(Map<String, Object> parameters) {
         List<BidsReportModel> list = new ArrayList<>();
         //if no bids selected printing all bids
         if (selectedBidModel.equals(EmptyModel.BID) && selectedBidModels.isEmpty()) {
             for (int row = 0; row < bidsTable.getRowCount(); row++) {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
-                list.add(createReportModel(md));
+                list.add(md.generateReportModel());
             }
         }
         // if 1 bid selected
         else if (selectedBidModels.isEmpty()) {
             BidModel md = selectedBidModel;
-            list.add(createReportModel(md));
+            list.add(md.generateReportModel());
         }
         // if multiple bids selected
         else {
             for (BidModel md : selectedBidModels) {
-                list.add(createReportModel(md));
+                list.add(md.generateReportModel());
             }
         }
-        new BidsReport(Collections.unmodifiableList(list), parent);
-    }
-
-    private BidsReportModel createReportModel(BidModel md) {
-        return new BidsReportModel(
-                md.getFinances().getSubdepartment().getDepartment().toString(),
-                md.getFinances().getFinances().getFinanceName(),
-                md.getCpv().getCpvId(),
-                md.getCpv().getCpvUkr(),
-                md.getBidDesc(),
-                md.getCreatedDate(),
-                (md.getProducer() != null ? md.getProducer().getBrandName() : EmptyModel.STRING),
-                (md.getCatNum() != null ? md.getCatNum() : EmptyModel.STRING),
-                (md.getSupplier() != null ? md.getSupplier().getSupplierName() : EmptyModel.STRING),
-                md.getAmountUnit().getAmUnitDesc(),
-                md.getOnePrice(),
-                md.getAmount(),
-                (md.getReasonForSupplierChoice() != null ? md.getReasonForSupplierChoice().getReason() : EmptyModel.STRING)
-        );
+        new BidsReport(parameters, Collections.unmodifiableList(list), parent);
     }
 }

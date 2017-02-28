@@ -44,6 +44,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class MainFrame extends JFrame {
 
@@ -355,8 +356,8 @@ public class MainFrame extends JFrame {
         }
     }
 
-    public void bidListPrint() {
-        bidsListPanel.printBidList();
+    public void bidListPrint(Map<String, Object> parameters) {
+        bidsListPanel.printBidList(parameters);
     }
 
     // Status panel writers

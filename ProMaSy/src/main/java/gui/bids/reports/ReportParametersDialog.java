@@ -3,15 +3,19 @@ package gui.bids.reports;
 import gui.MainFrame;
 import gui.commons.Labels;
 import gui.components.PJComboBox;
+import model.dao.LoginData;
 import model.enums.Role;
 import model.models.EmployeeModel;
 import model.models.EmptyModel;
-import model.models.ReportParametersData;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Dialog for report parameters setup
@@ -28,13 +32,7 @@ public class ReportParametersDialog extends JDialog {
     private JButton okButton;
     private JButton cancelButton;
     private ReportParametersDialogListener listener;
-    private String roleName;
-    private String headName;
-    private String departmentHeadName;
-    private String personallyLiableEmpName;
-    private String accountantName;
-    private String economistName;
-    private String headTenderName;
+    private Map<String, Object> parameters;
 
     public ReportParametersDialog(MainFrame parent) {
         super(parent, Labels.getProperty("reportParameters"), true);
@@ -43,6 +41,7 @@ public class ReportParametersDialog extends JDialog {
         setLocationRelativeTo(parent);
 
         Dimension preferredFieldDim = new Dimension(235, 15);
+        parameters = new HashMap<>();
 
         roleBox = new PJComboBox<>();
         roleBox.setSize(preferredFieldDim);
@@ -88,40 +87,29 @@ public class ReportParametersDialog extends JDialog {
 
         okButton.addActionListener(e -> {
             if (listener != null) {
-                setEmployeesData();
-                listener.reportParametersSelectionOccurred();
+                getPrintData();
+                listener.reportParametersSelectionOccurred(parameters);
                 setVisible(false);
-                clear();
             }
         });
 
-        cancelButton.addActionListener(e -> {
-            setVisible(false);
-            clear();
-        });
+        cancelButton.addActionListener(e -> setVisible(false));
     }
 
-    private void setEmployeesData() {
-        roleName = roleBox.getSelectedItem().toString();
-        headName = headBox.getSelectedItem().toString();
-        departmentHeadName = departmentHeadBox.getSelectedItem().toString();
-        personallyLiableEmpName = personallyLiableEmpBox.getSelectedItem().toString();
-        accountantName = accountantBox.getSelectedItem().toString();
-        economistName = economistBox.getSelectedItem().toString();
-        headTenderName = headTenderBox.getSelectedItem().toString();
+    private void getPrintData() {
+        parameters.clear();
 
-        ReportParametersData.getInstance().setData(roleName, headName, departmentHeadName,
-                personallyLiableEmpName, accountantName, economistName, headTenderName);
-    }
-
-    private void clear() {
-        roleName = EmptyModel.STRING;
-        headName = EmptyModel.STRING;
-        departmentHeadName = EmptyModel.STRING;
-        personallyLiableEmpName = EmptyModel.STRING;
-        accountantName = EmptyModel.STRING;
-        economistName = EmptyModel.STRING;
-        headTenderName = EmptyModel.STRING;
+        parameters.put("headRoleName", roleBox.getSelectedItem().toString());
+        parameters.put("headName", headBox.getSelectedItem().toString());
+        parameters.put("departmentHeadName", departmentHeadBox.getSelectedItem().toString());
+        parameters.put("personallyLiableEmpName", personallyLiableEmpBox.getSelectedItem().toString());
+        parameters.put("accountantName", accountantBox.getSelectedItem().toString());
+        parameters.put("economistName", economistBox.getSelectedItem().toString());
+        parameters.put("headTenderName", headTenderBox.getSelectedItem().toString());
+        parameters.put("customerName", LoginData.getInstance().getShortName());
+        parameters.put("customerPhone", LoginData.getInstance().getPhoneMain());
+        parameters.put("customerPhone", LoginData.getInstance().getPhoneMain());
+        parameters.put("generatedDate", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
     public void setHeadBoxData(List<EmployeeModel> db) {
