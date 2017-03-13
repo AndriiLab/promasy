@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
  * CRUD for bid data
@@ -64,7 +64,9 @@ public class BidsQueries extends SQLQueries<BidModel> {
 
     @Override
     public List<BidModel> getResults() throws SQLException {
-        return null;
+        super.retrieve();
+        criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
+        return super.getList();
     }
 
     public BigDecimal getTotalAmount(FinanceDepartmentModel financeDepartmentModel, BidType bidType) {
@@ -81,5 +83,31 @@ public class BidsQueries extends SQLQueries<BidModel> {
         }
 
         return totalAmount;
+    }
+
+    public List<CpvAmountModel> getCpvAmount() throws SQLException {
+        List<BidModel> bidModels = getResults();
+        Map<String, CpvAmountModel> map = new HashMap<>();
+
+        for (BidModel bidModel : bidModels) {
+            String cpv = bidModel.getCpv().getCpvId().substring(0, 4);
+            BidType type = bidModel.getType();
+            BigDecimal bidAmount = bidModel.getTotalPrice();
+
+            String key = cpv + "0000 " + type.toString();
+            if (map.containsKey(key)) {
+                CpvAmountModel cpvAmountModel = map.get(key);
+                cpvAmountModel.addBidModel(bidModel);
+                cpvAmountModel.addToTotalAmount(bidAmount);
+                map.put(key, cpvAmountModel);
+            } else {
+                CPVModel fourDigitCpv = Database.CPV.retrieve(key).get(0);
+                map.put(key, new CpvAmountModel(fourDigitCpv, type, bidAmount, bidModel));
+            }
+        }
+        List<CpvAmountModel> cpvAmountModels = new ArrayList<>(map.values());
+        cpvAmountModels.sort(Comparator.comparing(CpvAmountModel::getType).thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())));
+
+        return Collections.unmodifiableList(cpvAmountModels);
     }
 }

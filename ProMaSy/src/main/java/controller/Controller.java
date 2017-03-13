@@ -165,6 +165,11 @@ public class Controller {
             public void getAllBids(BidType bidType) {
                 mainFrame.setBidModelList(getBids(bidType));
             }
+
+            @Override
+            public void getCpvAmounts() {
+                mainFrame.setCpvAmounts(getCpvAmount());
+            }
         });
 
         mainFrame.setCpvListener(new CpvSearchListener() {
@@ -705,6 +710,15 @@ public class Controller {
             return Database.BIDS.retrieve(type, model);
         } catch (SQLException e) {
             Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("bids"), e);
+            return new LinkedList<>();
+        }
+    }
+
+    public List<CpvAmountModel> getCpvAmount() {
+        try {
+            return Database.BIDS.getCpvAmount();
+        } catch (SQLException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("cpvAmounts"), e);
             return new LinkedList<>();
         }
     }

@@ -23,4 +23,6 @@ public interface MainFrameListener {
     void getAllDepartmentsAndFinances(InstituteModel institute);
 
     void getAllBids(BidType bidType);
+
+    void getCpvAmounts();
 }

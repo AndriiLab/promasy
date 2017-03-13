@@ -19,6 +19,7 @@ import gui.conset.ConSetDialog;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvDialog;
 import gui.cpv.CpvSearchListener;
+import gui.cpvAmount.CpvAmountPanel;
 import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialog;
@@ -65,6 +66,7 @@ public class MainFrame extends JFrame {
     private ReasonsDialog reasonsDialog;
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
+    private CpvAmountPanel cpvAmountPanel;
     private CreateBidDialog createBidDialog;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
@@ -104,6 +106,7 @@ public class MainFrame extends JFrame {
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
         bidsListPanel = new BidsListPanel(this);
+        cpvAmountPanel = new CpvAmountPanel(this);
         createFinanceDialog = new CreateFinanceDialog(this);
         createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
         financePanel = new FinancePanel(this);
@@ -191,6 +194,7 @@ public class MainFrame extends JFrame {
         tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
+        tabPane.addTab(Labels.getProperty("cpvAmounts"), cpvAmountPanel);
         add(tabPane, BorderLayout.CENTER);
     }
 
@@ -490,6 +494,10 @@ public class MainFrame extends JFrame {
         createBidDialog.setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
+    public void setCpvAmounts(List<CpvAmountModel> cpvAmounts) {
+        cpvAmountPanel.setTableData(cpvAmounts);
+    }
+
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
     }
@@ -525,6 +533,7 @@ public class MainFrame extends JFrame {
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
+            listener.getCpvAmounts();
             listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
             if (bidsListPanel.getSelectedDepartment().equals(EmptyModel.DEPARTMENT)) {
                 listener.getAllBids(bidsListPanel.getSelectedBidType());

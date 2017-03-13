@@ -110,7 +110,7 @@ public class CpvDialog extends JDialog {
                     if (!isTerminal) {
                         makeCpvQuery(cpvRequest, false);
                     }
-                    selectButton.setEnabled(isTerminal || selectedCpvModel.getCpvLevel() > 3);
+                    selectButton.setEnabled(isTerminal || selectedCpvModel.getCpvLevel() > 2);
                 }
             }
 
