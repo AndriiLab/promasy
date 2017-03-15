@@ -80,9 +80,7 @@ public class DepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (SubdepartmentModel model : subdepartments) {
-            model.setDeleted();
-        }
+        subdepartments.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 

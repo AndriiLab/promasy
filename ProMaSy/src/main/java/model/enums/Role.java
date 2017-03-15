@@ -9,6 +9,7 @@ public enum Role {
     ADMIN(Labels.getProperty("role.admin")),
     DIRECTOR(Labels.getProperty("role.director")),
     DEPUTY_DIRECTOR(Labels.getProperty("role.deputyDirector")),
+    HEAD_OF_TENDER_COMMITTEE(Labels.getProperty("role.headOfTenderCommittee")),
     SECRETARY_OF_TENDER_COMMITTEE(Labels.getProperty("role.secretaryOfTenderCommittee")),
     ECONOMIST(Labels.getProperty("role.economist")),
     ACCOUNTANT(Labels.getProperty("role.accountant")),

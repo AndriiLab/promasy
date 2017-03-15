@@ -27,6 +27,7 @@ public class CreateFinanceDialog extends JDialog {
     private final java.util.Date defaultStartDate = (new GregorianCalendar(Year.now().getValue(), 0, 1)).getTime();
     private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
     private int orderNumber;
+    private Integer kpkvk;
     private String orderName;
     private Date startDate;
     private Date endDate;
@@ -37,6 +38,7 @@ public class CreateFinanceDialog extends JDialog {
     private JFrame parent;
     private JTextField orderNumberField;
     private JTextField orderNameField;
+    private JTextField kpkvkField;
     private JXDatePicker startDatePicker;
     private JXDatePicker endDatePicker;
     private JTextField materialsAmountField;
@@ -50,7 +52,7 @@ public class CreateFinanceDialog extends JDialog {
         super(parent, Labels.getProperty("createOrder"), true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(265, 245);
+        setSize(265, 265);
         setResizable(false);
 
         this.parent = parent;
@@ -62,6 +64,7 @@ public class CreateFinanceDialog extends JDialog {
         materialsAmountField = new JTextField(10);
         equipmentAmountField = new JTextField(10);
         servicesAmountField = new JTextField(10);
+        kpkvkField = new JTextField(10);
         startDatePicker = new JXDatePicker(Locale.getDefault());
         startDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         startDatePicker.setDate(defaultStartDate);
@@ -84,6 +87,7 @@ public class CreateFinanceDialog extends JDialog {
                 currentFinanceModel.setTotalMaterials(materialAmount);
                 currentFinanceModel.setTotalEquipment(equipmentAmount);
                 currentFinanceModel.setTotalServices(servicesAmount);
+                currentFinanceModel.setKPKVK(kpkvk);
                 if (currentFinanceModel.getModelId() == 0) {
                     currentFinanceModel.setCreated();
                 } else {
@@ -110,10 +114,12 @@ public class CreateFinanceDialog extends JDialog {
         materialsAmountField.setText(emptyString);
         equipmentAmountField.setText(emptyString);
         servicesAmountField.setText(emptyString);
+        kpkvkField.setText(emptyString);
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
         orderNumber = 0;
         orderName = emptyString;
+        kpkvk = null;
         startDate = null;
         endDate = null;
         materialAmount = null;
@@ -122,7 +128,7 @@ public class CreateFinanceDialog extends JDialog {
         super.setTitle(Labels.getProperty("createOrder"));
         okButton.setText(Labels.getProperty("create"));
         currentFinanceModel = new FinanceModel();
-        this.setVisible(false);
+        super.setVisible(false);
     }
 
     public void setFinanceModel(FinanceModel selectedFinanceModel) {
@@ -134,9 +140,18 @@ public class CreateFinanceDialog extends JDialog {
         servicesAmountField.setText(String.valueOf(currentFinanceModel.getTotalServices()));
         startDatePicker.setDate(currentFinanceModel.getStartDate());
         endDatePicker.setDate(currentFinanceModel.getEndDate());
+        kpkvkField.setText(String.valueOf(selectedFinanceModel.getKPKVK()));
         super.setTitle(Labels.getProperty("editFinance"));
         okButton.setText(Labels.getProperty("edit"));
-        this.setVisible(true);
+        super.setVisible(true);
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible) {
+            kpkvkField.setText(Labels.getProperty("default.kpkvk"));
+        }
+        super.setVisible(visible);
     }
 
     public void setFinanceDialogListener(FinanceDialogListener listener) {
@@ -174,6 +189,11 @@ public class CreateFinanceDialog extends JDialog {
 
         equipmentAmount = Utils.parseBigDecimal(parent, equipmentAmountField, Labels.getProperty("equipmentAmount"));
         if (equipmentAmount == null) {
+            return false;
+        }
+
+        kpkvk = Utils.parseInteger(parent, kpkvkField, Labels.getProperty("kpkvk"));
+        if (kpkvk == null) {
             return false;
         }
 
@@ -271,6 +291,17 @@ public class CreateFinanceDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
         financePanel.add(endDatePicker, gc);
+
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        financePanel.add(new JLabel(Labels.withColon("kpkvk")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        financePanel.add(kpkvkField, gc);
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 

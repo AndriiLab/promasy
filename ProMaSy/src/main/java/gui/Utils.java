@@ -99,6 +99,24 @@ public class Utils {
         return bigDecimal;
     }
 
+    public static Integer parseInteger(JFrame parent, JTextField jTextField, String fieldName) {
+        String targetIntegerText = Utils.formatBigDecimal(jTextField.getText());
+        if (targetIntegerText.isEmpty()) {
+            PJOptionPane.emptyField(parent, fieldName);
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        Integer integer;
+        try {
+            integer = Integer.parseInt(targetIntegerText);
+        } catch (NumberFormatException ex) {
+            PJOptionPane.wrongFormat(parent, fieldName, Labels.getProperty("wrongFloatFormat"));
+            jTextField.requestFocusInWindow();
+            return null;
+        }
+        return integer;
+    }
+
     public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
         String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
         if (targetBigDecimalText.isEmpty()) {

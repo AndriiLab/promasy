@@ -59,6 +59,9 @@ public class BidModel extends AbstractModel {
     @Enumerated(EnumType.STRING)
     private BidType type;
 
+    @Column(name = "kekv")
+    private Integer kekv;
+
 
     public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
@@ -183,6 +186,22 @@ public class BidModel extends AbstractModel {
         return statuses;
     }
 
+    public int getKEKV() {
+        if (kekv == null) {
+            return type.getKEKV();
+        } else {
+            return kekv;
+        }
+    }
+
+    public void setKEKV(Integer kekv) {
+        if (!type.getKEKV().equals(kekv)) {
+            this.kekv = kekv;
+        } else {
+            this.kekv = null;
+        }
+    }
+
     public void addStatus(BidStatusModel bidStatusModel) {
         statuses.add(bidStatusModel);
         bidStatusModel.setBid(this);
@@ -219,9 +238,7 @@ public class BidModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (BidStatusModel model : statuses) {
-            model.setDeleted();
-        }
+        statuses.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 

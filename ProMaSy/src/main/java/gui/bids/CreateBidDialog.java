@@ -45,6 +45,8 @@ public class CreateBidDialog extends JDialog {
     private JTextField cpvField;
     private JTextField amountField;
     private JTextField oneUnitPriceField;
+    private JTextField kekvField;
+    private JButton kekvEditButton;
     private JTextPane descriptionPane;
     private JScrollPane descriptionScrollPane;
     private BidModel createdBidModel;
@@ -59,7 +61,7 @@ public class CreateBidDialog extends JDialog {
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), true);
         this.parent = parent;
-        setSize(516, 482);
+        setSize(516, 500);
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -147,6 +149,14 @@ public class CreateBidDialog extends JDialog {
         amountField.setPreferredSize(preferredFieldDim);
         oneUnitPriceField = new JTextField();
         oneUnitPriceField.setPreferredSize(preferredFieldDim);
+
+        kekvField = new JTextField();
+        kekvField.setPreferredSize(preferredFieldDim);
+        kekvField.setEnabled(false);
+        kekvEditButton = new JButton(Icons.EDIT);
+        kekvEditButton.setPreferredSize(buttonDim);
+        kekvEditButton.setToolTipText(Labels.withSpaceAfter("edit") + Labels.getProperty("kekv"));
+
         descriptionPane = new JTextPane();
         descriptionPane.setPreferredSize(new Dimension(168, 25));
         descriptionPane.setEditable(true);
@@ -160,9 +170,7 @@ public class CreateBidDialog extends JDialog {
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
             if (selectedModel != null) {
-                for (SubdepartmentModel model : selectedModel.getSubdepartments()) {
-                    subdepartmentBox.addItem(model);
-                }
+                selectedModel.getSubdepartments().forEach(subdepartmentBox::addItem);
             }
         });
 
@@ -171,9 +179,7 @@ public class CreateBidDialog extends JDialog {
             financeDepartmentBox.removeAllItems();
             financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentModel != null) {
-                for (FinanceDepartmentModel financeDepartmentModel : subdepartmentModel.getFinanceDepartments()) {
-                    financeDepartmentBox.addItem(financeDepartmentModel);
-                }
+                subdepartmentModel.getFinanceDepartments().forEach(financeDepartmentBox::addItem);
             }
         });
 
@@ -202,6 +208,13 @@ public class CreateBidDialog extends JDialog {
                 }
             }
         });
+
+        bidTypeBox.addActionListener(e -> {
+            kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
+            kekvField.setEnabled(false);
+        });
+
+        kekvEditButton.addActionListener(e -> kekvField.setEnabled(!kekvField.isEnabled()));
 
         addProducerButton.addActionListener(e -> parent.showProducerDialog());
         addReasonForSupplierChoiceButton.addActionListener(e -> parent.showReasonsDialog());
@@ -290,6 +303,7 @@ public class CreateBidDialog extends JDialog {
         amUnitsBox.setSelectedIndex(0);
         amountField.setText(EmptyModel.STRING);
         oneUnitPriceField.setText(EmptyModel.STRING);
+        kekvField.setText(EmptyModel.STRING);
         calculateTotalPrice();
         setTitle(Labels.getProperty("createBid"));
         okButton.setText(Labels.getProperty("createBid"));
@@ -438,6 +452,11 @@ public class CreateBidDialog extends JDialog {
 
         currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
+        Integer kekv = Utils.parseInteger(parent, kekvField, Labels.getProperty("kekv"));
+        if (kekv == null) {
+            return false;
+        }
+
         BigDecimal financeLeft;
         if (previousSum != null) { //if editing bid
             financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum);
@@ -468,6 +487,7 @@ public class CreateBidDialog extends JDialog {
         createdBidModel.setSupplier(selectedSupplierModel);
         createdBidModel.setReasonForSupplierChoice(selectedReasonModel);
         createdBidModel.setType(currentBidType);
+        createdBidModel.setKEKV(kekv);
 
         return true;
     }
@@ -514,6 +534,7 @@ public class CreateBidDialog extends JDialog {
         cpvField.setText(model.getCpv().getCpvId());
         catNumberField.setText(model.getCatNum());
         descriptionPane.setText(model.getBidDesc());
+        kekvField.setText(String.valueOf(model.getKEKV()));
         amountField.setText(Integer.toString(model.getAmount()));
         oneUnitPriceField.setText(model.getOnePrice().toString());
         calculateTotalPrice();
@@ -539,6 +560,7 @@ public class CreateBidDialog extends JDialog {
         if (visible && listener != null) {
             listener.getAllData();
         }
+        kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
         createdBidModel = new BidModel();
         previousSum = null;
         super.setVisible(visible);
@@ -723,6 +745,27 @@ public class CreateBidDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         createBidPanel.add(addReasonForSupplierChoiceButton, gc);
+
+        /// Next row///
+        gc.gridy++;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.gridwidth = 1;
+        gc.ipady = 0;
+        gc.insets = smallPadding;
+        createBidPanel.add(new JLabel(Labels.withColon("kekv")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(kekvField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(kekvEditButton, gc);
 
         /// Next row///
         gc.gridy++;

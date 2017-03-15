@@ -163,9 +163,7 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (BidModel model : bids) {
-            model.setDeleted();
-        }
+        bids.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 }

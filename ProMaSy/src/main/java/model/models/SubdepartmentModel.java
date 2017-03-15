@@ -95,12 +95,8 @@ public class SubdepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (EmployeeModel model : employees) {
-            model.setDeleted();
-        }
-        for (FinanceDepartmentModel model : financeDepartments) {
-            model.setDeleted();
-        }
+        employees.forEach(AbstractModel::setDeleted);
+        financeDepartments.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 

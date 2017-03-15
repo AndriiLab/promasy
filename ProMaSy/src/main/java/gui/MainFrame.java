@@ -138,19 +138,23 @@ public class MainFrame extends JFrame {
             case ECONOMIST:
                 createTabPane();
                 break;
+            case HEAD_OF_TENDER_COMMITTEE:
+                createTabPane();
+                financePanel.hideCed();
+                break;
             case SECRETARY_OF_TENDER_COMMITTEE:
                 createTabPane();
                 financePanel.hideCed();
                 break;
             case HEAD_OF_DEPARTMENT:
                 useUserDepartment();
-//                createTabPane();
+                // TODO createTabPane();
                 add(bidsListPanel, BorderLayout.CENTER);
                 financePanel.hideCed();
                 break;
             case PERSONALLY_LIABLE_EMPLOYEE:
                 useUserDepartment();
-//                createTabPane();
+                // TODO createTabPane();
                 add(bidsListPanel, BorderLayout.CENTER);
                 financePanel.hideCed();
                 break;

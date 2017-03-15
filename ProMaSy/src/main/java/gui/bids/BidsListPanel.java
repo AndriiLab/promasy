@@ -458,9 +458,7 @@ public class BidsListPanel extends JPanel {
         }
         // if multiple bids selected
         else {
-            for (BidModel md : selectedBidModels) {
-                list.add(md.generateReportModel());
-            }
+            selectedBidModels.forEach(md -> list.add(md.generateReportModel()));
         }
         new BidsReport(parameters, Collections.unmodifiableList(list), parent);
     }

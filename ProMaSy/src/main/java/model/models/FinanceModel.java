@@ -39,10 +39,13 @@ public class FinanceModel extends AbstractModel {
     @Column(name = "due_to")
     private Date endDate;
 
+    @Column(name = "kpkvk")
+    private Integer kpkvk;
+
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
     private List<FinanceDepartmentModel> financeDepartmentModels = new ArrayList<>();
 
-    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels) {
+    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Integer kpkvk) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.financeNumber = financeNumber;
         this.financeName = financeName;
@@ -52,9 +55,10 @@ public class FinanceModel extends AbstractModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.financeDepartmentModels = financeDepartmentModels;
+        this.kpkvk = kpkvk;
     }
 
-    public FinanceModel(int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate) {
+    public FinanceModel(int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, Integer kpkvk) {
         this.financeNumber = financeNumber;
         this.financeName = financeName;
         this.totalMaterials = totalMaterials;
@@ -62,6 +66,7 @@ public class FinanceModel extends AbstractModel {
         this.totalServices = totalServices;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.kpkvk = kpkvk;
     }
 
     public FinanceModel() {
@@ -174,6 +179,14 @@ public class FinanceModel extends AbstractModel {
         this.endDate = endDate;
     }
 
+    public Integer getKPKVK() {
+        return kpkvk;
+    }
+
+    public void setKPKVK(Integer kpkvk) {
+        this.kpkvk = kpkvk;
+    }
+
     @Override
     public String toString() {
         if (financeNumber == 0 && financeName == null) {
@@ -195,9 +208,7 @@ public class FinanceModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (FinanceDepartmentModel model : financeDepartmentModels) {
-            model.setDeleted();
-        }
+        financeDepartmentModels.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 }

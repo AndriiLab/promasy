@@ -67,9 +67,7 @@ public class InstituteModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        for (DepartmentModel model : departments) {
-            model.setDeleted();
-        }
+        departments.forEach(AbstractModel::setDeleted);
         super.setDeleted();
     }
 }
