@@ -3,7 +3,9 @@ package gui.finance;
 import controller.Logger;
 import gui.Utils;
 import gui.commons.Labels;
+import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
+import model.enums.Fund;
 import model.models.EmptyModel;
 import model.models.FinanceModel;
 import org.jdesktop.swingx.JXDatePicker;
@@ -39,6 +41,7 @@ public class CreateFinanceDialog extends JDialog {
     private JTextField orderNumberField;
     private JTextField orderNameField;
     private JTextField kpkvkField;
+    private PJComboBox<Fund> fundBox;
     private JXDatePicker startDatePicker;
     private JXDatePicker endDatePicker;
     private JTextField materialsAmountField;
@@ -52,19 +55,19 @@ public class CreateFinanceDialog extends JDialog {
         super(parent, Labels.getProperty("createOrder"), true);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(265, 265);
+        setSize(300, 295);
         setResizable(false);
 
         this.parent = parent;
 
         currentFinanceModel = new FinanceModel();
 
-        orderNumberField = new JTextField(10);
-        orderNameField = new JTextField(10);
-        materialsAmountField = new JTextField(10);
-        equipmentAmountField = new JTextField(10);
-        servicesAmountField = new JTextField(10);
-        kpkvkField = new JTextField(10);
+        orderNumberField = new JTextField(12);
+        orderNameField = new JTextField(12);
+        materialsAmountField = new JTextField(12);
+        equipmentAmountField = new JTextField(12);
+        servicesAmountField = new JTextField(12);
+        kpkvkField = new JTextField(12);
         startDatePicker = new JXDatePicker(Locale.getDefault());
         startDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         startDatePicker.setDate(defaultStartDate);
@@ -72,6 +75,8 @@ public class CreateFinanceDialog extends JDialog {
         endDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
         endDatePicker.setDate(defaultEndDate);
 
+        fundBox = new PJComboBox<>(Fund.values());
+        fundBox.setPreferredSize(new Dimension(136, 20));
 
         okButton = new JButton(Labels.getProperty("create"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
@@ -87,6 +92,7 @@ public class CreateFinanceDialog extends JDialog {
                 currentFinanceModel.setTotalMaterials(materialAmount);
                 currentFinanceModel.setTotalEquipment(equipmentAmount);
                 currentFinanceModel.setTotalServices(servicesAmount);
+                currentFinanceModel.setFundType((Fund) fundBox.getSelectedItem());
                 currentFinanceModel.setKPKVK(kpkvk);
                 if (currentFinanceModel.getModelId() == 0) {
                     currentFinanceModel.setCreated();
@@ -117,6 +123,7 @@ public class CreateFinanceDialog extends JDialog {
         kpkvkField.setText(emptyString);
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
+        fundBox.setSelectedIndex(0);
         orderNumber = 0;
         orderName = emptyString;
         kpkvk = null;
@@ -140,6 +147,10 @@ public class CreateFinanceDialog extends JDialog {
         servicesAmountField.setText(String.valueOf(currentFinanceModel.getTotalServices()));
         startDatePicker.setDate(currentFinanceModel.getStartDate());
         endDatePicker.setDate(currentFinanceModel.getEndDate());
+        //TODO remove if statement after patch
+        if (selectedFinanceModel.getFundType() != null) {
+            fundBox.setSelectedObject(selectedFinanceModel.getFundType());
+        }
         kpkvkField.setText(String.valueOf(selectedFinanceModel.getKPKVK()));
         super.setTitle(Labels.getProperty("editFinance"));
         okButton.setText(Labels.getProperty("edit"));
@@ -236,6 +247,17 @@ public class CreateFinanceDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
         financePanel.add(orderNameField, gc);
+
+        gc.gridy++;
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        financePanel.add(new JLabel(Labels.withColon("fundType")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = largePadding;
+        financePanel.add(fundBox, gc);
 
         gc.gridy++;
         gc.gridx = 0;

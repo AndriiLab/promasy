@@ -2,6 +2,7 @@ package model.models;
 
 import model.dao.Database;
 import model.enums.BidType;
+import model.enums.Fund;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -39,13 +40,16 @@ public class FinanceModel extends AbstractModel {
     @Column(name = "due_to")
     private Date endDate;
 
+    @Enumerated(EnumType.STRING)
+    private Fund fundType;
+
     @Column(name = "kpkvk")
     private Integer kpkvk;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
     private List<FinanceDepartmentModel> financeDepartmentModels = new ArrayList<>();
 
-    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Integer kpkvk) {
+    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Fund fundType, Integer kpkvk) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.financeNumber = financeNumber;
         this.financeName = financeName;
@@ -55,10 +59,11 @@ public class FinanceModel extends AbstractModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.financeDepartmentModels = financeDepartmentModels;
+        this.fundType = fundType;
         this.kpkvk = kpkvk;
     }
 
-    public FinanceModel(int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, Integer kpkvk) {
+    public FinanceModel(int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, Fund fundType, Integer kpkvk) {
         this.financeNumber = financeNumber;
         this.financeName = financeName;
         this.totalMaterials = totalMaterials;
@@ -66,6 +71,7 @@ public class FinanceModel extends AbstractModel {
         this.totalServices = totalServices;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.fundType = fundType;
         this.kpkvk = kpkvk;
     }
 
@@ -177,6 +183,14 @@ public class FinanceModel extends AbstractModel {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Fund getFundType() {
+        return fundType;
+    }
+
+    public void setFundType(Fund fundType) {
+        this.fundType = fundType;
     }
 
     public Integer getKPKVK() {
