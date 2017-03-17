@@ -41,6 +41,9 @@
 	<field name="catNum" class="java.lang.String">
 		<fieldDescription><![CDATA[catNum]]></fieldDescription>
 	</field>
+    <field name="financeNumber" class="java.lang.Integer">
+        <fieldDescription><![CDATA[financeNumber]]></fieldDescription>
+    </field>
 	<field name="financeName" class="java.lang.String">
 		<fieldDescription><![CDATA[financeName]]></fieldDescription>
 	</field>
@@ -567,7 +570,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="14" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{financeName}]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[$F{financeNumber}+" - "+$F{financeName}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement mode="Opaque" x="520" y="20" width="120" height="40" backcolor="#DEDEDE"

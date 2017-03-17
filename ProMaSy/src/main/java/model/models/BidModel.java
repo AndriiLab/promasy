@@ -246,6 +246,7 @@ public class BidModel extends AbstractModel {
         return new BidsReportModel(
                 finances.getSubdepartment().getDepartment().getDepName(),
                 finances.getSubdepartment().getSubdepName(),
+                finances.getFinances().getFinanceNumber(),
                 finances.getFinances().getFinanceName(),
                 type.getBidTypeName(),
                 cpv.getCpvId(),

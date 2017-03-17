@@ -8,6 +8,7 @@ import java.math.RoundingMode;
 public class BidsReportModel {
 	private String department;
     private String subdepartment;
+    private int financeNumber;
     private String financeName;
     private String financeType;
     private String cpv;
@@ -22,9 +23,10 @@ public class BidsReportModel {
 	private BigDecimal onePrice;
 	private int amount;
 
-    public BidsReportModel(String department, String subdepartment, String financeName, String financeType, String cpv, String cpvUkr, String orderDescription, String orderDate, String producer, String catNum, String supplier, String reasonForSupplierChoice, String packType, BigDecimal onePrice, int amount) {
+    public BidsReportModel(String department, String subdepartment, int financeNumber, String financeName, String financeType, String cpv, String cpvUkr, String orderDescription, String orderDate, String producer, String catNum, String supplier, String reasonForSupplierChoice, String packType, BigDecimal onePrice, int amount) {
         this.department = department;
         this.subdepartment = subdepartment;
+        this.financeNumber = financeNumber;
         this.financeName = financeName;
         this.financeType = financeType;
         this.cpv = cpv;
@@ -61,6 +63,10 @@ public class BidsReportModel {
 
     public String getSubdepartment() {
         return subdepartment;
+    }
+
+    public int getFinanceNumber() {
+        return financeNumber;
     }
 
     public String getFinanceName() {
