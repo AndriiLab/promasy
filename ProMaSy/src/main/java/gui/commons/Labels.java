@@ -36,6 +36,10 @@ public class Labels {
     public static String withSpaceAfter(final String key) {
         return getProperty(key) + " ";
     }
+
+    public static String withDot(final String key) {
+        return getProperty(key) + ".";
+    }
     public static String withThreeDots(final String key) {
         return getProperty(key) + "...";
     }

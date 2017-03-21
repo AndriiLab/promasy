@@ -5,6 +5,7 @@
 
     <persistence-unit name="postgres-connect" transaction-type="RESOURCE_LOCAL">
 
+        <class>model.models.Address</class>
         <class>model.models.AmountUnitsModel</class>
         <class>model.models.BidModel</class>
         <class>model.models.BidStatusModel</class>

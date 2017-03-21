@@ -1,5 +1,6 @@
 package gui.instedit;
 
+import gui.MainFrame;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJComboBox;
@@ -33,20 +34,22 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private PJComboBox<DepartmentModel> departmentBox;
     private PJComboBox<SubdepartmentModel> subdepartmentBox;
     private OrganizationDialogListener orgListener;
-    private String newInstName;
     private String newDepName;
     private String newSubdepName;
     private InstituteModel privateInstModel;
     private DepartmentModel privateDepModel;
     private SubdepartmentModel privateSubdepModel;
+    private CreateOrganizationDialog createOrganizationDialog;
 
-    public OrganizationDialog(JFrame parent) {
+    public OrganizationDialog(MainFrame parent) {
         super(parent, Labels.getProperty("addEditOrganizationAndDepartments"), true);
         setSize(610, 200);
         setResizable(false);
         setLocationRelativeTo(parent);
 
         Dimension comboBoxDim = new Dimension(400, 25);
+
+        createOrganizationDialog = new CreateOrganizationDialog(parent);
 
         privateInstModel = EmptyModel.INSTITUTE;
         privateDepModel = EmptyModel.DEPARTMENT;
@@ -115,26 +118,14 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         layoutControls();
 
         createInstButton.addActionListener(e -> {
-            if (newInstName != null) {
-                InstituteModel model = new InstituteModel(newInstName);
-                model.setCreated();
-                if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(model);
-                }
-            }
-            newInstName = null;
+            createOrganizationDialog.setVisible(true);
             privateInstModel = EmptyModel.INSTITUTE;
         });
 
         editInstButton.addActionListener(e -> {
-            if (newInstName != null && !privateInstModel.equals(EmptyModel.INSTITUTE)) {
-                privateInstModel.setInstName(newInstName);
-                privateInstModel.setUpdated();
-                if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(privateInstModel);
-                }
+            if (!privateInstModel.equals(EmptyModel.INSTITUTE)) {
+                createOrganizationDialog.setModel(privateInstModel);
             }
-            newInstName = null;
             privateInstModel = EmptyModel.INSTITUTE;
         });
 
@@ -143,7 +134,6 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateInstModel.setDeleted();
                 orgListener.persistModelEventOccurred(privateInstModel);
             }
-            newInstName = null;
             privateInstModel = EmptyModel.INSTITUTE;
         });
 
@@ -233,6 +223,12 @@ public class OrganizationDialog extends JDialog implements ActionListener {
             }
             newSubdepName = null;
             privateSubdepModel = EmptyModel.SUBDEPARTMENT;
+        });
+
+        createOrganizationDialog.setListener(model -> {
+            if (orgListener != null) {
+                orgListener.persistModelEventOccurred(model);
+            }
         });
 
         closeButton.addActionListener(e -> {
@@ -346,7 +342,6 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 departmentBox.setEnabled(false);
                 subdepartmentBox.setEnabled(false);
                 if (!name.isEmpty()) {
-                    newInstName = name;
                     if (!privateInstModel.equals(EmptyModel.INSTITUTE)) {
                         enableInstituteEdit();
                     } else {
@@ -437,7 +432,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("institute") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("institute")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -464,7 +459,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("department") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("department")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.NORTHWEST;
@@ -491,7 +486,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        institutePanel.add(new JLabel(Labels.getProperty("subdepartment") + ":"), gc);
+        institutePanel.add(new JLabel(Labels.withColon("subdepartment")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.NORTHWEST;
