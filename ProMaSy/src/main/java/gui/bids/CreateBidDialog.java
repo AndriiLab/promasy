@@ -41,12 +41,12 @@ public class CreateBidDialog extends JDialog {
     private JButton addReasonForSupplierChoiceButton;
     private JButton okButton;
     private JButton cancelButton;
+    private JButton kekvEditButton;
     private JTextField catNumberField;
     private JTextField cpvField;
     private JTextField amountField;
     private JTextField oneUnitPriceField;
     private JTextField kekvField;
-    private JButton kekvEditButton;
     private JTextPane descriptionPane;
     private JScrollPane descriptionScrollPane;
     private BidModel createdBidModel;
@@ -54,9 +54,7 @@ public class CreateBidDialog extends JDialog {
     private JLabel totalPriceLabel;
     private CreateBidDialogListener listener;
     private MainFrame parent;
-    private BidType currentBidType;
-    private BigDecimal totalPrice;
-    private BigDecimal previousSum;
+    private boolean isEditMode;
 
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), true);
@@ -65,8 +63,6 @@ public class CreateBidDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-
-        totalPrice = BigDecimal.ZERO;
 
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
@@ -87,7 +83,7 @@ public class CreateBidDialog extends JDialog {
 
         bidTypeBox = new PJComboBox<>(BidType.values());
         bidTypeBox.setPreferredSize(preferredFieldDim);
-        currentBidType = BidType.MATERIALS;
+        bidTypeBox.setSelectedIndex(0);
 
         preferredFieldDim.setSize(170, 25);
 
@@ -279,8 +275,7 @@ public class CreateBidDialog extends JDialog {
     }
 
     void setCurrentBidType(BidType type) {
-        this.currentBidType = type;
-        bidTypeBox.setSelectedItem(currentBidType);
+        bidTypeBox.setSelectedItem(type);
     }
 
     void setEnabledDepartmentBox(boolean state) {
@@ -307,30 +302,33 @@ public class CreateBidDialog extends JDialog {
         calculateTotalPrice();
         setTitle(Labels.getProperty("createBid"));
         okButton.setText(Labels.getProperty("createBid"));
+        isEditMode = false;
     }
 
-    private void calculateTotalPrice() {
-        if (!oneUnitPriceField.getText().isEmpty() && !amountField.getText().isEmpty()) {
+    private BigDecimal calculateTotalPrice() {
+        BigDecimal totalPrice = null;
+        String onePriceString = oneUnitPriceField.getText();
+        String amountString = amountField.getText();
+        if (!onePriceString.isEmpty() && !amountString.isEmpty()) {
             try {
-                String onePriceString = oneUnitPriceField.getText();
                 if (onePriceString.contains(",")) {
                     onePriceString = onePriceString.replace(",", ".");
                     oneUnitPriceField.setText(onePriceString);
                 }
                 BigDecimal onePrice = new BigDecimal(onePriceString);
-                BigDecimal amount = new BigDecimal(amountField.getText());
+                BigDecimal amount = new BigDecimal(amountString);
                 totalPrice = onePrice.multiply(amount);
+
                 totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
             } catch (NumberFormatException ex) {
                 Logger.warnEvent(ex);
-                totalPrice = BigDecimal.ZERO;
                 totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
             }
         } else {
-            totalPrice = BigDecimal.ZERO;
-            totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
+            totalPriceLabel.setText(BigDecimal.ZERO + Labels.withSpaceBefore("uah"));
         }
         descriptionPane.setPreferredSize(new Dimension(168, 25));
+        return totalPrice;
     }
 
     public void setFinanceDepartmentBoxData(List<FinanceDepartmentModel> db) {
@@ -377,6 +375,9 @@ public class CreateBidDialog extends JDialog {
             financeDepartmentBox.requestFocusInWindow();
             return false;
         }
+
+        boolean financeChanged = !selectedFinanceDepartmentModel.equals(createdBidModel.getFinances());
+
         ProducerModel selectedProducerModel = (ProducerModel) producerBox.getSelectedItem();
         if (selectedProducerModel.equals(EmptyModel.PRODUCER)) {
             selectedProducerModel = null;
@@ -450,7 +451,7 @@ public class CreateBidDialog extends JDialog {
             return false;
         }
 
-        currentBidType = (BidType) bidTypeBox.getSelectedItem();
+        BidType currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
         Integer kekv = Utils.parseInteger(parent, kekvField, Labels.getProperty("kekv"));
         if (kekv == null) {
@@ -458,11 +459,18 @@ public class CreateBidDialog extends JDialog {
         }
 
         BigDecimal financeLeft;
-        if (previousSum != null) { //if editing bid
+        if (isEditMode && !financeChanged) {
+            BigDecimal previousSum = createdBidModel.getTotalPrice();
             financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum);
         } else {
             financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType);
         }
+        BigDecimal totalPrice = calculateTotalPrice();
+        if (totalPrice == null) {
+            PJOptionPane.emptyField(parent, Labels.getProperty("totalPrice2"));
+            return false;
+        }
+
         if (financeLeft.compareTo(totalPrice) < 0) {
             PJOptionPane.insufficientFunds(parent, financeLeft, currentBidType);
             amountField.requestFocusInWindow();
@@ -483,7 +491,7 @@ public class CreateBidDialog extends JDialog {
         createdBidModel.setOnePrice(onePrice);
         createdBidModel.setAmount(amount);
         createdBidModel.setAmountUnit(selectedAmountUnitsModel);
-        createdBidModel.setFinances(selectedFinanceDepartmentModel);
+        selectedFinanceDepartmentModel.addBid(createdBidModel);
         createdBidModel.setSupplier(selectedSupplierModel);
         createdBidModel.setReasonForSupplierChoice(selectedReasonModel);
         createdBidModel.setType(currentBidType);
@@ -508,11 +516,12 @@ public class CreateBidDialog extends JDialog {
         return reasonForSupplierChoiceBox;
     }
 
-    public void setCreateBidDialogListener(CreateBidDialogListener listener) {
+    void setCreateBidDialogListener(CreateBidDialogListener listener) {
         this.listener = listener;
     }
 
     void loadToDialog(BidModel model, boolean isEditMode) {
+        this.isEditMode = isEditMode;
         if (listener != null) {
             listener.getAllData();
         }
@@ -539,12 +548,10 @@ public class CreateBidDialog extends JDialog {
         oneUnitPriceField.setText(model.getOnePrice().toString());
         calculateTotalPrice();
         if (isEditMode) {
-            previousSum = model.getTotalPrice();
             createdBidModel = model;
             setTitle(Labels.getProperty("editBid"));
             okButton.setText(Labels.getProperty("editBid"));
         } else {
-            previousSum = null;
             createdBidModel = new BidModel();
         }
         super.setVisible(true);
@@ -562,7 +569,6 @@ public class CreateBidDialog extends JDialog {
         }
         kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
         createdBidModel = new BidModel();
-        previousSum = null;
         super.setVisible(visible);
     }
 

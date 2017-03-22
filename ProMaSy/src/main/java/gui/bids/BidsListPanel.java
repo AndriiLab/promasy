@@ -11,6 +11,7 @@ import model.dao.LoginData;
 import model.enums.BidType;
 import model.enums.Role;
 import model.models.*;
+import model.models.report.BidsReportModel;
 
 import javax.swing.*;
 import java.awt.*;

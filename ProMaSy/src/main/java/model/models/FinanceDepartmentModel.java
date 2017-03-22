@@ -98,6 +98,9 @@ public class FinanceDepartmentModel extends AbstractModel {
     }
 
     public void addBid(BidModel model) {
+        if (model.getFinances() != null) {
+            model.getFinances().getBids().remove(model);
+        }
         model.setFinances(this);
         int indexOfModel = bids.indexOf(model);
         // if model does exist, replace it with modified model (this is possible with overridden equals() and hashcode() in model)

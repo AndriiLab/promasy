@@ -1,6 +1,7 @@
 package model.models;
 
 import model.enums.BidType;
+import model.models.report.BidsReportModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

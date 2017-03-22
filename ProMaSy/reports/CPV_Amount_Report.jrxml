@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-03-21T17:38:06 -->
+<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="CPV_Amount_Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802"
+              leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LabelsBundle"
+              uuid="a7e639fd-b10f-4fe6-801d-ee658d69047d">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <group name="BidTypeGroup">
+        <groupHeader>
+            <band height="20">
+                <textField>
+                    <reportElement x="1" y="0" width="801" height="20" uuid="755725b1-b5cb-48f5-b632-f40dec4aeacc"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
+                        <font size="12" isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["BID TYPE"]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="20">
+                <staticText>
+                    <reportElement positionType="Float" mode="Transparent" x="1" y="0" width="391" height="20"
+                                   backcolor="#FFFFFF" uuid="cfb3db6a-ef25-4d2a-9d15-e2491825259f"/>
+                    <box>
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Left" verticalAlignment="Top">
+                        <font size="12"/>
+                    </textElement>
+                    <text><![CDATA[]]></text>
+                </staticText>
+                <textField>
+                    <reportElement mode="Transparent" x="392" y="0" width="82" height="20" backcolor="#FFFFFF"
+                                   uuid="5339ea12-914e-481e-a142-7e430ece9807"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top">
+                        <font size="12" isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{cpvAmountReport.total}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement mode="Transparent" x="474" y="0" width="82" height="20" backcolor="#FFFFFF"
+                                   uuid="99f5a560-6a73-4c84-8a99-ca48389404bf"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top">
+                        <font size="12" isBold="true"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["1 000 000,00"]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement positionType="Float" mode="Transparent" x="556" y="0" width="82" height="20"
+                                   backcolor="#FFFFFF" uuid="c391ea72-e7c5-4268-b86d-32e4846f34c7"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top">
+                        <font size="12"/>
+                    </textElement>
+                    <text><![CDATA[]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="638" y="0" width="82" height="20" backcolor="#FFFFFF"
+                                   uuid="95a27938-6dba-43d0-97b8-b144d18cda7d"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top">
+                        <font size="12"/>
+                    </textElement>
+                    <text><![CDATA[]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement mode="Transparent" x="720" y="0" width="82" height="20" backcolor="#FFFFFF"
+                                   uuid="b4f3ba8d-59c3-4530-bf07-7f91a61b6773"/>
+                    <box>
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Top">
+                        <font size="12"/>
+                    </textElement>
+                    <text><![CDATA[]]></text>
+                </staticText>
+            </band>
+        </groupFooter>
+    </group>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="190" splitType="Stretch">
+            <textField>
+                <reportElement x="580" y="0" width="200" height="39" uuid="045cf011-7500-471d-8e86-238eba6e1d94"/>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.nakaz}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="580" y="40" width="200" height="19" uuid="07f78dd3-3e01-4578-87e6-5a0ae09201c6"/>
+                <textElement textAlignment="Right">
+                    <font isUnderline="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.nakazDate}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="70" width="799" height="20" uuid="e34587df-bed3-440c-9853-7d23bbe5f5b5"/>
+                <textElement textAlignment="Center">
+                    <font size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$R{cpvAmountReport.title}+" 2017 "+$R{cpvAmountReport.title2}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="170" y="92" width="420" height="20" uuid="3d0afc38-94bf-485e-bb04-c0f5867dc9d7"/>
+                <textElement textAlignment="Center">
+                    <font size="14" isBold="false"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA["ORGANIZATION NAME, "+$R{cpvAmountReport.codeEDRPOU}+" CODE123"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="171" y="112" width="420" height="18" uuid="6ad9749f-6331-4740-83ed-802ca13d037f"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.subTitle}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement positionType="Float" mode="Opaque" x="1" y="130" width="392" height="60"
+                               backcolor="#DBDBDB" uuid="9bcc715d-0bfc-4f90-87ba-ab186add8e3a"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col1Title}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement mode="Opaque" x="393" y="130" width="82" height="60" backcolor="#DBDBDB"
+                               uuid="15909f3c-f5ba-44cb-9bc0-f53c425571b5"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col2Title}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement mode="Opaque" x="475" y="130" width="82" height="60" backcolor="#DBDBDB"
+                               uuid="39bfb74d-6a75-4fda-a70c-de641c2b7dfb"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col3Title}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement mode="Opaque" x="557" y="130" width="82" height="60" backcolor="#DBDBDB"
+                               uuid="2ed0df96-8ba7-4135-9a66-2ff8ecd83063"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col4Title}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement mode="Opaque" x="639" y="130" width="82" height="60" backcolor="#DBDBDB"
+                               uuid="0f52af53-7616-4f5b-818b-5bd961b44595"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col5Title}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement mode="Opaque" x="721" y="130" width="81" height="60" backcolor="#DBDBDB"
+                               uuid="12913a5c-1803-49e1-abc3-f87524539673"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.col6Title}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <detail>
+        <band height="30" splitType="Stretch">
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="0"
+                               width="305" height="30" backcolor="#FFFFFF" uuid="f3a5462f-5f5d-4e79-8eff-de1119cb760d"/>
+                <box>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA["Petroleum products, fuel, electricity and other sources of energy"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="392" y="0" width="82"
+                               height="30" backcolor="#FFFFFF" uuid="fb05f766-4d8d-468f-aa13-040fe9551a19"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["2281/3210\n6541030"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="474" y="0" width="82"
+                               height="30" backcolor="#FFFFFF" uuid="345524fe-075d-4c3a-aebc-5972459507ac"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["1 000 000,00"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="556" y="0" width="82"
+                               height="30" backcolor="#FFFFFF" uuid="ca902fc7-a58f-4f31-ae34-589723a5bb3e"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Without tender"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="638" y="0" width="82"
+                               height="30" backcolor="#FFFFFF" uuid="6984e5c1-c62c-4bdb-82a9-f09520c36953"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Whole Year"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="0"
+                               width="86" height="30" backcolor="#FFFFFF" uuid="5ce22c85-03f8-4298-a676-3a05c5a24066">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
+                <box>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font fontName="DejaVu Sans" size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["09120000-9"]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="720" y="0" width="82"
+                               height="30" backcolor="#FFFFFF" uuid="deec1436-7cc1-4b37-b83a-ead7a24cdb32"/>
+                <box>
+                    <topPen lineWidth="1.0"/>
+                    <leftPen lineWidth="1.0"/>
+                    <bottomPen lineWidth="1.0"/>
+                    <rightPen lineWidth="1.0"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Top">
+                    <font size="12"/>
+                </textElement>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="40">
+            <textField>
+                <reportElement x="0" y="0" width="474" height="20" uuid="f42687e2-8829-4235-a6e5-6aeeef867ae6">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.footerReamrk}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="20" width="474" height="20" uuid="e5a0b515-b933-456d-80be-8734bacaef5f">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA[$R{cpvAmountReport.footerReamrk2} + " 24.01.2017 року № 32"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="322" height="20" uuid="286d9f9b-e971-496e-b721-852de0db8cbe"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{cpvAmountReport.total} + " 1 000 000,00 uah"]]></textFieldExpression>
+            </textField>
+        </band>
+    </columnFooter>
+    <pageFooter>
+        <band height="30">
+            <textField>
+                <reportElement positionType="Float" x="600" y="10" width="161" height="20"
+                               uuid="3d48e9f2-ca15-4d42-8625-00290fa47b25">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="761" y="10" width="41" height="20" uuid="51bcbc4e-f7f7-4945-8b6c-a606a79db1d9">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <lastPageFooter>
+        <band height="150">
+            <textField>
+                <reportElement x="420" y="50" width="160" height="20" uuid="2dddc8cb-2320-448d-8235-6d14207fff84"/>
+                <textElement textAlignment="Right">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Diordiev D.I."]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="87" y="90" width="232" height="20" uuid="ccfd0e1e-08d1-4456-9085-3291f1998a73">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="87" y="50" width="232" height="20" uuid="6856185e-bc87-494c-be86-2f69a2a03d8c">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{role.headOfTenderCommittee}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="628" y="90" width="103" height="39" uuid="4ab5db68-52f7-4868-9cff-83de483eaf24"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA["____________\n("+$R{cpvAmountReport.signature}+")"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="628" y="50" width="103" height="40" uuid="3aa4dfbd-b122-41bf-9b76-375d7bb0ed1d"/>
+                <textElement>
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression>
+                    <![CDATA["____________\n("+$R{cpvAmountReport.signature}+") "+$R{cpvAmountReport.stamp}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="420" y="90" width="160" height="20" uuid="10fdc40d-7b22-4302-ab09-a7d659672ddb">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right">
+                    <font size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Naumenko L.Je."]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="761" y="130" width="41" height="20" uuid="05718349-226e-4804-ac6a-1084ca23b449">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement positionType="Float" x="600" y="130" width="161" height="20"
+                               uuid="b547e121-7ed3-455b-a88f-261119eb2078">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </lastPageFooter>
+</jasperReport>
