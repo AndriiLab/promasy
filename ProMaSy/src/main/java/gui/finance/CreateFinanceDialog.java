@@ -1,5 +1,7 @@
 package gui.finance;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
 import controller.Logger;
 import gui.Utils;
 import gui.commons.Labels;
@@ -8,7 +10,6 @@ import gui.components.PJOptionPane;
 import model.enums.Fund;
 import model.models.EmptyModel;
 import model.models.FinanceModel;
-import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +17,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.Year;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 /**
@@ -26,8 +27,8 @@ import java.util.Locale;
  */
 public class CreateFinanceDialog extends JDialog {
 
-    private final java.util.Date defaultStartDate = (new GregorianCalendar(Year.now().getValue(), 0, 1)).getTime();
-    private final java.util.Date defaultEndDate = (new GregorianCalendar(Year.now().getValue(), 11, 31)).getTime();
+    private final LocalDate defaultStartDate = LocalDate.of(Year.now().getValue(), Month.JANUARY, 1);
+    private final LocalDate defaultEndDate = LocalDate.of(Year.now().getValue(), Month.DECEMBER, 31);
     private int orderNumber;
     private Integer kpkvk;
     private String orderName;
@@ -42,8 +43,8 @@ public class CreateFinanceDialog extends JDialog {
     private JTextField orderNameField;
     private JTextField kpkvkField;
     private PJComboBox<Fund> fundBox;
-    private JXDatePicker startDatePicker;
-    private JXDatePicker endDatePicker;
+    private DatePicker startDatePicker;
+    private DatePicker endDatePicker;
     private JTextField materialsAmountField;
     private JTextField equipmentAmountField;
     private JTextField servicesAmountField;
@@ -68,11 +69,19 @@ public class CreateFinanceDialog extends JDialog {
         equipmentAmountField = new JTextField(12);
         servicesAmountField = new JTextField(12);
         kpkvkField = new JTextField(12);
-        startDatePicker = new JXDatePicker(Locale.getDefault());
-        startDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
+
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("dd.MM.yyyy");
+
+        startDatePicker = new DatePicker(dateSettings);
+        startDatePicker.setLocale(Locale.getDefault());
         startDatePicker.setDate(defaultStartDate);
-        endDatePicker = new JXDatePicker(Locale.getDefault());
-        endDatePicker.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
+
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("dd.MM.yyyy");
+
+        endDatePicker = new DatePicker(dateSettings);
+        endDatePicker.setLocale(Locale.getDefault());
         endDatePicker.setDate(defaultEndDate);
 
         fundBox = new PJComboBox<>(Fund.values());
@@ -145,8 +154,8 @@ public class CreateFinanceDialog extends JDialog {
         materialsAmountField.setText(String.valueOf(currentFinanceModel.getTotalMaterials()));
         equipmentAmountField.setText(String.valueOf(currentFinanceModel.getTotalEquipment()));
         servicesAmountField.setText(String.valueOf(currentFinanceModel.getTotalServices()));
-        startDatePicker.setDate(currentFinanceModel.getStartDate());
-        endDatePicker.setDate(currentFinanceModel.getEndDate());
+        startDatePicker.setDate(currentFinanceModel.getStartDate().toLocalDate());
+        endDatePicker.setDate(currentFinanceModel.getEndDate().toLocalDate());
         //TODO remove if statement after patch
         if (selectedFinanceModel.getFundType() != null) {
             fundBox.setSelectedObject(selectedFinanceModel.getFundType());
@@ -179,8 +188,8 @@ public class CreateFinanceDialog extends JDialog {
             return false;
         }
         orderName = orderNameField.getText();
-        startDate = new java.sql.Date(startDatePicker.getDate().getTime());
-        endDate = new java.sql.Date(endDatePicker.getDate().getTime());
+        startDate = Date.valueOf(startDatePicker.getDate());
+        endDate = Date.valueOf(endDatePicker.getDate());
         if (orderName.isEmpty()) {
             PJOptionPane.emptyField(parent, Labels.getProperty("financeName"));
             orderNameField.requestFocusInWindow();

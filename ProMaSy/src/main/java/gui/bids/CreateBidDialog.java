@@ -1,8 +1,12 @@
 package gui.bids;
 
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import controller.Logger;
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJComboBox;
@@ -19,7 +23,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Dialog for creation of new bids. Associated with {@link BidsListPanel}
@@ -42,6 +49,7 @@ public class CreateBidDialog extends JDialog {
     private JButton okButton;
     private JButton cancelButton;
     private JButton kekvEditButton;
+    private JButton procDateAddButton;
     private JTextField catNumberField;
     private JTextField cpvField;
     private JTextField amountField;
@@ -49,6 +57,7 @@ public class CreateBidDialog extends JDialog {
     private JTextField kekvField;
     private JTextPane descriptionPane;
     private JScrollPane descriptionScrollPane;
+    private DatePicker procurementStartDatePicker;
     private BidModel createdBidModel;
     private CPVModel selectedCPV;
     private JLabel totalPriceLabel;
@@ -59,7 +68,7 @@ public class CreateBidDialog extends JDialog {
     public CreateBidDialog(MainFrame parent) {
         super(parent, Labels.getProperty("createBid"), true);
         this.parent = parent;
-        setSize(516, 500);
+        setSize(516, 541);
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -151,13 +160,24 @@ public class CreateBidDialog extends JDialog {
         kekvField.setEnabled(false);
         kekvEditButton = new JButton(Icons.EDIT);
         kekvEditButton.setPreferredSize(buttonDim);
-        kekvEditButton.setToolTipText(Labels.withSpaceAfter("edit") + Labels.getProperty("kekv"));
+        kekvEditButton.setToolTipText(Labels.withSpaceAfter("edit") + Labels.quoted("kekv"));
 
         descriptionPane = new JTextPane();
         descriptionPane.setPreferredSize(new Dimension(168, 25));
         descriptionPane.setEditable(true);
         descriptionScrollPane = new JScrollPane(descriptionPane);
         descriptionScrollPane.setPreferredSize(preferredFieldDim);
+
+        DatePickerSettings dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("dd.MM.yyyy");
+        procurementStartDatePicker = new DatePicker(dateSettings);
+        procurementStartDatePicker.setLocale(Locale.getDefault());
+        procurementStartDatePicker.setEnabled(false);
+        dateSettings.setHighlightPolicy(date -> (date.compareTo(LocalDate.now().plusDays(15)) > -1) ? new HighlightInformation(Colors.GREEN_LIGHT_SELECTED) : null);
+        dateSettings.setVetoPolicy(date -> date.compareTo(LocalDate.now().plusDays(15)) > -1);
+        procDateAddButton = new JButton(Icons.EDIT);
+        procDateAddButton.setPreferredSize(buttonDim);
+        procDateAddButton.setToolTipText(Labels.withSpaceAfter("edit") + Labels.quoted("procurementStartDate"));
 
         createLayout();
 
@@ -211,6 +231,7 @@ public class CreateBidDialog extends JDialog {
         });
 
         kekvEditButton.addActionListener(e -> kekvField.setEnabled(!kekvField.isEnabled()));
+        procDateAddButton.addActionListener(e -> procurementStartDatePicker.setEnabled(!procurementStartDatePicker.isEnabled()));
 
         addProducerButton.addActionListener(e -> parent.showProducerDialog());
         addReasonForSupplierChoiceButton.addActionListener(e -> parent.showReasonsDialog());
@@ -299,10 +320,13 @@ public class CreateBidDialog extends JDialog {
         amountField.setText(EmptyModel.STRING);
         oneUnitPriceField.setText(EmptyModel.STRING);
         kekvField.setText(EmptyModel.STRING);
+        kekvField.setEnabled(false);
         calculateTotalPrice();
         setTitle(Labels.getProperty("createBid"));
         okButton.setText(Labels.getProperty("createBid"));
         isEditMode = false;
+        procurementStartDatePicker.setEnabled(false);
+        procurementStartDatePicker.clear();
     }
 
     private BigDecimal calculateTotalPrice() {
@@ -484,6 +508,11 @@ public class CreateBidDialog extends JDialog {
             statuses.add(statusModel);
         }
 
+        LocalDate procStartDate = procurementStartDatePicker.getDate();
+        if (procStartDate != null) {
+            createdBidModel.setProcurementStartDate(Date.valueOf(procStartDate));
+        }
+
         createdBidModel.setProducer(selectedProducerModel);
         createdBidModel.setCatNum(selectedCatNum);
         createdBidModel.setBidDesc(selectedDescription);
@@ -547,6 +576,8 @@ public class CreateBidDialog extends JDialog {
         amountField.setText(Integer.toString(model.getAmount()));
         oneUnitPriceField.setText(model.getOnePrice().toString());
         calculateTotalPrice();
+        Date procStartDate = model.getProcurementStartDate();
+        procurementStartDatePicker.setDate((procStartDate != null) ? procStartDate.toLocalDate() : null);
         if (isEditMode) {
             createdBidModel = model;
             setTitle(Labels.getProperty("editBid"));
@@ -580,6 +611,7 @@ public class CreateBidDialog extends JDialog {
         Border compoundBorder = BorderFactory.createCompoundBorder(emptyBorder, etchedBorder);
 
         Insets smallPadding = new Insets(1, 0, 1, 5);
+        Insets mediumPadding = new Insets(10, 1, 1, 5);
 
         // department and orders panel
         JPanel depOrdersPanel = new JPanel();
@@ -758,27 +790,6 @@ public class CreateBidDialog extends JDialog {
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
-        gc.gridwidth = 1;
-        gc.ipady = 0;
-        gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("kekv")), gc);
-
-        gc.gridx++;
-        gc.anchor = GridBagConstraints.WEST;
-        gc.insets = smallPadding;
-        createBidPanel.add(kekvField, gc);
-
-        gc.gridx++;
-        gc.anchor = GridBagConstraints.WEST;
-        gc.insets = smallPadding;
-        createBidPanel.add(kekvEditButton, gc);
-
-        /// Next row///
-        gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
-
-        gc.gridx = 0;
-        gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
         createBidPanel.add(new JLabel(Labels.withColon("packing")), gc);
 
@@ -826,13 +837,53 @@ public class CreateBidDialog extends JDialog {
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
-        gc.insets = new Insets(10, 1, 1, 5);
+        gc.insets = smallPadding;
         createBidPanel.add(new JLabel(Labels.withColon("totalPrice")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
-        gc.insets = new Insets(10, 1, 1, 5);
+        gc.insets = smallPadding;
         createBidPanel.add(totalPriceLabel, gc);
+
+        /// Next row///
+        gc.gridy++;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.gridwidth = 1;
+        gc.ipady = 0;
+        gc.insets = smallPadding;
+        createBidPanel.add(new JLabel(Labels.withColon("kekv")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(kekvField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(kekvEditButton, gc);
+
+        /// Next row///
+        gc.gridy++;
+        gc.fill = GridBagConstraints.NONE;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = mediumPadding;
+        createBidPanel.add(new JLabel(Labels.withColon("procurementStartDate")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = mediumPadding;
+        createBidPanel.add(procurementStartDatePicker, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = mediumPadding;
+        createBidPanel.add(procDateAddButton, gc);
 
         //buttons panel
         JPanel buttonsPanel = new JPanel();

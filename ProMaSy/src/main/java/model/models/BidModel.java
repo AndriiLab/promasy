@@ -5,6 +5,7 @@ import model.models.report.BidsReportModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -63,8 +64,11 @@ public class BidModel extends AbstractModel {
     @Column(name = "kekv")
     private Integer kekv;
 
+    @Column(name = "proc_start_date")
+    private Date procurementStartDate;
 
-    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
+
+    public BidModel(long modelId, EmployeeModel createdBy, Timestamp createdDate, EmployeeModel modifiedBy, Timestamp modifiedDate, boolean active, ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type, Date procurementStartDate) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.producer = producer;
         this.catNum = catNum;
@@ -78,9 +82,10 @@ public class BidModel extends AbstractModel {
         this.statuses = statuses;
         this.reasonForSupplierChoice = reasonForSupplierChoice;
         this.type = type;
+        this.procurementStartDate = procurementStartDate;
     }
 
-    public BidModel(ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type) {
+    public BidModel(ProducerModel producer, String catNum, String bidDesc, CPVModel cpv, BigDecimal onePrice, int amount, AmountUnitsModel amountUnit, FinanceDepartmentModel finances, SupplierModel supplier, List<BidStatusModel> statuses, ReasonForSupplierChoiceModel reasonForSupplierChoice, BidType type, Date procurementStartDate) {
         this.producer = producer;
         this.catNum = catNum;
         this.bidDesc = bidDesc;
@@ -93,6 +98,7 @@ public class BidModel extends AbstractModel {
         this.statuses = statuses;
         this.reasonForSupplierChoice = reasonForSupplierChoice;
         this.type = type;
+        this.procurementStartDate = procurementStartDate;
     }
 
     public BidModel() {
@@ -185,6 +191,14 @@ public class BidModel extends AbstractModel {
 
     public List<BidStatusModel> getStatuses() {
         return statuses;
+    }
+
+    public Date getProcurementStartDate() {
+        return procurementStartDate;
+    }
+
+    public void setProcurementStartDate(Date procurementStartDate) {
+        this.procurementStartDate = procurementStartDate;
     }
 
     public int getKEKV() {

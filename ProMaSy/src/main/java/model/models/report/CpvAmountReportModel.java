@@ -10,21 +10,21 @@ public class CpvAmountReportModel {
     private String bidType;
     private String cpvNumber;
     private String cpvName;
-    private String kekv;
     private String kpkvk;
     private BigDecimal totalPrice;
     private String procurementProcedure;
     private Date startDate;
+    private String notation;
 
-    public CpvAmountReportModel(String bidType, String cpvNumber, String cpvName, String kekv, String kpkvk, BigDecimal totalPrice, String procurementProcedure, Date startDate) {
+    public CpvAmountReportModel(String bidType, String cpvNumber, String cpvName, String kpkvk, BigDecimal totalPrice, String procurementProcedure, Date startDate, String notation) {
         this.bidType = bidType;
         this.cpvNumber = cpvNumber;
         this.cpvName = cpvName;
-        this.kekv = kekv;
         this.kpkvk = kpkvk;
         this.totalPrice = totalPrice;
         this.procurementProcedure = procurementProcedure;
         this.startDate = startDate;
+        this.notation = notation;
     }
 
     public CpvAmountReportModel() {
@@ -54,14 +54,6 @@ public class CpvAmountReportModel {
         this.cpvName = cpvName;
     }
 
-    public String getKekv() {
-        return kekv;
-    }
-
-    public void setKekv(String kekv) {
-        this.kekv = kekv;
-    }
-
     public String getKpkvk() {
         return kpkvk;
     }
@@ -84,6 +76,14 @@ public class CpvAmountReportModel {
 
     public void setProcurementProcedure(String procurementProcedure) {
         this.procurementProcedure = procurementProcedure;
+    }
+
+    public String getNotation() {
+        return notation;
+    }
+
+    public void setNotation(String notation) {
+        this.notation = notation;
     }
 
     public Date getStartDate() {

@@ -32,11 +32,9 @@ public class Labels {
     public static String withSpaceBefore(final String key) {
         return " "+getProperty(key);
     }
-
     public static String withSpaceAfter(final String key) {
         return getProperty(key) + " ";
     }
-
     public static String withDot(final String key) {
         return getProperty(key) + ".";
     }
@@ -44,13 +42,17 @@ public class Labels {
         return getProperty(key) + "...";
     }
 
+    public static String quoted(final String key) {
+        return "'" + getProperty(key) + "'";
+    }
+
     public static String getVersion() {
         return VERSION.getString("versionNumber");
     }
-
     public static String getBuildDate() {
         return VERSION.getString("buildDate");
     }
+
 }
 
 
