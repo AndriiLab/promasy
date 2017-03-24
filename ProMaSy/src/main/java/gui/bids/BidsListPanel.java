@@ -1,12 +1,12 @@
 package gui.bids;
 
 import gui.MainFrame;
-import gui.bids.reports.BidsReport;
 import gui.bids.status.StatusDialog;
 import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJComboBox;
+import gui.reports.ReportsGenerator;
 import model.dao.LoginData;
 import model.enums.BidType;
 import model.enums.Role;
@@ -461,6 +461,6 @@ public class BidsListPanel extends JPanel {
         else {
             selectedBidModels.forEach(md -> list.add(md.generateReportModel()));
         }
-        new BidsReport(parameters, Collections.unmodifiableList(list), parent);
+        new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
     }
 }

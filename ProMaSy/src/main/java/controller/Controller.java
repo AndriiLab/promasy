@@ -8,12 +8,12 @@ import gui.MainFrameListener;
 import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
-import gui.bids.reports.BidsReport;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
 import gui.cpv.CpvReqEvent;
 import gui.cpv.CpvSearchListener;
+import gui.cpvAmount.CpvAmountDialogListener;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.CreateEmployeeFromLoginListener;
 import gui.empedit.EditEmployeeDialogListener;
@@ -23,6 +23,7 @@ import gui.login.LoginListener;
 import gui.prodsupl.ProducerDialogListener;
 import gui.prodsupl.ReasonsDialogListener;
 import gui.prodsupl.SupplierDialogListener;
+import gui.reports.ReportsGenerator;
 import model.dao.Database;
 import model.dao.LoginData;
 import model.enums.BidType;
@@ -51,7 +52,8 @@ public class Controller {
 
         //precompiling report files
         try {
-            BidsReport.compileReportFileIfNew(mainFrame);
+            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.BIDS_REPORT, mainFrame);
+            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.CPV_AMOUNT_REPORT, mainFrame);
         } catch (IOException e) {
             Logger.errorEvent(mainFrame, e);
         }
@@ -164,11 +166,6 @@ public class Controller {
             @Override
             public void getAllBids(BidType bidType) {
                 mainFrame.setBidModelList(getBids(bidType));
-            }
-
-            @Override
-            public void getCpvAmounts() {
-                mainFrame.setCpvAmounts(getCpvAmount());
             }
         });
 
@@ -370,6 +367,23 @@ public class Controller {
 
             public void reportParametersSelectionOccurred(Map<String, Object> parameters) {
                 mainFrame.bidListPrint(parameters);
+            }
+        });
+
+        mainFrame.setCpvAmountDialogListener(new CpvAmountDialogListener() {
+            @Override
+            public void getData() {
+                mainFrame.setCpvAmountDialogList(getCpvAmount());
+            }
+
+            @Override
+            public String getEmployeeName(Role role) {
+                List<EmployeeModel> models = getEmployees(role);
+                if (models == null || models.isEmpty()) {
+                    return EmptyModel.STRING;
+                } else {
+                    return models.get(0).getShortName();
+                }
             }
         });
     }

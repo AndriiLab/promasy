@@ -1,7 +1,8 @@
 package model.models.report;
 
+import model.models.CpvAmountModel;
+
 import java.math.BigDecimal;
-import java.sql.Date;
 
 /**
  * Model for report table with information about procurements by CPV code
@@ -13,10 +14,12 @@ public class CpvAmountReportModel {
     private String kpkvk;
     private BigDecimal totalPrice;
     private String procurementProcedure;
-    private Date startDate;
+    private String startDate;
     private String notation;
+    private CpvAmountModel parentModel;
 
-    public CpvAmountReportModel(String bidType, String cpvNumber, String cpvName, String kpkvk, BigDecimal totalPrice, String procurementProcedure, Date startDate, String notation) {
+    public CpvAmountReportModel(CpvAmountModel parentModel, String bidType, String cpvNumber, String cpvName, String kpkvk, BigDecimal totalPrice, String procurementProcedure, String startDate, String notation) {
+        this.parentModel = parentModel;
         this.bidType = bidType;
         this.cpvNumber = cpvNumber;
         this.cpvName = cpvName;
@@ -86,11 +89,19 @@ public class CpvAmountReportModel {
         this.notation = notation;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
+    }
+
+    public CpvAmountModel getParentModel() {
+        return parentModel;
+    }
+
+    public void setParentModel(CpvAmountModel parentModel) {
+        this.parentModel = parentModel;
     }
 }

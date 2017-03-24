@@ -1,10 +1,12 @@
 package model.models;
 
+import gui.commons.Labels;
 import model.enums.BidType;
+import model.enums.ProcurementProcedure;
+import model.models.report.CpvAmountReportModel;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * POJO for data of finance amount spent on each cpv code
@@ -70,5 +72,33 @@ public class CpvAmountModel {
                 ", type=" + type +
                 ", totalAmount=" + totalAmount +
                 '}';
+    }
+
+    public CpvAmountReportModel generateCpvAmountReportModel() {
+        Set<Integer> kpkvkSet = new HashSet<>();
+        StringJoiner kpkvk = new StringJoiner(", ");
+        for (BidModel bid : bids) {
+            Integer kpkvkInt = bid.getFinances().getFinances().getKPKVK();
+            if (kpkvkInt != null) {
+                kpkvkSet.add(kpkvkInt);
+            }
+        }
+        if (kpkvkSet.isEmpty()) {
+            kpkvk.add(Labels.getProperty("default.kpkvk"));
+        } else if (kpkvkSet.size() == 1) {
+            kpkvk.add(kpkvkSet.iterator().next().toString());
+        } else {
+            while (kpkvkSet.iterator().hasNext()) {
+                kpkvk.add(kpkvkSet.iterator().next().toString());
+            }
+        }
+
+        String procProcedure;
+        if (totalAmount.compareTo(BigDecimal.valueOf(50000)) > 0) {
+            procProcedure = ProcurementProcedure.OPEN_AUCTION.toString();
+        } else {
+            procProcedure = ProcurementProcedure.BELOW_THRESHOLD.toString();
+        }
+        return new CpvAmountReportModel(this, type.getBidTypeName(), cpv.getCpvId(), cpv.getCpvUkr(), kpkvk.toString(), totalAmount, procProcedure, Labels.getProperty("duringYear"), null);
     }
 }

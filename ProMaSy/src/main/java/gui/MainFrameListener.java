@@ -24,5 +24,4 @@ public interface MainFrameListener {
 
     void getAllBids(BidType bidType);
 
-    void getCpvAmounts();
 }

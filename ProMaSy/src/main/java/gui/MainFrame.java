@@ -19,7 +19,8 @@ import gui.conset.ConSetDialog;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvDialog;
 import gui.cpv.CpvSearchListener;
-import gui.cpvAmount.CpvAmountPanel;
+import gui.cpvAmount.CpvAmountDialog;
+import gui.cpvAmount.CpvAmountDialogListener;
 import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialog;
@@ -66,7 +67,7 @@ public class MainFrame extends JFrame {
     private ReasonsDialog reasonsDialog;
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
-    private CpvAmountPanel cpvAmountPanel;
+    private CpvAmountDialog cpvAmountDialog;
     private CreateBidDialog createBidDialog;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
@@ -106,7 +107,7 @@ public class MainFrame extends JFrame {
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
         bidsListPanel = new BidsListPanel(this);
-        cpvAmountPanel = new CpvAmountPanel(this);
+        cpvAmountDialog = new CpvAmountDialog(this);
         createFinanceDialog = new CreateFinanceDialog(this);
         createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
         financePanel = new FinancePanel(this);
@@ -170,7 +171,7 @@ public class MainFrame extends JFrame {
                 break;
         }
 
-        setJMenuBar(createMenuBar());
+        setJMenuBar(createMenuBar(role));
 
         // setting layout and formatting frames on mainframe
         add(toolbar, BorderLayout.PAGE_START);
@@ -198,12 +199,11 @@ public class MainFrame extends JFrame {
         tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("bids"), bidsListPanel);
         tabPane.addTab(Labels.getProperty("finances"), financePanel);
-        tabPane.addTab(Labels.getProperty("cpvAmounts"), cpvAmountPanel);
         add(tabPane, BorderLayout.CENTER);
     }
 
     //This method generates menubar
-    private JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar(Role userRole) {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
@@ -237,22 +237,8 @@ public class MainFrame extends JFrame {
         menuBar.add(fileMenu);
         menuBar.add(editMenu);
 
-        printItem.addActionListener(e -> printEventOccurred());
-
-        exitItem.addActionListener(e -> {
-            if (listener != null) {
-                listener.exitEventOccurred();
-            }
-        });
-
-        editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
-        editProdItem.addActionListener(e -> producerDialog.setVisible(true));
-        editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
-        editCurrentUserItem.addActionListener(e -> createEmployeeDialog.setEmployeeModel(LoginData.getInstance()));
-        infoItem.addActionListener(e -> infoDialog.setVisible(true));
-
         // advanced menu for non users
-        if (LoginData.getInstance().getRole() == Role.ADMIN) {
+        if (userRole.equals(Role.ADMIN)) {
             JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
             editOrgItem.setIcon(Icons.ORGANIZATION);
 
@@ -284,6 +270,33 @@ public class MainFrame extends JFrame {
 
             conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
         }
+        printItem.addActionListener(e -> printEventOccurred());
+
+        exitItem.addActionListener(e -> {
+            if (listener != null) {
+                listener.exitEventOccurred();
+            }
+        });
+
+        if (!userRole.equals(Role.USER) && !userRole.equals(Role.PERSONALLY_LIABLE_EMPLOYEE) && !userRole.equals(Role.HEAD_OF_DEPARTMENT)) {
+            JMenu reports = new JMenu(Labels.getProperty("reports"));
+
+            JMenuItem procByCpv = new JMenuItem(Labels.withThreeDots("cpvAmounts"));
+            reports.add(procByCpv);
+
+            menuBar.add(reports);
+
+            procByCpv.addActionListener(e -> cpvAmountDialog.setVisible(true));
+
+        }
+
+        editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
+        editProdItem.addActionListener(e -> producerDialog.setVisible(true));
+        editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
+        editCurrentUserItem.addActionListener(e -> createEmployeeDialog.setEmployeeModel(LoginData.getInstance()));
+        infoItem.addActionListener(e -> infoDialog.setVisible(true));
+
+
         menuBar.add(helpMenu);
 
         return menuBar;
@@ -441,6 +454,10 @@ public class MainFrame extends JFrame {
         reportParametersDialog.setListener(listener);
     }
 
+    public void setCpvAmountDialogListener(CpvAmountDialogListener listener) {
+        cpvAmountDialog.setListener(listener);
+    }
+
     //Model lists
     public void setCpvModelList(List<CPVModel> cpvModelList) {
         cpvDialog.setData(cpvModelList);
@@ -498,8 +515,8 @@ public class MainFrame extends JFrame {
         createBidDialog.setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
-    public void setCpvAmounts(List<CpvAmountModel> cpvAmounts) {
-        cpvAmountPanel.setTableData(cpvAmounts);
+    public void setCpvAmountDialogList(List<CpvAmountModel> cpvAmounts) {
+        cpvAmountDialog.setTableData(cpvAmounts);
     }
 
     public void setBidModelList(List<BidModel> bidModelList) {
@@ -537,7 +554,6 @@ public class MainFrame extends JFrame {
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
-            listener.getCpvAmounts();
             listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
             if (bidsListPanel.getSelectedDepartment().equals(EmptyModel.DEPARTMENT)) {
                 listener.getAllBids(bidsListPanel.getSelectedBidType());

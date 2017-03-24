@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-21T17:38:06 -->
+<!-- 2017-03-24T17:12:20 -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -8,14 +8,139 @@
               leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LabelsBundle"
               uuid="a7e639fd-b10f-4fe6-801d-ee658d69047d">
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <parameter name="year" class="java.lang.Integer"/>
+    <parameter name="organization" class="java.lang.String"/>
+    <parameter name="edrpou" class="java.lang.Integer"/>
+    <parameter name="headTender" class="java.lang.String"/>
+    <parameter name="secretaryTender" class="java.lang.String"/>
+    <parameter name="resolutionDate" class="java.lang.String"/>
+    <parameter name="resolutionNum" class="java.lang.String"/>
     <queryString>
         <![CDATA[]]>
     </queryString>
+    <field name="bidType" class="java.lang.String">
+        <fieldDescription><![CDATA[bidType]]></fieldDescription>
+    </field>
+    <field name="cpvNumber" class="java.lang.String">
+        <fieldDescription><![CDATA[cpvNumber]]></fieldDescription>
+    </field>
+    <field name="cpvName" class="java.lang.String">
+        <fieldDescription><![CDATA[cpvName]]></fieldDescription>
+    </field>
+    <field name="kpkvk" class="java.lang.String">
+        <fieldDescription><![CDATA[kpkvk]]></fieldDescription>
+    </field>
+    <field name="totalPrice" class="java.math.BigDecimal">
+        <fieldDescription><![CDATA[totalPrice]]></fieldDescription>
+    </field>
+    <field name="procurementProcedure" class="java.lang.String">
+        <fieldDescription><![CDATA[procurementProcedure]]></fieldDescription>
+    </field>
+    <field name="startDate" class="java.lang.String">
+        <fieldDescription><![CDATA[startDate]]></fieldDescription>
+    </field>
+    <field name="notation" class="java.lang.String">
+        <fieldDescription><![CDATA[notation]]></fieldDescription>
+    </field>
+    <sortField name="bidType"/>
+    <sortField name="cpvNumber"/>
+    <variable name="totalOnBidType" class="java.math.BigDecimal" resetType="Group" resetGroup="BidTypeGroup"
+              calculation="Sum">
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
+    <variable name="totalPriceAll" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
+    <group name="TableGroup">
+        <groupFooter>
+            <band height="139">
+                <textField>
+                    <reportElement x="0" y="0" width="474" height="20" uuid="59c5ee8b-cbc3-44c3-938d-5d644cb499ef">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{cpvAmountReport.footerReamrk}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="480" y="0" width="322" height="20" uuid="58bcf19b-4d70-4523-a72d-cd398fd6d752"/>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[$R{cpvAmountReport.total}+" "+$V{totalPriceAll}+" "+$R{uah}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="0" y="20" width="474" height="20" uuid="2a292963-8dd3-4a9c-a077-cafdf01f80a9">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA[$R{cpvAmountReport.footerReamrk2} + " "+$P{resolutionDate}+" № "+$P{resolutionNum}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="87" y="60" width="232" height="20" uuid="2c326585-bd40-4651-9022-972386c932b3">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.headOfTenderCommittee}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="87" y="100" width="232" height="20" uuid="4ee3e4a4-95f5-4c21-9f71-c94c6ad187b7">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="420" y="60" width="160" height="20" uuid="f8fceb99-88bc-4cbd-a562-53930bb60c2a"/>
+                    <textElement textAlignment="Right">
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{headTender}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="420" y="100" width="160" height="20" uuid="04ce3505-a512-4e30-a498-b363647a03d7">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{secretaryTender}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="628" y="60" width="103" height="40" uuid="db8ec7f7-398c-42f1-887e-793b08ddffcb"/>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA["____________\n("+$R{cpvAmountReport.signature}+") "+$R{cpvAmountReport.stamp}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="628" y="100" width="103" height="39" uuid="ed2caf8d-2281-4d3a-b265-b70236b7df81"/>
+                    <textElement>
+                        <font size="12"/>
+                    </textElement>
+                    <textFieldExpression>
+                        <![CDATA["____________\n("+$R{cpvAmountReport.signature}+")"]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
     <group name="BidTypeGroup">
+        <groupExpression><![CDATA[$F{bidType}]]></groupExpression>
         <groupHeader>
             <band height="20">
                 <textField>
-                    <reportElement x="1" y="0" width="801" height="20" uuid="755725b1-b5cb-48f5-b632-f40dec4aeacc"/>
+                    <reportElement mode="Opaque" x="1" y="0" width="801" height="20" backcolor="#F2F2F2"
+                                   uuid="755725b1-b5cb-48f5-b632-f40dec4aeacc"/>
                     <box>
                         <topPen lineWidth="1.0"/>
                         <leftPen lineWidth="1.0"/>
@@ -25,7 +150,7 @@
                     <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font size="12" isBold="true"/>
                     </textElement>
-                    <textFieldExpression><![CDATA["BID TYPE"]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[$F{bidType}.toUpperCase()]]></textFieldExpression>
                 </textField>
             </band>
         </groupHeader>
@@ -71,7 +196,7 @@
                     <textElement textAlignment="Center" verticalAlignment="Top">
                         <font size="12" isBold="true"/>
                     </textElement>
-                    <textFieldExpression><![CDATA["1 000 000,00"]]></textFieldExpression>
+                    <textFieldExpression><![CDATA[$V{totalOnBidType}+" "+$R{uah}]]></textFieldExpression>
                 </textField>
                 <staticText>
                     <reportElement positionType="Float" mode="Transparent" x="556" y="0" width="82" height="20"
@@ -143,15 +268,15 @@
                     <font size="14" isBold="true"/>
                 </textElement>
                 <textFieldExpression>
-                    <![CDATA[$R{cpvAmountReport.title}+" 2017 "+$R{cpvAmountReport.title2}]]></textFieldExpression>
+                    <![CDATA[$R{cpvAmountReport.title}+" "+$P{year}+" "+$R{cpvAmountReport.title2}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="170" y="92" width="420" height="20" uuid="3d0afc38-94bf-485e-bb04-c0f5867dc9d7"/>
+                <reportElement x="1" y="92" width="798" height="20" uuid="3d0afc38-94bf-485e-bb04-c0f5867dc9d7"/>
                 <textElement textAlignment="Center">
-                    <font size="14" isBold="false"/>
+                    <font size="14" isBold="true"/>
                 </textElement>
                 <textFieldExpression>
-                    <![CDATA["ORGANIZATION NAME, "+$R{cpvAmountReport.codeEDRPOU}+" CODE123"]]></textFieldExpression>
+                    <![CDATA[$P{organization}.toUpperCase()+", "+$R{cpvAmountReport.codeEDRPOU}+" "+$P{edrpou}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="171" y="112" width="420" height="18" uuid="6ad9749f-6331-4740-83ed-802ca13d037f"/>
@@ -233,10 +358,12 @@
         </band>
     </title>
     <detail>
-        <band height="30" splitType="Stretch">
+        <band height="20" splitType="Stretch">
             <textField isStretchWithOverflow="true">
                 <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="0"
-                               width="305" height="30" backcolor="#FFFFFF" uuid="f3a5462f-5f5d-4e79-8eff-de1119cb760d"/>
+                               width="305" height="20" backcolor="#FFFFFF" uuid="f3a5462f-5f5d-4e79-8eff-de1119cb760d">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
                 <box>
                     <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
                     <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -246,12 +373,11 @@
                 <textElement textAlignment="Left" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression>
-                    <![CDATA["Petroleum products, fuel, electricity and other sources of energy"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{cpvName}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="392" y="0" width="82"
-                               height="30" backcolor="#FFFFFF" uuid="fb05f766-4d8d-468f-aa13-040fe9551a19"/>
+                               height="20" backcolor="#FFFFFF" uuid="fb05f766-4d8d-468f-aa13-040fe9551a19"/>
                 <box>
                     <topPen lineWidth="1.0"/>
                     <leftPen lineWidth="1.0"/>
@@ -261,25 +387,25 @@
                 <textElement textAlignment="Center" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA["2281/3210\n6541030"]]></textFieldExpression>
+                <textFieldExpression><![CDATA["2281/3210\n"+$F{kpkvk}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="474" y="0" width="82"
-                               height="30" backcolor="#FFFFFF" uuid="345524fe-075d-4c3a-aebc-5972459507ac"/>
+                               height="20" backcolor="#FFFFFF" uuid="345524fe-075d-4c3a-aebc-5972459507ac"/>
                 <box>
                     <topPen lineWidth="1.0"/>
                     <leftPen lineWidth="1.0"/>
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Top">
+                <textElement textAlignment="Right" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA["1 000 000,00"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="556" y="0" width="82"
-                               height="30" backcolor="#FFFFFF" uuid="ca902fc7-a58f-4f31-ae34-589723a5bb3e"/>
+                               height="20" backcolor="#FFFFFF" uuid="ca902fc7-a58f-4f31-ae34-589723a5bb3e"/>
                 <box>
                     <topPen lineWidth="1.0"/>
                     <leftPen lineWidth="1.0"/>
@@ -289,11 +415,11 @@
                 <textElement textAlignment="Center" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA["Without tender"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{procurementProcedure}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="638" y="0" width="82"
-                               height="30" backcolor="#FFFFFF" uuid="6984e5c1-c62c-4bdb-82a9-f09520c36953"/>
+                               height="20" backcolor="#FFFFFF" uuid="6984e5c1-c62c-4bdb-82a9-f09520c36953"/>
                 <box>
                     <topPen lineWidth="1.0"/>
                     <leftPen lineWidth="1.0"/>
@@ -303,12 +429,13 @@
                 <textElement textAlignment="Center" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
-                <textFieldExpression><![CDATA["Whole Year"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true">
                 <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="0"
-                               width="86" height="30" backcolor="#FFFFFF" uuid="5ce22c85-03f8-4298-a676-3a05c5a24066">
+                               width="86" height="20" backcolor="#FFFFFF" uuid="5ce22c85-03f8-4298-a676-3a05c5a24066">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                 </reportElement>
                 <box>
                     <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -317,13 +444,13 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font fontName="DejaVu Sans" size="12" isBold="true"/>
+                    <font size="12" isBold="true"/>
                 </textElement>
-                <textFieldExpression><![CDATA["09120000-9"]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{cpvNumber}]]></textFieldExpression>
             </textField>
             <textField isStretchWithOverflow="true" isBlankWhenNull="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="720" y="0" width="82"
-                               height="30" backcolor="#FFFFFF" uuid="deec1436-7cc1-4b37-b83a-ead7a24cdb32"/>
+                               height="20" backcolor="#FFFFFF" uuid="deec1436-7cc1-4b37-b83a-ead7a24cdb32"/>
                 <box>
                     <topPen lineWidth="1.0"/>
                     <leftPen lineWidth="1.0"/>
@@ -333,43 +460,14 @@
                 <textElement textAlignment="Center" verticalAlignment="Top">
                     <font size="12"/>
                 </textElement>
+                <textFieldExpression><![CDATA[$F{notation}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
-    <columnFooter>
-        <band height="40">
-            <textField>
-                <reportElement x="0" y="0" width="474" height="20" uuid="f42687e2-8829-4235-a6e5-6aeeef867ae6">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$R{cpvAmountReport.footerReamrk}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="0" y="20" width="474" height="20" uuid="e5a0b515-b933-456d-80be-8734bacaef5f">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression>
-                    <![CDATA[$R{cpvAmountReport.footerReamrk2} + " 24.01.2017 року № 32"]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="480" y="0" width="322" height="20" uuid="286d9f9b-e971-496e-b721-852de0db8cbe"/>
-                <textElement textAlignment="Right" verticalAlignment="Middle">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$R{cpvAmountReport.total} + " 1 000 000,00 uah"]]></textFieldExpression>
-            </textField>
-        </band>
-    </columnFooter>
     <pageFooter>
-        <band height="30">
+        <band height="20">
             <textField>
-                <reportElement positionType="Float" x="600" y="10" width="161" height="20"
+                <reportElement positionType="Float" x="600" y="0" width="161" height="20"
                                uuid="3d48e9f2-ca15-4d42-8625-00290fa47b25">
                     <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
                     <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -381,83 +479,11 @@
                 <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
             <textField evaluationTime="Report">
-                <reportElement x="761" y="10" width="41" height="20" uuid="51bcbc4e-f7f7-4945-8b6c-a606a79db1d9">
+                <reportElement x="761" y="0" width="41" height="20" uuid="51bcbc4e-f7f7-4945-8b6c-a606a79db1d9">
                     <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                 </reportElement>
                 <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
         </band>
     </pageFooter>
-    <lastPageFooter>
-        <band height="150">
-            <textField>
-                <reportElement x="420" y="50" width="160" height="20" uuid="2dddc8cb-2320-448d-8235-6d14207fff84"/>
-                <textElement textAlignment="Right">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Diordiev D.I."]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="87" y="90" width="232" height="20" uuid="ccfd0e1e-08d1-4456-9085-3291f1998a73">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="87" y="50" width="232" height="20" uuid="6856185e-bc87-494c-be86-2f69a2a03d8c">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$R{role.headOfTenderCommittee}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="628" y="90" width="103" height="39" uuid="4ab5db68-52f7-4868-9cff-83de483eaf24"/>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression>
-                    <![CDATA["____________\n("+$R{cpvAmountReport.signature}+")"]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="628" y="50" width="103" height="40" uuid="3aa4dfbd-b122-41bf-9b76-375d7bb0ed1d"/>
-                <textElement>
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression>
-                    <![CDATA["____________\n("+$R{cpvAmountReport.signature}+") "+$R{cpvAmountReport.stamp}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="420" y="90" width="160" height="20" uuid="10fdc40d-7b22-4302-ab09-a7d659672ddb">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textElement textAlignment="Right">
-                    <font size="12"/>
-                </textElement>
-                <textFieldExpression><![CDATA["Naumenko L.Je."]]></textFieldExpression>
-            </textField>
-            <textField evaluationTime="Report">
-                <reportElement x="761" y="130" width="41" height="20" uuid="05718349-226e-4804-ac6a-1084ca23b449">
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement positionType="Float" x="600" y="130" width="161" height="20"
-                               uuid="b547e121-7ed3-455b-a88f-261119eb2078">
-                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-                </reportElement>
-                <textElement textAlignment="Right">
-                    <font size="10"/>
-                </textElement>
-                <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-            </textField>
-        </band>
-    </lastPageFooter>
 </jasperReport>

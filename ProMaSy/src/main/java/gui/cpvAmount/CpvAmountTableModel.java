@@ -1,7 +1,7 @@
 package gui.cpvAmount;
 
 import gui.commons.Labels;
-import model.models.CpvAmountModel;
+import model.models.report.CpvAmountReportModel;
 
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
@@ -12,16 +12,19 @@ import java.util.List;
  */
 public class CpvAmountTableModel extends AbstractTableModel {
 
-    private List<CpvAmountModel> db;
+    private List<CpvAmountReportModel> db;
 
     private String[] colNames = {Labels.getProperty("cpv"),
             Labels.getProperty("bidType"),
-            Labels.getProperty("totalPrice2")};
+            Labels.getProperty("totalPrice2"),
+            Labels.getProperty("cpvAmountReport.col4Title").toLowerCase(),
+            Labels.getProperty("cpvAmountReport.col5Title").toLowerCase(),
+            Labels.getProperty("cpvAmountReport.col6Title").toLowerCase()};
 
     public CpvAmountTableModel() {
     }
 
-    public void setData(List<CpvAmountModel> db) {
+    public void setData(List<CpvAmountReportModel> db) {
         this.db = db;
     }
 
@@ -37,19 +40,25 @@ public class CpvAmountTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 6;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        CpvAmountModel model = db.get(rowIndex);
+        CpvAmountReportModel model = db.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return model.getCpv().getCpvId() + " " + model.getCpv().getCpvUkr();
+                return model.getCpvNumber() + " " + model.getCpvName();
             case 1:
-                return model.getType().getBidTypeName();
+                return model.getBidType();
             case 2:
-                return model.getTotalAmount();
+                return model.getTotalPrice();
+            case 3:
+                return model.getProcurementProcedure();
+            case 4:
+                return model.getStartDate();
+            case 5:
+                return model.getNotation();
             default:
                 return model;
         }
@@ -64,8 +73,40 @@ public class CpvAmountTableModel extends AbstractTableModel {
                 return String.class;
             case 2:
                 return BigDecimal.class;
+            case 3:
+                return String.class;
+            case 4:
+                return String.class;
+            case 5:
+                return String.class;
             default:
-                return CpvAmountModel.class;
+                return CpvAmountReportModel.class;
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex > 2;
+    }
+
+    @Override
+    public void setValueAt(Object object, int rowIndex, int columnIndex) {
+        CpvAmountReportModel model = db.get(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                return;
+            case 1:
+                return;
+            case 2:
+                return;
+            case 3:
+                model.setProcurementProcedure(object.toString());
+                return;
+            case 4:
+                model.setStartDate((String) object);
+                return;
+            case 5:
+                model.setNotation((String) object);
         }
     }
 }

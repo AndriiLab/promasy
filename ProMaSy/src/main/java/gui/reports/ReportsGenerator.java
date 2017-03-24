@@ -1,9 +1,8 @@
-package gui.bids.reports;
+package gui.reports;
 
 import controller.Logger;
 import gui.MainFrame;
 import gui.commons.Labels;
-import model.models.report.BidsReportModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -24,14 +23,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class compiles .jasper file and loads it into {@link JasperViewer}
+ * Loader for Jasper Reports
  */
-public class BidsReport {
+public class ReportsGenerator {
+    public static final String BIDS_REPORT = "reports/Bids_Report";
+    public static final String CPV_AMOUNT_REPORT = "reports/CPV_Amount_Report";
 
-    public BidsReport(Map<String, Object> parameters, List<BidsReportModel> bidsList, MainFrame parent) {
+    public ReportsGenerator(String reportPath, Map<String, Object> parameters, List modelsList, MainFrame parent) {
         JasperPrint jasperPrint;
         try {
-            jasperPrint = JasperFillManager.fillReport("reports/Bids_Report.jasper", parameters, new JRBeanCollectionDataSource(bidsList));
+            jasperPrint = JasperFillManager.fillReport(reportPath + ".jasper", parameters, new JRBeanCollectionDataSource(modelsList));
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             EventQueue.invokeLater(() -> {
                 jasperViewer.setVisible(true);
@@ -40,10 +41,10 @@ public class BidsReport {
                 jasperViewer.repaint();
             });
         } catch (JRException e) {
-            if (e.getMessage().startsWith("java.io.FileNotFoundException")){
+            if (e.getMessage().startsWith("java.io.FileNotFoundException")) {
                 Logger.warnEvent(e);
                 //Compile report (.jrxml) to .jasper if it is not compiled
-                compileReport(parent);
+                compileReport(reportPath, parent);
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupComplete"), Labels.getProperty("printInfo"), JOptionPane.INFORMATION_MESSAGE);
             } else {
                 Logger.errorEvent(parent, Labels.getProperty("printError"), e);
@@ -53,9 +54,9 @@ public class BidsReport {
         }
     }
 
-    private static void compileReport(MainFrame parent) {
-        Logger.infoEvent(parent, "Compiling new report file");
-        File jrxmlFile = new File("reports/Bids_Report.jrxml");
+    private static void compileReport(String reportPath, MainFrame parent) {
+        Logger.infoEvent(parent, "Compiling new report file for " + reportPath);
+        File jrxmlFile = new File(reportPath + ".jrxml");
         try {
             JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
         } catch (JRException e) {
@@ -63,22 +64,21 @@ public class BidsReport {
         }
     }
 
-    public static void compileReportFileIfNew(MainFrame parent) throws IOException {
-        Path jasperFile = FileSystems.getDefault().getPath("reports", "Bids_Report.jasper");
+    public static void compileReportFileIfNew(String reportPath, MainFrame parent) throws IOException {
+        Path jasperFile = FileSystems.getDefault().getPath(reportPath + ".jasper");
         try {
             BasicFileAttributes jasperAttr = Files.readAttributes(jasperFile, BasicFileAttributes.class);
-            Path jrxmlFile = FileSystems.getDefault().getPath("reports", "Bids_Report.jrxml");
+            Path jrxmlFile = FileSystems.getDefault().getPath(reportPath + ".jrxml");
             BasicFileAttributes jrxmlAttr = Files.readAttributes(jrxmlFile, BasicFileAttributes.class);
             if (jasperAttr.lastModifiedTime().compareTo(jrxmlAttr.lastModifiedTime()) == -1) {
-                Logger.infoEvent(parent, "Report files are out-of-date");
-                compileReport(parent);
+                Logger.infoEvent(parent, "Outdated report file: " + reportPath + ".jrxml");
+                compileReport(reportPath, parent);
             } else {
-                Logger.infoEvent(parent, "Report files are up–to–date");
+                Logger.infoEvent(parent, "Report " + reportPath + ".jrxml is up–to–date");
             }
         } catch (NoSuchFileException ex) {
-            Logger.infoEvent(parent, "Report file doesn't exist");
-            compileReport(parent);
+            Logger.infoEvent(parent, "Report file doesn't exist " + reportPath);
+            compileReport(reportPath, parent);
         }
-
     }
 }
