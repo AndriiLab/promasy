@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import controller.Logger;
 import gui.Utils;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
@@ -198,7 +199,7 @@ public class CreateFinanceDialog extends JDialog {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("startDateAfterEndDate"),
                     Labels.getProperty("enteredDateError"),
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             endDatePicker.requestFocusInWindow();
             return false;
         }

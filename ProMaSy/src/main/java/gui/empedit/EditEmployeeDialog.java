@@ -1,6 +1,7 @@
 package gui.empedit;
 
 import gui.MainFrame;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import model.models.EmployeeModel;
@@ -31,8 +32,10 @@ public class EditEmployeeDialog extends JDialog {
 
         CEDButtons ced = new CEDButtons(Labels.getProperty("user_ced"));
         createEmployeeButton = ced.getCreateButton();
+        createEmployeeButton.setIcon(Icons.NEW_USER_GREEN);
         editEmployeeButton = ced.getEditButton();
         deleteEmployeeButton = ced.getDeleteButton();
+        deleteEmployeeButton.setIcon(Icons.DELETE_USER_RED);
         editEmployeeButton.setEnabled(false);
         deleteEmployeeButton.setEnabled(false);
 

@@ -123,7 +123,7 @@ public class LoginDialog extends JDialog {
                 @Override
                 public void newUserCreatedEvent() {
                     JOptionPane.showMessageDialog(parent, Labels.getProperty("youCanLoginAfterRestart"),
-                            Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE);
+                            Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
                     if (loginListener != null) {
                         loginListener.loginCancelled();
                     }
@@ -144,7 +144,7 @@ public class LoginDialog extends JDialog {
                     parent.getCreateEmployeeDialog().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(parent, Labels.getProperty("registrationClosed"),
-                            Labels.getProperty("cannotCreateNewUser"), JOptionPane.ERROR_MESSAGE);
+                            Labels.getProperty("cannotCreateNewUser"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 }
 
             }
@@ -168,6 +168,6 @@ public class LoginDialog extends JDialog {
 
     private void showLoginError() {
         JOptionPane.showMessageDialog(parent, Labels.getProperty("noCredentialsMessage"),
-                Labels.getProperty("noCredentialsTitle"), JOptionPane.ERROR_MESSAGE);
+                Labels.getProperty("noCredentialsTitle"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 }

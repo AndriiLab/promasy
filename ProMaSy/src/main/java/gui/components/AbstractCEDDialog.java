@@ -119,7 +119,6 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            //TODO handle exteption
             e.printStackTrace();
             return null;
         }

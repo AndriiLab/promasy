@@ -257,7 +257,7 @@ public class MainFrame extends JFrame {
             settingsMenu.addSeparator();
             settingsMenu.add(setCurrentVersionAsMinimum);
             setCurrentVersionAsMinimum.addActionListener(e -> {
-                int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION);
+                int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
                 if (action == JOptionPane.OK_OPTION && listener != null) {
                     listener.setMinimumVersionEventOccurred();
                 }
@@ -307,7 +307,7 @@ public class MainFrame extends JFrame {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
                 showReportParametersDialog();
             } else {
-                JOptionPane.showMessageDialog(this, Labels.getProperty("printSupportedOnlyInBids"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, Labels.getProperty("printSupportedOnlyInBids"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
         } else {
             showReportParametersDialog();

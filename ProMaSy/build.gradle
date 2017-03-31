@@ -6,6 +6,18 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+    }
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -15,7 +27,7 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    compile group: 'org.postgresql', name: 'postgresql', version: '9.4.1212'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
     compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.0'
@@ -33,19 +45,19 @@ dependencies {
     compile group: 'com.github.jiconfont', name: 'jiconfont-swing', version: '1.0.1'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-font_awesome
-    compile group: 'com.github.jiconfont', name: 'jiconfont-font_awesome', version: '4.5.0.3'
+    compile group: 'com.github.jiconfont', name: 'jiconfont-font_awesome', version: '4.7.0.0'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.6.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.9.Final'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0
-    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.6.Final'
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.9.Final'
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
+    compile 'org.hibernate:hibernate-jpamodelgen:5.2.9.Final'
 
     // https://mvnrepository.com/artifact/com.mchange/c3p0
     compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
-
-    // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
-    compile 'org.hibernate:hibernate-jpamodelgen:5.2.6.Final'
 
     // https://mvnrepository.com/artifact/log4j/log4j
     compile group: 'log4j', name: 'log4j', version: '1.2.17'

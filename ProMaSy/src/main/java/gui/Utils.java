@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
 import model.enums.BidType;
@@ -135,7 +136,7 @@ public class Utils {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberFormatException"),
                     Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
 
             jTextField.requestFocusInWindow();
             return null;
@@ -144,7 +145,7 @@ public class Utils {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberCannotBeLessZero"),
                     Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.requestFocusInWindow();
             return null;
         }
@@ -159,12 +160,12 @@ public class Utils {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
                     Labels.getProperty("fieldErr"),
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.requestFocusInWindow();
             return null;
         } else if (isCreateMode && targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
             BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
-            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.setText(unassignedAmount.toString());
             jTextField.requestFocusInWindow();
             return null;

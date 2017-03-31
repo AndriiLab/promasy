@@ -9,6 +9,7 @@ import gui.Utils;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanelListener;
 import gui.bids.reports.ReportParametersDialogListener;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
 import gui.cpv.CpvReqEvent;
@@ -101,7 +102,7 @@ public class Controller {
                 } else {
                     // if login wasn't successful showing error dialog
                     JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("wrongCredentialsPlsCheck"),
-                            Labels.getProperty("loginError"), JOptionPane.ERROR_MESSAGE);
+                            Labels.getProperty("loginError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 }
             }
 
@@ -399,14 +400,14 @@ public class Controller {
                             Labels.withColon("newVersion") + dbVersion.get() + "\n" +
                             Labels.getProperty("askAdminAboutUpdate"),
                     Labels.getProperty("oldVersionOfApp"),
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             close();
         }
     }
 
     private void checkFirstRun() {
         if (isFirstRun()) {
-            int option = JOptionPane.showConfirmDialog(mainFrame, Labels.getProperty("firstRunLong"), Labels.getProperty("firstRun"), JOptionPane.YES_NO_CANCEL_OPTION);
+            int option = JOptionPane.showConfirmDialog(mainFrame, Labels.getProperty("firstRunLong"), Labels.getProperty("firstRun"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
             if (option == JOptionPane.OK_OPTION) {
                 createAdmin();
             } else if (option == JOptionPane.NO_OPTION) {
@@ -420,7 +421,7 @@ public class Controller {
             @Override
             public void newUserCreatedEvent() {
                 JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("youCanLoginAfterRestart"),
-                        Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE);
+                        Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
                 close();
             }
 
@@ -479,7 +480,7 @@ public class Controller {
         } catch (Exception e) {
             Logger.errorEvent(mainFrame, Labels.getProperty("noConnectionToDB"), e);
             JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
-                    Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE);
+                    Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             closeSplashScreen();
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
@@ -865,7 +866,7 @@ public class Controller {
     // but it calls only in this close() method (except close in login dialog)
     private void closeDialog() {
         int action = JOptionPane.showConfirmDialog(this.mainFrame, Labels.getProperty("doYouWantExit"),
-                Labels.getProperty("exitFromProgram"), JOptionPane.YES_NO_OPTION);
+                Labels.getProperty("exitFromProgram"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
         if (action == JOptionPane.YES_OPTION) {
             close();
         }

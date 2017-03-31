@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Logger;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import model.models.EmptyModel;
 
@@ -37,7 +38,7 @@ public class LoggerDialog extends JDialog {
         saveButton.addActionListener(e -> {
             try {
                 String filePath = saveLog(logPane.getText());
-                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
                 this.setVisible(false);
             } catch (IOException e1) {
                 Logger.errorEvent(parent, e1);

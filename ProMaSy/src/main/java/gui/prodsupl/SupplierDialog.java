@@ -1,6 +1,7 @@
 package gui.prodsupl;
 
 import gui.MainFrame;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.AbstractCEDDialog;
 import gui.components.PJComboBox;
@@ -75,7 +76,7 @@ public class SupplierDialog extends AbstractCEDDialog<SupplierModel, SupplierDia
             telField.requestFocusInWindow();
             return false;
         } else if (newSuplTel.length() > 20) {
-            JOptionPane.showMessageDialog(parent, Labels.getProperty("telephoneTooLong"), Labels.getProperty("wrongFormat"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(parent, Labels.getProperty("telephoneTooLong"), Labels.getProperty("wrongFormat"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             telField.requestFocusInWindow();
             return false;
         }

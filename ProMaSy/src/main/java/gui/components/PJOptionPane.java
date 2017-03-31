@@ -1,6 +1,7 @@
 package gui.components;
 
 import gui.MainFrame;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import model.enums.BidType;
 import model.models.EmptyModel;
@@ -18,7 +19,7 @@ public class PJOptionPane {
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("enterDataIntoField") + field,
                 Labels.getProperty("fieldCannotBeEmpty") + field,
-                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 
     public static int renameEntry(JFrame parent, String oldFieldName, String newFieldName) {
@@ -27,37 +28,37 @@ public class PJOptionPane {
                         "\n\t" + Labels.withColon("newName") + " \"" + newFieldName + "\"" +
                         "\n\t" + Labels.withColon("oldName") + " \"" + oldFieldName + "\"",
                 Labels.getProperty("confirmAction"),
-                JOptionPane.YES_NO_CANCEL_OPTION);
+                JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
     }
 
     public static boolean deleteEntry(JFrame parent, String propertyName, String entryName) {
-        return JOptionPane.showConfirmDialog(parent, Labels.withSpaceAfter("confirmDeleteLong") + propertyName + " '" + entryName + "'?", Labels.withSpaceAfter("delete") + propertyName, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        return JOptionPane.showConfirmDialog(parent, Labels.withSpaceAfter("confirmDeleteLong") + propertyName + " '" + entryName + "'?", Labels.withSpaceAfter("delete") + propertyName, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION) == JOptionPane.YES_OPTION;
     }
 
     public static void wrongFormat(JFrame parent, String fieldName, String hints) {
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("wrongFormat") + " \"" + fieldName + "\"\n" + Labels.getProperty("checkInput") + "\n" + hints,
                 Labels.getProperty("fieldErr"),
-                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 
     public static void criticalError(JFrame parent) {
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("criticalErrorHappened"),
                 Labels.getProperty("criticalError"),
-                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 
     public static void emptyModelSelected(JFrame parent, String name) {
         JOptionPane.showMessageDialog(parent,
                 Labels.withSpaceAfter("youDidNotChooseModel") + name,
                 Labels.getProperty("fieldErr"),
-                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 
     public static void insufficientFunds(MainFrame parent, BigDecimal financeLeft, BidType currentBid) {
         JOptionPane.showMessageDialog(parent,
                 Labels.withSpaceAfter("insufficientFundsMessage") + currentBid.toString() + ": " + financeLeft.toString() + Labels.withSpaceBefore("uah"),
-                Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE);
+                Labels.getProperty("insufficientFunds"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 }

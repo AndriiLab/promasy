@@ -28,6 +28,11 @@ public class Icons {
     public static final Icon SUPPLIER = IconFontSwing.buildIcon(FontAwesome.TRUCK, 15);
     public static final Icon PRODUCER = IconFontSwing.buildIcon(FontAwesome.INDUSTRY, 15);
     public static final Icon NEW_USER = IconFontSwing.buildIcon(FontAwesome.USER_PLUS, 15);
+    public static final Icon NEW_USER_GREEN = IconFontSwing.buildIcon(FontAwesome.USER_PLUS, 15, Colors.GREEN);
+    public static final Icon DELETE_USER_RED = IconFontSwing.buildIcon(FontAwesome.USER_TIMES, 15, Colors.RED);
     public static final Icon PASSWORD = IconFontSwing.buildIcon(FontAwesome.KEY, 15, Colors.GREEN);
+    public static final Icon ERROR = IconFontSwing.buildIcon(FontAwesome.EXCLAMATION_TRIANGLE, 30, Colors.RED);
+    public static final Icon QUESTION = IconFontSwing.buildIcon(FontAwesome.QUESTION_CIRCLE, 30, Colors.GREEN);
+    public static final Icon INFO = IconFontSwing.buildIcon(FontAwesome.INFO_CIRCLE, 30, Colors.GREEN);
 
 }

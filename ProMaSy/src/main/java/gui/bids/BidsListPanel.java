@@ -125,7 +125,7 @@ public class BidsListPanel extends JPanel {
                 parent.getCreateBidDialog().loadToDialog(selectedBidModel, false);
                 activateButtons(false);
             } else {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
             clearSelectedBidModels();
         });
@@ -136,7 +136,7 @@ public class BidsListPanel extends JPanel {
                 parent.getCreateBidDialog().loadToDialog(selectedBidModel, true);
                 activateButtons(false);
             } else {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
             clearSelectedBidModels();
         });
@@ -151,7 +151,7 @@ public class BidsListPanel extends JPanel {
                 }
                 activateButtons(false);
             } else {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
             clearSelectedBidModels();
         });
@@ -209,7 +209,7 @@ public class BidsListPanel extends JPanel {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 statusDialog.setVisible(true, selectedBidModel);
             } else {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
         });
 
@@ -437,7 +437,7 @@ public class BidsListPanel extends JPanel {
     public boolean isReadyForPrint() {
         if (bidsTable.getRowCount() < 1) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("emptyTableErrorExtended"),
-                    Labels.getProperty("emptyTableError"), JOptionPane.ERROR_MESSAGE);
+                    Labels.getProperty("emptyTableError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             return false;
         }
         return true;

@@ -246,7 +246,7 @@ public class CreateEmployeeDialog extends JDialog {
         // Generating new salt in case of creation of new user or password change for old user
         if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) || password.length > 0 || repeatPassword.length > 0) {
             if (!Arrays.equals(password, repeatPassword)) {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("passwordsDoNotMatch"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 repeatPasswordField.requestFocusInWindow();
                 return false;
             }
@@ -265,7 +265,7 @@ public class CreateEmployeeDialog extends JDialog {
                 currentEmployeeModel = new EmployeeModel(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
                 return true;
             } else if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && !isUniqueUser) {
-                JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 loginField.requestFocusInWindow();
                 return false;
             } else {
