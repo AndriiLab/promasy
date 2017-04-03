@@ -34,5 +34,8 @@ public class Icons {
     public static final Icon ERROR = IconFontSwing.buildIcon(FontAwesome.EXCLAMATION_TRIANGLE, 30, Colors.RED);
     public static final Icon QUESTION = IconFontSwing.buildIcon(FontAwesome.QUESTION_CIRCLE, 30, Colors.GREEN);
     public static final Icon INFO = IconFontSwing.buildIcon(FontAwesome.INFO_CIRCLE, 30, Colors.GREEN);
+    public static final Icon EXCEL_FILE = IconFontSwing.buildIcon(FontAwesome.FILE_EXCEL_O, 15, Colors.GREEN);
+    public static final Icon CALCULATOR = IconFontSwing.buildIcon(FontAwesome.CALCULATOR, 15, Colors.BLUE);
+    public static final Icon CLIPBOARD = IconFontSwing.buildIcon(FontAwesome.CLIPBOARD, 15);
 
 }

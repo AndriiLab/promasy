@@ -15,8 +15,8 @@ import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Dialog displays program log
@@ -71,7 +71,7 @@ public class LoggerDialog extends JDialog {
     }
 
     private static String saveLog(String log) throws IOException {
-        String fileName = "log_" + new SimpleDateFormat("yyyyMMdd-HHmmss").format(getSystemTime()) + ".txt";
+        String fileName = "log_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
         FileWriter fw = new FileWriter(fileName);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(log);
@@ -80,16 +80,12 @@ public class LoggerDialog extends JDialog {
         return fileName;
     }
 
-    private static Timestamp getSystemTime() {
-        return new Timestamp(System.currentTimeMillis());
-    }
-
     public void addToLog (String status, Color color) {
         StyledDocument doc = logPane.getStyledDocument();
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);
         try {
-            doc.insertString(doc.getLength(), getSystemTime() + ":\t" + status + "\n", style);
+            doc.insertString(doc.getLength(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ":\t" + status + "\n", style);
         } catch (BadLocationException e) {
             Logger.errorEvent(null, e);
         }

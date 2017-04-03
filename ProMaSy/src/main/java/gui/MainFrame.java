@@ -15,6 +15,7 @@ import gui.bids.reports.ReportParametersDialogListener;
 import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
+import gui.components.CalculatorDialog;
 import gui.conset.ConSetDialog;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvDialog;
@@ -72,6 +73,7 @@ public class MainFrame extends JFrame {
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
+    private CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
     private DrawSplashScreen splashScreen;
 
@@ -97,6 +99,7 @@ public class MainFrame extends JFrame {
         conSettDialog = new ConSetDialog(this);
         loggerDialog = new LoggerDialog(this);
         statusPanel = new StatusPanel(this);
+        calculatorDialog = new CalculatorDialog(this);
 
         //initializing other common windows
         createBidDialog = new CreateBidDialog(this);
@@ -184,7 +187,22 @@ public class MainFrame extends JFrame {
             }
         });
 
-        toolbar.setToolbarListener(this::printEventOccurred);
+        toolbar.setToolbarListener(new ToolbarListener() {
+            @Override
+            public void printEventOccurred() {
+                onPrintClick();
+            }
+
+            @Override
+            public void showCpvSearchDialog() {
+                cpvDialog.showSearchOnly();
+            }
+
+            @Override
+            public void showCalculator() {
+                calculatorDialog.setVisible(true);
+            }
+        });
 
         //hiding login dialog and showing mainframe
         loginDialog.setVisible(false);
@@ -270,7 +288,7 @@ public class MainFrame extends JFrame {
 
             conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
         }
-        printItem.addActionListener(e -> printEventOccurred());
+        printItem.addActionListener(e -> onPrintClick());
 
         exitItem.addActionListener(e -> {
             if (listener != null) {
@@ -302,7 +320,7 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    private void printEventOccurred() {
+    private void onPrintClick() {
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
                 showReportParametersDialog();

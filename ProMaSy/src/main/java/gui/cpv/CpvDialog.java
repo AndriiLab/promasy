@@ -171,8 +171,14 @@ public class CpvDialog extends JDialog {
         if (visible) {
             makeCpvQuery(EmptyModel.STRING, true);
         } else if (!visible) {
-            searchField.setText(null);
+            searchField.setText(EmptyModel.STRING);
+            selectButton.setVisible(true);
         }
         super.setVisible(visible);
+    }
+
+    public void showSearchOnly() {
+        selectButton.setVisible(false);
+        setVisible(true);
     }
 }

@@ -4,34 +4,54 @@ import gui.commons.Icons;
 import gui.commons.Labels;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
-public class Toolbar extends JToolBar implements ActionListener {
+public class Toolbar extends JToolBar {
 
-	private JButton printBtn;
 	private ToolbarListener btnListener;
 
 	public Toolbar() {
 		setFloatable(false);
-		printBtn = new JButton();
-		printBtn.setToolTipText(Labels.getProperty("print"));
-        printBtn.setIcon(Icons.PRINT);
+        JButton printBtn = new JButton(Icons.PRINT);
+        printBtn.setToolTipText(Labels.getProperty("print"));
+
+        JButton exportToTableFileButton = new JButton(Icons.EXCEL_FILE);
+        exportToTableFileButton.setPreferredSize(new Dimension(25, 25));
+        exportToTableFileButton.setToolTipText(Labels.withThreeDots("exportToTableFile"));
+
+        JButton cpvBtn = new JButton("CPV");
+        cpvBtn.setToolTipText(Labels.withThreeDots("cpvPanelTab"));
+
+        JButton calcButton = new JButton(Icons.CALCULATOR);
+        calcButton.setToolTipText(Labels.withThreeDots("calculator"));
+
         add(printBtn);
-        printBtn.addActionListener(this);
-	}
+        add(exportToTableFileButton);
+        addSeparator();
+        add(cpvBtn);
+        add(calcButton);
+
+
+        printBtn.addActionListener(e -> {
+            if (btnListener != null) {
+                btnListener.printEventOccurred();
+            }
+        });
+
+        cpvBtn.addActionListener(e -> {
+            if (btnListener != null) {
+                btnListener.showCpvSearchDialog();
+            }
+        });
+
+        calcButton.addActionListener(e -> {
+            if (btnListener != null) {
+                btnListener.showCalculator();
+            }
+        });
+    }
 
 	public void setToolbarListener(ToolbarListener listener) {
 		this.btnListener = listener;
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		JButton clicked = (JButton) e.getSource();
-
-        if (clicked.equals(printBtn) && btnListener != null) {
-            btnListener.printEventOccurred();
-        }
-
-	}
-
 }
