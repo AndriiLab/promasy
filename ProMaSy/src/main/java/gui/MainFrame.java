@@ -9,7 +9,7 @@ import gui.amunits.AmUnitsDialog;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanel;
 import gui.bids.BidsListPanelListener;
-import gui.bids.CreateBidDialog;
+import gui.bids.CreateBidPanel;
 import gui.bids.reports.ReportParametersDialog;
 import gui.bids.reports.ReportParametersDialogListener;
 import gui.commons.Colors;
@@ -26,8 +26,6 @@ import gui.empedit.CreateEmployeeDialog;
 import gui.empedit.CreateEmployeeDialogListener;
 import gui.empedit.EditEmployeeDialog;
 import gui.empedit.EditEmployeeDialogListener;
-import gui.finance.CreateDepartmentFinancesDialog;
-import gui.finance.CreateFinanceDialog;
 import gui.finance.FinancePanel;
 import gui.finance.FinancePanelListener;
 import gui.instedit.OrganizationDialog;
@@ -57,8 +55,6 @@ public class MainFrame extends JFrame {
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
     private CreateEmployeeDialog createEmployeeDialog;
-    private CreateFinanceDialog createFinanceDialog;
-    private CreateDepartmentFinancesDialog createDepartmentFinancesDialog;
     private InfoDialog infoDialog;
     private CpvDialog cpvDialog;
     private StatusPanel statusPanel;
@@ -69,7 +65,6 @@ public class MainFrame extends JFrame {
     private FinancePanel financePanel;
     private BidsListPanel bidsListPanel;
     private CpvAmountDialog cpvAmountDialog;
-    private CreateBidDialog createBidDialog;
     private LoggerDialog loggerDialog;
     private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
@@ -102,17 +97,14 @@ public class MainFrame extends JFrame {
         calculatorDialog = new CalculatorDialog(this);
 
         //initializing other common windows
-        createBidDialog = new CreateBidDialog(this);
+        bidsListPanel = new BidsListPanel(this);
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
         supplierDialog = new SupplierDialog(this);
         reasonsDialog = new ReasonsDialog(this);
         infoDialog = new InfoDialog(this);
         cpvDialog = new CpvDialog(this);
-        bidsListPanel = new BidsListPanel(this);
         cpvAmountDialog = new CpvAmountDialog(this);
-        createFinanceDialog = new CreateFinanceDialog(this);
-        createDepartmentFinancesDialog = new CreateDepartmentFinancesDialog(this);
         financePanel = new FinancePanel(this);
         editOrgDialog = new OrganizationDialog(this);
         editEmpDialog = new EditEmployeeDialog(this);
@@ -195,7 +187,7 @@ public class MainFrame extends JFrame {
 
             @Override
             public void showCpvSearchDialog() {
-                cpvDialog.showSearchOnly();
+                cpvDialog.setVisible(true);
             }
 
             @Override
@@ -483,7 +475,7 @@ public class MainFrame extends JFrame {
 
     public void setAmountUnitsModelList(List<AmountUnitsModel> amountUnitsModelList) {
         amUnitsDialog.setData(amountUnitsModelList);
-        createBidDialog.setAmUnitsBoxData(amountUnitsModelList);
+        bidsListPanel.getCreateBidPanel().setAmUnitsBoxData(amountUnitsModelList);
     }
 
     public void setInstituteModelList(List<InstituteModel> instituteModelList) {
@@ -492,7 +484,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setDepartmentModelList(List<DepartmentModel> departmentsList) {
-        createDepartmentFinancesDialog.setDepartmentBoxData(departmentsList);
+        financePanel.getCreateDepartmentFinancePanel().setDepartmentBoxData(departmentsList);
         bidsListPanel.setDepartmentBoxData(departmentsList);
         createEmployeeDialog.setDepData(departmentsList);
         editOrgDialog.setDepData(departmentsList);
@@ -500,7 +492,7 @@ public class MainFrame extends JFrame {
 
     public void setSubdepartmentModelList(List<SubdepartmentModel> subdepartmentModelList) {
         createEmployeeDialog.setSubdepData(subdepartmentModelList);
-        createDepartmentFinancesDialog.setSubdepartmentBoxData(subdepartmentModelList);
+        financePanel.getCreateDepartmentFinancePanel().setSubdepartmentBoxData(subdepartmentModelList);
         editOrgDialog.setSubdepData(subdepartmentModelList);
     }
 
@@ -510,16 +502,16 @@ public class MainFrame extends JFrame {
 
     public void setProducerModelList(List<ProducerModel> producerModelList) {
         producerDialog.setData(producerModelList);
-        createBidDialog.setProducerBoxData(producerModelList);
+        bidsListPanel.getCreateBidPanel().setProducerBoxData(producerModelList);
     }
 
     public void setSupplierModelList(List<SupplierModel> supplierModelList) {
         supplierDialog.setData(supplierModelList);
-        createBidDialog.setSupplierBoxData(supplierModelList);
+        bidsListPanel.getCreateBidPanel().setSupplierBoxData(supplierModelList);
     }
 
     public void setReasonsModelList(List<ReasonForSupplierChoiceModel> reasonsModelList) {
-        createBidDialog.setReasonForSupplierChoiceBoxData(reasonsModelList);
+        bidsListPanel.getCreateBidPanel().setReasonForSupplierChoiceBoxData(reasonsModelList);
         reasonsDialog.setData(reasonsModelList);
     }
 
@@ -530,7 +522,7 @@ public class MainFrame extends JFrame {
     public void setFinanceDepartmentModelList(List<FinanceDepartmentModel> financeDepartmentModelList) {
         financePanel.setDepartmentFinanceTableData(financeDepartmentModelList);
         bidsListPanel.setFinanceDepartmentBoxData(financeDepartmentModelList);
-        createBidDialog.setFinanceDepartmentBoxData(financeDepartmentModelList);
+        bidsListPanel.getCreateBidPanel().setFinanceDepartmentBoxData(financeDepartmentModelList);
     }
 
     public void setCpvAmountDialogList(List<CpvAmountModel> cpvAmounts) {
@@ -542,27 +534,19 @@ public class MainFrame extends JFrame {
     }
 
     public void setCpvModel(CPVModel cpvModel) {
-        this.createBidDialog.setSelectedCPV(cpvModel);
+        this.bidsListPanel.getCreateBidPanel().setSelectedCPV(cpvModel);
     }
 
     public CreateEmployeeDialog getCreateEmployeeDialog() {
         return createEmployeeDialog;
     }
 
-    public CreateBidDialog getCreateBidDialog() {
-        return createBidDialog;
+    public CreateBidPanel getCreateBidPanel() {
+        return bidsListPanel.getCreateBidPanel();
     }
 
     public OrganizationDialog getEditOrgDialog() {
         return editOrgDialog;
-    }
-
-    public CreateFinanceDialog getCreateFinanceDialog() {
-        return createFinanceDialog;
-    }
-
-    public CreateDepartmentFinancesDialog getCreateDepartmentFinancesDialog() {
-        return createDepartmentFinancesDialog;
     }
 
     public DrawSplashScreen getSplashScreen() {

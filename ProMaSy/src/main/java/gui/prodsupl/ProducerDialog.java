@@ -11,6 +11,6 @@ import model.models.ProducerModel;
 public class ProducerDialog extends AbstractCEDDialog<ProducerModel, ProducerDialogListener> {
 
     public ProducerDialog(MainFrame parent) {
-        super(ProducerModel.class, parent, Labels.getProperty("prodDialogSuper"), Labels.getProperty("producer_ced"), parent.getCreateBidDialog().getProducerBox());
+        super(ProducerModel.class, parent, Labels.getProperty("prodDialogSuper"), Labels.getProperty("producer_ced"), parent.getCreateBidPanel().getProducerBox());
     }
 }

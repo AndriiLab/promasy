@@ -1,7 +1,6 @@
 package gui.components;
 
 import gui.MainFrame;
-import gui.Utils;
 import gui.commons.Labels;
 import model.models.AbstractModel;
 import model.models.EmptyModel;
@@ -211,9 +210,12 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
+        Dimension btnDim = new Dimension(110, 25);
+        applyButton.setPreferredSize(btnDim);
+        closeButton.setPreferredSize(btnDim);
+
         buttonsPanel.add(applyButton);
         buttonsPanel.add(closeButton);
-        Utils.setPreferredButtonSizes(applyButton, closeButton);
 
         setLayout(new BorderLayout());
         add(prodPanel, BorderLayout.CENTER);
@@ -225,7 +227,7 @@ public abstract class AbstractCEDDialog<T extends AbstractModel, U extends Abstr
         if (visible && listener != null) {
             listener.getAllEntries();
         }
-        if (parent.getCreateBidDialog().isVisible()) {
+        if (parent.getCreateBidPanel().isVisible()) {
             applyButton.setVisible(visible);
             applyButton.getParent().revalidate();
         } else if (visible) {

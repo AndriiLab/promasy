@@ -3,9 +3,9 @@ package gui.finance;
 import model.models.FinanceDepartmentModel;
 
 /**
- * Listener for {@link CreateDepartmentFinancesDialog}
+ * Listener for {@link CreateDepartmentFinancePanel}
  */
-public interface FinanceDepartmentDialogListener {
+public interface CreateDepartmentFinancePanelListener {
     void persistModelEventOccurred(FinanceDepartmentModel model);
 
     void loadDepartments();

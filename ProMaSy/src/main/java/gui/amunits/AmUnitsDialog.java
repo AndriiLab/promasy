@@ -12,6 +12,6 @@ import model.models.AmountUnitsModel;
 public class AmUnitsDialog extends AbstractCEDDialog<AmountUnitsModel, AmUnitsDialogListener> {
 
     public AmUnitsDialog(MainFrame parent) {
-        super(AmountUnitsModel.class, parent, Labels.getProperty("amUnitsDialogSuper"), Labels.getProperty("amUnit_ced"), parent.getCreateBidDialog().getAmUnitsBox());
+        super(AmountUnitsModel.class, parent, Labels.getProperty("amUnitsDialogSuper"), Labels.getProperty("amUnit_ced"), parent.getCreateBidPanel().getAmUnitsBox());
     }
 }

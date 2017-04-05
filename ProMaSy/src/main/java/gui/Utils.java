@@ -10,7 +10,6 @@ import model.models.FinanceModel;
 
 import javax.swing.*;
 import javax.xml.bind.DatatypeConverter;
-import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -20,24 +19,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class Utils {
-    /**
-     * Optimizes sizes of buttons
-     * If button1 larger than button2 it sets size of button1 to button2 and vice versa
-     *
-     * @param button1 {@link JButton}
-     * @param button2 {@link JButton}
-     */
-
-    public static void setPreferredButtonSizes(JButton button1, JButton button2) {
-        Dimension button1Size = button1.getPreferredSize();
-        Dimension button2Size = button2.getPreferredSize();
-        if (button1Size.getWidth() > button2Size.getWidth()) {
-            button2.setPreferredSize(button1Size);
-        } else if (button1Size.getWidth() < button2Size.getWidth()) {
-            button1.setPreferredSize(button2Size);
-        }
-    }
-
     /**
      * Function determines row with searchObject in given table
      *

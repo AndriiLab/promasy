@@ -39,9 +39,18 @@ public class FinancePanel extends JPanel {
 
     private FinanceModel selectedFinanceModel;
     private FinanceDepartmentModel selectedDepFinModel;
+    private CreateFinancePanel createFinancePanel;
+    private CreateDepartmentFinancePanel createDepartmentFinancePanel;
+    private JSplitPane financeSplitPane;
+    private JSplitPane departmentFinanceSplitPane;
     private boolean useUserDepartment;
 
     public FinancePanel(MainFrame parent) {
+        createFinancePanel = new CreateFinancePanel(parent);
+        createFinancePanel.setVisible(false);
+
+        createDepartmentFinancePanel = new CreateDepartmentFinancePanel(parent);
+        createDepartmentFinancePanel.setVisible(false);
 
         selectedFinanceModel = EmptyModel.FINANCE;
         useUserDepartment = false;
@@ -112,11 +121,19 @@ public class FinancePanel extends JPanel {
 
         createLayout();
 
-        createOrderButton.addActionListener(e -> parent.getCreateFinanceDialog().setVisible(true));
+        int finDividerLocation = 310;
+
+        createOrderButton.addActionListener(e -> {
+            createFinancePanel.clear();
+            createFinancePanel.setVisible(true);
+            financeSplitPane.setDividerLocation(finDividerLocation);
+        });
 
         editOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(EmptyModel.FINANCE)) {
-                parent.getCreateFinanceDialog().setFinanceModel(selectedFinanceModel);
+                createFinancePanel.clear();
+                createFinancePanel.setFinanceModel(selectedFinanceModel);
+                financeSplitPane.setDividerLocation(finDividerLocation);
             }
         });
 
@@ -129,13 +146,13 @@ public class FinancePanel extends JPanel {
             }
         });
 
-        parent.getCreateFinanceDialog().setFinanceDialogListener(model -> {
+        createFinancePanel.setFinanceDialogListener(model -> {
             if (listener != null) {
                 listener.persistModelEventOccurred(model);
             }
         });
 
-        parent.getCreateDepartmentFinancesDialog().setListener(new FinanceDepartmentDialogListener() {
+        createDepartmentFinancePanel.setListener(new CreateDepartmentFinancePanelListener() {
             @Override
             public void persistModelEventOccurred(FinanceDepartmentModel model) {
                 int selectedFinanceRow = Utils.getRowWithObject(financeTable, 0, selectedFinanceModel);
@@ -156,19 +173,23 @@ public class FinancePanel extends JPanel {
             }
         });
 
+        int depDividerLocation = 350;
+
         createDepOrderButton.addActionListener(e -> {
             if (selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                 PJOptionPane.emptyField(parent, Labels.getProperty("finance"));
             } else {
-                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
+                createDepartmentFinancePanel.clear();
+                createDepartmentFinancePanel.setVisible(selectedFinanceModel, true);
+                departmentFinanceSplitPane.setDividerLocation(depDividerLocation);
             }
         });
 
         editDepOrderButton.addActionListener(e -> {
-            if (selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
-                parent.getCreateDepartmentFinancesDialog().setVisible(selectedFinanceModel, true);
-            } else {
-                parent.getCreateDepartmentFinancesDialog().editDepartmentModel(selectedDepFinModel);
+            if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
+                createDepartmentFinancePanel.clear();
+                createDepartmentFinancePanel.editDepartmentModel(selectedDepFinModel);
+                departmentFinanceSplitPane.setDividerLocation(depDividerLocation);
                 selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
@@ -233,6 +254,10 @@ public class FinancePanel extends JPanel {
         }
     }
 
+    public CreateDepartmentFinancePanel getCreateDepartmentFinancePanel() {
+        return createDepartmentFinancePanel;
+    }
+
     private void createLayout() {
         JPanel financePanel = new JPanel();
         JPanel depFinancePanel = new JPanel();
@@ -257,9 +282,14 @@ public class FinancePanel extends JPanel {
         depFinancePanel.add(addDepOrderButtonPanel, BorderLayout.NORTH);
         depFinancePanel.add(new JScrollPane(depFinanceTable), BorderLayout.CENTER);
 
+        financeSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createFinancePanel, financePanel);
+        financeSplitPane.setEnabled(false);
+
+        departmentFinanceSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createDepartmentFinancePanel, depFinancePanel);
+        departmentFinanceSplitPane.setEnabled(false);
+
         setLayout(new BorderLayout());
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, financePanel, depFinancePanel);
-        splitPane.setResizeWeight(0.65);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, financeSplitPane, departmentFinanceSplitPane);
         splitPane.setEnabled(false);
         add(splitPane, BorderLayout.CENTER);
     }

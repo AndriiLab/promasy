@@ -9,6 +9,7 @@ import gui.Utils;
 import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
+import gui.components.CEDButtons;
 import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
 import model.enums.BidType;
@@ -16,12 +17,10 @@ import model.enums.Status;
 import model.models.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -29,9 +28,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Dialog for creation of new bids. Associated with {@link BidsListPanel}
+ * Panel for data about new bids. Associated with {@link BidsListPanel}
  */
-public class CreateBidDialog extends JDialog {
+public class CreateBidPanel extends JPanel {
 
     private PJComboBox<DepartmentModel> departmentBox;
     private PJComboBox<SubdepartmentModel> subdepartmentBox;
@@ -48,6 +47,7 @@ public class CreateBidDialog extends JDialog {
     private JButton addReasonForSupplierChoiceButton;
     private JButton okButton;
     private JButton cancelButton;
+    private JButton closeButton;
     private JButton kekvEditButton;
     private JButton procDateAddButton;
     private JTextField catNumberField;
@@ -61,17 +61,12 @@ public class CreateBidDialog extends JDialog {
     private BidModel createdBidModel;
     private CPVModel selectedCPV;
     private JLabel totalPriceLabel;
-    private CreateBidDialogListener listener;
+    private CreateBidPanelListener listener;
     private MainFrame parent;
     private boolean isEditMode;
 
-    public CreateBidDialog(MainFrame parent) {
-        super(parent, Labels.getProperty("createBid"), true);
+    public CreateBidPanel(MainFrame parent) {
         this.parent = parent;
-        setSize(516, 541);
-        setResizable(false);
-        setLocationRelativeTo(parent);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
@@ -140,9 +135,10 @@ public class CreateBidDialog extends JDialog {
         searchCPVButton.setPreferredSize(buttonDim);
         searchCPVButton.setEnabled(true);
 
-        okButton = new JButton(Labels.getProperty("createBid"));
-
+        okButton = new JButton(Labels.getProperty("create"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
+
+        closeButton = CEDButtons.getCloseButton();
 
         catNumberField = new JTextField();
         catNumberField.setPreferredSize(preferredFieldDim);
@@ -258,7 +254,6 @@ public class CreateBidDialog extends JDialog {
             }
         });
 
-
         okButton.addActionListener(e -> {
                     if (checkFields() && listener != null) {
                         if (createdBidModel.getModelId() != 0L) {
@@ -267,20 +262,21 @@ public class CreateBidDialog extends JDialog {
                         FinanceDepartmentModel finDepModel = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
                         finDepModel.addBid(createdBidModel);
                         listener.persistModelEventOccurred(createdBidModel);
-                        clearFieldsAndSetTitle();
+                        clear();
+                        setVisible(false);
                     }
                 }
         );
 
-        cancelButton.addActionListener(e -> clearFieldsAndSetTitle());
-
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                clearFieldsAndSetTitle();
-            }
+        cancelButton.addActionListener(e -> {
+            clear();
+            setVisible(false);
         });
 
+        closeButton.addActionListener(e -> {
+            clear();
+            setVisible(false);
+        });
     }
 
     void setCurrentDepartment(DepartmentModel currentDepartment) {
@@ -307,23 +303,27 @@ public class CreateBidDialog extends JDialog {
         subdepartmentBox.setEnabled(state);
     }
 
-    private void clearFieldsAndSetTitle() {
-        setVisible(false);
-        departmentBox.setSelectedIndex(0);
-        financeDepartmentBox.setSelectedIndex(0);
-        producerBox.setSelectedIndex(0);
+    void clear() {
+        try {
+            departmentBox.setSelectedIndex(0);
+            financeDepartmentBox.setSelectedIndex(0);
+            producerBox.setSelectedIndex(0);
+            supplierBox.setSelectedIndex(0);
+            amUnitsBox.setSelectedIndex(0);
+        } catch (IllegalArgumentException ex) {
+            if (listener != null) {
+                listener.getAllData();
+            }
+        }
         cpvField.setText(EmptyModel.STRING);
         catNumberField.setText(EmptyModel.STRING);
         descriptionPane.setText(EmptyModel.STRING);
-        supplierBox.setSelectedIndex(0);
-        amUnitsBox.setSelectedIndex(0);
         amountField.setText(EmptyModel.STRING);
         oneUnitPriceField.setText(EmptyModel.STRING);
         kekvField.setText(EmptyModel.STRING);
         kekvField.setEnabled(false);
         calculateTotalPrice();
-        setTitle(Labels.getProperty("createBid"));
-        okButton.setText(Labels.getProperty("createBid"));
+        okButton.setText(Labels.getProperty("create"));
         isEditMode = false;
         procurementStartDatePicker.setEnabled(false);
         procurementStartDatePicker.clear();
@@ -545,7 +545,7 @@ public class CreateBidDialog extends JDialog {
         return reasonForSupplierChoiceBox;
     }
 
-    void setCreateBidDialogListener(CreateBidDialogListener listener) {
+    void setCreateBidDialogListener(CreateBidPanelListener listener) {
         this.listener = listener;
     }
 
@@ -580,8 +580,7 @@ public class CreateBidDialog extends JDialog {
         procurementStartDatePicker.setDate((procStartDate != null) ? procStartDate.toLocalDate() : null);
         if (isEditMode) {
             createdBidModel = model;
-            setTitle(Labels.getProperty("editBid"));
-            okButton.setText(Labels.getProperty("editBid"));
+            okButton.setText(Labels.getProperty("edit"));
         } else {
             createdBidModel = new BidModel();
         }
@@ -604,20 +603,12 @@ public class CreateBidDialog extends JDialog {
     }
 
     private void createLayout() {
-
-        int space = 5;
-        Border emptyBorder = BorderFactory.createEmptyBorder(space, space, space, space);
-        Border etchedBorder = BorderFactory.createEtchedBorder();
-        Border compoundBorder = BorderFactory.createCompoundBorder(emptyBorder, etchedBorder);
-
         Insets smallPadding = new Insets(1, 0, 1, 5);
         Insets mediumPadding = new Insets(10, 1, 1, 5);
 
-        // department and orders panel
-        JPanel depOrdersPanel = new JPanel();
-        depOrdersPanel.setBorder(compoundBorder);
-        depOrdersPanel.setLayout(new GridBagLayout());
-
+        JPanel createBidPanel = new JPanel();
+        createBidPanel.setBorder(new EtchedBorder());
+        createBidPanel.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
 
         ////First row/////
@@ -627,56 +618,59 @@ public class CreateBidDialog extends JDialog {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(new JLabel(Labels.withColon("department")), gc);
-
-        gc.gridx++;
-        gc.anchor = GridBagConstraints.WEST;
-        gc.insets = smallPadding;
-        depOrdersPanel.add(departmentBox, gc);
+        createBidPanel.add(new JLabel(Labels.withColon("department")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(new JLabel(Labels.withColon("finance")), gc);
-
+        createBidPanel.add(departmentBox, gc);
 
         gc.gridx++;
-        gc.anchor = GridBagConstraints.WEST;
-        gc.insets = smallPadding;
-        depOrdersPanel.add(financeDepartmentBox, gc);
+        gc.anchor = GridBagConstraints.NORTHEAST;
+        gc.insets = new Insets(0, 0, 0, 0);
+        createBidPanel.add(closeButton, gc);
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(new JLabel(Labels.withColon("subdepartment")), gc);
+        createBidPanel.add(new JLabel(Labels.withColon("subdepartment")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(subdepartmentBox, gc);
+        createBidPanel.add(subdepartmentBox, gc);
 
-        gc.gridx++;
+        /// Next row///
+        gc.gridy++;
+
+        gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(new JLabel(Labels.withColon("bidType")), gc);
+        createBidPanel.add(new JLabel(Labels.withColon("finance")), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
-        depOrdersPanel.add(bidTypeBox, gc);
+        createBidPanel.add(financeDepartmentBox, gc);
 
-        // createOrUpdate new bid panel
-        JPanel createBidPanel = new JPanel();
-        createBidPanel.setBorder(compoundBorder);
-        createBidPanel.setLayout(new GridBagLayout());
+        /// Next row///
+        gc.gridy++;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.EAST;
+        gc.insets = smallPadding;
+        createBidPanel.add(new JLabel(Labels.withColon("bidType")), gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(bidTypeBox, gc);
 
         ////next row/////
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -695,7 +689,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -709,7 +702,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -728,7 +720,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.FIRST_LINE_END;
@@ -744,7 +735,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -765,14 +755,16 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
+
+        JLabel reasonLabel = new JLabel(Labels.withColon("reasonForChoice"));
+        reasonLabel.setToolTipText(Labels.getProperty("reasonForSupplierChoice"));
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.gridwidth = 1;
         gc.ipady = 0;
         gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("reasonForSupplierChoice")), gc);
+        createBidPanel.add(reasonLabel, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -786,7 +778,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -805,7 +796,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -819,7 +809,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -833,7 +822,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -847,7 +835,6 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
@@ -868,12 +855,14 @@ public class CreateBidDialog extends JDialog {
 
         /// Next row///
         gc.gridy++;
-        gc.fill = GridBagConstraints.NONE;
+
+        JLabel procurementStartDateLabel = new JLabel(Labels.withColon("procurementDate"));
+        procurementStartDateLabel.setToolTipText(Labels.getProperty("procurementStartDate"));
 
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = mediumPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("procurementStartDate")), gc);
+        createBidPanel.add(procurementStartDateLabel, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
@@ -887,14 +876,14 @@ public class CreateBidDialog extends JDialog {
 
         //buttons panel
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
-        Utils.setPreferredButtonSizes(okButton, cancelButton);
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        Dimension btnDim = new Dimension(110, 25);
+        okButton.setPreferredSize(btnDim);
+        cancelButton.setPreferredSize(btnDim);
         buttonsPanel.add(okButton);
         buttonsPanel.add(cancelButton);
 
         setLayout(new BorderLayout());
-        add(depOrdersPanel, BorderLayout.NORTH);
         add(createBidPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
     }

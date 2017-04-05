@@ -24,7 +24,7 @@ public class SupplierDialog extends AbstractCEDDialog<SupplierModel, SupplierDia
     private JTextPane commentsPane;
 
     public SupplierDialog(MainFrame parent) {
-        super(SupplierModel.class, parent, new Dimension(335, 235), Labels.getProperty("suplDialogSuper"), Labels.getProperty("supplier_ced"), parent.getCreateBidDialog().getSupplierBox());
+        super(SupplierModel.class, parent, new Dimension(335, 235), Labels.getProperty("suplDialogSuper"), Labels.getProperty("supplier_ced"), parent.getCreateBidPanel().getSupplierBox());
 
         newSuplTel = EmptyModel.STRING;
         newSuplComment = EmptyModel.STRING;

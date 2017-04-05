@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
 
@@ -34,6 +35,15 @@ public class CEDButtons {
         deleteButton.setToolTipText(Labels.withSpaceAfter("delete") + propertyName);
         deleteButton.setPreferredSize(buttonDim);
         deleteButton.setEnabled(true);
+    }
+
+    public static JButton getCloseButton() {
+        JButton closeButton = new JButton(Icons.CLOSE);
+        closeButton.setPreferredSize(new Dimension(15, 15));
+        closeButton.setBackground(Colors.RED_LIGHT_SELECTED);
+        closeButton.setToolTipText(Labels.getProperty("closeBtn"));
+
+        return closeButton;
     }
 
     public JButton getCreateButton() {

@@ -19,12 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Simple graphical calculator dialog
+ * Simple graphical calculator
  */
 public class CalculatorDialog extends JDialog implements ActionListener {
 
-    private JButton[] numberBtns;
-    private Map<String, JButton> operatorBtns;
+    private Map<String, JButton> buttons;
     private JTextPane logPane;
     private JPanel buttonPanel;
     private StringBuilder sb;
@@ -36,7 +35,6 @@ public class CalculatorDialog extends JDialog implements ActionListener {
     public CalculatorDialog(JFrame parent) {
         super(parent, Labels.getProperty("calculator"), false);
         setSize(240, 347);
-        setLocationRelativeTo(parent);
         setResizable(false);
         Dimension buttonDim = new Dimension(45, 45);
 
@@ -49,7 +47,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         sb = new StringBuilder();
 
         String[] operators = {".", "+", "-", "*", "/", "=", "C", "<", "clp"};
-        operatorBtns = new HashMap<>();
+        buttons = new HashMap<>();
         for (String operator : operators) {
             JButton button = new JButton(operator);
             button.setFont(buttonFont);
@@ -60,16 +58,15 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                 button.setToolTipText(Labels.getProperty("copyToClipboard"));
             }
             button.addActionListener(this);
-            operatorBtns.put(operator, button);
+            buttons.put(operator, button);
         }
 
-        numberBtns = new JButton[10];
         for (int i = 0; i < 10; i++) {
             JButton button = new JButton(String.valueOf(i));
             button.setFont(buttonFont);
             button.setPreferredSize(buttonDim);
             button.addActionListener(this);
-            numberBtns[i] = button;
+            buttons.put(String.valueOf(i), button);
         }
 
         createLayout();
@@ -248,8 +245,8 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         gc.gridy = 3;
         gc.gridx = 1;
 
-        for (int i = 0; i < numberBtns.length; i++) {
-            buttonPanel.add(numberBtns[i], gc);
+        for (int i = 0; i < 10; i++) {
+            buttonPanel.add(buttons.get(String.valueOf(i)), gc);
             gc.gridx++;
             if (i % 3 == 0) {
                 gc.gridy--;
@@ -259,33 +256,33 @@ public class CalculatorDialog extends JDialog implements ActionListener {
 
         gc.gridy = 3;
         gc.gridx = 0;
-        buttonPanel.add(operatorBtns.get("clp"), gc);
+        buttonPanel.add(buttons.get("clp"), gc);
 
         gc.gridx = 2;
-        buttonPanel.add(operatorBtns.get("."), gc);
+        buttonPanel.add(buttons.get("."), gc);
 
         gc.gridy = 0;
         gc.gridx = 4;
-        buttonPanel.add(operatorBtns.get("<"), gc);
+        buttonPanel.add(buttons.get("<"), gc);
 
         gc.gridy++;
-        buttonPanel.add(operatorBtns.get("C"), gc);
+        buttonPanel.add(buttons.get("C"), gc);
 
         gc.gridy = 0;
         gc.gridx = 3;
-        buttonPanel.add(operatorBtns.get("+"), gc);
+        buttonPanel.add(buttons.get("+"), gc);
 
         gc.gridy++;
-        buttonPanel.add(operatorBtns.get("-"), gc);
+        buttonPanel.add(buttons.get("-"), gc);
 
         gc.gridy++;
-        buttonPanel.add(operatorBtns.get("*"), gc);
+        buttonPanel.add(buttons.get("*"), gc);
 
         gc.gridy++;
-        buttonPanel.add(operatorBtns.get("/"), gc);
+        buttonPanel.add(buttons.get("/"), gc);
 
         gc.gridx++;
-        buttonPanel.add(operatorBtns.get("="), gc);
+        buttonPanel.add(buttons.get("="), gc);
 
         setLayout(new BorderLayout());
         add(new JScrollPane(logPane), BorderLayout.NORTH);

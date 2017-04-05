@@ -3,8 +3,8 @@ package gui.finance;
 import model.models.FinanceModel;
 
 /**
- * Listener for {@link CreateFinanceDialog}
+ * Listener for {@link CreateFinancePanel}
  */
-public interface FinanceDialogListener {
+public interface CreateFinancePanelListener {
     void persistModelEventOccurred(FinanceModel model);
 }

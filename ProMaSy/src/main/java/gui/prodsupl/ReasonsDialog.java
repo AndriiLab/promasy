@@ -11,6 +11,6 @@ import model.models.ReasonForSupplierChoiceModel;
 public class ReasonsDialog extends AbstractCEDDialog<ReasonForSupplierChoiceModel, ReasonsDialogListener> {
 
     public ReasonsDialog(MainFrame parent) {
-        super(ReasonForSupplierChoiceModel.class, parent, Labels.getProperty("reasonForSupplierChoice"), Labels.getProperty("reason_ced"), parent.getCreateBidDialog().getReasonForSupplierChoiceBox());
+        super(ReasonForSupplierChoiceModel.class, parent, Labels.getProperty("reasonForSupplierChoice"), Labels.getProperty("reason_ced"), parent.getCreateBidPanel().getReasonForSupplierChoiceBox());
     }
 }

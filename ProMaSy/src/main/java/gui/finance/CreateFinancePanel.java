@@ -6,6 +6,7 @@ import controller.Logger;
 import gui.Utils;
 import gui.commons.Icons;
 import gui.commons.Labels;
+import gui.components.CEDButtons;
 import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
 import model.enums.Fund;
@@ -14,8 +15,6 @@ import model.models.FinanceModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -26,7 +25,7 @@ import java.util.Locale;
 /**
  * Dialog for creation and updating of {@link FinanceModel}
  */
-public class CreateFinanceDialog extends JDialog {
+public class CreateFinancePanel extends JPanel {
 
     private final LocalDate defaultStartDate = LocalDate.of(Year.now().getValue(), Month.JANUARY, 1);
     private final LocalDate defaultEndDate = LocalDate.of(Year.now().getValue(), Month.DECEMBER, 31);
@@ -51,15 +50,10 @@ public class CreateFinanceDialog extends JDialog {
     private JTextField servicesAmountField;
     private JButton okButton;
     private JButton cancelButton;
-    private FinanceDialogListener listener;
+    private JButton closeButton;
+    private CreateFinancePanelListener listener;
 
-    public CreateFinanceDialog(JFrame parent) {
-        super(parent, Labels.getProperty("createOrder"), true);
-        setLocationRelativeTo(parent);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(300, 295);
-        setResizable(false);
-
+    public CreateFinancePanel(JFrame parent) {
         this.parent = parent;
 
         currentFinanceModel = new FinanceModel();
@@ -90,6 +84,7 @@ public class CreateFinanceDialog extends JDialog {
 
         okButton = new JButton(Labels.getProperty("create"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
+        closeButton = CEDButtons.getCloseButton();
 
         layoutControls();
 
@@ -111,19 +106,22 @@ public class CreateFinanceDialog extends JDialog {
                 }
                 listener.persistModelEventOccurred(currentFinanceModel);
                 clear();
+                super.setVisible(false);
             }
         });
 
-        cancelButton.addActionListener(e -> clear());
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                clear();
-            }
+        cancelButton.addActionListener(e -> {
+            clear();
+            super.setVisible(false);
+        });
+
+        closeButton.addActionListener(e -> {
+            clear();
+            super.setVisible(false);
         });
     }
 
-    private void clear() {
+    void clear() {
         String emptyString = EmptyModel.STRING;
         orderNumberField.setText(emptyString);
         orderNameField.setText(emptyString);
@@ -142,10 +140,8 @@ public class CreateFinanceDialog extends JDialog {
         materialAmount = null;
         equipmentAmount = null;
         servicesAmount = null;
-        super.setTitle(Labels.getProperty("createOrder"));
         okButton.setText(Labels.getProperty("create"));
         currentFinanceModel = new FinanceModel();
-        super.setVisible(false);
     }
 
     public void setFinanceModel(FinanceModel selectedFinanceModel) {
@@ -162,7 +158,6 @@ public class CreateFinanceDialog extends JDialog {
             fundBox.setSelectedObject(selectedFinanceModel.getFundType());
         }
         kpkvkField.setText(String.valueOf(selectedFinanceModel.getKPKVK()));
-        super.setTitle(Labels.getProperty("editFinance"));
         okButton.setText(Labels.getProperty("edit"));
         super.setVisible(true);
     }
@@ -175,7 +170,7 @@ public class CreateFinanceDialog extends JDialog {
         super.setVisible(visible);
     }
 
-    public void setFinanceDialogListener(FinanceDialogListener listener) {
+    public void setFinanceDialogListener(CreateFinancePanelListener listener) {
         this.listener = listener;
     }
 
@@ -246,6 +241,12 @@ public class CreateFinanceDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
         financePanel.add(orderNumberField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHEAST;
+        gc.insets = new Insets(0, 0, 0, 0);
+        financePanel.add(closeButton, gc);
+
 
         gc.gridy++;
         gc.gridx = 0;
@@ -337,7 +338,9 @@ public class CreateFinanceDialog extends JDialog {
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 
-        Utils.setPreferredButtonSizes(okButton, cancelButton);
+        Dimension btnDim = new Dimension(110, 25);
+        okButton.setPreferredSize(btnDim);
+        cancelButton.setPreferredSize(btnDim);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(okButton);

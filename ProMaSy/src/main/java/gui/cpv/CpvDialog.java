@@ -21,9 +21,11 @@ public class CpvDialog extends JDialog {
     private JTable table;
     private CpvSearchListener cpvListener;
     private CPVModel selectedCpvModel;
+    private MainFrame parent;
 
     public CpvDialog(MainFrame parent) {
         super(parent, Labels.getProperty("cpvPanelTab"), true);
+        this.parent = parent;
         setSize(800, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
@@ -167,6 +169,7 @@ public class CpvDialog extends JDialog {
 
     @Override
     public void setVisible(boolean visible) {
+        selectButton.setVisible(parent.getCreateBidPanel().isVisible());
         selectedCpvModel = EmptyModel.CPV;
         if (visible) {
             makeCpvQuery(EmptyModel.STRING, true);
@@ -175,10 +178,5 @@ public class CpvDialog extends JDialog {
             selectButton.setVisible(true);
         }
         super.setVisible(visible);
-    }
-
-    public void showSearchOnly() {
-        selectButton.setVisible(false);
-        setVisible(true);
     }
 }

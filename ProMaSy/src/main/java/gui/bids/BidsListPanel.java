@@ -50,15 +50,18 @@ public class BidsListPanel extends JPanel {
     private MainFrame parent;
     private boolean useUserDepartment;
     private BidType selectedBidType;
+    private CreateBidPanel createBidPanel;
+    private JSplitPane splitPane;
 
     public BidsListPanel(MainFrame parent) {
-
         this.parent = parent;
 
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboDim = new Dimension(200, 20);
 
         useUserDepartment = false;
+        createBidPanel = new CreateBidPanel(parent);
+        createBidPanel.setVisible(false);
 
         selectedBidModel = EmptyModel.BID;
         selectedBidModels = new LinkedList<>();
@@ -112,9 +115,12 @@ public class BidsListPanel extends JPanel {
 
         createLayout();
 
+        int dividerLocation = 350;
+
         createBidButton.addActionListener(e -> {
             setDataToCreateBidDialog();
-            parent.getCreateBidDialog().setVisible(true);
+            createBidPanel.setVisible(true);
+            splitPane.setDividerLocation(dividerLocation);
             activateButtons(false);
             clearSelectedBidModels();
         });
@@ -122,7 +128,8 @@ public class BidsListPanel extends JPanel {
         copyBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 setDataToCreateBidDialog();
-                parent.getCreateBidDialog().loadToDialog(selectedBidModel, false);
+                createBidPanel.loadToDialog(selectedBidModel, false);
+                splitPane.setDividerLocation(dividerLocation);
                 activateButtons(false);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
@@ -133,7 +140,8 @@ public class BidsListPanel extends JPanel {
         editBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
                 setDataToCreateBidDialog();
-                parent.getCreateBidDialog().loadToDialog(selectedBidModel, true);
+                createBidPanel.loadToDialog(selectedBidModel, true);
+                splitPane.setDividerLocation(dividerLocation);
                 activateButtons(false);
             } else {
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("noOrManyBidsSelected"), Labels.getProperty("cannotPerformOperation"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
@@ -242,7 +250,7 @@ public class BidsListPanel extends JPanel {
             }
         });
 
-        parent.getCreateBidDialog().setCreateBidDialogListener(new CreateBidDialogListener() {
+        createBidPanel.setCreateBidDialogListener(new CreateBidPanelListener() {
             @Override
             public void persistModelEventOccurred(BidModel model) {
                 if (listener != null) {
@@ -293,15 +301,16 @@ public class BidsListPanel extends JPanel {
     }
 
     private void setDataToCreateBidDialog() {
-        parent.getCreateBidDialog().setCurrentBidType(selectedBidType);
+        createBidPanel.clear();
+        createBidPanel.setCurrentBidType(selectedBidType);
         if (!isSelectedDepartmentModelEmpty()) {
-            parent.getCreateBidDialog().setCurrentDepartment(selectedDepartmentModel);
+            createBidPanel.setCurrentDepartment(selectedDepartmentModel);
         }
         if (!isSelectedSubepartmentModelEmpty()) {
-            parent.getCreateBidDialog().setCurrentSubdepartment(selectedSubdepartmentModel);
+            createBidPanel.setCurrentSubdepartment(selectedSubdepartmentModel);
         }
         if (!isSelectedFinanceDepartmentModelEmpty()) {
-            parent.getCreateBidDialog().setCurrentFinanceDepartment(selectedFinanceDepartmentModel);
+            createBidPanel.setCurrentFinanceDepartment(selectedFinanceDepartmentModel);
         }
     }
 
@@ -332,10 +341,10 @@ public class BidsListPanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         departmentBox.setEnabled(false);
-        parent.getCreateBidDialog().setEnabledDepartmentBox(false);
+        createBidPanel.setEnabledDepartmentBox(false);
         if (LoginData.getInstance().getRole().equals(Role.USER)) {
             subdepartmentBox.setEnabled(false);
-            parent.getCreateBidDialog().setEnabledSubdepartmentBox(false);
+            createBidPanel.setEnabledSubdepartmentBox(false);
         }
     }
 
@@ -343,7 +352,7 @@ public class BidsListPanel extends JPanel {
         for (DepartmentModel model : db) {
             if (model.isActive()) {
                 departmentBox.addItem(model);
-                parent.getCreateBidDialog().addToDepartmentBox(model);
+                createBidPanel.addToDepartmentBox(model);
                 if (useUserDepartment && LoginData.getInstance().getSubdepartment().getDepartment().equals(model)) {
                     departmentBox.setSelectedItem(model);
                 }
@@ -388,6 +397,10 @@ public class BidsListPanel extends JPanel {
         this.listener = listener;
     }
 
+    public CreateBidPanel getCreateBidPanel() {
+        return createBidPanel;
+    }
+
     private void createLayout() {
         JPanel topPanel = new JPanel();
         JPanel sumPanel = new JPanel();
@@ -428,10 +441,16 @@ public class BidsListPanel extends JPanel {
         downPanel.add(departmentSelectorPanel, BorderLayout.WEST);
         downPanel.add(sumPanel, BorderLayout.EAST);
 
+        JPanel generalPanel = new JPanel(new BorderLayout());
+        generalPanel.add(topPanel, BorderLayout.NORTH);
+        generalPanel.add(new JScrollPane(bidsTable), BorderLayout.CENTER);
+        generalPanel.add(downPanel, BorderLayout.SOUTH);
+
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createBidPanel, generalPanel);
+        splitPane.setEnabled(false);
+
         setLayout(new BorderLayout());
-        add(topPanel, BorderLayout.NORTH);
-        add(new JScrollPane(bidsTable), BorderLayout.CENTER);
-        add(downPanel, BorderLayout.SOUTH);
+        add(splitPane, BorderLayout.CENTER);
     }
 
     public boolean isReadyForPrint() {

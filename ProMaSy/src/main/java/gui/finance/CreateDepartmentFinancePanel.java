@@ -2,6 +2,7 @@ package gui.finance;
 
 import gui.Utils;
 import gui.commons.Labels;
+import gui.components.CEDButtons;
 import gui.components.PJComboBox;
 import gui.components.PJOptionPane;
 import model.enums.BidType;
@@ -9,15 +10,13 @@ import model.models.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
  * Dialog for creation and updating of {@link FinanceDepartmentModel}
  */
-public class CreateDepartmentFinancesDialog extends JDialog {
+public class CreateDepartmentFinancePanel extends JPanel {
 
     private SubdepartmentModel selectedSubdepartment;
     private FinanceModel currentFinanceModel;
@@ -26,7 +25,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     private BigDecimal depMaterialAmount;
     private BigDecimal depEquipmentAmount;
     private BigDecimal depServicesAmount;
-    private FinanceDepartmentDialogListener listener;
+    private CreateDepartmentFinancePanelListener listener;
 
     private JFrame parent;
     private PJComboBox<DepartmentModel> departmentBox;
@@ -39,14 +38,10 @@ public class CreateDepartmentFinancesDialog extends JDialog {
     private JLabel servicesLeft;
     private JButton okButton;
     private JButton cancelButton;
+    private JButton closeButton;
     private boolean isCreateMode;
 
-    public CreateDepartmentFinancesDialog(JFrame parent) {
-        super(parent, Labels.getProperty("addDepartmentForFinance"), true);
-        setLocationRelativeTo(parent);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        setSize(340, 210);
-        setResizable(false);
+    public CreateDepartmentFinancePanel(JFrame parent) {
 
         this.parent = parent;
 
@@ -80,6 +75,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
         okButton = new JButton(Labels.getProperty("create"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
+        closeButton = CEDButtons.getCloseButton();
 
         layoutControls();
 
@@ -98,22 +94,22 @@ public class CreateDepartmentFinancesDialog extends JDialog {
                 currentFinanceModel.addFinanceDepartmentModel(currentFinanceDepartmentModel);
                 listener.persistModelEventOccurred(currentFinanceDepartmentModel);
                 clear();
+                setVisible(false);
             }
         });
 
-        cancelButton.addActionListener(e -> clear());
-
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                clear();
-            }
+        cancelButton.addActionListener(e -> {
+            clear();
+            setVisible(false);
         });
 
+        closeButton.addActionListener(e -> {
+            clear();
+            setVisible(false);
+        });
     }
 
-    private void clear() {
-        super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
+    void clear() {
         String emptyString = EmptyModel.STRING;
         departmentBox.setSelectedIndex(0);
         subdepartmentBox.setSelectedIndex(0);
@@ -126,7 +122,6 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         selectedSubdepartment = EmptyModel.SUBDEPARTMENT;
         currentFinanceModel = null;
         currentFinanceDepartmentModel = new FinanceDepartmentModel();
-        this.setVisible(false);
     }
 
     private boolean checkInput() {
@@ -157,7 +152,7 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         return depServicesAmount != null;
     }
 
-    public void setListener(FinanceDepartmentDialogListener listener) {
+    public void setListener(CreateDepartmentFinancePanelListener listener) {
         this.listener = listener;
     }
 
@@ -175,7 +170,6 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         this.currentFinanceModel = model;
         this.setLeftAmounts();
         if (isCreateMode) {
-            super.setTitle(Labels.withSpaceAfter("addDepartmentForFinance") + currentFinanceModel.toString());
             okButton.setText(Labels.getProperty("create"));
         }
         super.setVisible(true);
@@ -188,7 +182,6 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         depMaterialsAmountField.setText(selectedDepFinModel.getTotalMaterialsAmount().toString());
         depEquipmentAmountField.setText(selectedDepFinModel.getTotalEquipmentAmount().toString());
         depServicesAmountField.setText(selectedDepFinModel.getTotalServicesAmount().toString());
-        super.setTitle(Labels.withSpaceAfter("editDepartmentForFinance") + selectedDepFinModel.getFinances().toString());
         okButton.setText(Labels.getProperty("edit"));
         this.setVisible(this.currentFinanceDepartmentModel.getFinances(), false);
     }
@@ -227,6 +220,11 @@ public class CreateDepartmentFinancesDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
         departmentPanel.add(departmentBox, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.NORTHEAST;
+        gc.insets = new Insets(0, 0, 0, 0);
+        departmentPanel.add(closeButton, gc);
 
         ////// Next row//////
         gc.gridy++;
@@ -317,7 +315,9 @@ public class CreateDepartmentFinancesDialog extends JDialog {
 
         JPanel buttonsPanel = new JPanel();
 
-        Utils.setPreferredButtonSizes(okButton, cancelButton);
+        Dimension btnDim = new Dimension(110, 25);
+        okButton.setPreferredSize(btnDim);
+        cancelButton.setPreferredSize(btnDim);
 
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.add(okButton);
