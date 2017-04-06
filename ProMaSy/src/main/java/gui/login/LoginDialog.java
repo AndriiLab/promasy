@@ -3,7 +3,7 @@ package gui.login;
 import gui.MainFrame;
 import gui.commons.Icons;
 import gui.commons.Labels;
-import gui.empedit.CreateEmployeeFromLoginListener;
+import gui.employee.CreateEmployeeFromLoginListener;
 import model.enums.Role;
 import model.models.EmptyModel;
 import org.jdesktop.swingx.prompt.PromptSupport;

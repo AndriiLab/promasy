@@ -5,13 +5,12 @@
 
 package gui;
 
+import controller.TableGenerator;
 import gui.amunits.AmUnitsDialog;
 import gui.amunits.AmUnitsDialogListener;
 import gui.bids.BidsListPanel;
 import gui.bids.BidsListPanelListener;
 import gui.bids.CreateBidPanel;
-import gui.bids.reports.ReportParametersDialog;
-import gui.bids.reports.ReportParametersDialogListener;
 import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
@@ -20,19 +19,26 @@ import gui.conset.ConSetDialog;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvDialog;
 import gui.cpv.CpvSearchListener;
-import gui.cpvAmount.CpvAmountDialog;
-import gui.cpvAmount.CpvAmountDialogListener;
-import gui.empedit.CreateEmployeeDialog;
-import gui.empedit.CreateEmployeeDialogListener;
-import gui.empedit.EditEmployeeDialog;
-import gui.empedit.EditEmployeeDialogListener;
+import gui.employee.CreateEmployeeDialog;
+import gui.employee.CreateEmployeeDialogListener;
+import gui.employee.EditEmployeeDialog;
+import gui.employee.EditEmployeeDialogListener;
 import gui.finance.FinancePanel;
 import gui.finance.FinancePanelListener;
-import gui.instedit.OrganizationDialog;
-import gui.instedit.OrganizationDialogListener;
 import gui.login.LoginDialog;
 import gui.login.LoginListener;
-import gui.prodsupl.*;
+import gui.organization.OrganizationDialog;
+import gui.organization.OrganizationDialogListener;
+import gui.producer.ProducerDialog;
+import gui.producer.ProducerDialogListener;
+import gui.producer.ReasonsDialog;
+import gui.producer.ReasonsDialogListener;
+import gui.reports.bids.ReportParametersDialog;
+import gui.reports.bids.ReportParametersDialogListener;
+import gui.reports.cpv.CpvAmountDialog;
+import gui.reports.cpv.CpvAmountDialogListener;
+import gui.supplier.SupplierDialog;
+import gui.supplier.SupplierDialogListener;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 import model.dao.LoginData;
@@ -179,6 +185,7 @@ public class MainFrame extends JFrame {
             }
         });
 
+        TableGenerator tg = new TableGenerator(this);
         toolbar.setToolbarListener(new ToolbarListener() {
             @Override
             public void printEventOccurred() {
@@ -193,6 +200,21 @@ public class MainFrame extends JFrame {
             @Override
             public void showCalculator() {
                 calculatorDialog.setVisible(true);
+            }
+
+            @Override
+            public void exportToTableEventOccurred() {
+                if (tabPane != null) {
+                    if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
+                        tg.generateReport(bidsListPanel.getSelectedBids());
+                    } else if (tabPane.getSelectedComponent().equals(financePanel)) {
+                        List<BidModel> bids = new LinkedList<>();
+                        financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
+                        tg.generateReport(bids);
+                    }
+                } else {
+                    tg.generateReport(bidsListPanel.getSelectedBids());
+                }
             }
         });
 
@@ -316,8 +338,8 @@ public class MainFrame extends JFrame {
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
                 showReportParametersDialog();
-            } else {
-                JOptionPane.showMessageDialog(this, Labels.getProperty("printSupportedOnlyInBids"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
+            } else if (tabPane.getSelectedComponent().equals(financePanel)) {
+                cpvAmountDialog.setVisible(true);
             }
         } else {
             showReportParametersDialog();

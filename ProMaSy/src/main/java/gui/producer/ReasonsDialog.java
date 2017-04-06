@@ -1,4 +1,4 @@
-package gui.prodsupl;
+package gui.producer;
 
 import gui.MainFrame;
 import gui.commons.Labels;

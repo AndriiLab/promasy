@@ -1,4 +1,4 @@
-package gui.empedit;
+package gui.employee;
 
 import gui.MainFrame;
 import gui.commons.Icons;

@@ -1,4 +1,4 @@
-package gui.instedit;
+package gui.organization;
 
 import model.models.InstituteModel;
 

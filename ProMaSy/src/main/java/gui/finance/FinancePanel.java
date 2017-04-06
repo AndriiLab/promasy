@@ -74,7 +74,7 @@ public class FinancePanel extends JPanel {
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
                     selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 0);
-                    setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
+                    setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
                     if (!selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                         editOrderButton.setEnabled(true);
                         deleteOrderButton.setEnabled(true);
@@ -161,7 +161,7 @@ public class FinancePanel extends JPanel {
                 }
                 financeTable.getSelectionModel().setSelectionInterval(selectedFinanceRow, selectedFinanceRow);
                 selectedFinanceModel = (FinanceModel) financeTable.getValueAt(selectedFinanceRow, 0);
-                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
             }
 
 
@@ -199,7 +199,7 @@ public class FinancePanel extends JPanel {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(selectedDepFinModel);
-                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModels());
+                setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
                 selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
@@ -292,5 +292,9 @@ public class FinancePanel extends JPanel {
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, financeSplitPane, departmentFinanceSplitPane);
         splitPane.setEnabled(false);
         add(splitPane, BorderLayout.CENTER);
+    }
+
+    public FinanceModel getSelectedFinances() {
+        return selectedFinanceModel;
     }
 }

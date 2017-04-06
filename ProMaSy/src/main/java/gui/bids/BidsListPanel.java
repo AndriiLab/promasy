@@ -1,12 +1,12 @@
 package gui.bids;
 
+import controller.ReportsGenerator;
 import gui.MainFrame;
 import gui.bids.status.StatusDialog;
 import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJComboBox;
-import gui.reports.ReportsGenerator;
 import model.dao.LoginData;
 import model.enums.BidType;
 import model.enums.Role;
@@ -463,23 +463,29 @@ public class BidsListPanel extends JPanel {
     }
 
     public void printBidList(Map<String, Object> parameters) {
-        List<BidsReportModel> list = new ArrayList<>();
-        //if no bids selected printing all bids
+        List<BidsReportModel> list = new LinkedList<>();
+        getSelectedBids().forEach(bid -> list.add(bid.generateReportModel()));
+        new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
+    }
+
+    public List<BidModel> getSelectedBids() {
+        List<BidModel> list = new LinkedList<>();
+        //if no bids selected adding all bids
         if (selectedBidModel.equals(EmptyModel.BID) && selectedBidModels.isEmpty()) {
             for (int row = 0; row < bidsTable.getRowCount(); row++) {
                 BidModel md = (BidModel) bidsTable.getValueAt(row, 0);
-                list.add(md.generateReportModel());
+                list.add(md);
             }
         }
         // if 1 bid selected
         else if (selectedBidModels.isEmpty()) {
             BidModel md = selectedBidModel;
-            list.add(md.generateReportModel());
+            list.add(md);
         }
         // if multiple bids selected
         else {
-            selectedBidModels.forEach(md -> list.add(md.generateReportModel()));
+            list.addAll(selectedBidModels);
         }
-        new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
+        return list;
     }
 }

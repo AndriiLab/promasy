@@ -1,4 +1,4 @@
-package gui.empedit;
+package gui.employee;
 
 /**
  * Listener for {@link gui.login.LoginDialog}

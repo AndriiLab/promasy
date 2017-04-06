@@ -1,6 +1,5 @@
-package gui.reports;
+package controller;
 
-import controller.Logger;
 import gui.MainFrame;
 import gui.commons.Labels;
 import net.sf.jasperreports.engine.JRException;

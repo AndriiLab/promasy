@@ -1,4 +1,4 @@
-package gui.bids.reports;
+package gui.reports.bids;
 
 import gui.MainFrame;
 import gui.commons.Labels;

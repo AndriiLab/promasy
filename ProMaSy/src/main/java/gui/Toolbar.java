@@ -8,10 +8,10 @@ import java.awt.*;
 
 public class Toolbar extends JToolBar {
 
-	private ToolbarListener btnListener;
+    private ToolbarListener btnListener;
 
-	public Toolbar() {
-		setFloatable(false);
+    public Toolbar() {
+        setFloatable(false);
         Dimension dim = new Dimension(20, 20);
         JButton printBtn = new JButton(Icons.PRINT);
         printBtn.setPreferredSize(dim);
@@ -43,6 +43,12 @@ public class Toolbar extends JToolBar {
             }
         });
 
+        exportToTableFileButton.addActionListener(e -> {
+            if (btnListener != null) {
+                btnListener.exportToTableEventOccurred();
+            }
+        });
+
         cpvBtn.addActionListener(e -> {
             if (btnListener != null) {
                 btnListener.showCpvSearchDialog();
@@ -56,7 +62,7 @@ public class Toolbar extends JToolBar {
         });
     }
 
-	public void setToolbarListener(ToolbarListener listener) {
-		this.btnListener = listener;
-	}
+    public void setToolbarListener(ToolbarListener listener) {
+        this.btnListener = listener;
+    }
 }

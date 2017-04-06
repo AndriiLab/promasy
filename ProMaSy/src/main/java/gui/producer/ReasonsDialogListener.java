@@ -1,4 +1,4 @@
-package gui.prodsupl;
+package gui.producer;
 
 import gui.components.AbstractCEDDialogListener;
 import model.models.ReasonForSupplierChoiceModel;

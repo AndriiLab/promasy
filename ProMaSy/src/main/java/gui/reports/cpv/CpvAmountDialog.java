@@ -1,12 +1,12 @@
-package gui.cpvAmount;
+package gui.reports.cpv;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import controller.ReportsGenerator;
 import gui.MainFrame;
 import gui.commons.Colors;
 import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
-import gui.reports.ReportsGenerator;
 import model.dao.LoginData;
 import model.enums.ProcurementProcedure;
 import model.enums.Role;

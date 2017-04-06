@@ -41,6 +41,7 @@ public class LoggerDialog extends JDialog {
                 JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
                 this.setVisible(false);
             } catch (IOException e1) {
+                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 Logger.errorEvent(parent, e1);
             }
         });
@@ -71,7 +72,7 @@ public class LoggerDialog extends JDialog {
     }
 
     private static String saveLog(String log) throws IOException {
-        String fileName = "log_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
+        String fileName = String.format("log_%s.txt", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
         FileWriter fw = new FileWriter(fileName);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(log);

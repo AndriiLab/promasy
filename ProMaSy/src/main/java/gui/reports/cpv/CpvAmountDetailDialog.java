@@ -1,4 +1,4 @@
-package gui.cpvAmount;
+package gui.reports.cpv;
 
 import gui.MainFrame;
 import gui.commons.Labels;

@@ -1,4 +1,4 @@
-package gui.cpvAmount;
+package gui.reports.cpv;
 
 import gui.commons.Labels;
 import model.models.BidModel;

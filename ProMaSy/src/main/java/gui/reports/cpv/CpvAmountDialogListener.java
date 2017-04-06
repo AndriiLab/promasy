@@ -1,4 +1,4 @@
-package gui.cpvAmount;
+package gui.reports.cpv;
 
 import model.enums.Role;
 

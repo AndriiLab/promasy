@@ -1,4 +1,4 @@
-package gui.prodsupl;
+package gui.supplier;
 
 import gui.MainFrame;
 import gui.commons.Icons;

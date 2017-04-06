@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -83,21 +84,15 @@ public class FinanceModel extends AbstractModel {
         this.financeName = financeName;
     }
 
-    public List<FinanceDepartmentModel> getFinanceDepartmentModels() {
+    public List<FinanceDepartmentModel> getFinanceDepartmentModelsSorted() {
         //two stage sort, first by department, then by subdepartment
-        financeDepartmentModels.sort((o1, o2) -> {
-            String dep1 = o1.getSubdepartment().getDepartment().getDepName();
-            String dep2 = o2.getSubdepartment().getDepartment().getDepName();
-            int depComp = dep1.compareTo(dep2);
+        financeDepartmentModels.sort(Comparator
+                .comparing((FinanceDepartmentModel sm) -> sm.getSubdepartment().getDepartment().getDepName())
+                .thenComparing(sm -> sm.getSubdepartment().getSubdepName()));
+        return financeDepartmentModels;
+    }
 
-            if (depComp != 0) {
-                return depComp;
-            } else {
-                String subdep1 = o1.getSubdepartment().getSubdepName();
-                String subdep2 = o2.getSubdepartment().getSubdepName();
-                return subdep1.compareTo(subdep2);
-            }
-        });
+    public List<FinanceDepartmentModel> getFinanceDepartmentModels() {
         return financeDepartmentModels;
     }
 

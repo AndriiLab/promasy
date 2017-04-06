@@ -7,4 +7,6 @@ public interface ToolbarListener {
     void showCpvSearchDialog();
 
     void showCalculator();
+
+    void exportToTableEventOccurred();
 }

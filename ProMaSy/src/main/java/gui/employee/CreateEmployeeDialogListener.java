@@ -1,4 +1,4 @@
-package gui.empedit;
+package gui.employee;
 
 import model.models.EmployeeModel;
 
