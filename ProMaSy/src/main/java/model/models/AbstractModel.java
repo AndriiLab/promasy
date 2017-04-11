@@ -61,6 +61,7 @@ public abstract class AbstractModel {
         this.active = active;
     }
 
+    @Override
     public EmployeeModel getCreatedEmployee() {
         return createdEmployee;
     }
@@ -69,6 +70,7 @@ public abstract class AbstractModel {
         this.createdEmployee = createdEmployee;
     }
 
+    @Override
     public EmployeeModel getModifiedEmployee() {
         return modifiedEmployee;
     }
@@ -77,38 +79,47 @@ public abstract class AbstractModel {
         this.modifiedEmployee = modifiedEmployee;
     }
 
+    @Override
     public long getModelId() {
         return modelId;
     }
 
+    @Override
     public void setModelId(long modelId) {
         this.modelId = modelId;
     }
 
+    @Override
     public Timestamp getCreatedDate() {
         return createdDate;
     }
 
+    @Override
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
+    @Override
     public Timestamp getModifiedDate() {
         return modifiedDate;
     }
 
+    @Override
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
 
+    @Override
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    @Override
     public String getLastEditPersonName() {
         if (modifiedEmployee != null && !modifiedEmployee.getShortName().isEmpty()) {
             return modifiedEmployee.getShortName();
@@ -118,6 +129,7 @@ public abstract class AbstractModel {
         return null;
     }
 
+    @Override
     public Timestamp getLastEditDate() {
         if (modifiedDate != null) {
             return modifiedDate;
@@ -126,8 +138,6 @@ public abstract class AbstractModel {
         }
         return null;
     }
-
-    public abstract void setDescription(String description);
 
     @Override
     public boolean equals(Object obj) {
@@ -144,16 +154,19 @@ public abstract class AbstractModel {
     }
 
     // methods for setting created/modified employee and created/modified date
+    @Override
     public void setCreated() {
         this.setCreatedEmployee(LoginData.getInstance());
         this.setCreatedDate(ServerQueries.getServerTimestamp());
     }
 
+    @Override
     public void setUpdated() {
         this.setModifiedEmployee(LoginData.getInstance());
         this.setModifiedDate(ServerQueries.getServerTimestamp());
     }
 
+    @Override
     public void setDeleted() {
         this.setActive(false);
         setUpdated();

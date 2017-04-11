@@ -36,6 +36,7 @@ import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,12 @@ public class Controller {
 
     private ConnectionSettingsModel conSet;
     private MainFrame mainFrame;
+    private List<String> parameters;
 
-    public Controller(MainFrame mainFrame) {
+    public Controller(String[] args, MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+
+        parseArgs(args);
 
         //precompiling report files
         try {
@@ -58,10 +62,25 @@ public class Controller {
             Logger.errorEvent(mainFrame, e);
         }
 
+        initPrimaryListeners();
+
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
         setConnectionSettings();
 
+        //show ConSettDialog if it was defined in command line arguments
+        if (parameters.contains("connectionSettings")) {
+            mainFrame.showConSettDialog();
+        }
+
+        connect();
+        checkVersion();
+        checkFirstRun();
+
+        mainFrame.showLoginDialog();
+    }
+
+    private void initPrimaryListeners() {
         // if user entered new settings for connection to DB - putting them to Prefs
         mainFrame.setConSetListener(model -> {
             try {
@@ -69,19 +88,11 @@ public class Controller {
             } catch (IOException e) {
                 Logger.errorEvent(mainFrame, e);
             }
-            setConnectionSettings(model);
 
             // trying to connect with new settings
-            disconnect();
             setConnectionSettings();
             connect();
-            checkVersion();
-            checkFirstRun();
         });
-
-        connect();
-        checkVersion();
-        checkFirstRun();
 
         // init LoginListener here, because loginDialog appears before the MainFrame
         mainFrame.setLoginListener(new LoginListener() {
@@ -122,8 +133,6 @@ public class Controller {
                 } else return false;
             }
         });
-
-        mainFrame.showLoginDialog();
     }
 
     private void initListeners() {
@@ -456,10 +465,7 @@ public class Controller {
         } catch (IOException | ClassNotFoundException e) {
             Logger.errorEvent(mainFrame, e);
         }
-        setConnectionSettings(model);
-    }
 
-    private void setConnectionSettings(ConnectionSettingsModel model) {
         this.conSet = model;
         mainFrame.setDefaultConnectionSettings(model);
     }
@@ -472,11 +478,12 @@ public class Controller {
 
     // connecting to DB
     private void connect() {
+        Database.DB.disconnect();
         try {
             Database.DB.connect(conSet);
             Logger.infoEvent(mainFrame, Labels.getProperty("connectedToDB"));
             closeSplashScreen();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             Logger.errorEvent(mainFrame, Labels.getProperty("noConnectionToDB"), e);
             JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
                     Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
@@ -484,12 +491,6 @@ public class Controller {
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
         }
-    }
-
-    // disconnecting from DB
-    private void disconnect() {
-        Database.DB.disconnect();
-        Logger.infoEvent(mainFrame, "Disconnected successfully");
     }
 
     // methods requesting the DB
@@ -510,7 +511,6 @@ public class Controller {
             // this error occurs with old settings, have to reset it to defaults
             try {
                 Preferences.userRoot().node("db_con").clear();
-                disconnect();
                 connect();
             } catch (BackingStoreException e1) {
                 Logger.errorEvent(mainFrame, e);
@@ -857,7 +857,11 @@ public class Controller {
 
     // default close method
     private void close() {
-        disconnect();
+        Database.DB.disconnect();
+        Logger.infoEvent(mainFrame, "Disconnected successfully");
+        if (parameters.contains("logSave")) {
+            mainFrame.saveLog();
+        }
         mainFrame.dispose();
         System.exit(0);
     }
@@ -868,6 +872,19 @@ public class Controller {
                 Labels.getProperty("exitFromProgram"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
         if (action == JOptionPane.YES_OPTION) {
             close();
+        }
+    }
+
+    // parser for command-line arguments
+    private void parseArgs(String[] args) {
+        parameters = new ArrayList<>();
+        for (String arg : args) {
+            if (arg.contains("-c") || arg.contains("--connectionSettings")) {
+                parameters.add("connectionSettings");
+            }
+            if (arg.contains("-l") || arg.contains("--logSave")) {
+                parameters.add("logSave");
+            }
         }
     }
 }

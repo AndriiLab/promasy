@@ -21,12 +21,14 @@ import java.time.format.DateTimeFormatter;
 /**
  * Dialog displays program log
  */
-public class LoggerDialog extends JDialog {
+class LoggerDialog extends JDialog {
 
+    private final MainFrame parent;
     private JTextPane logPane;
 
-    public LoggerDialog(MainFrame parent) {
+    LoggerDialog(MainFrame parent) {
         super(parent, Labels.getProperty("log"), true);
+        this.parent = parent;
         setSize(500, 300);
         setLocationRelativeTo(parent);
 
@@ -35,16 +37,7 @@ public class LoggerDialog extends JDialog {
         logPane.setText(EmptyModel.STRING);
 
         JButton saveButton = new JButton(Labels.getProperty("saveLog"));
-        saveButton.addActionListener(e -> {
-            try {
-                String filePath = saveLog(logPane.getText());
-                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + filePath, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
-                this.setVisible(false);
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
-                Logger.errorEvent(parent, e1);
-            }
-        });
+        saveButton.addActionListener(e -> saveLog());
 
         JButton closeButton = new JButton(Labels.getProperty("closeBtn"));
         closeButton.addActionListener(e -> this.setVisible(false));
@@ -71,17 +64,23 @@ public class LoggerDialog extends JDialog {
 
     }
 
-    private static String saveLog(String log) throws IOException {
-        String fileName = String.format("log_%s.txt", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
-        FileWriter fw = new FileWriter(fileName);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(log);
-        bw.close();
-        fw.close();
-        return fileName;
+    void saveLog() {
+        String fileName = "log_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(logPane.getText());
+            bw.close();
+            fw.close();
+            JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + fileName, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
+            this.setVisible(false);
+        } catch (IOException e1) {
+            JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
+            Logger.errorEvent(parent, e1);
+        }
     }
 
-    public void addToLog (String status, Color color) {
+    void addToLog(String status, Color color) {
         StyledDocument doc = logPane.getStyledDocument();
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);

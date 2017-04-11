@@ -99,6 +99,7 @@ jar {
     doLast {
         copy {
             from "reports/Bids_Report.jrxml"
+            from "reports/CPV_Amount_Report.jrxml"
             into "build/libs/reports"
         }
     }

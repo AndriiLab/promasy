@@ -23,9 +23,6 @@
         <class>model.models.Version</class>
 
         <properties>
-            <!--Won't load all metadata - possibly speeds up the connection to PostgreSQL database-->
-            <!--<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>-->
-
             <!-- Database connection settings -->
             <!-- C3P0 pooling -->
             <property name="hibernate.connection.provider_class"
@@ -35,19 +32,17 @@
             <property name="hibernate.c3p0.timeout" value="300"/>
             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
             <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.acquireRetryAttempts" value="30"/>
+            <property name="hibernate.c3p0.breakAfterAcquireFailure" value="false"/>
 
             <!-- !!! Check LabelsBundle.properties for default connection settings-->
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres"/>
-            <property name="javax.persistence.jdbc.user" value="promasy_user"/>
-            <property name="javax.persistence.jdbc.password" value="@ccessp@ss"/>
-            <property name="hibernate.default_schema" value="promasy"/>
 
             <!-- SQL dialect -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
 
             <!-- Create/update tables automatically using mapping metadata -->
-            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
 
             <property name="hibernate.format_sql" value="true"/>
         </properties>

@@ -79,7 +79,7 @@ public class TableGenerator {
     public void generateReport(List<BidModel> bids) {
         bids = preSort(bids);
 
-        String fileName = String.format("export_%s.xls", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
+        String fileName = "export_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet spreadsheet = workbook.createSheet("export");

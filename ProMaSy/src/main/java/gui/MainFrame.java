@@ -586,4 +586,8 @@ public class MainFrame extends JFrame {
         }
         super.setVisible(visible);
     }
+
+    public void saveLog() {
+        loggerDialog.saveLog();
+    }
 }
