@@ -5,6 +5,7 @@ import model.enums.BidType;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +167,17 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        bids.forEach(AbstractModel::setDeleted);
+        bids.forEach(Model::setDeleted);
         super.setDeleted();
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.DEPARTMENT_FINANCES.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateDepOrder";
     }
 }

@@ -1,6 +1,9 @@
 package model.models;
 
+import model.dao.Database;
+
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -144,7 +147,17 @@ public class InstituteModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        departments.forEach(AbstractModel::setDeleted);
+        departments.forEach(Model::setDeleted);
         super.setDeleted();
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.INSTITUTES.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateInstitute";
     }
 }

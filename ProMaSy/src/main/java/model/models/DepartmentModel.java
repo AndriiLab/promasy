@@ -1,6 +1,9 @@
 package model.models;
 
+import model.dao.Database;
+
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -80,8 +83,18 @@ public class DepartmentModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        subdepartments.forEach(AbstractModel::setDeleted);
+        subdepartments.forEach(Model::setDeleted);
         super.setDeleted();
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.DEPARTMENTS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateDepartment";
     }
 
 }

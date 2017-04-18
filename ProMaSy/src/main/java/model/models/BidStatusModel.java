@@ -1,8 +1,10 @@
 package model.models;
 
+import model.dao.Database;
 import model.enums.Status;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -38,6 +40,16 @@ public class BidStatusModel extends AbstractModel {
     @Override
     public void setDescription(String description) {
 
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.BID_STATUSES.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "statusWasSet";
     }
 
     public Status getStatus() {

@@ -2,8 +2,8 @@ package gui.components;
 
 import gui.MainFrame;
 import gui.commons.Labels;
-import model.models.AbstractModel;
 import model.models.EmptyModel;
+import model.models.Model;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 /**
  * Abstract dialog with combo box and createOrUpdate, edit, delete buttons
  */
-public abstract class AbstractCEDDialog<T extends AbstractModel, U extends AbstractCEDDialogListener<T>> extends JDialog implements ActionListener {
+public abstract class AbstractCEDDialog<T extends Model, U extends AbstractCEDDialogListener<T>> extends JDialog implements ActionListener {
     protected final T emptyModel;
     protected JButton createButton;
     protected JButton editButton;

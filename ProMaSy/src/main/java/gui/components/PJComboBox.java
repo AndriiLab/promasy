@@ -1,6 +1,7 @@
 package gui.components;
 
 import model.models.AbstractModel;
+import model.models.Model;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +31,8 @@ public class PJComboBox<T> extends JComboBox<T> {
      * First it removes all objects from comboBox and adds emptyModel (if selected)
      * Next it adds only models where model.isActive()
      *
-     * @param db           parametrized list, which holds extended from {@link AbstractModel} objects
-     * @param emptyModel   model with default data of extended from {@link AbstractModel} object
+     * @param db           parametrized list, which implements {@link Model} interface
+     * @param emptyModel   model with default data which implements {@link Model} interface
      * @param isFirstEmpty add first emptyModel to comboBox
      */
 
@@ -44,20 +45,19 @@ public class PJComboBox<T> extends JComboBox<T> {
             this.addItem(emptyModel);
         } else if (db != null && !db.isEmpty()) {
             for (T model : db) {
-                if (model instanceof AbstractModel) {
+                if (model instanceof Model) {
                     if (((AbstractModel) model).isActive()) {
                         this.addItem(model);
-                    } else {
-                        this.addItem(model);
                     }
+                } else {
+                    this.addItem(model);
                 }
-
             }
         }
         this.repaint();
     }
 
-    public <T extends AbstractModel> void setSelectedModel(T model) {
+    public <T extends Model> void setSelectedModel(T model) {
         if (model.getModelId() != 0L) {
             setSelectedObject(model);
         }

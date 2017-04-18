@@ -1,8 +1,10 @@
 package model.models;
 
+import model.dao.Database;
 import model.enums.Role;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Entity
@@ -84,6 +86,16 @@ public class EmployeeModel extends AbstractModel {
     @Override
     public void setDescription(String lastName) {
         this.empLName = lastName;
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.EMPLOYEES.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "createOrUpdateUser";
     }
 
     public String getEmpFName() {

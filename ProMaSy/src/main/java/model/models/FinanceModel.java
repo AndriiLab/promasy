@@ -7,6 +7,7 @@ import model.enums.Fund;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -217,7 +218,17 @@ public class FinanceModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        financeDepartmentModels.forEach(AbstractModel::setDeleted);
+        financeDepartmentModels.forEach(Model::setDeleted);
         super.setDeleted();
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.FINANCES.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "createOrUpdateOrder";
     }
 }

@@ -1,8 +1,11 @@
 package model.models;
 
+import model.dao.Database;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Entity
@@ -30,6 +33,16 @@ public class AmountUnitsModel extends AbstractModel{
     @Override
     public void setDescription(String description) {
         this.amUnitDesc = description;
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.AMOUNTUNITS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateAmUnit";
     }
 
     public String getAmUnitDesc() {

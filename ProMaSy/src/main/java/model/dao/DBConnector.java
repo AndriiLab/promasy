@@ -23,8 +23,10 @@ public enum DBConnector {
     }
 
     public void connect(ConnectionSettingsModel conSet) throws SQLException {
+        //checking connection settings. this statement throws SQLException
         DriverManager.getConnection(conSet.getUrl(), conSet.getUser(), conSet.getPassword()).close();
 
+        //if no exception caught connecting with Hibernate
         Map<String, String> connectionProperties = new HashMap<>();
         connectionProperties.put("javax.persistence.jdbc.url", conSet.getUrl());
         connectionProperties.put("javax.persistence.jdbc.user", conSet.getUser());

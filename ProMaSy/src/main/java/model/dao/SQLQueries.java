@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.models.AbstractModel;
+import model.models.Model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-abstract class SQLQueries<T extends AbstractModel> {
+abstract class SQLQueries<T extends Model> implements Query<T> {
 
     private final Class<T> entityClass;
     CriteriaBuilder criteriaBuilder;
@@ -24,6 +24,7 @@ abstract class SQLQueries<T extends AbstractModel> {
         this.entityClass = entityClass;
     }
 
+    @Override
     public void createOrUpdate(T object) throws SQLException {
         entityManager = Database.DB.getEntityManager();
         entityManager.getTransaction().begin();
@@ -41,6 +42,7 @@ abstract class SQLQueries<T extends AbstractModel> {
         criteriaQuery.select(root);
     }
 
+    @Override
     public List<T> getList() {
         list.clear();
 
@@ -50,5 +52,4 @@ abstract class SQLQueries<T extends AbstractModel> {
         return Collections.unmodifiableList(list);
     }
 
-    public abstract List<T> getResults() throws SQLException;
 }

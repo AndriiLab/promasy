@@ -5,6 +5,7 @@ import model.enums.CityTypes;
 import model.enums.StreetTypes;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -145,6 +146,16 @@ public class Address extends AbstractModel {
     @Override
     public void setDescription(String description) {
         //won't need here
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        //won't need here
+    }
+
+    @Override
+    public String getMessage() {
+        return null;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package gui.employee;
 
+import gui.login.LoginPanel;
+
 /**
- * Listener for {@link gui.login.LoginDialog}
+ * Listener for {@link LoginPanel}
  */
 public interface CreateEmployeeFromLoginListener {
 

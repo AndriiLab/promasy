@@ -1,8 +1,11 @@
 package model.models;
 
+import model.dao.Database;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -31,6 +34,16 @@ public class ReasonForSupplierChoiceModel extends AbstractModel {
     @Override
     public void setDescription(String reason) {
         this.reason = reason;
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.REASONS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateReasonForSupplierChoice";
     }
 
     public String getReason() {

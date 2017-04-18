@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractModel {
+public abstract class AbstractModel implements Model {
 
     @Column(name = "active")
     protected boolean active;
@@ -141,10 +141,10 @@ public abstract class AbstractModel {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AbstractModel)) {
+        if (!(obj instanceof Model)) {
             return false;
         }
-        AbstractModel otherModel = (AbstractModel) obj;
+        Model otherModel = (Model) obj;
         return new EqualsBuilder().append(modelId, otherModel.getModelId()).isEquals();
     }
 

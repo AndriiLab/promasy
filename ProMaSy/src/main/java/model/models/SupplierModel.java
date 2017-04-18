@@ -1,10 +1,12 @@
 package model.models;
 
 import gui.commons.Labels;
+import model.dao.Database;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -47,6 +49,16 @@ public class SupplierModel extends AbstractModel {
     @Override
     public void setDescription(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.SUPPLIERS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateSupl";
     }
 
     public String getSupplierName() {

@@ -1,10 +1,12 @@
 package model.models;
 
 import gui.commons.Labels;
+import model.dao.Database;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 /**
@@ -36,6 +38,16 @@ public class ProducerModel extends AbstractModel{
     @Override
     public void setDescription(String producerName) {
         this.brandName = producerName;
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.PRODUCERS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "addOrUpdateProd";
     }
 
     public String getBrandName() {

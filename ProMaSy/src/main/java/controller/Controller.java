@@ -102,8 +102,7 @@ public class Controller {
                     PJOptionPane.criticalError(mainFrame);
                     close();
                 }
-                boolean isLoginDataValid = checkLogin(user, pass);
-                if (isLoginDataValid) {
+                if (validateLogin(user, pass)) {
                     // if login was successful init MainFrame and make it visible
                     mainFrame.initialize();
                     initListeners();
@@ -674,7 +673,7 @@ public class Controller {
     }
 
     // check user login and pass
-    private boolean checkLogin(String username, String password) {
+    private boolean validateLogin(String username, String password) {
         try {
             return Database.EMPLOYEES.checkLogin(username, password);
         } catch (SQLException e) {
@@ -737,112 +736,12 @@ public class Controller {
         }
     }
 
-    private void createOrUpdate(EmployeeModel model) {
+    private <T extends Model> void createOrUpdate(T model) {
         try {
-            Database.EMPLOYEES.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateUser") + model.toString());
+            model.createOrUpdate();
+            Logger.infoEvent(mainFrame, Labels.withColon(model.getMessage()) + model.toString());
         } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateUser") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(InstituteModel instModel) {
-        try {
-            Database.INSTITUTES.createOrUpdate(instModel);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateInstitute") + instModel.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateInstitute") + instModel.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(DepartmentModel model) {
-        try {
-            Database.DEPARTMENTS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateDepartment") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateDepartment") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(SubdepartmentModel model) {
-        try {
-            Database.SUBDEPARTMENS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateSubdepartment") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateSubdepartment") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(AmountUnitsModel model) {
-        try {
-            Database.AMOUNTUNITS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateAmUnit") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateAmUnit") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(ProducerModel model) {
-        try {
-            Database.PRODUCERS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateProd") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateProd") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(SupplierModel model) {
-        try {
-            Database.SUPPLIERS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateSupl") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateSupl") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(ReasonForSupplierChoiceModel model) {
-        try {
-            Database.REASONS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateReasonForSupplierChoice") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateReasonForSupplierChoice") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(FinanceModel model) {
-        try {
-            Database.FINANCES.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateOrder") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateOrder") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(FinanceDepartmentModel model) {
-        try {
-            Database.DEPARTMENT_FINANCES.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("addOrUpdateDepOrder") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("addOrUpdateDepOrder") + model.toString(), e);
-        }
-    }
-
-
-    private void createOrUpdate(BidModel model) {
-        try {
-            Database.BIDS.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("createOrUpdateUserBid") + model.toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("createOrUpdateUserBid") + model.toString(), e);
-        }
-    }
-
-    private void createOrUpdate(BidStatusModel model) {
-        try {
-            Database.BID_STATUSES.createOrUpdate(model);
-            Logger.infoEvent(mainFrame, Labels.withColon("statusWasSet") + model.getStatus().toString());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("statusWasSet") + model.getStatus().toString(), e);
+            Logger.errorEvent(mainFrame, Labels.withColon(model.getMessage()) + model.toString(), e);
         }
     }
 

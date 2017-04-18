@@ -1,11 +1,13 @@
 package model.models;
 
+import model.dao.Database;
 import model.enums.BidType;
 import model.models.report.BidsReportModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -253,8 +255,18 @@ public class BidModel extends AbstractModel {
 
     @Override
     public void setDeleted() {
-        statuses.forEach(AbstractModel::setDeleted);
+        statuses.forEach(Model::setDeleted);
         super.setDeleted();
+    }
+
+    @Override
+    public void createOrUpdate() throws SQLException {
+        Database.BIDS.createOrUpdate(this);
+    }
+
+    @Override
+    public String getMessage() {
+        return "createOrUpdateUserBid";
     }
 
     public BidsReportModel generateReportModel() {
