@@ -30,6 +30,7 @@ public class Icons {
     public static final Icon PRODUCER = IconFontSwing.buildIcon(FontAwesome.INDUSTRY, 18);
     public static final Icon NEW_USER = IconFontSwing.buildIcon(FontAwesome.USER_PLUS, 18);
     public static final Icon NEW_USER_GREEN = IconFontSwing.buildIcon(FontAwesome.USER_PLUS, 18, Colors.GREEN);
+    public static final Icon REFRESH = IconFontSwing.buildIcon(FontAwesome.REFRESH, 18);
     public static final Icon DELETE_USER_RED = IconFontSwing.buildIcon(FontAwesome.USER_TIMES, 18, Colors.RED);
     public static final Icon PASSWORD = IconFontSwing.buildIcon(FontAwesome.KEY, 18, Colors.GREEN);
     public static final Icon ERROR = IconFontSwing.buildIcon(FontAwesome.EXCLAMATION_TRIANGLE, 30, Colors.RED);

@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Model for data of related to department finances
@@ -37,6 +39,9 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     @Column(name = "total_services")
     private BigDecimal totalServicesAmount;
+
+    @Transient
+    private Map<BidType, BigDecimal> leftAmount;
 
     public FinanceDepartmentModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, FinanceModel finances, SubdepartmentModel subdepartment, List<BidModel> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEquipmentAmount, BigDecimal totalServicesAmount) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
@@ -154,7 +159,32 @@ public class FinanceDepartmentModel extends AbstractModel {
     }
 
     public BigDecimal getLeftAmount(BidType bidType) {
-        return getTotalAmount(bidType).subtract(getUsedAmount(bidType));
+        if (leftAmount == null || !leftAmount.containsKey(bidType)) {
+            calculateLeftAmount(bidType);
+        }
+        return leftAmount.get(bidType);
+    }
+
+    public BigDecimal getUpdatedLeftAmount(BidType bidType) {
+        calculateLeftAmount(bidType);
+        return leftAmount.get(bidType);
+    }
+
+    private void calculateLeftAmount(BidType bidType) {
+        if (leftAmount == null) {
+            leftAmount = new HashMap<>();
+        }
+        BigDecimal financesLeft = getTotalAmount(bidType).subtract(getUsedAmount(bidType));
+        leftAmount.put(bidType, financesLeft);
+    }
+
+    public void calculateLeftAmount() {
+        if (leftAmount == null) {
+            leftAmount = new HashMap<>();
+        }
+        for (BidType type : BidType.values()) {
+            calculateLeftAmount(type);
+        }
     }
 
     @Override

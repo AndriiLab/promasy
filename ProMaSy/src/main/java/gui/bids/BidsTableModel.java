@@ -18,14 +18,14 @@ class BidsTableModel extends AbstractTableModel {
     private List<? extends BidModel> db;
 
     private String[] colNames = {Labels.getProperty("description"),
-                                    Labels.getProperty("amount"),
-                                    Labels.getProperty("oneUnitPrice"),
-                                    Labels.getProperty("totalPrice"),
+            Labels.getProperty("amount"),
+            Labels.getProperty("oneUnitPrice"),
+            Labels.getProperty("totalPrice"),
             Labels.getProperty("role.user"),
             Labels.getProperty("dateModified"),
             Labels.getProperty("status")};
 
-    public BidsTableModel(){
+    public BidsTableModel() {
 
     }
 
@@ -51,7 +51,7 @@ class BidsTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         BidModel model = db.get(rowIndex);
-        switch (columnIndex){
+        switch (columnIndex) {
             case 0:
                 return model;
             case 1:
@@ -73,7 +73,7 @@ class BidsTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex){
+        switch (columnIndex) {
             case 0:
                 return BidModel.class;
             case 1:

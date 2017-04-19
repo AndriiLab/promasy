@@ -55,7 +55,7 @@ class FinanceTableModel extends AbstractTableModel {
         FinanceModel model = db.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return model;
+                return model.toString();
             case 1:
                 BigDecimal materialsAmount = model.getTotalAmount(BidType.MATERIALS);
                 if (materialsAmount == null) {
@@ -102,6 +102,8 @@ class FinanceTableModel extends AbstractTableModel {
                 return model.getStartDate();
             case 8:
                 return model.getEndDate();
+            case 9:
+                return model;
             default:
                 return null;
         }
@@ -111,7 +113,7 @@ class FinanceTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return FinanceModel.class;
+                return String.class;
             case 1:
                 return BigDecimal.class;
             case 2:
@@ -128,6 +130,8 @@ class FinanceTableModel extends AbstractTableModel {
                 return Date.class;
             case 8:
                 return Date.class;
+            case 9:
+                return FinanceModel.class;
             default:
                 return null;
         }

@@ -2,6 +2,7 @@ package gui.finance;
 
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJOptionPane;
@@ -14,7 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,17 +23,19 @@ import java.util.List;
  */
 public class FinancePanel extends JPanel {
 
-    private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new ArrayList<>();
+    private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new LinkedList<>();
 
     private JButton createOrderButton;
     private JButton editOrderButton;
     private JButton deleteOrderButton;
+    private JButton refreshOrderButton;
     private JTable financeTable;
     private FinanceTableModel financeTableModel;
 
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
     private JButton deleteDepOrderButton;
+    private JButton refreshDepOrderButton;
     private JTable depFinanceTable;
     private DepartmentFinanceTableModel departmentFinanceTableModel;
     private FinancePanelListener listener;
@@ -60,6 +63,9 @@ public class FinancePanel extends JPanel {
         createOrderButton = cedFinance.getCreateButton();
         editOrderButton = cedFinance.getEditButton();
         deleteOrderButton = cedFinance.getDeleteButton();
+        refreshOrderButton = new JButton(Icons.REFRESH);
+        refreshOrderButton.setPreferredSize(new Dimension(25, 25));
+        refreshOrderButton.setToolTipText(Labels.getProperty("refreshOrders"));
 
         editOrderButton.setEnabled(false);
         deleteOrderButton.setEnabled(false);
@@ -73,7 +79,7 @@ public class FinancePanel extends JPanel {
                 financeTable.getSelectionModel().setSelectionInterval(row, row);
 
                 if (ev.getButton() == MouseEvent.BUTTON1) {
-                    selectedFinanceModel = (FinanceModel) financeTable.getValueAt(row, 0);
+                    selectedFinanceModel = (FinanceModel) financeTableModel.getValueAt(row, 9);
                     setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
                     if (!selectedFinanceModel.equals(EmptyModel.FINANCE)) {
                         editOrderButton.setEnabled(true);
@@ -90,6 +96,9 @@ public class FinancePanel extends JPanel {
         createDepOrderButton = cedDepartmentFinances.getCreateButton();
         editDepOrderButton = cedDepartmentFinances.getEditButton();
         deleteDepOrderButton = cedDepartmentFinances.getDeleteButton();
+        refreshDepOrderButton = new JButton(Icons.REFRESH);
+        refreshDepOrderButton.setPreferredSize(new Dimension(25, 25));
+        refreshDepOrderButton.setToolTipText(Labels.getProperty("refreshDepOrders"));
 
         createDepOrderButton.setEnabled(false);
         editDepOrderButton.setEnabled(false);
@@ -144,6 +153,13 @@ public class FinancePanel extends JPanel {
                 setDepartmentFinanceTableData(emptyDepartmentFinancesList);
                 selectedFinanceModel = EmptyModel.FINANCE;
             }
+        });
+
+        refreshOrderButton.addActionListener(e -> {
+            for (int row = 0; row < financeTableModel.getRowCount(); row++) {
+                ((FinanceModel) financeTableModel.getValueAt(row, 9)).calculateLeftAmount();
+            }
+            financeTableModel.fireTableDataChanged();
         });
 
         createFinancePanel.setFinanceDialogListener(model -> {
@@ -203,11 +219,18 @@ public class FinancePanel extends JPanel {
                 selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
+
+        refreshDepOrderButton.addActionListener(e -> {
+            for (int row = 0; row < departmentFinanceTableModel.getRowCount(); row++) {
+                ((FinanceDepartmentModel) departmentFinanceTableModel.getValueAt(row, 8)).calculateLeftAmount();
+            }
+            departmentFinanceTableModel.fireTableDataChanged();
+        });
     }
 
     public void setFinanceTableData(List<FinanceModel> db) {
         //removing all inactive items from list
-        List<FinanceModel> activeList = new ArrayList<>();
+        List<FinanceModel> activeList = new LinkedList<>();
         for (FinanceModel model : db) {
             if (model.isActive()) {
                 activeList.add(model);
@@ -220,7 +243,7 @@ public class FinancePanel extends JPanel {
 
     public void setDepartmentFinanceTableData(List<FinanceDepartmentModel> db) {
         //removing all inactive items from list
-        List<FinanceDepartmentModel> activeList = new ArrayList<>();
+        List<FinanceDepartmentModel> activeList = new LinkedList<>();
         for (FinanceDepartmentModel model : db) {
             if (model.isActive()) {
                 if (!useUserDepartment || (useUserDepartment && model.getSubdepartment().getDepartment().equals(LoginData.getInstance().getSubdepartment().getDepartment()))) {
@@ -269,6 +292,7 @@ public class FinancePanel extends JPanel {
         addOrderButtonPanel.add(createOrderButton);
         addOrderButtonPanel.add(editOrderButton);
         addOrderButtonPanel.add(deleteOrderButton);
+        addOrderButtonPanel.add(refreshOrderButton);
 
         financePanel.add(addOrderButtonPanel, BorderLayout.NORTH);
         financePanel.add(new JScrollPane(financeTable), BorderLayout.CENTER);
@@ -278,6 +302,7 @@ public class FinancePanel extends JPanel {
         addDepOrderButtonPanel.add(createDepOrderButton);
         addDepOrderButtonPanel.add(editDepOrderButton);
         addDepOrderButtonPanel.add(deleteDepOrderButton);
+        addDepOrderButtonPanel.add(refreshDepOrderButton);
 
         depFinancePanel.add(addDepOrderButtonPanel, BorderLayout.NORTH);
         depFinancePanel.add(new JScrollPane(depFinanceTable), BorderLayout.CENTER);

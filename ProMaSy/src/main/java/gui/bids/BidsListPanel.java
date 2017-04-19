@@ -107,6 +107,14 @@ public class BidsListPanel extends JPanel {
 
         bidsTableModel = new BidsTableModel();
         bidsTable = new JTable(bidsTableModel);
+        // setting preferred sizes for table columns
+        bidsTable.getColumnModel().getColumn(0).setPreferredWidth(300);
+        bidsTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+        bidsTable.getColumnModel().getColumn(2).setPreferredWidth(90);
+        bidsTable.getColumnModel().getColumn(3).setPreferredWidth(90);
+        bidsTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+        bidsTable.getColumnModel().getColumn(5).setPreferredWidth(100);
+        bidsTable.getColumnModel().getColumn(6).setPreferredWidth(100);
         // setting multiple selection mode
         bidsTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -328,8 +336,8 @@ public class BidsListPanel extends JPanel {
 
     private void setFinanceLabels() {
         if (selectedFinanceDepartmentModel.getTotalAmount(selectedBidType) != null) {
-            BigDecimal sum = selectedFinanceDepartmentModel.getTotalAmount(selectedBidType).subtract(selectedFinanceDepartmentModel.getLeftAmount(selectedBidType));
-            BigDecimal financeLeft = selectedFinanceDepartmentModel.getLeftAmount(selectedBidType);
+            BigDecimal sum = selectedFinanceDepartmentModel.getTotalAmount(selectedBidType).subtract(selectedFinanceDepartmentModel.getUpdatedLeftAmount(selectedBidType));
+            BigDecimal financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(selectedBidType);
             sumLabel.setText(Labels.withColon("totalPrice2") + " " + sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
             financeLeftLabel.setText(Labels.withColon("financeLeftByTema") + " " + financeLeft.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
         } else {

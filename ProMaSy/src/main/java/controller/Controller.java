@@ -77,7 +77,7 @@ public class Controller {
         checkVersion();
         checkFirstRun();
 
-        mainFrame.showLoginDialog();
+        mainFrame.showLoginPane();
     }
 
     private void initPrimaryListeners() {
@@ -104,8 +104,7 @@ public class Controller {
                 }
                 if (validateLogin(user, pass)) {
                     // if login was successful init MainFrame and make it visible
-                    mainFrame.initialize();
-                    initListeners();
+                    initMainFrame();
                     mainFrame.setVisible(true);
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
                 } else {
@@ -126,15 +125,15 @@ public class Controller {
                 Logger.infoEvent(mainFrame, "Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
                     LoginData.getInstance(Database.EMPLOYEES.getUserWithId(1L));
-                    mainFrame.initialize();
-                    initListeners();
+                    initMainFrame();
                     return true;
                 } else return false;
             }
         });
     }
 
-    private void initListeners() {
+    private void initMainFrame() {
+        mainFrame.initialize();
         // adding implementation for closing operation via X-button on window
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -447,8 +446,7 @@ public class Controller {
         firstUser.setCreated();
         createOrUpdate(firstUser);
         LoginData.getInstance(firstUser);
-        mainFrame.initialize();
-        initListeners();
+        initMainFrame();
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
     }
 
@@ -659,15 +657,6 @@ public class Controller {
             return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
         } catch (SQLException e) {
             Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances") + " order Id: " + orderId, e);
-            return null;
-        }
-    }
-
-    private List<FinanceDepartmentModel> getDepartmentFinancesByDepartment(DepartmentModel departmentModel) {
-        try {
-            return Database.DEPARTMENT_FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
-        } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") + Labels.withSpaceBefore("departmentFinances"), e);
             return null;
         }
     }

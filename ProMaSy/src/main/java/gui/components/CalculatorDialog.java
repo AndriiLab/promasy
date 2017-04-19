@@ -52,10 +52,18 @@ public class CalculatorDialog extends JDialog implements ActionListener {
             JButton button = new JButton(operator);
             button.setFont(buttonFont);
             button.setPreferredSize(buttonDim);
-            if (operator.equals("clp")) {
-                button.setText(EmptyModel.STRING);
-                button.setIcon(Icons.CLIPBOARD);
-                button.setToolTipText(Labels.getProperty("copyToClipboard"));
+            switch (operator) {
+                case "clp":
+                    button.setText(EmptyModel.STRING);
+                    button.setIcon(Icons.CLIPBOARD);
+                    button.setToolTipText(Labels.getProperty("copyToClipboard"));
+                    break;
+                case "C":
+                    button.setToolTipText(Labels.getProperty("clearAll"));
+                    break;
+                case "<":
+                    button.setToolTipText(Labels.getProperty("clearOneChar"));
+                    break;
             }
             button.addActionListener(this);
             buttons.put(operator, button);
@@ -192,7 +200,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         try {
             doc.remove(offset, charsRemove);
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            Logger.errorEvent(null, e);
         }
 
     }

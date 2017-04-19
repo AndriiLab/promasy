@@ -9,9 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Model for financial data
@@ -50,6 +48,9 @@ public class FinanceModel extends AbstractModel {
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
     private List<FinanceDepartmentModel> financeDepartmentModels = new ArrayList<>();
+
+    @Transient
+    private Map<BidType, BigDecimal> leftAmount;
 
     public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Fund fundType, Integer kpkvk) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
@@ -150,15 +151,33 @@ public class FinanceModel extends AbstractModel {
         }
     }
 
-    public BigDecimal getLeftAmount(BidType type) {
-        BigDecimal leftAmount = getTotalAmount(type);
-        // TODO make a query from this function
+    public BigDecimal getLeftAmount(BidType bidType) {
+        if (leftAmount == null || !leftAmount.containsKey(bidType)) {
+            calculateLeftAmount(bidType);
+        }
+        return leftAmount.get(bidType);
+    }
+
+    public void calculateLeftAmount(BidType bidType) {
+        if (leftAmount == null) {
+            leftAmount = new HashMap<>();
+        }
+        BigDecimal financesLeft = getTotalAmount(bidType);
         for (FinanceDepartmentModel model : financeDepartmentModels) {
             if (model.isActive()) {
-                leftAmount = leftAmount.subtract(model.getUsedAmount(type));
+                financesLeft = financesLeft.subtract(model.getUsedAmount(bidType));
             }
+            leftAmount.put(bidType, financesLeft);
         }
-        return leftAmount;
+    }
+
+    public void calculateLeftAmount() {
+        if (leftAmount == null) {
+            leftAmount = new HashMap<>();
+        }
+        for (BidType type : BidType.values()) {
+            calculateLeftAmount(type);
+        }
     }
 
     public BigDecimal getUnassignedAmount(BidType type) {

@@ -485,9 +485,9 @@ public class CreateBidPanel extends JPanel {
         BigDecimal financeLeft;
         if (isEditMode && !financeChanged) {
             BigDecimal previousSum = createdBidModel.getTotalPrice();
-            financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType).add(previousSum);
+            financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(currentBidType).add(previousSum);
         } else {
-            financeLeft = selectedFinanceDepartmentModel.getLeftAmount(currentBidType);
+            financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(currentBidType);
         }
         BigDecimal totalPrice = calculateTotalPrice();
         if (totalPrice == null) {

@@ -11,23 +11,19 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-public class LoginDialog extends JDialog {
+public class LoginPanel extends JPanel {
 
     private JTextField userField;
     private JPasswordField passwordField;
     private LoginListener loginListener;
-    private JFrame parent;
+    private MainFrame parent;
 
-    public LoginDialog(MainFrame parent) {
-        super(parent, Labels.getProperty("loginDialogSuper"), true);
+    public LoginPanel(MainFrame parent) {
+        parent.setTitle(Labels.getProperty("loginDialogSuper"));
+        parent.setSize(280, 150);
+        parent.setResizable(false);
         this.parent = parent;
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setSize(240, 150);
-        setResizable(false);
-        setLocationRelativeTo(parent);
 
         userField = new JTextField(13);
         PromptSupport.setPrompt(Labels.getProperty("role.user"), userField);
@@ -57,7 +53,6 @@ public class LoginDialog extends JDialog {
         Insets rightPadding = new Insets(0, 0, 0, 10);
         Insets noPadding = new Insets(0, 0, 0, 0);
 
-        ////// Login Panel //////
         ////// First row//////
         gc.gridy = 0;
         gc.weightx = 1;
@@ -150,15 +145,7 @@ public class LoginDialog extends JDialog {
             }
         });
 
-        this.getRootPane().setDefaultButton(okButton);
-
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                if (loginListener != null) {
-                    loginListener.loginCancelled();
-                }
-            }
-        });
+        SwingUtilities.getRootPane(parent).setDefaultButton(okButton);
 
     }
 

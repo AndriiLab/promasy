@@ -25,8 +25,8 @@ import gui.employee.EditEmployeeDialog;
 import gui.employee.EditEmployeeDialogListener;
 import gui.finance.FinancePanel;
 import gui.finance.FinancePanelListener;
-import gui.login.LoginDialog;
 import gui.login.LoginListener;
+import gui.login.LoginPanel;
 import gui.organization.OrganizationDialog;
 import gui.organization.OrganizationDialogListener;
 import gui.producer.ProducerDialog;
@@ -55,7 +55,7 @@ import java.util.Map;
 
 public class MainFrame extends JFrame {
 
-    private LoginDialog loginDialog;
+    private LoginPanel loginPanel;
     private Toolbar toolbar;
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
@@ -79,9 +79,6 @@ public class MainFrame extends JFrame {
     private DrawSplashScreen splashScreen;
 
     public MainFrame() {
-        // Setting name of the window and its parameters
-        super(Labels.getProperty("mainFrameSuper"));
-        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         splashScreen = new DrawSplashScreen();
@@ -90,19 +87,13 @@ public class MainFrame extends JFrame {
         // registering font for icons
         IconFontSwing.register(FontAwesome.getIconFont());
 
-        // set location relative to the screen center
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-
-        //initializing toolbar, login and connection settings windows, logger
+        //initializing toolbar, login and connection settings windows and other common windows
         toolbar = new Toolbar();
-        loginDialog = new LoginDialog(this);
+        loginPanel = new LoginPanel(this);
         conSettDialog = new ConSetDialog(this);
         loggerDialog = new LoggerDialog(this);
         statusPanel = new StatusPanel(this);
         calculatorDialog = new CalculatorDialog(this);
-
-        //initializing other common windows
         bidsListPanel = new BidsListPanel(this);
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
@@ -116,14 +107,24 @@ public class MainFrame extends JFrame {
         editEmpDialog = new EditEmployeeDialog(this);
         createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
+
+        setLayout(new BorderLayout());
     }
 
     public void initialize() {
-        Role role = LoginData.getInstance().getRole();
-        //setting layout
-        setLayout(new BorderLayout());
+        //removing login panel
+        setVisible(false);
+        remove(loginPanel);
 
-        // init panes according to user roles
+        //adding components of main window
+        add(toolbar, BorderLayout.PAGE_START);
+        add(statusPanel, BorderLayout.SOUTH);
+
+        Role role = LoginData.getInstance().getRole();
+
+        setJMenuBar(createMenuBar(role));
+
+        // init main pane and menu bar according to user roles
         switch (role) {
             case ADMIN:
                 createTabPane();
@@ -150,14 +151,12 @@ public class MainFrame extends JFrame {
                 break;
             case HEAD_OF_DEPARTMENT:
                 useUserDepartment();
-                // TODO createTabPane();
-                add(bidsListPanel, BorderLayout.CENTER);
+                createTabPane();
                 financePanel.hideCed();
                 break;
             case PERSONALLY_LIABLE_EMPLOYEE:
                 useUserDepartment();
-                // TODO createTabPane();
-                add(bidsListPanel, BorderLayout.CENTER);
+                createTabPane();
                 financePanel.hideCed();
                 break;
             case USER:
@@ -172,54 +171,12 @@ public class MainFrame extends JFrame {
                 break;
         }
 
-        setJMenuBar(createMenuBar(role));
+        setListeners();
+    }
 
-        // setting layout and formatting frames on mainframe
-        add(toolbar, BorderLayout.PAGE_START);
-        add(statusPanel, BorderLayout.SOUTH);
-
-        statusPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                loggerDialog.setVisible(true);
-            }
-        });
-
-        TableGenerator tg = new TableGenerator(this);
-        toolbar.setToolbarListener(new ToolbarListener() {
-            @Override
-            public void printEventOccurred() {
-                onPrintClick();
-            }
-
-            @Override
-            public void showCpvSearchDialog() {
-                cpvDialog.setVisible(true);
-            }
-
-            @Override
-            public void showCalculator() {
-                calculatorDialog.setVisible(true);
-            }
-
-            @Override
-            public void exportToTableEventOccurred() {
-                if (tabPane != null) {
-                    if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
-                        tg.generateReport(bidsListPanel.getSelectedBids());
-                    } else if (tabPane.getSelectedComponent().equals(financePanel)) {
-                        List<BidModel> bids = new LinkedList<>();
-                        financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
-                        tg.generateReport(bids);
-                    }
-                } else {
-                    tg.generateReport(bidsListPanel.getSelectedBids());
-                }
-            }
-        });
-
-        //hiding login dialog and showing mainframe
-        loginDialog.setVisible(false);
+    private void positionOnScreenCenter() {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
     }
 
     private void useUserDepartment() {
@@ -234,7 +191,7 @@ public class MainFrame extends JFrame {
         add(tabPane, BorderLayout.CENTER);
     }
 
-    //This method generates menubar
+    //This method generates menu bar
     private JMenuBar createMenuBar(Role userRole) {
         JMenuBar menuBar = new JMenuBar();
 
@@ -334,6 +291,48 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
+    private void setListeners() {
+        statusPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                loggerDialog.setVisible(true);
+            }
+        });
+
+        TableGenerator tg = new TableGenerator(this);
+        toolbar.setToolbarListener(new ToolbarListener() {
+            @Override
+            public void printEventOccurred() {
+                onPrintClick();
+            }
+
+            @Override
+            public void showCpvSearchDialog() {
+                cpvDialog.setVisible(true);
+            }
+
+            @Override
+            public void showCalculator() {
+                calculatorDialog.setVisible(true);
+            }
+
+            @Override
+            public void exportToTableEventOccurred() {
+                if (tabPane != null) {
+                    if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
+                        tg.generateReport(bidsListPanel.getSelectedBids());
+                    } else if (tabPane.getSelectedComponent().equals(financePanel)) {
+                        List<BidModel> bids = new LinkedList<>();
+                        financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
+                        tg.generateReport(bids);
+                    }
+                } else {
+                    tg.generateReport(bidsListPanel.getSelectedBids());
+                }
+            }
+        });
+    }
+
     private void onPrintClick() {
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
@@ -352,8 +351,10 @@ public class MainFrame extends JFrame {
     }
 
     //windows controls
-    public void showLoginDialog() {
-        loginDialog.setVisible(true);
+    public void showLoginPane() {
+        add(loginPanel, BorderLayout.CENTER);
+        positionOnScreenCenter();
+        super.setVisible(true);
     }
 
     public void showConSettDialog() {
@@ -435,7 +436,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setLoginListener(LoginListener loginListener) {
-        loginDialog.setLoginListener(loginListener);
+        loginPanel.setLoginListener(loginListener);
     }
 
     public void setConSetListener(ConSetListener listener) {
@@ -575,9 +576,17 @@ public class MainFrame extends JFrame {
         return splashScreen;
     }
 
+    public void saveLog() {
+        loggerDialog.saveLog();
+    }
+
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
+            setTitle(Labels.getProperty("mainFrameSuper"));
+            setSize(1000, 700);
+            setResizable(true);
+            positionOnScreenCenter();
             listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
             if (bidsListPanel.getSelectedDepartment().equals(EmptyModel.DEPARTMENT)) {
                 listener.getAllBids(bidsListPanel.getSelectedBidType());
@@ -585,9 +594,5 @@ public class MainFrame extends JFrame {
             financePanel.setDepartmentFinanceTableData(new LinkedList<>());
         }
         super.setVisible(visible);
-    }
-
-    public void saveLog() {
-        loggerDialog.saveLog();
     }
 }
