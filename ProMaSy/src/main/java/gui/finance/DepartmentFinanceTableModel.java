@@ -7,6 +7,7 @@ import model.models.FinanceDepartmentModel;
 import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  */
 class DepartmentFinanceTableModel extends AbstractTableModel {
 
-    private List<FinanceDepartmentModel> db;
+    private List<FinanceDepartmentModel> db = new LinkedList<>();
     private String[] colNames = {
             Labels.getProperty("department"),
             Labels.getProperty("subdepartment"),

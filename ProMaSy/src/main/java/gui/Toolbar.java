@@ -22,6 +22,11 @@ public class Toolbar extends JToolBar {
         exportToTableFileButton.setPreferredSize(new Dimension(25, 25));
         exportToTableFileButton.setToolTipText(Labels.withThreeDots("exportToTableFile"));
 
+        JButton refreshButton = new JButton(Icons.REFRESH);
+        refreshButton.setPreferredSize(dim);
+        refreshButton.setPreferredSize(new Dimension(25, 25));
+        refreshButton.setToolTipText(Labels.getProperty("refreshTable"));
+
         JButton cpvBtn = new JButton("CPV");
         cpvBtn.setPreferredSize(dim);
         cpvBtn.setToolTipText(Labels.withThreeDots("cpvPanelTab"));
@@ -32,6 +37,7 @@ public class Toolbar extends JToolBar {
 
         add(printBtn);
         add(exportToTableFileButton);
+        add(refreshButton);
         addSeparator();
         add(cpvBtn);
         add(calcButton);
@@ -46,6 +52,12 @@ public class Toolbar extends JToolBar {
         exportToTableFileButton.addActionListener(e -> {
             if (btnListener != null) {
                 btnListener.exportToTableEventOccurred();
+            }
+        });
+
+        refreshButton.addActionListener(e -> {
+            if (btnListener != null) {
+                btnListener.refreshTable();
             }
         });
 

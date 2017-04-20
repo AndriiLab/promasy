@@ -9,4 +9,6 @@ public interface ToolbarListener {
     void showCalculator();
 
     void exportToTableEventOccurred();
+
+    void refreshTable();
 }

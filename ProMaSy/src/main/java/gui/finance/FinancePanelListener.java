@@ -15,4 +15,6 @@ public interface FinancePanelListener {
     void loadDepartments();
 
     void getFinancesByDepartment(DepartmentModel department);
+
+    void getAllData();
 }

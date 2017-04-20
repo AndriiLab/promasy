@@ -333,7 +333,7 @@ public class CreateEmployeeDialog extends JDialog {
         subdepartmentBox.setBoxData(subdepDb, EmptyModel.SUBDEPARTMENT, true);
     }
 
-    public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
+    public void setListener(CreateEmployeeDialogListener listener) {
         this.listener = listener;
     }
 

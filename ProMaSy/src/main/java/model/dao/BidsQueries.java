@@ -27,6 +27,8 @@ public class BidsQueries extends SQLQueries<BidModel> {
         List<BidModel> list = (List<BidModel>) query.getResultList();
         em.getTransaction().commit();
 
+        list.forEach(em::refresh);
+
         return list;
     }
 
@@ -38,6 +40,8 @@ public class BidsQueries extends SQLQueries<BidModel> {
                 .setParameter("department", department);
         List<BidModel> list = (List<BidModel>) query.getResultList();
         em.getTransaction().commit();
+
+        list.forEach(em::refresh);
 
         return list;
     }
@@ -51,6 +55,8 @@ public class BidsQueries extends SQLQueries<BidModel> {
         List<BidModel> list = (List<BidModel>) query.getResultList();
         em.getTransaction().commit();
 
+        list.forEach(em::refresh);
+
         return list;
     }
 
@@ -59,7 +65,10 @@ public class BidsQueries extends SQLQueries<BidModel> {
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.active), true));
         criteriaQuery.where(criteriaBuilder.equal(root.get(BidModel_.type), type));
         criteriaQuery.orderBy(criteriaBuilder.desc(criteriaBuilder.coalesce(root.get(BidModel_.modifiedDate), root.get(BidModel_.createdDate))));
-        return super.getList();
+
+        List<BidModel> list = super.getList();
+        list.forEach(Database.DB.getEntityManager()::refresh);
+        return list;
     }
 
     @Override

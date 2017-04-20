@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 class FinanceTableModel extends AbstractTableModel {
 
-    private List<FinanceModel> db;
+    private List<FinanceModel> db = new LinkedList<>();
 
     private String[] colNames = {
             Labels.getProperty("financeName"),

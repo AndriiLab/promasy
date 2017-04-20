@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ import java.util.List;
  */
 class BidsTableModel extends AbstractTableModel {
 
-    private List<? extends BidModel> db;
+    private List<BidModel> db = new LinkedList<>();
 
     private String[] colNames = {Labels.getProperty("description"),
             Labels.getProperty("amount"),
@@ -34,7 +35,11 @@ class BidsTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
-    public void setData(List<? extends BidModel> db) {
+    public List<BidModel> getData() {
+        return db;
+    }
+
+    public void setData(List<BidModel> db) {
         this.db = db;
     }
 

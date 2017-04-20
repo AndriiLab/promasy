@@ -73,7 +73,7 @@ public class ReportsGenerator {
                 Logger.infoEvent(parent, "Outdated report file: " + reportPath + ".jrxml");
                 compileReport(reportPath, parent);
             } else {
-                Logger.infoEvent(parent, "Report " + reportPath + ".jrxml is up–to–date");
+                Logger.infoEvent(parent, "Report " + reportPath + ".jrxml does not need to be updated");
             }
         } catch (NoSuchFileException ex) {
             Logger.infoEvent(parent, "Report file doesn't exist " + reportPath);

@@ -249,7 +249,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         subdepartmentBox.setBoxData(subdepDb, EmptyModel.SUBDEPARTMENT, true);
     }
 
-    public void setOrganizationDialogListener(OrganizationDialogListener organizationDialogListener) {
+    public void setListener(OrganizationDialogListener organizationDialogListener) {
         this.orgListener = organizationDialogListener;
     }
 

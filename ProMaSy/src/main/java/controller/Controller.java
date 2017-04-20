@@ -72,6 +72,9 @@ public class Controller {
         if (parameters.contains("connectionSettings")) {
             mainFrame.showConSettDialog();
         }
+        if (parameters.contains("connectionStatistics")) {
+            Database.DB.showConnectionStats(mainFrame);
+        }
 
         connect();
         checkVersion();
@@ -165,14 +168,8 @@ public class Controller {
             }
 
             @Override
-            public void getAllDepartmentsAndFinances(InstituteModel institute) {
+            public void getAllDepartments(InstituteModel institute) {
                 mainFrame.setDepartmentModelList(getDepartments(institute.getModelId()));
-                mainFrame.setFinanceModelList(getFinances());
-            }
-
-            @Override
-            public void getAllBids(BidType bidType) {
-                mainFrame.setBidModelList(getBids(bidType));
             }
         });
 
@@ -320,6 +317,11 @@ public class Controller {
             public void getFinancesByDepartment(DepartmentModel department) {
                 mainFrame.setFinanceModelList(getFinanceByDepartment(department));
             }
+
+            @Override
+            public void getAllData() {
+                mainFrame.setFinanceModelList(getFinances());
+            }
         });
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
@@ -398,7 +400,7 @@ public class Controller {
     private void checkVersion() {
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
-        Logger.infoEvent(null, "Your vesrion: " + currentVersion.get() + " DB version: " + dbVersion.get());
+        Logger.infoEvent(mainFrame, "Your vesrion: " + currentVersion.get() + " DB version: " + dbVersion.get());
         if (currentVersion.compareTo(dbVersion) == -1) {
             JOptionPane.showMessageDialog(mainFrame,
                     Labels.getProperty("youCantUseThisVersion") + "\n" +
@@ -716,7 +718,7 @@ public class Controller {
         }
     }
 
-    public List<CpvAmountModel> getCpvAmount() {
+    private List<CpvAmountModel> getCpvAmount() {
         try {
             return Database.BIDS.getCpvAmount();
         } catch (SQLException e) {
@@ -769,6 +771,9 @@ public class Controller {
         for (String arg : args) {
             if (arg.contains("-c") || arg.contains("--connectionSettings")) {
                 parameters.add("connectionSettings");
+            }
+            if (arg.contains("-s") || arg.contains("--statistics")) {
+                parameters.add("connectionStatistics");
             }
             if (arg.contains("-l") || arg.contains("--logSave")) {
                 parameters.add("logSave");

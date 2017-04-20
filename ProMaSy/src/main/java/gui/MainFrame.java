@@ -57,6 +57,7 @@ public class MainFrame extends JFrame {
 
     private LoginPanel loginPanel;
     private Toolbar toolbar;
+    private MenuBar menuBar;
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
@@ -77,6 +78,7 @@ public class MainFrame extends JFrame {
     private CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
     private DrawSplashScreen splashScreen;
+    private TableGenerator tg;
 
     public MainFrame() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -107,6 +109,7 @@ public class MainFrame extends JFrame {
         editEmpDialog = new EditEmployeeDialog(this);
         createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
+        tg = new TableGenerator(this);
 
         setLayout(new BorderLayout());
     }
@@ -115,6 +118,8 @@ public class MainFrame extends JFrame {
         //removing login panel
         setVisible(false);
         remove(loginPanel);
+        //marking login panel for gc
+        loginPanel = null;
 
         //adding components of main window
         add(toolbar, BorderLayout.PAGE_START);
@@ -122,7 +127,9 @@ public class MainFrame extends JFrame {
 
         Role role = LoginData.getInstance().getRole();
 
-        setJMenuBar(createMenuBar(role));
+        //creating and setting menu bar
+        menuBar = new MenuBar(role);
+        setJMenuBar(menuBar.getMenuBar());
 
         // init main pane and menu bar according to user roles
         switch (role) {
@@ -191,106 +198,6 @@ public class MainFrame extends JFrame {
         add(tabPane, BorderLayout.CENTER);
     }
 
-    //This method generates menu bar
-    private JMenuBar createMenuBar(Role userRole) {
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu fileMenu = new JMenu(Labels.getProperty("file"));
-        JMenuItem printItem = new JMenuItem(Labels.withThreeDots("print"));
-        printItem.setIcon(Icons.PRINT);
-        JMenuItem exitItem = new JMenuItem(Labels.getProperty("exit"));
-        fileMenu.add(printItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-
-        JMenu editMenu = new JMenu(Labels.getProperty("edit"));
-        JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"));
-        editAmUnitsItem.setIcon(Icons.UNITS);
-        JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"));
-        editProdItem.setIcon(Icons.PRODUCER);
-        JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
-        editSuplItem.setIcon(Icons.SUPPLIER);
-        JMenuItem editCurrentUserItem = new JMenuItem(Labels.withThreeDots("editCurrentUser"));
-        editCurrentUserItem.setIcon(Icons.USER);
-        editMenu.add(editAmUnitsItem);
-        editMenu.add(editProdItem);
-        editMenu.add(editSuplItem);
-        editMenu.addSeparator();
-        editMenu.add(editCurrentUserItem);
-
-        JMenu helpMenu = new JMenu(Labels.getProperty("help"));
-        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware"));
-        infoItem.setIcon(Icons.ABOUT);
-        helpMenu.add(infoItem);
-
-        menuBar.add(fileMenu);
-        menuBar.add(editMenu);
-
-        // advanced menu for non users
-        if (userRole.equals(Role.ADMIN)) {
-            JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
-            editOrgItem.setIcon(Icons.ORGANIZATION);
-
-            editMenu.add(editOrgItem);
-
-            JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("connectionWithDBSettings"));
-            conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
-            settingsMenu.add(conSettItem);
-
-            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
-            editEmpItem.setIcon(Icons.USERS);
-            editMenu.add(editEmpItem);
-
-            JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
-            settingsMenu.addSeparator();
-            settingsMenu.add(setCurrentVersionAsMinimum);
-            setCurrentVersionAsMinimum.addActionListener(e -> {
-                int action = JOptionPane.showConfirmDialog(this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
-                if (action == JOptionPane.OK_OPTION && listener != null) {
-                    listener.setMinimumVersionEventOccurred();
-                }
-            });
-            editEmpItem.addActionListener(e -> editEmpDialog.setVisible(true));
-
-            menuBar.add(settingsMenu);
-
-            editOrgItem.addActionListener(e -> editOrgDialog.setVisible(true));
-
-            conSettItem.addActionListener(e -> conSettDialog.setVisible(true));
-        }
-        printItem.addActionListener(e -> onPrintClick());
-
-        exitItem.addActionListener(e -> {
-            if (listener != null) {
-                listener.exitEventOccurred();
-            }
-        });
-
-        if (!userRole.equals(Role.USER) && !userRole.equals(Role.PERSONALLY_LIABLE_EMPLOYEE) && !userRole.equals(Role.HEAD_OF_DEPARTMENT)) {
-            JMenu reports = new JMenu(Labels.getProperty("reports"));
-
-            JMenuItem procByCpv = new JMenuItem(Labels.withThreeDots("cpvAmounts"));
-            reports.add(procByCpv);
-
-            menuBar.add(reports);
-
-            procByCpv.addActionListener(e -> cpvAmountDialog.setVisible(true));
-
-        }
-
-        editAmUnitsItem.addActionListener(e -> amUnitsDialog.setVisible(true));
-        editProdItem.addActionListener(e -> producerDialog.setVisible(true));
-        editSuplItem.addActionListener(e -> supplierDialog.setVisible(true));
-        editCurrentUserItem.addActionListener(e -> createEmployeeDialog.setEmployeeModel(LoginData.getInstance()));
-        infoItem.addActionListener(e -> infoDialog.setVisible(true));
-
-
-        menuBar.add(helpMenu);
-
-        return menuBar;
-    }
-
     private void setListeners() {
         statusPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -299,38 +206,129 @@ public class MainFrame extends JFrame {
             }
         });
 
-        TableGenerator tg = new TableGenerator(this);
         toolbar.setToolbarListener(new ToolbarListener() {
             @Override
             public void printEventOccurred() {
                 onPrintClick();
             }
-
             @Override
             public void showCpvSearchDialog() {
                 cpvDialog.setVisible(true);
             }
-
             @Override
             public void showCalculator() {
                 calculatorDialog.setVisible(true);
             }
-
             @Override
             public void exportToTableEventOccurred() {
-                if (tabPane != null) {
-                    if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
-                        tg.generateReport(bidsListPanel.getSelectedBids());
-                    } else if (tabPane.getSelectedComponent().equals(financePanel)) {
-                        List<BidModel> bids = new LinkedList<>();
-                        financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
-                        tg.generateReport(bids);
+                onExportToTableClick();
+            }
+
+            @Override
+            public void refreshTable() {
+                onRefreshClick();
+            }
+        });
+
+        menuBar.setMenuBarListener(new MenuBarListener() {
+            @Override
+            public void showEmpEditDialog() {
+                editEmpDialog.setVisible(true);
+            }
+
+            @Override
+            public void showEditOrgDialog() {
+                editOrgDialog.setVisible(true);
+            }
+
+            @Override
+            public void showConSetDialog() {
+                conSettDialog.setVisible(true);
+            }
+
+            @Override
+            public void printAction() {
+                onPrintClick();
+            }
+
+            @Override
+            public void exportToTableAction() {
+                onExportToTableClick();
+            }
+
+            @Override
+            public void showCpvAmountDialog() {
+                cpvAmountDialog.setVisible(true);
+            }
+
+            @Override
+            public void showAmUnitsDialog() {
+                amUnitsDialog.setVisible(true);
+            }
+
+            @Override
+            public void showProducerDialog() {
+                producerDialog.setVisible(true);
+            }
+
+            @Override
+            public void showSupplierDialog() {
+                supplierDialog.setVisible(true);
+            }
+
+            @Override
+            public void editCurrentUserAction() {
+                createEmployeeDialog.setEmployeeModel(LoginData.getInstance());
+            }
+
+            @Override
+            public void showInfoDialog() {
+                infoDialog.setVisible(true);
+            }
+
+            @Override
+            public void exitAction() {
+                if (listener != null) {
+                    listener.exitEventOccurred();
+                }
+            }
+
+            @Override
+            public void setCurrentVersionAsMinimum() {
+                {
+                    int action = JOptionPane.showConfirmDialog(MainFrame.this, Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?", Labels.getProperty("confirmAction"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
+                    if (action == JOptionPane.OK_OPTION && listener != null) {
+                        listener.setMinimumVersionEventOccurred();
                     }
-                } else {
-                    tg.generateReport(bidsListPanel.getSelectedBids());
                 }
             }
         });
+    }
+
+    private void onExportToTableClick() {
+        if (tabPane != null) {
+            if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
+                tg.generateReport(bidsListPanel.getSelectedBids());
+            } else if (tabPane.getSelectedComponent().equals(financePanel)) {
+                List<BidModel> bids = new LinkedList<>();
+                financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
+                tg.generateReport(bids);
+            }
+        } else {
+            tg.generateReport(bidsListPanel.getSelectedBids());
+        }
+    }
+
+    private void onRefreshClick() {
+        if (tabPane != null) {
+            if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
+                bidsListPanel.refresh();
+            } else if (tabPane.getSelectedComponent().equals(financePanel)) {
+                financePanel.refresh();
+            }
+        } else {
+            bidsListPanel.refresh();
+        }
     }
 
     private void onPrintClick() {
@@ -360,27 +358,21 @@ public class MainFrame extends JFrame {
     public void showConSettDialog() {
         conSettDialog.setVisible(true);
     }
-
     public void showProducerDialog() {
         producerDialog.setVisible(true);
     }
-
     public void showSupplierDialog() {
         supplierDialog.setVisible(true);
     }
-
     public void showReasonsDialog() {
         reasonsDialog.setVisible(true);
     }
-
     public void showAmUnitsDialog() {
         amUnitsDialog.setVisible(true);
     }
-
     public void showCpvDialog() {
         cpvDialog.setVisible(true);
     }
-
     public void showCpvDialog(String cpv) {
         cpvDialog.showWithCode(cpv);
     }
@@ -434,59 +426,45 @@ public class MainFrame extends JFrame {
     public void setMainFrameListener(MainFrameListener listener) {
         this.listener = listener;
     }
-
     public void setLoginListener(LoginListener loginListener) {
         loginPanel.setLoginListener(loginListener);
     }
-
     public void setConSetListener(ConSetListener listener) {
         conSettDialog.setConSetListener(listener);
     }
-
     public void setCpvListener(CpvSearchListener listener) {
         cpvDialog.setCpvListener(listener);
     }
-
     public void setEmployeeDialogListener(EditEmployeeDialogListener listener) {
-        editEmpDialog.setEmployeeDialogListener(listener);
+        editEmpDialog.setListener(listener);
     }
-
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
-        createEmployeeDialog.setCreateEmployeeDialogListener(listener);
+        createEmployeeDialog.setListener(listener);
     }
-
     public void setOrganizationDialogListener(OrganizationDialogListener listener) {
-        editOrgDialog.setOrganizationDialogListener(listener);
+        editOrgDialog.setListener(listener);
     }
-
     public void setAmUnitsDialogListener(AmUnitsDialogListener listener) {
         amUnitsDialog.setListener(listener);
     }
-
     public void setProducerDialogListener(ProducerDialogListener listener) {
         producerDialog.setListener(listener);
     }
-
     public void setSupplierDialogListener(SupplierDialogListener listener) {
         supplierDialog.setListener(listener);
     }
-
     public void setReasonsDialogListener(ReasonsDialogListener listener) {
         reasonsDialog.setListener(listener);
     }
-
     public void setFinancePanelListener(FinancePanelListener listener) {
-        financePanel.setFinancePanelListener(listener);
+        financePanel.setListener(listener);
     }
-
     public void setBidsListPanelListener(BidsListPanelListener listener) {
-        bidsListPanel.setBidsListPanelListener(listener);
+        bidsListPanel.setListener(listener);
     }
-
     public void setReportParametersDialogListener(ReportParametersDialogListener listener) {
         reportParametersDialog.setListener(listener);
     }
-
     public void setCpvAmountDialogListener(CpvAmountDialogListener listener) {
         cpvAmountDialog.setListener(listener);
     }
@@ -551,11 +529,9 @@ public class MainFrame extends JFrame {
     public void setCpvAmountDialogList(List<CpvAmountModel> cpvAmounts) {
         cpvAmountDialog.setTableData(cpvAmounts);
     }
-
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
     }
-
     public void setCpvModel(CPVModel cpvModel) {
         this.bidsListPanel.getCreateBidPanel().setSelectedCPV(cpvModel);
     }
@@ -563,15 +539,12 @@ public class MainFrame extends JFrame {
     public CreateEmployeeDialog getCreateEmployeeDialog() {
         return createEmployeeDialog;
     }
-
     public CreateBidPanel getCreateBidPanel() {
         return bidsListPanel.getCreateBidPanel();
     }
-
     public OrganizationDialog getEditOrgDialog() {
         return editOrgDialog;
     }
-
     public DrawSplashScreen getSplashScreen() {
         return splashScreen;
     }
@@ -587,11 +560,8 @@ public class MainFrame extends JFrame {
             setSize(1000, 700);
             setResizable(true);
             positionOnScreenCenter();
-            listener.getAllDepartmentsAndFinances(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
-            if (bidsListPanel.getSelectedDepartment().equals(EmptyModel.DEPARTMENT)) {
-                listener.getAllBids(bidsListPanel.getSelectedBidType());
-            }
-            financePanel.setDepartmentFinanceTableData(new LinkedList<>());
+            listener.getAllDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute());
+            bidsListPanel.getBids();
         }
         super.setVisible(visible);
     }

@@ -1,6 +1,9 @@
 package model.dao;
 
+import controller.Logger;
+import gui.MainFrame;
 import model.models.ConnectionSettingsModel;
+import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
 import javax.persistence.EntityManager;
@@ -17,6 +20,7 @@ public enum DBConnector {
     private EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
     private Statistics stat;
+    private MainFrame mainFrame;
 
     public EntityManager getEntityManager() {
         return entityManager;
@@ -36,8 +40,10 @@ public enum DBConnector {
         entityManager = entityManagerFactory.createEntityManager();
 
         //Logging connection stats
-//        stat = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
-//        stat.setStatisticsEnabled(true);
+        if (mainFrame != null) {
+            stat = entityManagerFactory.unwrap(SessionFactory.class).getStatistics();
+            stat.setStatisticsEnabled(true);
+        }
     }
 
     public void disconnect() {
@@ -48,7 +54,13 @@ public enum DBConnector {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
             entityManagerFactory = null;
-//            Logger.infoEvent(null, stat.toString().replace(",", ",\n"));
+            if (mainFrame != null) {
+                Logger.infoEvent(mainFrame, stat.toString().replace(",", ",\n\t\t\t\t"));
+            }
         }
+    }
+
+    public void showConnectionStats(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
 }

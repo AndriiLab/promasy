@@ -9,7 +9,7 @@ import org.apache.log4j.LogManager;
  * Implementation of log4j with internal logger in gui
  */
 public class Logger {
-    private static final org.apache.log4j.Logger LOGGER = LogManager.getLogger(org.apache.log4j.Logger.class);
+    private static final org.apache.log4j.Logger LOGGER = LogManager.getLogger(Controller.class);
 
     public static void infoEvent(MainFrame mainFrame, String message) {
         LOGGER.info(message);

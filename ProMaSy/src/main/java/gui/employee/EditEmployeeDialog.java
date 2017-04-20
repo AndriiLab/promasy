@@ -102,7 +102,7 @@ public class EditEmployeeDialog extends JDialog {
         table.setAutoCreateRowSorter(true);
     }
 
-    public void setEmployeeDialogListener(EditEmployeeDialogListener empListener){
+    public void setListener(EditEmployeeDialogListener empListener) {
         this.listener = empListener;
     }
 
