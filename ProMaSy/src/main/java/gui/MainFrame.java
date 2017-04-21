@@ -49,7 +49,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -306,16 +305,18 @@ public class MainFrame extends JFrame {
     }
 
     private void onExportToTableClick() {
+        List<BidModel> reportList = null;
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
-                tg.generateReport(bidsListPanel.getSelectedBids());
+                reportList = bidsListPanel.getSelectedBids();
             } else if (tabPane.getSelectedComponent().equals(financePanel)) {
-                List<BidModel> bids = new LinkedList<>();
-                financePanel.getSelectedFinances().getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getBids()));
-                tg.generateReport(bids);
+                reportList = financePanel.getReportsList();
             }
         } else {
-            tg.generateReport(bidsListPanel.getSelectedBids());
+            reportList = bidsListPanel.getSelectedBids();
+        }
+        if (reportList != null) {
+            tg.generateReport(reportList);
         }
     }
 

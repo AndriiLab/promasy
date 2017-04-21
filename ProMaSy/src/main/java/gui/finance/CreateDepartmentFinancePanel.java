@@ -1,6 +1,7 @@
 package gui.finance;
 
 import gui.Utils;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJComboBox;
@@ -74,7 +75,9 @@ public class CreateDepartmentFinancePanel extends JPanel {
 
 
         okButton = new JButton(Labels.getProperty("create"));
+        okButton.setIcon(Icons.OK);
         cancelButton = new JButton(Labels.getProperty("cancel"));
+        cancelButton.setIcon(Icons.CANCEL);
         closeButton = CEDButtons.getCloseButton();
 
         layoutControls();
@@ -315,7 +318,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
 
         JPanel buttonsPanel = new JPanel();
 
-        Dimension btnDim = new Dimension(110, 25);
+        Dimension btnDim = new Dimension(120, 25);
         okButton.setPreferredSize(btnDim);
         cancelButton.setPreferredSize(btnDim);
 

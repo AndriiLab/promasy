@@ -7,10 +7,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Model for data of related to department finances
@@ -69,14 +66,6 @@ public class FinanceDepartmentModel extends AbstractModel {
 
     }
 
-    public List<BidModel> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<BidModel> bids) {
-        this.bids = bids;
-    }
-
     public FinanceModel getFinances() {
         return finances;
     }
@@ -85,13 +74,27 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.finances = finances;
     }
 
+    public List<BidModel> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<BidModel> bids) {
+        this.bids = bids;
+    }
+
+    public List<BidModel> getActiveBids() {
+        List<BidModel> bidModels = new LinkedList<>();
+        bids.forEach(bidModel -> {
+            if (bidModel.isActive()) bidModels.add(bidModel);
+        });
+        return bidModels;
+    }
+
     public List<BidModel> getBids(BidType bidType) {
-        List<BidModel> bidsByType = new ArrayList<>();
-        for (BidModel bid : bids) {
-            if (bid.getType().equals(bidType)) {
-                bidsByType.add(bid);
-            }
-        }
+        List<BidModel> bidsByType = new LinkedList<>();
+        bids.forEach(bidModel -> {
+            if (bidModel.getType().equals(bidType)) bidsByType.add(bidModel);
+        });
         return bidsByType;
     }
 

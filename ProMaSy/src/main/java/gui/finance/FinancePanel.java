@@ -2,10 +2,13 @@ package gui.finance;
 
 import gui.MainFrame;
 import gui.Utils;
+import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.CEDButtons;
 import gui.components.PJOptionPane;
 import model.dao.LoginData;
+import model.enums.Fund;
+import model.models.BidModel;
 import model.models.EmptyModel;
 import model.models.FinanceDepartmentModel;
 import model.models.FinanceModel;
@@ -23,13 +26,12 @@ import java.util.List;
 public class FinancePanel extends JPanel {
 
     private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new LinkedList<>();
-
+    private MainFrame parent;
     private JButton createOrderButton;
     private JButton editOrderButton;
     private JButton deleteOrderButton;
     private JTable financeTable;
     private FinanceTableModel financeTableModel;
-
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
     private JButton deleteDepOrderButton;
@@ -46,6 +48,7 @@ public class FinancePanel extends JPanel {
     private boolean useUserDepartment;
 
     public FinancePanel(MainFrame parent) {
+        this.parent = parent;
         createFinancePanel = new CreateFinancePanel(parent);
         createFinancePanel.setVisible(false);
 
@@ -205,6 +208,12 @@ public class FinancePanel extends JPanel {
         });
     }
 
+    private static List<BidModel> getBidsList(FinanceModel financeModel) {
+        List<BidModel> bids = new LinkedList<>();
+        financeModel.getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getActiveBids()));
+        return bids;
+    }
+
     public void setFinanceTableData(List<FinanceModel> db) {
         //removing all inactive items from list
         List<FinanceModel> activeList = new LinkedList<>();
@@ -245,7 +254,6 @@ public class FinancePanel extends JPanel {
         editDepOrderButton.setVisible(false);
         deleteDepOrderButton.setVisible(false);
     }
-
 
     public void setUseUserDepartment() {
         useUserDepartment = true;
@@ -316,5 +324,41 @@ public class FinancePanel extends JPanel {
             listener.getAllData();
         }
         super.setVisible(visible);
+    }
+
+    public List<BidModel> getReportsList() {
+        List<String> optionsList = new LinkedList<>();
+        if (selectedFinanceModel != null && !selectedFinanceModel.equals(EmptyModel.FINANCE)) {
+            optionsList.add(Labels.withColon("selectedFinance") + selectedFinanceModel.toString());
+        }
+        optionsList.add(Labels.getProperty("fund.commonFund"));
+        optionsList.add(Labels.getProperty("fund.specialFund"));
+
+        Object[] options = optionsList.toArray();
+
+        String reportType = (String) JOptionPane.showInputDialog(parent,
+                Labels.withColon("createReportFor"),
+                Labels.getProperty("exportToTableFile"),
+                JOptionPane.PLAIN_MESSAGE,
+                Icons.QUESTION,
+                options,
+                options[0]);
+        if (reportType == null) {
+            return null;
+        } else if (reportType.startsWith(Labels.getProperty("selectedFinance"))) {
+            return getBidsList(selectedFinanceModel);
+        } else if (reportType.equals(Labels.getProperty("fund.commonFund"))) {
+            List<BidModel> bidModels = new LinkedList<>();
+            financeTableModel.getData().forEach(financeModel -> {
+                if (financeModel.getFundType().equals(Fund.COMMON_FUND)) bidModels.addAll(getBidsList(financeModel));
+            });
+            return bidModels;
+        } else {
+            List<BidModel> bidModels = new LinkedList<>();
+            financeTableModel.getData().forEach(financeModel -> {
+                if (financeModel.getFundType().equals(Fund.SPECIAL_FUND)) bidModels.addAll(getBidsList(financeModel));
+            });
+            return bidModels;
+        }
     }
 }

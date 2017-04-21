@@ -37,6 +37,10 @@ class FinanceTableModel extends AbstractTableModel {
         return colNames[column];
     }
 
+    public List<FinanceModel> getData() {
+        return db;
+    }
+
     public void setData(List<FinanceModel> db) {
         this.db = db;
     }

@@ -136,7 +136,9 @@ public class CreateBidPanel extends JPanel {
         searchCPVButton.setEnabled(true);
 
         okButton = new JButton(Labels.getProperty("create"));
+        okButton.setIcon(Icons.OK);
         cancelButton = new JButton(Labels.getProperty("cancel"));
+        cancelButton.setIcon(Icons.CANCEL);
 
         closeButton = CEDButtons.getCloseButton();
 
@@ -877,7 +879,7 @@ public class CreateBidPanel extends JPanel {
         //buttons panel
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        Dimension btnDim = new Dimension(110, 25);
+        Dimension btnDim = new Dimension(120, 25);
         okButton.setPreferredSize(btnDim);
         cancelButton.setPreferredSize(btnDim);
         buttonsPanel.add(okButton);

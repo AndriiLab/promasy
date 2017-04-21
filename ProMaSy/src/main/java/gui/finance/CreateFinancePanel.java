@@ -83,7 +83,9 @@ public class CreateFinancePanel extends JPanel {
         fundBox.setPreferredSize(new Dimension(136, 20));
 
         okButton = new JButton(Labels.getProperty("create"));
+        okButton.setIcon(Icons.OK);
         cancelButton = new JButton(Labels.getProperty("cancel"));
+        cancelButton.setIcon(Icons.CANCEL);
         closeButton = CEDButtons.getCloseButton();
 
         layoutControls();
@@ -338,7 +340,7 @@ public class CreateFinancePanel extends JPanel {
 
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 
-        Dimension btnDim = new Dimension(110, 25);
+        Dimension btnDim = new Dimension(120, 25);
         okButton.setPreferredSize(btnDim);
         cancelButton.setPreferredSize(btnDim);
 

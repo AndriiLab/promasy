@@ -457,7 +457,7 @@ public class Controller {
         ConnectionSettingsModel model = null;
         try {
             model = Utils.loadConnectionSettings();
-            Logger.infoEvent(null, "Connection Settings loaded from file");
+            Logger.infoEvent(null, "Connection Settings loaded from settings file");
         } catch (FileNotFoundException e) {
             Logger.infoEvent(null, "Connection Settings used from defaults");
             model = new ConnectionSettingsModel(Labels.getProperty("connectionSettings.server"), Labels.getProperty("connectionSettings.database"), Labels.getProperty("connectionSettings.schema"), Labels.getInt("connectionSettings.port"), Labels.getProperty("connectionSettings.user"), Labels.getProperty("connectionSettings.password"));
