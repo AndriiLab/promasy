@@ -147,7 +147,6 @@ public class CreateBidPanel extends JPanel {
         catNumberField.setEnabled(false);
         cpvField = new JTextField();
         cpvField.setPreferredSize(preferredFieldDim);
-        cpvField.setEnabled(false);
         amountField = new JTextField();
         amountField.setPreferredSize(preferredFieldDim);
         oneUnitPriceField = new JTextField();
@@ -236,10 +235,11 @@ public class CreateBidPanel extends JPanel {
         addSupplierButton.addActionListener(e -> parent.showSupplierDialog());
         addAmUnitsButton.addActionListener(e -> parent.showAmUnitsDialog());
         searchCPVButton.addActionListener(e -> {
-            if (cpvField.getText().isEmpty()) {
+            String cpvText = cpvField.getText();
+            if (cpvText.isEmpty()) {
                 parent.showCpvDialog();
             } else {
-                parent.showCpvDialog(cpvField.getText());
+                parent.showCpvDialog(cpvText);
             }
         });
 
@@ -409,15 +409,23 @@ public class CreateBidPanel extends JPanel {
             selectedProducerModel = null;
         }
         String selectedCatNum = catNumberField.getText().isEmpty() ? null : catNumberField.getText();
-        if (selectedCPV.equals(EmptyModel.CPV)) {
+        String cpvCode = cpvField.getText();
+        if (cpvCode.isEmpty()) {
             PJOptionPane.emptyField(parent, Labels.getProperty("cpv"));
             searchCPVButton.requestFocusInWindow();
             return false;
-        } else if (selectedCPV.getCpvId().length() != 10) {
+        }
+
+        if (cpvCode.matches("^\\d{8}-\\d$")) {
+            selectedCPV = parent.validateCpv(cpvCode);
+        }
+
+        if (selectedCPV.equals(EmptyModel.CPV)) {
             PJOptionPane.wrongFormat(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
             searchCPVButton.requestFocusInWindow();
             return false;
         }
+
         String selectedDescription = descriptionPane.getText();
         if (selectedDescription.isEmpty()) {
             PJOptionPane.emptyField(parent, Labels.getProperty("description"));

@@ -171,6 +171,11 @@ public class Controller {
             public void getAllDepartments(InstituteModel institute) {
                 mainFrame.setDepartmentModelList(getDepartments(institute.getModelId()));
             }
+
+            @Override
+            public CPVModel validateCpv(String cpvCode) {
+                return Database.CPV.validateCode(cpvCode);
+            }
         });
 
         mainFrame.setCpvListener(new CpvSearchListener() {

@@ -1,6 +1,7 @@
 package gui;
 
 import model.enums.Role;
+import model.models.CPVModel;
 import model.models.EmployeeModel;
 import model.models.InstituteModel;
 
@@ -20,4 +21,6 @@ public interface MainFrameListener {
     void setMinimumVersionEventOccurred();
 
     void getAllDepartments(InstituteModel institute);
+
+    CPVModel validateCpv(String cpvCode);
 }

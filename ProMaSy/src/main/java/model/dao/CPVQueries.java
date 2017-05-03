@@ -2,6 +2,7 @@ package model.dao;
 
 import model.models.CPVModel;
 import model.models.CPVModel_;
+import model.models.EmptyModel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -97,5 +98,20 @@ public class CPVQueries {
         entityManager.getTransaction().begin();
         entityManager.persist(model);
         entityManager.getTransaction().commit();
+    }
+
+    public CPVModel validateCode(String cpvCode) {
+        EntityManager em = Database.DB.getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CPVModel> criteria = cb.createQuery(CPVModel.class);
+        Root<CPVModel> root = criteria.from(CPVModel.class);
+        criteria.select(root);
+        criteria.where(cb.equal(root.get(CPVModel_.cpvId), cpvCode));
+        List<CPVModel> list = em.createQuery(criteria).setMaxResults(100).getResultList();
+        if (list.size() == 1) {
+            return list.get(0);
+        } else {
+            return EmptyModel.CPV;
+        }
     }
 }

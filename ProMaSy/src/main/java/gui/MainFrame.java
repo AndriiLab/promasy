@@ -571,4 +571,11 @@ public class MainFrame extends JFrame {
         }
         super.setVisible(visible);
     }
+
+    public CPVModel validateCpv(String cpvCode) {
+        if (listener != null) {
+            return listener.validateCpv(cpvCode);
+        }
+        return EmptyModel.CPV;
+    }
 }
