@@ -306,17 +306,22 @@ public class MainFrame extends JFrame {
 
     private void onExportToTableClick() {
         List<BidModel> reportList = null;
+        String name = EmptyModel.STRING;
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
                 reportList = bidsListPanel.getSelectedBids();
+                name = "bids";
             } else if (tabPane.getSelectedComponent().equals(financePanel)) {
-                reportList = financePanel.getReportsList();
+                FinancePanel.FinanceReport report = financePanel.getReportsList();
+                reportList = report.getList();
+                name = report.getName();
             }
         } else {
             reportList = bidsListPanel.getSelectedBids();
+            name = "bids";
         }
         if (reportList != null) {
-            tg.generateReport(reportList);
+            tg.generateReport(reportList, name);
         }
     }
 

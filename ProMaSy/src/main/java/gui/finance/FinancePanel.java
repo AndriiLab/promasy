@@ -326,7 +326,7 @@ public class FinancePanel extends JPanel {
         super.setVisible(visible);
     }
 
-    public List<BidModel> getReportsList() {
+    public FinanceReport getReportsList() {
         List<String> optionsList = new LinkedList<>();
         if (selectedFinanceModel != null && !selectedFinanceModel.equals(EmptyModel.FINANCE)) {
             optionsList.add(Labels.withColon("selectedFinance") + selectedFinanceModel.toString());
@@ -346,19 +346,37 @@ public class FinancePanel extends JPanel {
         if (reportType == null) {
             return null;
         } else if (reportType.startsWith(Labels.getProperty("selectedFinance"))) {
-            return getBidsList(selectedFinanceModel);
+            return new FinanceReport(selectedFinanceModel.toString(), getBidsList(selectedFinanceModel));
         } else if (reportType.equals(Labels.getProperty("fund.commonFund"))) {
             List<BidModel> bidModels = new LinkedList<>();
             financeTableModel.getData().forEach(financeModel -> {
                 if (financeModel.getFundType().equals(Fund.COMMON_FUND)) bidModels.addAll(getBidsList(financeModel));
             });
-            return bidModels;
+            return new FinanceReport(reportType, bidModels);
         } else {
             List<BidModel> bidModels = new LinkedList<>();
             financeTableModel.getData().forEach(financeModel -> {
                 if (financeModel.getFundType().equals(Fund.SPECIAL_FUND)) bidModels.addAll(getBidsList(financeModel));
             });
-            return bidModels;
+            return new FinanceReport(reportType, bidModels);
+        }
+    }
+
+    public class FinanceReport {
+        private String name;
+        private List<BidModel> list;
+
+        FinanceReport(String name, List<BidModel> list) {
+            this.name = name;
+            this.list = list;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<BidModel> getList() {
+            return list;
         }
     }
 }

@@ -24,7 +24,6 @@ public class CreateOrganizationDialog extends JDialog {
     private JTextField phoneField;
     private JTextField faxField;
     private JTextField edrpouField;
-    private JTextField ipnField;
     private JTextField countryField;
     private JTextField regionField;
     private PJComboBox<CityTypes> cityTypeBox;
@@ -52,7 +51,6 @@ public class CreateOrganizationDialog extends JDialog {
         phoneField = new JTextField(10);
         faxField = new JTextField(10);
         edrpouField = new JTextField(10);
-        ipnField = new JTextField(10);
         countryField = new JTextField(10);
         regionField = new JTextField(10);
         cityField = new JTextField(10);
@@ -94,7 +92,6 @@ public class CreateOrganizationDialog extends JDialog {
         phoneField.setText(empty);
         faxField.setText(empty);
         edrpouField.setText(empty);
-        ipnField.setText(empty);
         countryField.setText(empty);
         regionField.setText(empty);
         cityField.setText(empty);
@@ -114,7 +111,6 @@ public class CreateOrganizationDialog extends JDialog {
         phoneField.setText(model.getPhoneNumber());
         faxField.setText(model.getFaxNumber());
         edrpouField.setText(String.valueOf(model.getEDRPOU()));
-        ipnField.setText(String.valueOf(model.getIPN()));
         if (model.getAddress() != null) {
             countryField.setText(model.getAddress().getCountry());
             regionField.setText(model.getAddress().getRegion());
@@ -161,20 +157,6 @@ public class CreateOrganizationDialog extends JDialog {
             edrpou = Integer.parseInt(edrpouStr);
         } catch (NumberFormatException ex) {
             PJOptionPane.wrongFormat(parent, Labels.getProperty("edrpou"), Labels.getProperty("wrongFloatFormat"));
-            return false;
-        }
-
-        String ipnStr = ipnField.getText();
-        if (ipnStr.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("ipn"));
-            return false;
-        }
-
-        int ipn;
-        try {
-            ipn = Integer.parseInt(ipnStr);
-        } catch (NumberFormatException ex) {
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("ipn"), Labels.getProperty("wrongFloatFormat"));
             return false;
         }
 
@@ -228,7 +210,6 @@ public class CreateOrganizationDialog extends JDialog {
         model.setEMail(email);
         model.setPhoneNumber(phone);
         model.setFaxNumber(fax);
-        model.setIPN(ipn);
         model.setEDRPOU(edrpou);
         Address address;
         if (model.getAddress() == null) {
@@ -438,16 +419,6 @@ public class CreateOrganizationDialog extends JDialog {
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         idPanel.add(edrpouField, gc);
-
-        gc.gridx++;
-        gc.anchor = GridBagConstraints.EAST;
-        gc.insets = noPadding;
-        idPanel.add(new JLabel(Labels.withColon("ipn")), gc);
-
-        gc.gridx++;
-        gc.anchor = GridBagConstraints.WEST;
-        gc.insets = smallPadding;
-        idPanel.add(ipnField, gc);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(namePanel, BorderLayout.NORTH);

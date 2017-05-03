@@ -28,9 +28,6 @@ public class InstituteModel extends AbstractModel {
     @Column(name = "edrpou")
     private Integer edrpou;
 
-    @Column(name = "ipn")
-    private Integer ipn;
-
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address;
@@ -42,24 +39,22 @@ public class InstituteModel extends AbstractModel {
         this.instName = EmptyModel.STRING;
     }
 
-    public InstituteModel(String instName, String phoneNumber, String faxNumber, String eMail, Integer edrpou, Integer ipn, Address address) {
+    public InstituteModel(String instName, String phoneNumber, String faxNumber, String eMail, Integer edrpou, Address address) {
         this.instName = instName;
         this.phoneNumber = phoneNumber;
         this.faxNumber = faxNumber;
         this.eMail = eMail;
         this.edrpou = edrpou;
-        this.ipn = ipn;
         this.address = address;
     }
 
-    public InstituteModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, String instName, String phoneNumber, String faxNumber, String eMail, Integer edrpou, Integer ipn, Address address, List<DepartmentModel> departments) {
+    public InstituteModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, String instName, String phoneNumber, String faxNumber, String eMail, Integer edrpou, Address address, List<DepartmentModel> departments) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.instName = instName;
         this.phoneNumber = phoneNumber;
         this.faxNumber = faxNumber;
         this.eMail = eMail;
         this.edrpou = edrpou;
-        this.ipn = ipn;
         this.address = address;
         this.departments = departments;
     }
@@ -107,14 +102,6 @@ public class InstituteModel extends AbstractModel {
 
     public void setEDRPOU(Integer edrpou) {
         this.edrpou = edrpou;
-    }
-
-    public Integer getIPN() {
-        return ipn;
-    }
-
-    public void setIPN(Integer ipn) {
-        this.ipn = ipn;
     }
 
     public Address getAddress() {

@@ -7,8 +7,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 abstract class SQLQueries<T extends Model> implements Query<T> {
@@ -17,7 +17,7 @@ abstract class SQLQueries<T extends Model> implements Query<T> {
     CriteriaBuilder criteriaBuilder;
     CriteriaQuery<T> criteriaQuery;
     Root<T> root;
-    private List<T> list = new ArrayList<>();
+    private List<T> list = new LinkedList<>();
     private EntityManager entityManager;
 
     SQLQueries(Class<T> entityClass) {

@@ -8,13 +8,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CPVQueries {
 
-    private List<CPVModel> list = new ArrayList<>();
+    private List<CPVModel> list = new LinkedList<>();
 
     public List<CPVModel> retrieve(String requestedCpv) throws SQLException {
         list.clear();

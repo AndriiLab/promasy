@@ -60,6 +60,9 @@ public class BidModel extends AbstractModel {
     @Column(name = "amount")
     private int amount;
 
+    @Transient
+    private int transientAmount;
+
     @Enumerated(EnumType.STRING)
     private BidType type;
 
@@ -234,6 +237,22 @@ public class BidModel extends AbstractModel {
 
     public BigDecimal getTotalPrice() {
         return onePrice.multiply(new BigDecimal(amount));
+    }
+
+    public int getTransientAmount() {
+        if (transientAmount == 0) {
+            transientAmount = amount;
+        }
+
+        return transientAmount;
+    }
+
+    public void setTransientAmount(int transientAmount) {
+        this.transientAmount = transientAmount;
+    }
+
+    public void clearTransientAmount() {
+        this.transientAmount = amount;
     }
 
     @Override

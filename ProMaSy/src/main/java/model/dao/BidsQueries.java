@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * CRUD for bid data
@@ -114,9 +115,10 @@ public class BidsQueries extends SQLQueries<BidModel> {
                 map.put(key, new CpvAmountModel(fourDigitCpv, type, bidAmount, bidModel));
             }
         }
-        List<CpvAmountModel> cpvAmountModels = new ArrayList<>(map.values());
-        cpvAmountModels.sort(Comparator.comparing(CpvAmountModel::getType).thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())));
 
-        return Collections.unmodifiableList(cpvAmountModels);
+        return Collections.unmodifiableList(map.values().stream()
+                .sorted(Comparator.comparing(CpvAmountModel::getType)
+                        .thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())))
+                .collect(Collectors.toList()));
     }
 }

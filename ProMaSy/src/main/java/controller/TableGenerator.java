@@ -36,7 +36,7 @@ public class TableGenerator {
         for (BidModel bid : bids) {
             int key = (bid.getCpv().getCpvId() + bid.getKEKV() + bid.getAmountUnit() + bid.getOnePrice()).hashCode();
             if (map.containsKey(key)) {
-                map.get(key).setAmount(map.get(key).getAmount() + bid.getAmount());
+                map.get(key).setTransientAmount(map.get(key).getTransientAmount() + bid.getTransientAmount());
             } else {
                 map.put(key, bid);
             }
@@ -76,10 +76,12 @@ public class TableGenerator {
         return cell;
     }
 
-    public void generateReport(List<BidModel> bids) {
+    public void generateReport(List<BidModel> bids, String name) {
         bids = preSort(bids);
 
-        String fileName = "export_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".xls";
+        name = name.replace(" ", "_");
+
+        String fileName = "export_" + name + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet spreadsheet = workbook.createSheet("export");
@@ -92,7 +94,7 @@ public class TableGenerator {
         headerStyle.setBorderLeft(BorderStyle.THICK);
         headerStyle.setBorderRight(BorderStyle.THICK);
         headerStyle.setWrapText(true);
-        headerStyle.setFillForegroundColor(HSSFColor.LIGHT_TURQUOISE.index);
+        headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_TURQUOISE.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         headerStyle.setAlignment(HorizontalAlignment.CENTER);
         headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -105,7 +107,7 @@ public class TableGenerator {
         subHeaderStyle.setBorderLeft(BorderStyle.THIN);
         subHeaderStyle.setBorderRight(BorderStyle.THIN);
         subHeaderStyle.setWrapText(true);
-        subHeaderStyle.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+        subHeaderStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_GREEN.getIndex());
         subHeaderStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         subHeaderStyle.setFont(subHeaderFont);
 
@@ -161,11 +163,14 @@ public class TableGenerator {
             createCell(row, colNum++, generalStyle, EmptyModel.STRING);
             createCell(row, colNum++, generalStyle, bid.getCpv().getCpvUkr());
             createCell(row, colNum++, generalStyle, bid.getAmountUnit().getAmUnitDesc());
-            createCell(row, colNum++, generalStyle, bid.getAmount());
+            createCell(row, colNum++, generalStyle, bid.getTransientAmount());
             createCell(row, colNum++, generalStyle, bid.getOnePrice().doubleValue());
             HSSFCell totalPriceCell = makeCell(row, colNum, generalStyle);
             totalPriceCell.setCellType(CellType.FORMULA);
             totalPriceCell.setCellFormula(String.format("D%d*E%d", rowNum + 1, rowNum + 1));
+
+            //erasing bid transient amount
+            bid.clearTransientAmount();
         }
 
         for (Integer key : groups.keySet()) {
@@ -184,6 +189,5 @@ public class TableGenerator {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError") + fileName, Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             Logger.errorEvent(parent, e);
         }
-
     }
 }

@@ -27,6 +27,7 @@ import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Panel for {@link model.models.CpvAmountModel}
@@ -159,10 +160,7 @@ public class CpvAmountDialog extends JDialog {
     }
 
     public void setTableData(List<CpvAmountModel> db) {
-        List<CpvAmountReportModel> list = new LinkedList<>();
-        for (CpvAmountModel model : db) {
-            list.add(model.generateCpvAmountReportModel());
-        }
+        List<CpvAmountReportModel> list = db.stream().map(model -> model.generateCpvAmountReportModel()).collect(Collectors.toList());
         tableModel.setData(list);
         table.setAutoCreateRowSorter(true);
         tableModel.fireTableDataChanged();
