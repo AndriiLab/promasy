@@ -9,10 +9,10 @@ SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = ON;
-SET check_function_bodies = FALSE;
-SET client_min_messages = WARNING;
-SET row_security = OFF;
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: promasy; Type: SCHEMA; Schema: -; Owner: postgres
@@ -21,376 +21,358 @@ SET row_security = OFF;
 CREATE SCHEMA IF NOT EXISTS promasy;
 
 
-ALTER SCHEMA promasy
-OWNER TO postgres;
+ALTER SCHEMA promasy OWNER TO postgres;
 
 SET search_path = promasy, pg_catalog;
 
 SET default_tablespace = '';
 
-SET default_with_oids = FALSE;
+SET default_with_oids = false;
 
 --
 -- Name: addresses; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE addresses (
-  id              BIGINT NOT NULL,
-  active          BOOLEAN,
-  created_date    TIMESTAMP WITHOUT TIME ZONE,
-  modified_date   TIMESTAMP WITHOUT TIME ZONE,
-  version         BIGINT NOT NULL,
-  created_by      BIGINT,
-  modified_by     BIGINT,
-  building_number CHARACTER VARYING(255),
-  city            CHARACTER VARYING(255),
-  citytype        CHARACTER VARYING(255),
-  corpus_number   CHARACTER VARYING(255),
-  country         CHARACTER VARYING(255),
-  postal_code     CHARACTER VARYING(255),
-  region          CHARACTER VARYING(255),
-  street          CHARACTER VARYING(255),
-  streettype      CHARACTER VARYING(255)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    building_number character varying(255),
+    city character varying(255),
+    citytype character varying(255),
+    corpus_number character varying(255),
+    country character varying(255),
+    postal_code character varying(255),
+    region character varying(255),
+    street character varying(255),
+    streettype character varying(255)
 );
 
 
-ALTER TABLE addresses
-  OWNER TO postgres;
+ALTER TABLE addresses OWNER TO postgres;
 
 --
 -- Name: amount_units; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE amount_units (
-  id               BIGINT NOT NULL,
-  active           BOOLEAN,
-  created_date     TIMESTAMP WITHOUT TIME ZONE,
-  modified_date    TIMESTAMP WITHOUT TIME ZONE,
-  version          BIGINT NOT NULL,
-  created_by       BIGINT,
-  modified_by      BIGINT,
-  amount_unit_desc CHARACTER VARYING(255)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    amount_unit_desc character varying(255)
 );
 
 
-ALTER TABLE amount_units
-  OWNER TO postgres;
+ALTER TABLE amount_units OWNER TO postgres;
 
 --
 -- Name: bid_statuses; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE bid_statuses (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  status        CHARACTER VARYING(255),
-  bid_id        BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    status character varying(255),
+    bid_id bigint
 );
 
 
-ALTER TABLE bid_statuses
-  OWNER TO postgres;
+ALTER TABLE bid_statuses OWNER TO postgres;
 
 --
 -- Name: bids; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE bids (
-  id              BIGINT NOT NULL,
-  active          BOOLEAN,
-  created_date    TIMESTAMP WITHOUT TIME ZONE,
-  modified_date   TIMESTAMP WITHOUT TIME ZONE,
-  version         BIGINT NOT NULL,
-  created_by      BIGINT,
-  modified_by     BIGINT,
-  amount          INTEGER,
-  bid_desc        CHARACTER VARYING(255),
-  cat_num         CHARACTER VARYING(255),
-  kekv            INTEGER,
-  one_price       NUMERIC(19, 2),
-  proc_start_date DATE,
-  type            CHARACTER VARYING(255),
-  am_unit_id      BIGINT,
-  cpv_code        CHARACTER VARYING(255),
-  finance_dep_id  BIGINT,
-  producer_id     BIGINT,
-  reason_id       BIGINT,
-  supplier_id     BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    amount integer,
+    bid_desc character varying(255),
+    cat_num character varying(255),
+    kekv integer,
+    one_price numeric(19,2),
+    proc_start_date date,
+    type character varying(255),
+    am_unit_id bigint,
+    cpv_code character varying(255),
+    finance_dep_id bigint,
+    producer_id bigint,
+    reason_id bigint,
+    supplier_id bigint
 );
 
 
-ALTER TABLE bids
-  OWNER TO postgres;
+ALTER TABLE bids OWNER TO postgres;
 
 --
 -- Name: cpv; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE cpv (
-  cpv_code  CHARACTER VARYING(255) NOT NULL,
-  cpv_eng   CHARACTER VARYING(255),
-  cpv_level INTEGER,
-  terminal  BOOLEAN,
-  cpv_ukr   CHARACTER VARYING(255)
+    cpv_code character varying(255) NOT NULL,
+    cpv_eng character varying(255),
+    cpv_level integer,
+    terminal boolean,
+    cpv_ukr character varying(255)
 );
 
 
-ALTER TABLE cpv
-  OWNER TO postgres;
+ALTER TABLE cpv OWNER TO postgres;
 
 --
 -- Name: departments; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE departments (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  dep_name      CHARACTER VARYING(255),
-  inst_id       BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    dep_name character varying(255),
+    inst_id bigint
 );
 
 
-ALTER TABLE departments
-  OWNER TO postgres;
+ALTER TABLE departments OWNER TO postgres;
 
 --
 -- Name: employees; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE employees (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  email         CHARACTER VARYING(255),
-  emp_fname     CHARACTER VARYING(255),
-  emp_lname     CHARACTER VARYING(255),
-  emp_mname     CHARACTER VARYING(255),
-  login         CHARACTER VARYING(255),
-  password      CHARACTER VARYING(255),
-  phone_main    CHARACTER VARYING(255),
-  phone_reserve CHARACTER VARYING(255),
-  role          CHARACTER VARYING(255),
-  salt          BIGINT,
-  subdep_id     BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    email character varying(255),
+    emp_fname character varying(255),
+    emp_lname character varying(255),
+    emp_mname character varying(255),
+    login character varying(255),
+    password character varying(255),
+    phone_main character varying(255),
+    phone_reserve character varying(255),
+    role character varying(255),
+    salt bigint,
+    subdep_id bigint
 );
 
 
-ALTER TABLE employees
-  OWNER TO postgres;
+ALTER TABLE employees OWNER TO postgres;
 
 --
 -- Name: finance_dep; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE finance_dep (
-  id              BIGINT NOT NULL,
-  active          BOOLEAN,
-  created_date    TIMESTAMP WITHOUT TIME ZONE,
-  modified_date   TIMESTAMP WITHOUT TIME ZONE,
-  version         BIGINT NOT NULL,
-  created_by      BIGINT,
-  modified_by     BIGINT,
-  total_eqipment  NUMERIC(19, 2),
-  total_materials NUMERIC(19, 2),
-  total_services  NUMERIC(19, 2),
-  finance_id      BIGINT,
-  subdep_id       BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    total_eqipment numeric(19,2),
+    total_materials numeric(19,2),
+    total_services numeric(19,2),
+    finance_id bigint,
+    subdep_id bigint
 );
 
 
-ALTER TABLE finance_dep
-  OWNER TO postgres;
+ALTER TABLE finance_dep OWNER TO postgres;
 
 --
 -- Name: finances; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE finances (
-  id              BIGINT NOT NULL,
-  active          BOOLEAN,
-  created_date    TIMESTAMP WITHOUT TIME ZONE,
-  modified_date   TIMESTAMP WITHOUT TIME ZONE,
-  version         BIGINT NOT NULL,
-  created_by      BIGINT,
-  modified_by     BIGINT,
-  due_to          DATE,
-  name            CHARACTER VARYING(255),
-  number          INTEGER,
-  fundtype        CHARACTER VARYING(255),
-  kpkvk           INTEGER,
-  starts_on       DATE,
-  total_equpment  NUMERIC(19, 2),
-  total_materials NUMERIC(19, 2),
-  total_services  NUMERIC(19, 2)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    due_to date,
+    name character varying(255),
+    number integer,
+    fundtype character varying(255),
+    kpkvk integer,
+    starts_on date,
+    total_equpment numeric(19,2),
+    total_materials numeric(19,2),
+    total_services numeric(19,2)
 );
 
 
-ALTER TABLE finances
-  OWNER TO postgres;
+ALTER TABLE finances OWNER TO postgres;
 
 --
 -- Name: hilo_seqeunce; Type: SEQUENCE; Schema: promasy; Owner: postgres
 --
 
 CREATE SEQUENCE hilo_seqeunce
-START WITH 1
-INCREMENT BY 1
-NO MINVALUE
-NO MAXVALUE
-CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE hilo_seqeunce
-  OWNER TO postgres;
+ALTER TABLE hilo_seqeunce OWNER TO postgres;
 
 --
 -- Name: institutes; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE institutes (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  email         CHARACTER VARYING(255),
-  edrpou        INTEGER,
-  fax_number    CHARACTER VARYING(255),
-  inst_name     CHARACTER VARYING(255),
-  phone_number  CHARACTER VARYING(255),
-  address_id    BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    email character varying(255),
+    edrpou integer,
+    fax_number character varying(255),
+    inst_name character varying(255),
+    phone_number character varying(255),
+    address_id bigint
 );
 
 
-ALTER TABLE institutes
-  OWNER TO postgres;
+ALTER TABLE institutes OWNER TO postgres;
 
 --
 -- Name: producers; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE producers (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  brand_name    CHARACTER VARYING(255)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    brand_name character varying(255)
 );
 
 
-ALTER TABLE producers
-  OWNER TO postgres;
+ALTER TABLE producers OWNER TO postgres;
 
 --
 -- Name: reasons_for_suppl; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE reasons_for_suppl (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  reason_name   CHARACTER VARYING(255)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    reason_name character varying(255)
 );
 
 
-ALTER TABLE reasons_for_suppl
-  OWNER TO postgres;
+ALTER TABLE reasons_for_suppl OWNER TO postgres;
 
 --
 -- Name: registrations; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE registrations (
-  id                 INTEGER NOT NULL,
-  registrations_left INTEGER
+    id integer NOT NULL,
+    registrations_left integer
 );
 
 
-ALTER TABLE registrations
-  OWNER TO postgres;
+ALTER TABLE registrations OWNER TO postgres;
 
 --
 -- Name: subdepartments; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE subdepartments (
-  id            BIGINT NOT NULL,
-  active        BOOLEAN,
-  created_date  TIMESTAMP WITHOUT TIME ZONE,
-  modified_date TIMESTAMP WITHOUT TIME ZONE,
-  version       BIGINT NOT NULL,
-  created_by    BIGINT,
-  modified_by   BIGINT,
-  subdep_name   CHARACTER VARYING(255),
-  dep_id        BIGINT
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    subdep_name character varying(255),
+    dep_id bigint
 );
 
 
-ALTER TABLE subdepartments
-  OWNER TO postgres;
+ALTER TABLE subdepartments OWNER TO postgres;
 
 --
 -- Name: suppliers; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE suppliers (
-  id                BIGINT NOT NULL,
-  active            BOOLEAN,
-  created_date      TIMESTAMP WITHOUT TIME ZONE,
-  modified_date     TIMESTAMP WITHOUT TIME ZONE,
-  version           BIGINT NOT NULL,
-  created_by        BIGINT,
-  modified_by       BIGINT,
-  supplier_comments CHARACTER VARYING(255),
-  supplier_name     CHARACTER VARYING(255),
-  supplier_tel      CHARACTER VARYING(255)
+    id bigint NOT NULL,
+    active boolean,
+    created_date timestamp without time zone,
+    modified_date timestamp without time zone,
+    version bigint NOT NULL,
+    created_by bigint,
+    modified_by bigint,
+    supplier_comments character varying(255),
+    supplier_name character varying(255),
+    supplier_tel character varying(255)
 );
 
 
-ALTER TABLE suppliers
-  OWNER TO postgres;
+ALTER TABLE suppliers OWNER TO postgres;
 
 --
 -- Name: version; Type: TABLE; Schema: promasy; Owner: postgres
 --
 
 CREATE TABLE version (
-  id              INTEGER NOT NULL,
-  version_allowed CHARACTER VARYING(255)
+    id integer NOT NULL,
+    version_allowed character varying(255)
 );
 
 
-ALTER TABLE version
-  OWNER TO postgres;
+ALTER TABLE version OWNER TO postgres;
 
 --
 -- Data for Name: addresses; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY addresses (id, active, created_date, modified_date, version, created_by, modified_by, building_number, city, citytype, corpus_number, country, postal_code, region, street, streettype) FROM STDIN;
+COPY addresses (id, active, created_date, modified_date, version, created_by, modified_by, building_number, city, citytype, corpus_number, country, postal_code, region, street, streettype) FROM stdin;
 \.
 
 
@@ -398,7 +380,7 @@ COPY addresses (id, active, created_date, modified_date, version, created_by, mo
 -- Data for Name: amount_units; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY amount_units (id, active, created_date, modified_date, version, created_by, modified_by, amount_unit_desc) FROM STDIN;
+COPY amount_units (id, active, created_date, modified_date, version, created_by, modified_by, amount_unit_desc) FROM stdin;
 \.
 
 
@@ -406,7 +388,7 @@ COPY amount_units (id, active, created_date, modified_date, version, created_by,
 -- Data for Name: bid_statuses; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY bid_statuses (id, active, created_date, modified_date, version, created_by, modified_by, status, bid_id) FROM STDIN;
+COPY bid_statuses (id, active, created_date, modified_date, version, created_by, modified_by, status, bid_id) FROM stdin;
 \.
 
 
@@ -414,7 +396,7 @@ COPY bid_statuses (id, active, created_date, modified_date, version, created_by,
 -- Data for Name: bids; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY bids (id, active, created_date, modified_date, version, created_by, modified_by, amount, bid_desc, cat_num, kekv, one_price, proc_start_date, type, am_unit_id, cpv_code, finance_dep_id, producer_id, reason_id, supplier_id) FROM STDIN;
+COPY bids (id, active, created_date, modified_date, version, created_by, modified_by, amount, bid_desc, cat_num, kekv, one_price, proc_start_date, type, am_unit_id, cpv_code, finance_dep_id, producer_id, reason_id, supplier_id) FROM stdin;
 \.
 
 
@@ -422,7 +404,7 @@ COPY bids (id, active, created_date, modified_date, version, created_by, modifie
 -- Data for Name: cpv; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
+COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM stdin;
 \.
 
 
@@ -430,7 +412,7 @@ COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
 -- Data for Name: departments; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY departments (id, active, created_date, modified_date, version, created_by, modified_by, dep_name, inst_id) FROM STDIN;
+COPY departments (id, active, created_date, modified_date, version, created_by, modified_by, dep_name, inst_id) FROM stdin;
 \.
 
 
@@ -438,7 +420,7 @@ COPY departments (id, active, created_date, modified_date, version, created_by, 
 -- Data for Name: employees; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY employees (id, active, created_date, modified_date, version, created_by, modified_by, email, emp_fname, emp_lname, emp_mname, login, password, phone_main, phone_reserve, role, salt, subdep_id) FROM STDIN;
+COPY employees (id, active, created_date, modified_date, version, created_by, modified_by, email, emp_fname, emp_lname, emp_mname, login, password, phone_main, phone_reserve, role, salt, subdep_id) FROM stdin;
 \.
 
 
@@ -446,7 +428,7 @@ COPY employees (id, active, created_date, modified_date, version, created_by, mo
 -- Data for Name: finance_dep; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY finance_dep (id, active, created_date, modified_date, version, created_by, modified_by, total_eqipment, total_materials, total_services, finance_id, subdep_id) FROM STDIN;
+COPY finance_dep (id, active, created_date, modified_date, version, created_by, modified_by, total_eqipment, total_materials, total_services, finance_id, subdep_id) FROM stdin;
 \.
 
 
@@ -454,7 +436,7 @@ COPY finance_dep (id, active, created_date, modified_date, version, created_by, 
 -- Data for Name: finances; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY finances (id, active, created_date, modified_date, version, created_by, modified_by, due_to, name, number, fundtype, kpkvk, starts_on, total_equpment, total_materials, total_services) FROM STDIN;
+COPY finances (id, active, created_date, modified_date, version, created_by, modified_by, due_to, name, number, fundtype, kpkvk, starts_on, total_equpment, total_materials, total_services) FROM stdin;
 \.
 
 
@@ -462,13 +444,14 @@ COPY finances (id, active, created_date, modified_date, version, created_by, mod
 -- Name: hilo_seqeunce; Type: SEQUENCE SET; Schema: promasy; Owner: postgres
 --
 
-SELECT pg_catalog.setval('hilo_seqeunce', 1, FALSE);
+SELECT pg_catalog.setval('hilo_seqeunce', 1, false);
+
 
 --
 -- Data for Name: institutes; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY institutes (id, active, created_date, modified_date, version, created_by, modified_by, email, edrpou, fax_number, inst_name, phone_number, address_id) FROM STDIN;
+COPY institutes (id, active, created_date, modified_date, version, created_by, modified_by, email, edrpou, fax_number, inst_name, phone_number, address_id) FROM stdin;
 \.
 
 
@@ -476,7 +459,7 @@ COPY institutes (id, active, created_date, modified_date, version, created_by, m
 -- Data for Name: producers; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY producers (id, active, created_date, modified_date, version, created_by, modified_by, brand_name) FROM STDIN;
+COPY producers (id, active, created_date, modified_date, version, created_by, modified_by, brand_name) FROM stdin;
 \.
 
 
@@ -484,7 +467,7 @@ COPY producers (id, active, created_date, modified_date, version, created_by, mo
 -- Data for Name: reasons_for_suppl; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY reasons_for_suppl (id, active, created_date, modified_date, version, created_by, modified_by, reason_name) FROM STDIN;
+COPY reasons_for_suppl (id, active, created_date, modified_date, version, created_by, modified_by, reason_name) FROM stdin;
 \.
 
 
@@ -492,7 +475,7 @@ COPY reasons_for_suppl (id, active, created_date, modified_date, version, create
 -- Data for Name: registrations; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY registrations (id, registrations_left) FROM STDIN;
+COPY registrations (id, registrations_left) FROM stdin;
 \.
 
 
@@ -500,7 +483,7 @@ COPY registrations (id, registrations_left) FROM STDIN;
 -- Data for Name: subdepartments; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY subdepartments (id, active, created_date, modified_date, version, created_by, modified_by, subdep_name, dep_id) FROM STDIN;
+COPY subdepartments (id, active, created_date, modified_date, version, created_by, modified_by, subdep_name, dep_id) FROM stdin;
 \.
 
 
@@ -508,7 +491,7 @@ COPY subdepartments (id, active, created_date, modified_date, version, created_b
 -- Data for Name: suppliers; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY suppliers (id, active, created_date, modified_date, version, created_by, modified_by, supplier_comments, supplier_name, supplier_tel) FROM STDIN;
+COPY suppliers (id, active, created_date, modified_date, version, created_by, modified_by, supplier_comments, supplier_name, supplier_tel) FROM stdin;
 \.
 
 
@@ -516,8 +499,8 @@ COPY suppliers (id, active, created_date, modified_date, version, created_by, mo
 -- Data for Name: version; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY version (id, version_allowed) FROM STDIN;
-1  0.8.0
+COPY version (id, version_allowed) FROM stdin;
+1	0.8.0
 \.
 
 
@@ -526,403 +509,456 @@ COPY version (id, version_allowed) FROM STDIN;
 --
 
 ALTER TABLE ONLY addresses
-  ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: amount_units amount_units_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY amount_units
-  ADD CONSTRAINT amount_units_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT amount_units_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: bid_statuses bid_statuses_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bid_statuses
-  ADD CONSTRAINT bid_statuses_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT bid_statuses_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: bids bids_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT bids_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT bids_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: cpv cpv_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY cpv
-  ADD CONSTRAINT cpv_pkey PRIMARY KEY (cpv_code);
+    ADD CONSTRAINT cpv_pkey PRIMARY KEY (cpv_code);
+
 
 --
 -- Name: departments departments_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY departments
-  ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: employees employees_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY employees
-  ADD CONSTRAINT employees_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT employees_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: finance_dep finance_dep_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finance_dep
-  ADD CONSTRAINT finance_dep_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT finance_dep_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: finances finances_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finances
-  ADD CONSTRAINT finances_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT finances_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: institutes institutes_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY institutes
-  ADD CONSTRAINT institutes_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT institutes_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: producers producers_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY producers
-  ADD CONSTRAINT producers_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT producers_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: reasons_for_suppl reasons_for_suppl_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY reasons_for_suppl
-  ADD CONSTRAINT reasons_for_suppl_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT reasons_for_suppl_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: registrations registrations_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY registrations
-  ADD CONSTRAINT registrations_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT registrations_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: subdepartments subdepartments_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY subdepartments
-  ADD CONSTRAINT subdepartments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT subdepartments_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: suppliers suppliers_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY suppliers
-  ADD CONSTRAINT suppliers_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT suppliers_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: version version_pkey; Type: CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY version
-  ADD CONSTRAINT version_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT version_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: bids fk3vwxs2blly2fmoapleqlajw81; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fk3vwxs2blly2fmoapleqlajw81 FOREIGN KEY (reason_id) REFERENCES reasons_for_suppl (id);
+    ADD CONSTRAINT fk3vwxs2blly2fmoapleqlajw81 FOREIGN KEY (reason_id) REFERENCES reasons_for_suppl(id);
+
 
 --
 -- Name: employees fk57hc214n1yj124owgi2r897ld; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY employees
-  ADD CONSTRAINT fk57hc214n1yj124owgi2r897ld FOREIGN KEY (subdep_id) REFERENCES subdepartments (id);
+    ADD CONSTRAINT fk57hc214n1yj124owgi2r897ld FOREIGN KEY (subdep_id) REFERENCES subdepartments(id);
+
 
 --
 -- Name: institutes fk80nh0w61wfukjr3qxhqikot9q; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY institutes
-  ADD CONSTRAINT fk80nh0w61wfukjr3qxhqikot9q FOREIGN KEY (address_id) REFERENCES addresses (id);
+    ADD CONSTRAINT fk80nh0w61wfukjr3qxhqikot9q FOREIGN KEY (address_id) REFERENCES addresses(id);
+
 
 --
 -- Name: bids fk84ecql7gud3ljmru094ousih7; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fk84ecql7gud3ljmru094ousih7 FOREIGN KEY (supplier_id) REFERENCES suppliers (id);
+    ADD CONSTRAINT fk84ecql7gud3ljmru094ousih7 FOREIGN KEY (supplier_id) REFERENCES suppliers(id);
+
 
 --
 -- Name: finance_dep fk9rtcqbbw7610hlr4f139fac70; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finance_dep
-  ADD CONSTRAINT fk9rtcqbbw7610hlr4f139fac70 FOREIGN KEY (subdep_id) REFERENCES subdepartments (id);
+    ADD CONSTRAINT fk9rtcqbbw7610hlr4f139fac70 FOREIGN KEY (subdep_id) REFERENCES subdepartments(id);
+
 
 --
 -- Name: addresses fk_344u93h6cd8jq5x5ckk4hu9f0; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY addresses
-  ADD CONSTRAINT fk_344u93h6cd8jq5x5ckk4hu9f0 FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_344u93h6cd8jq5x5ckk4hu9f0 FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: addresses fk_405w0w2rck8317hsoyg3w0flm; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY addresses
-  ADD CONSTRAINT fk_405w0w2rck8317hsoyg3w0flm FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_405w0w2rck8317hsoyg3w0flm FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: finance_dep fk_5u2k74wihjg53vssj5j6a31jo; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finance_dep
-  ADD CONSTRAINT fk_5u2k74wihjg53vssj5j6a31jo FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_5u2k74wihjg53vssj5j6a31jo FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: bids fk_5wt5tqrim7hrkjlfpnoaa4kwt; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fk_5wt5tqrim7hrkjlfpnoaa4kwt FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_5wt5tqrim7hrkjlfpnoaa4kwt FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: suppliers fk_8c6wn7rus6efwx1i1iv6fh2vo; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY suppliers
-  ADD CONSTRAINT fk_8c6wn7rus6efwx1i1iv6fh2vo FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_8c6wn7rus6efwx1i1iv6fh2vo FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: subdepartments fk_8uvr7ivg6inlao9bxte7uj3sm; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY subdepartments
-  ADD CONSTRAINT fk_8uvr7ivg6inlao9bxte7uj3sm FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_8uvr7ivg6inlao9bxte7uj3sm FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: finances fk_9dq3rpet3cb8ltnarktkxik04; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finances
-  ADD CONSTRAINT fk_9dq3rpet3cb8ltnarktkxik04 FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_9dq3rpet3cb8ltnarktkxik04 FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: employees fk_9m5i22mnb9g9twtgw7c7b69pl; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY employees
-  ADD CONSTRAINT fk_9m5i22mnb9g9twtgw7c7b69pl FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_9m5i22mnb9g9twtgw7c7b69pl FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: reasons_for_suppl fk_bj9ff672tjt7de6xklmuqdogd; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY reasons_for_suppl
-  ADD CONSTRAINT fk_bj9ff672tjt7de6xklmuqdogd FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_bj9ff672tjt7de6xklmuqdogd FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: institutes fk_crs5g4jqdxfajyqtqn6ip5ll8; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY institutes
-  ADD CONSTRAINT fk_crs5g4jqdxfajyqtqn6ip5ll8 FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_crs5g4jqdxfajyqtqn6ip5ll8 FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: reasons_for_suppl fk_e4eplnsbbs7nkirc239g9ortu; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY reasons_for_suppl
-  ADD CONSTRAINT fk_e4eplnsbbs7nkirc239g9ortu FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_e4eplnsbbs7nkirc239g9ortu FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: subdepartments fk_er03pwih7shyvcoatxu0untvf; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY subdepartments
-  ADD CONSTRAINT fk_er03pwih7shyvcoatxu0untvf FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_er03pwih7shyvcoatxu0untvf FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: amount_units fk_gfqwxy9v5jdcxp5ldekofktxj; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY amount_units
-  ADD CONSTRAINT fk_gfqwxy9v5jdcxp5ldekofktxj FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_gfqwxy9v5jdcxp5ldekofktxj FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: finances fk_hrx0g6s871374bq150mjl6lul; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finances
-  ADD CONSTRAINT fk_hrx0g6s871374bq150mjl6lul FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_hrx0g6s871374bq150mjl6lul FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: suppliers fk_hwq1en4ch8qvphsxf9lwej0fg; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY suppliers
-  ADD CONSTRAINT fk_hwq1en4ch8qvphsxf9lwej0fg FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_hwq1en4ch8qvphsxf9lwej0fg FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: institutes fk_irv2623eqwi2icti2ebqmfnth; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY institutes
-  ADD CONSTRAINT fk_irv2623eqwi2icti2ebqmfnth FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_irv2623eqwi2icti2ebqmfnth FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: finance_dep fk_kcvkj7rnc090xavcgxed3wu13; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finance_dep
-  ADD CONSTRAINT fk_kcvkj7rnc090xavcgxed3wu13 FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_kcvkj7rnc090xavcgxed3wu13 FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: producers fk_ku4mlwdnyx7kwbmymvmusspcf; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY producers
-  ADD CONSTRAINT fk_ku4mlwdnyx7kwbmymvmusspcf FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_ku4mlwdnyx7kwbmymvmusspcf FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: employees fk_l30in7eku2ecbukdy7mkg08i9; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY employees
-  ADD CONSTRAINT fk_l30in7eku2ecbukdy7mkg08i9 FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_l30in7eku2ecbukdy7mkg08i9 FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: departments fk_lesoxdijnp38bjbjw904wu43v; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY departments
-  ADD CONSTRAINT fk_lesoxdijnp38bjbjw904wu43v FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_lesoxdijnp38bjbjw904wu43v FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: amount_units fk_ll8tf0b5oltd31ohhtpobc32e; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY amount_units
-  ADD CONSTRAINT fk_ll8tf0b5oltd31ohhtpobc32e FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_ll8tf0b5oltd31ohhtpobc32e FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: producers fk_ownfq9y1sbvs58u39bjxmuli9; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY producers
-  ADD CONSTRAINT fk_ownfq9y1sbvs58u39bjxmuli9 FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_ownfq9y1sbvs58u39bjxmuli9 FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: departments fk_p6m3fphbw29hv03o3cubeji1e; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY departments
-  ADD CONSTRAINT fk_p6m3fphbw29hv03o3cubeji1e FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_p6m3fphbw29hv03o3cubeji1e FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: bids fk_sa983s0v7kmy5nqrpa4q79qsw; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fk_sa983s0v7kmy5nqrpa4q79qsw FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_sa983s0v7kmy5nqrpa4q79qsw FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: bid_statuses fk_so0yugpnbs5r34p9yuvy88w93; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bid_statuses
-  ADD CONSTRAINT fk_so0yugpnbs5r34p9yuvy88w93 FOREIGN KEY (modified_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_so0yugpnbs5r34p9yuvy88w93 FOREIGN KEY (modified_by) REFERENCES employees(id);
+
 
 --
 -- Name: bid_statuses fk_t4ptdaybdtml52sl5llarqyd4; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bid_statuses
-  ADD CONSTRAINT fk_t4ptdaybdtml52sl5llarqyd4 FOREIGN KEY (created_by) REFERENCES employees (id);
+    ADD CONSTRAINT fk_t4ptdaybdtml52sl5llarqyd4 FOREIGN KEY (created_by) REFERENCES employees(id);
+
 
 --
 -- Name: bids fkcy5ui58j8edka48hh05f7jc26; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fkcy5ui58j8edka48hh05f7jc26 FOREIGN KEY (finance_dep_id) REFERENCES finance_dep (id);
+    ADD CONSTRAINT fkcy5ui58j8edka48hh05f7jc26 FOREIGN KEY (finance_dep_id) REFERENCES finance_dep(id);
+
 
 --
 -- Name: bid_statuses fkdardqbah9kkqa1u5ywcpje662; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bid_statuses
-  ADD CONSTRAINT fkdardqbah9kkqa1u5ywcpje662 FOREIGN KEY (bid_id) REFERENCES bids (id);
+    ADD CONSTRAINT fkdardqbah9kkqa1u5ywcpje662 FOREIGN KEY (bid_id) REFERENCES bids(id);
+
 
 --
 -- Name: finance_dep fke1f3b0agx8mlhajv4sw2shbpp; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY finance_dep
-  ADD CONSTRAINT fke1f3b0agx8mlhajv4sw2shbpp FOREIGN KEY (finance_id) REFERENCES finances (id);
+    ADD CONSTRAINT fke1f3b0agx8mlhajv4sw2shbpp FOREIGN KEY (finance_id) REFERENCES finances(id);
+
 
 --
 -- Name: bids fkf5o6dvp3q0iltpx4u2dau7t8r; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fkf5o6dvp3q0iltpx4u2dau7t8r FOREIGN KEY (cpv_code) REFERENCES cpv (cpv_code);
+    ADD CONSTRAINT fkf5o6dvp3q0iltpx4u2dau7t8r FOREIGN KEY (cpv_code) REFERENCES cpv(cpv_code);
+
 
 --
 -- Name: bids fkipt88thl0kj9c09jo80dun9g9; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fkipt88thl0kj9c09jo80dun9g9 FOREIGN KEY (producer_id) REFERENCES producers (id);
+    ADD CONSTRAINT fkipt88thl0kj9c09jo80dun9g9 FOREIGN KEY (producer_id) REFERENCES producers(id);
+
 
 --
 -- Name: departments fkn8e2nupe8aik8xwqad6b5furs; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY departments
-  ADD CONSTRAINT fkn8e2nupe8aik8xwqad6b5furs FOREIGN KEY (inst_id) REFERENCES institutes (id);
+    ADD CONSTRAINT fkn8e2nupe8aik8xwqad6b5furs FOREIGN KEY (inst_id) REFERENCES institutes(id);
+
 
 --
 -- Name: subdepartments fkr4pqpc6g3gd4y1dyjnts36pmo; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY subdepartments
-  ADD CONSTRAINT fkr4pqpc6g3gd4y1dyjnts36pmo FOREIGN KEY (dep_id) REFERENCES departments (id);
+    ADD CONSTRAINT fkr4pqpc6g3gd4y1dyjnts36pmo FOREIGN KEY (dep_id) REFERENCES departments(id);
+
 
 --
 -- Name: bids fkth8arq3mim7mm402mv93j21ps; Type: FK CONSTRAINT; Schema: promasy; Owner: postgres
 --
 
 ALTER TABLE ONLY bids
-  ADD CONSTRAINT fkth8arq3mim7mm402mv93j21ps FOREIGN KEY (am_unit_id) REFERENCES amount_units (id);
+    ADD CONSTRAINT fkth8arq3mim7mm402mv93j21ps FOREIGN KEY (am_unit_id) REFERENCES amount_units(id);
 
 --
 -- If user 'promasy_user' do not exists - creating it
 --
 
 DO
-$body$
-BEGIN
-  IF NOT EXISTS(
-      SELECT *
-      FROM pg_catalog.pg_user
-      WHERE usename = 'promasy_user')
-  THEN
+  $body$
+  BEGIN
+     IF NOT EXISTS (
+        SELECT *
+        FROM   pg_catalog.pg_user
+        WHERE  usename = 'promasy_user') THEN
 
-    CREATE ROLE promasy_user LOGIN ENCRYPTED PASSWORD '@ccessp@ss';
-  END IF;
-END
-$body$;
+        CREATE ROLE promasy_user LOGIN ENCRYPTED PASSWORD '@ccessp@ss';
+     END IF;
+     END
+  $body$;
 
 --
 -- Name: promasy; Type: ACL; Schema: -; Owner: postgres
@@ -934,159 +970,159 @@ GRANT USAGE ON SCHEMA promasy TO promasy_user;
 -- Name: amount_units; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE amount_units TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE amount_units TO promasy_user;
 
 --
 -- Name: bid_statuses; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE bid_statuses TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE bid_statuses TO promasy_user;
 
 --
 -- Name: bids; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE bids TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE bids TO promasy_user;
 
 --
 -- Name: cpv; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE cpv TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE cpv TO promasy_user;
 
 --
 -- Name: departments; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE departments TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE departments TO promasy_user;
 
 --
 -- Name: employees; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE employees TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE employees TO promasy_user;
 
 --
 -- Name: finance_dep; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE finance_dep TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE finance_dep TO promasy_user;
 
 --
 -- Name: finances; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE finances TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE finances TO promasy_user;
 
 --
 -- Name: hilo_seqeunce; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, USAGE ON SEQUENCE hilo_seqeunce TO promasy_user;
+GRANT SELECT,USAGE ON SEQUENCE hilo_seqeunce TO promasy_user;
 
 --
 -- Name: institutes; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE institutes TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE institutes TO promasy_user;
 
 --
 -- Name: producers; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE producers TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE producers TO promasy_user;
 
 --
 -- Name: reasons_for_suppl; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE reasons_for_suppl TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE reasons_for_suppl TO promasy_user;
 
 --
 -- Name: registrations; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE registrations TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE registrations TO promasy_user;
 
 --
 -- Name: subdepartments; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE subdepartments TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE subdepartments TO promasy_user;
 
 --
 -- Name: suppliers; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE suppliers TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE suppliers TO promasy_user;
 
 --
 -- Name: version; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE version TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE version TO promasy_user;
 
 --
 -- Name: addresses; Type: ACL; Schema: promasy; Owner: postgres
 --
 
-GRANT SELECT, INSERT, UPDATE ON TABLE addresses TO promasy_user;
+GRANT SELECT,INSERT,UPDATE ON TABLE addresses TO promasy_user;
 
 --
 -- Data for Name: cpv; Type: TABLE DATA; Schema: promasy; Owner: postgres
 --
 
-COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
-03000000-1  Agricultural, farming, fishing, forestry AND related products  1  f  Сільськогосподарська, фермерська продукція, продукція рибальства, лісівництва та супутня продукція
-03100000-2  Agricultural AND horticultural products  2  f  Сільськогосподарська продукція та продукція рослинництва
-03110000-5  Crops, products OF market gardening AND horticulture  3  f  Сільськогосподарські культури, продукція товарного садівництва та рослинництва
-03111000-2  Seeds  4  f  Насіння
-03111100-3  Soya beans  5  t  Зерно сої
-03111200-4  Peanuts  5  t  Арахіс
-03111300-5  Sunflower seeds  5  t  Насіння соняшника
-03111400-6  Cotton seeds  5  t  Насіння бавовнику
-03111500-7  Sesame seeds  5  t  Насіння кунжуту
-03111600-8  Mustard seeds  5  t  Насіння гірчиці
-03111700-9  Vegetable seeds  5  t  Насіння овочів
-03111800-0  Fruit seeds  5  t  Насіння плодових культур
-03111900-1  Flower seeds  5  t  Насіння квітів
-03112000-9  Unmanufactured tobacco  4  t  Необроблений тютюн
-03113000-6  Plants used FOR sugar manufacturing  4  f  Рослини, що використовуються для виробництва цукру
-03113100-7  Sugar beet  5  t  Цукровий буряк
-03113200-8  Sugar cane  5  t  Цукрова тростина
-03114000-3  Straw AND forage  4  f  Солома та фураж
-03114100-4  Straw  5  t  Солома
-03114200-5  Forage  5  t  Фураж
-03115000-0  Raw vegetable materials  4  f  Рослинна сировина
-03115100-1  Raw vegetable materials used IN textile production  5  f  Рослинна сировина, що використовується у текстильній промисловості
-03115110-4  Cotton  6  t  Бавовна
-03115120-7  Jute  6  t  Джут
-03115130-0  Flax  6  t  Льон
-03116000-7 NATURAL rubber AND latex, AND associated products  4  f  Натуральні каучук і латекс та пов’язана продукція
-03116100-8 NATURAL rubber  5  t  Натуральний каучук
-03116200-9 NATURAL latex  5  t  Натуральний латекс
-03116300-0  Latex products  5  t  Вироби з латексу
-03117000-4  Plants used IN specific fields  4  f  Рослини, що використовуються у специфічних галузях
-03117100-5  Plants used IN perfumery OR pharmacy, OR FOR insecticidal OR SIMILAR purposes  5  f  Рослини, що використовуються у парфумерії чи фармацевтиці, або рослини інсектицидного чи подібного призначення
-03117110-8  Plants used IN perfumery  6  t  Рослини, що використовуються у парфумерії
-03117120-1  Plants used IN pharmacy  6  t  Рослини, що використовуються у фармацевтиці
-03117130-4  Plants used FOR insecticidal purposes  6  t  Рослини інсектицидного призначення
-03117140-7  Plants used FOR fungicidal OR SIMILAR purposes  6  t  Рослини фунгіцидного чи подібного призначення
-03117200-6  Seeds OF plants used IN specific fields  5  t  Насіння рослин, що використовується у специфічних галузях
-03120000-8  Horticultural AND nursery products  3  f  Продукція рослинництва, у тому числі тепличного
-03121000-5  Horticultural products  4  f  Продукція рослинництва
-03121100-6  Live plants, bulbs, roots, cuttings AND slips  5  t  Рослини живі, цибулини, корені, прищепи та живці
-03121200-7  Cut flowers  5  f  Квіти зрізані
-03121210-0  Floral arrangements  6  t  Квіткові композиції
-03130000-1  Beverage AND spice crops  3  f  Сільськогосподарські культури для виробництва напоїв і прянощі
-03131000-8  Beverage crops  4  f  Сільськогосподарські культури для виробництва напоїв
-03131100-9  Coffee beans  5  t  Кавові зерна
-03131200-0  Tea bushes  5  t  Чайне листя
-03131300-1  Maté  5  t  Мате
-03131400-2  Cocoa beans  5  t  Какао-боби
-03132000-5  Unprocessed spices  4  t  Необроблені прянощі
-03140000-4  Animal products AND related products  3  f  Продукція тваринництва та супутня продукція
-03141000-1  Bulls' semen	4	t	Сперма бугаїв
+COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM stdin;
+03000000-1	Agricultural, farming, fishing, forestry and related products	1	f	Сільськогосподарська, фермерська продукція, продукція рибальства, лісівництва та супутня продукція
+03100000-2	Agricultural and horticultural products	2	f	Сільськогосподарська продукція та продукція рослинництва
+03110000-5	Crops, products of market gardening and horticulture	3	f	Сільськогосподарські культури, продукція товарного садівництва та рослинництва
+03111000-2	Seeds	4	f	Насіння
+03111100-3	Soya beans	5	t	Зерно сої
+03111200-4	Peanuts	5	t	Арахіс
+03111300-5	Sunflower seeds	5	t	Насіння соняшника
+03111400-6	Cotton seeds	5	t	Насіння бавовнику
+03111500-7	Sesame seeds	5	t	Насіння кунжуту
+03111600-8	Mustard seeds	5	t	Насіння гірчиці
+03111700-9	Vegetable seeds	5	t	Насіння овочів
+03111800-0	Fruit seeds	5	t	Насіння плодових культур
+03111900-1	Flower seeds	5	t	Насіння квітів
+03112000-9	Unmanufactured tobacco	4	t	Необроблений тютюн
+03113000-6	Plants used for sugar manufacturing	4	f	Рослини, що використовуються для виробництва цукру
+03113100-7	Sugar beet	5	t	Цукровий буряк
+03113200-8	Sugar cane	5	t	Цукрова тростина
+03114000-3	Straw and forage	4	f	Солома та фураж
+03114100-4	Straw	5	t	Солома
+03114200-5	Forage	5	t	Фураж
+03115000-0	Raw vegetable materials	4	f	Рослинна сировина
+03115100-1	Raw vegetable materials used in textile production	5	f	Рослинна сировина, що використовується у текстильній промисловості
+03115110-4	Cotton	6	t	Бавовна
+03115120-7	Jute	6	t	Джут
+03115130-0	Flax	6	t	Льон
+03116000-7	Natural rubber and latex, and associated products	4	f	Натуральні каучук і латекс та пов’язана продукція
+03116100-8	Natural rubber	5	t	Натуральний каучук
+03116200-9	Natural latex	5	t	Натуральний латекс
+03116300-0	Latex products	5	t	Вироби з латексу
+03117000-4	Plants used in specific fields	4	f	Рослини, що використовуються у специфічних галузях
+03117100-5	Plants used in perfumery or pharmacy, or for insecticidal or similar purposes	5	f	Рослини, що використовуються у парфумерії чи фармацевтиці, або рослини інсектицидного чи подібного призначення
+03117110-8	Plants used in perfumery	6	t	Рослини, що використовуються у парфумерії
+03117120-1	Plants used in pharmacy	6	t	Рослини, що використовуються у фармацевтиці
+03117130-4	Plants used for insecticidal purposes	6	t	Рослини інсектицидного призначення
+03117140-7	Plants used for fungicidal or similar purposes	6	t	Рослини фунгіцидного чи подібного призначення
+03117200-6	Seeds of plants used in specific fields	5	t	Насіння рослин, що використовується у специфічних галузях
+03120000-8	Horticultural and nursery products	3	f	Продукція рослинництва, у тому числі тепличного
+03121000-5	Horticultural products	4	f	Продукція рослинництва
+03121100-6	Live plants, bulbs, roots, cuttings and slips	5	t	Рослини живі, цибулини, корені, прищепи та живці
+03121200-7	Cut flowers	5	f	Квіти зрізані
+03121210-0	Floral arrangements	6	t	Квіткові композиції
+03130000-1	Beverage and spice crops	3	f	Сільськогосподарські культури для виробництва напоїв і прянощі
+03131000-8	Beverage crops	4	f	Сільськогосподарські культури для виробництва напоїв
+03131100-9	Coffee beans	5	t	Кавові зерна
+03131200-0	Tea bushes	5	t	Чайне листя
+03131300-1	Maté	5	t	Мате
+03131400-2	Cocoa beans	5	t	Какао-боби
+03132000-5	Unprocessed spices	4	t	Необроблені прянощі
+03140000-4	Animal products and related products	3	f	Продукція тваринництва та супутня продукція
+03141000-1	Bulls' semen	4	t	Сперма бугаїв
 03142000-8	Animal products	4	f	Продукція тваринництва
 03142100-9	Natural honey	5	t	Натуральний мед
 03142200-0	Snails	5	t	Равлики
@@ -1226,318 +1262,318 @@ COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
 03325200-5	Hares	5	t	Зайці
 03330000-3	Farm animal products	3	f	Продукція фермерського тваринництва
 03331000-0	Fresh milk from sheep and goats	4	f	Овече та козине молоко сире
-03331100-1	Sheep' S milk  5  t  Овече молоко
-03331200-2  Goats' milk	5	t	Козине молоко
+03331100-1	Sheep's milk	5	t	Овече молоко
+03331200-2	Goats' milk	5	t	Козине молоко
 03332000-7	Wool and animal hair	4	f	Вовна і волос тварин
 03332100-8	Shorn wool	5	t	Вовна стрижена
 03332200-9	Animal hair	5	t	Волос тварин
-03333000-4	Fresh cows' milk  4  t  Коров’яче молоко сире
-03340000-6  Animal ear tags  3  f  Вушні бирки для тварин
-03341000-3  Bovine ear tags  4  t  Вушні бирки для великої рогатої худоби родини бикових
-03400000-4  Forestry AND logging products  2  f  Продукція лісівництва та лісозаготівлі
-03410000-7  Wood  3  f  Деревина
-03411000-4  Coniferous wood  4  t  Деревина хвойних порід
-03412000-1  Tropical wood  4  t  Деревина тропічних порід
-03413000-8  Fuel wood  4  t  Паливна деревина
-03414000-5  Rough wood  4  t  Необроблена деревина
-03415000-2  Softwood  4  t  Деревина м’яких порід
-03416000-9  Wood waste  4  t  Відходи деревини
-03417000-6  Scrap wood  4  f  Деревинна тріска
-03417100-7  Sawdust  5  t  Тирса
-03418000-3  Logs  4  f  Кругляк
-03418100-4  Hardwood  5  t  Деревина твердих порід
-03419000-0  Timber  4  f  Лісоматеріали
-03419100-1  Timber products  5  t  Вироби з лісоматеріалів
-03419200-2  Mining timber  5  t  Кріпильний ліс
-03420000-0  Gums  3  f  Смоли
-03421000-7  Balsams  4  t  Живиці
-03422000-4  Lac  4  t  Шелак
-03430000-3  Cork  3  f  Корок
-03431000-0 NATURAL cork  4  t  Натуральний корок
-03432000-7  Basketware  4  f  Плетені кошики
-03432100-8  Wickerwork  5  t  Плетені вироби
-03440000-6  Forestry products  3  f  Продукція лісівництва
-03441000-3  Ornamental plants, grasses, mosses OR lichens  4  t  Рослини, трави, мохи або лишайники декоративні
-03450000-9  Tree-nursery products  3  f  Розсадницька продукція
-03451000-6  Plants  4  f  Рослини
-03451100-7  Bedding plants  5  t  Саджанці
-03451200-8  Flower bulbs  5  t  Цибулини квітів
-03451300-9  Shrubs  5  t  Кущі
-03452000-3  Trees  4  t  Дерева
-03460000-2  Pulp  3  f  Целюлоза
-03461000-9  Wood pulp  4  f  Деревинна маса
-03461100-0  Chemical wood pulp  5  t  Деревинна маса, оброблена хімічним шляхом
-09000000-3  Petroleum products, fuel, electricity AND other sources OF energy  1  f  Нафтопродукти, паливо, електроенергія та інші джерела енергії
-09100000-0  Fuels  2  f  Паливо
-09110000-3  Solid fuels  3  f  Тверде паливо
-09111000-0  Coal AND coal-based fuels  4  f  Вугілля та паливо на вугільній основі
-09111100-1  Coal  5  t  Вугілля
-09111200-2  Coal-based fuels  5  f  Паливо на вугільній основі
-09111210-5  Hard coal  6  t  Антрацит
-09111220-8  Briquettes  6  t  Брикетоване вугілля
-09111300-3  Fossil fuels  5  t  Викопне паливо
-09111400-4  Wood fuels  5  t  Деревне паливо
-09112000-7  Lignite AND peat  4  f  Буре вугілля і торф
-09112100-8  Lignite  5  t  Буре вугілля
-09112200-9  Peat  5  t  Торф
-09113000-4  Coke  4  t  Кокс
-09120000-6  Gaseous fuels  3  f  Газове паливо
-09121000-3  Coal gas, mains gas OR SIMILAR gases  4  f  Вугільний, магістральний чи подібні гази
-09121100-4  Coal gas OR SIMILAR gases  5  t  Вугільний газ чи подібні гази
-09121200-5  Mains gas  5  t  Магістральний газ
-09122000-0  Propane AND butane  4  f  Пропан і бутан
-09122100-1  Propane gas  5  f  Пропан
-09122110-4  Liquefied propane gas  6  t  Пропан скраплений
-09122200-2  Butane gas  5  f  Бутан
-09122210-5  Liquefied butane gas  6  t  Бутан скраплений
-09123000-7 NATURAL gas  4  t  Природний газ
-09130000-9  Petroleum AND distillates  3  f  Нафта і дистиляти
-09131000-6  Aviation kerosene  4  f  Авіаційний гас
-09131100-7  Kerosene jet TYPE fuels  5  t  Реактивне паливо гасового типу
-09132000-3  Petrol  4  f  Бензин
-09132100-4  Unleaded petrol  5  t  Неетильований бензин
-09132200-5  Leaded petrol  5  t  Етильований бензин
-09132300-6  Petrol WITH ethanol 5  t  Бензин з етанолом
-                                   09133000-0  Liquefied Petroleum Gas (LPG)  4  t  Нафтовий газ скраплений
-                                                                              09134000-7  Gas oils  4  f  Газойлі
-                                                                                                    09134100-8  Diesel oil  5  t  Дизельна олива
-                                                                                                                                  09134200-9  Diesel fuel  5  f  Дизельне паливо
-                                                                                                                                                                          09134210-2  Diesel fuel (0, 2)  6  t  Дизельне паливо (0, 2)
-09134220-5  Diesel fuel (EN 590)  6  t  Дизельне паливо (EN 590)
-09134230-8  Biodiesel  6  f  Біодизельне паливо
-09134231-5  Biodiesel (B20)  7  t  Біодизельне паливо (B20)
-09134232-2  Biodiesel (B100)  7  t  Біодизельне паливо (B100)
-09135000-4  Fuel oils  4  f  Мазути
-09135100-5  Heating oil  5  f  Опалювальний мазут
-         09135110-8  Low-sulphur combustible oils  6  t  Паливний малосірчистий мазут
-09200000-1  Petroleum, coal AND oil products  2  f  Нафта, вугілля і нафтопродукти
-                                                 09210000-4  Lubricating preparations  3  f  Мастильні засоби
-                                                                         09211000-1  Lubricating oils AND lubricating agents  4  f  Мастильні оливи та мастильні матеріали
-09211100-2  Motor oils  5  t  Моторні оливи
-09211200-3  Compressor lube oils  5  t  Компресорні оливи
-        09211300-4  Turbine lube oils  5  t  Турбінні оливи
-                09211400-5  Gear oils  5  t  Трансмісійні оливи
-                        09211500-6  Reductor oils  5  t  Редукторні оливи
-                                 09211600-7  Oils FOR use IN hydraulic systems AND other purposes  5  f  Оливи для гідравлічних систем та іншого призначення
-                                                                                                      09211610-0  Liquids FOR hydraulic purposes  6  t  Гідравлічні рідини
-                                                                                                               09211620-3  Mould RELEASE oils  6  t  Формувальні оливи
-                                                                                                                       09211630-6  Anti-corrosion oils  6  t  Антикорозійні оливи
-09211640-9  Electrical insulating oils  6  t  Електроізоляційні оливи
-09211650-2  Brake fluids  6  t  Гальмівні рідини
-09211700-8  White oils AND liquid paraffin  5  f  Білі оливи та рідкий парафін
-                                                       09211710-1  White oils  6  t  Білі оливи
-                                                                                  09211720-4  Liquid paraffin  6  t  Рідкий парафін
-                                                                                                                     09211800-9  Petroleum oils AND preparations  5  f  Мінеральні оливи та їх суміші
-                                                                                                                                                                     09211810-2  Light oils  6  t  Легкі оливи
-                                                                                                                                                                                       09211820-5  Petroleum oils  6  t  Мінеральні оливи
-                                                                                                                                                                                                                   09211900-0  Lubricating traction oils  5  t  Трансмісійні мастила
-                                                                                                                                                                                                                                                          09220000-7  Petroleum jelly, waxes AND special spirits  3  f  Вазелін і парафіни нафтові та спеціальні бензини
-                                                                                                                                                                                                                                                                                                                                                   09221000-4  Petroleum jelly AND waxes  4  f  Вазелін і парафіни нафтові
-                                                                                                                                                                                                                                                                                                                                                                                          09221100-5  Petroleum jelly  5  t  Нафтовий вазелін
-                                                                                                                                                                                                                                                                                                                                                                                                                09221200-6  Paraffin wax  5  t  Твердий парафін
-                                                                                                                                                                                                                                                                                                                                                                                                                                          09221300-7  Petroleum wax  5  t  Нафтовий парафін
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        09221400-8  Petroleum residues  5  t  Залишки нафтопереробки
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              09222000-1  Special spirits  4  f  Спеціальні бензини
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            09222100-2  White spirit  5  t  Уайт-спірит
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 09230000-0  Petroleum (crude)  3  t  Нафта (сира)
-09240000-3  Oil AND coal-related products  3  f  Продукти переробки нафти та вугілля
-                                              09241000-0  Bituminous OR oil shale  4  t  Бітумінозні чи нафтоносні сланці
-                                                                     09242000-7  Coal-related products  4  f  Продукти переробки вугілля
-                                                                                                                                 09242100-8  Coal oil  5  t  Вугільна нафта
-09300000-2  Electricity, heating, solar AND nuclear energy  2  f  Електрична, теплова, сонячна та атомна енергія
-                                                                                                         09310000-5  Electricity  3  t  Електрична енергія
-                                                                                                         09320000-8  Steam, hot water AND associated products  3  f  Пара, гаряча вода та пов’язана продукція
-                                                                                                                                                                  09321000-5  Hot water  4  t  Вода гаряча
-                                                                                                                                                                           09322000-2  Steam  4  t  Пара
-                                                                                                                                                                                       09323000-9  District heating  4  t  Централізоване опалення
-                                                                                                                                                                                                                        09324000-6  Long-distance heating  4  t  Центральне опалення
-                                                                                                                                                                                                                                                           09330000-1  Solar energy  3  f  Сонячна енергія
-                                                                                                                                                                                                                                                                                        09331000-8  Solar panels  4  f  Сонячні панелі
-                                                                                                                                                                                                                                                                                                                        09331100-9  Solar collectors FOR heat production  5  t  Сонячні теплові колектори
-                                                                                                                                                                                                                                                                                                                                                                          09331200-0  Solar photovoltaic modules  5  t  Фотоелектричні сонячні модулі
-                                                                                                                                                                                                                                                                                                                                                                                                         09332000-5  Solar installation  4  t  Сонячна установка
-                                                                                                                                                                                                                                                                                                                                                                                                                           09340000-4  Nuclear fuels  3  f  Ядерне паливо
-                                                                                                                                                                                                                                                                                                                                                                                                                                                      09341000-1  Uranium  4  t  Уран
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 09342000-8  Plutonium  4  t  Плутоній
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 09343000-5  Radioactive materials  4  t  Радіоактивні матеріали
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          09344000-2  Radio-isotopes  4  t  Радіоактивні ізотопи
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      14000000-1  Mining, basic metals AND related products  1  f  Гірнича продукція, неблагородні метали та супутня продукція
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           14200000-3  Sand AND clay  2  f  Пісок і глина
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       14210000-6  Gravel, sand, crushed stone AND aggregates  3  f  Гравій, пісок, щебінь і наповнювачі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  14211000-3  Sand  4  f  Пісок
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           14211100-4 NATURAL sand  5  t  Пісок природний
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    14212000-0  Granules, chippings, stone powder, pebbles, gravel, broken AND crushed stone, stone mixtures, sand-gravel mixtures AND other aggregates  4  f  Гранули, кам’яна крихта, кам’яний порошок, галька, гравій, колотий камінь і щебінь, кам’яні суміші, піщано-гравійні суміші та інші наповнювачі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             14212100-1  Pebbles AND gravel  5  f  Галька та гравій
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   14212110-4  Pebbles  6  t  Галька
-14212120-7  Gravel  6  t  Гравій
-14212200-2  Aggregates  5  f  Наповнювачі
-            14212210-5  Sand-gravel mix  6  t  Піщано-гравійні суміші
-                                    14212300-3  Broken AND crushed stone  5  f  Колотий камінь і щебінь
-14212310-6  Ballast  6  t  Баласт
-14212320-9  Crushed granite  6  t  Гранітний щебінь
-            14212330-2  Crushed basalt  6  t  Базальтовий щебінь
-                                14212400-4  Soil  5  f  Ґрунт
-                                                     14212410-7  Topsoil  6  t  Гумус
-                                                     14212420-0  Subsoil  6  t  Надра
-                                                             14212430-3  Stone chippings  6  t  Кам’яна крихта
-                                                                               14213000-7  Macadam, tarmac AND tar sands  4  f  Дорожні щебеневий і щебенево-гудроновий покриви та бітумінозний пісок
-                                                                                                                                                            14213100-8  Macadam  5  t  Дорожній щебеневий покрив
-                                                                                                                                                                                 14213200-9  Tarmac  5  t  Дорожній щебенево-гудроновий покрив
-                                                                                                                                                                                                        14213300-0  Tar sands  5  t  Бітумінозний пісок
-                                                                                                                                                                                                                        14220000-9  Clay AND kaolin  3  f  Глина та каолін
-                                                                                                                                                                                                                                             14221000-6  Clay  4  t  Глина
-                                                                                                                                                                                                                                                               14222000-3  Kaolin  4  t  Каолін
-14300000-4  Chemical AND fertiliser minerals  2  f  Мінеральна сировина для хімічної промисловості та для виробництва добрив
-                                                               14310000-7  Fertiliser minerals  3  f  Мінеральна сировина для виробництва добрив
-14311000-4 NATURAL calcium, aluminium calcium phosphate AND crude NATURAL potassium salts  4  f  Кальцій природний, алюмінієво-кальцієвий фосфат та природні необроблені калієві солі
-                                                                                                                              14311100-5 NATURAL calcium  5  t  Кальцій природний
-                                                                                                                                       14311200-6  Aluminium calcium phosphates  5  t  Алюмінієво-кальцієві фосфати
-                                                                                                                                                   14311300-7  Crude NATURAL potassium salts  5  t  Природні необроблені калієві солі
-                                                                                                                                                                                                                         14312000-1  Iron pyrites  4  f  Пірит
-14312100-2  Unroasted iron pyrites  5  t  Пірит необпалений
-14320000-0  Chemical minerals  3  t  Мінеральна сировина для хімічної промисловості
-                                                             14400000-5  Salt AND pure sodium chloride  2  f  Сіль і чистий хлорид натрію
-                                                                                                        14410000-8  Rock salt  3  t  Кам’яна сіль
-                                                                                                                    14420000-1  Sea salt  3  t  Морська сіль
-                                                                                                                                    14430000-4  Evaporated salt AND pure sodium chloride  3  t  Випарена сіль і чистий хлорид натрію
-                                                                                                                                                                                                                       14450000-0  Salt IN brine  3  t  Ропа
-                                                                                                                                                                                                                                                        14500000-6  Related mining AND quarrying products  2  f  Продукція гірничо-видобувної промисловості супутня
-                                                                                                                                                                                                                                                                                                              14520000-2  Precious AND semi-precious stones, pumice stone, emery, NATURAL abrasives, other minerals AND precious metals  3  f  Коштовне та напівкоштовне каміння, пемза, наждак, природні абразиви, інші мінерали та благородні метали
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 14521000-9  Precious AND semi-precious stones  4  f  Коштовне та напівкоштовне каміння
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      14521100-0  Precious stones  5  f  Коштовне каміння
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      14521140-2  Dust OR powder OF precious stones  6  t  Пил і порошок коштовного каміння
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    14521200-1  Semi-precious stones  5  f  Напівкоштовне каміння
-14521210-4  Dust OR powder OF semi-precious stones  6  t  Пил і порошок напівкоштовного каміння
-                                            14522000-6  Industrial diamonds, pumice stone, emery AND other NATURAL abrasives  4  f  Промислові алмази, пемза, наждак та інші природні абразиви
-                                                                                                                                                                     14522100-7  Pumice stone  5  t  Пемза
-                                                                                                                                                                                                  14522200-8  Industrial diamonds  5  t  Промислові алмази
-                                                                                                                                                                                                                                                    14522300-9  Emery  5  t  Наждак
-                                                                                                                                                                                                                                                    14522400-0 NATURAL abrasives  5  t  Природні абразиви
-                                                                                                                                                                                                                                                             14523000-3  Related minerals, precious metals AND associated products  4  f  Супутні мінерали, благородні метали та пов’язана продукція
-                                                                                                                                                                                                                                                                                                                                          14523100-4  Minerals  5  t  Мінерали
-                                                                                                                                                                                                                                                                                                                                                   14523200-5  Gold  5  t  Золото
-                                                                                                                                                                                                                                                                                                                                                                        14523300-6  Silver  5  t  Срібло
-                                                                                                                                                                                                                                                                                                                                                                        14523400-7  Platinum  5  t  Платина
-                                                                                                                                                                                                                                                                                                                                                                                14600000-7  Metal ores AND alloys  2  f  Металеві руди та сплави
-                                                                                                                                                                                                                                                                                                                                                                                                  14610000-0  Metal ores  3  f  Металеві руди
-                                                                                                                                                                                                                                                                                                                                                                                                          14611000-7  Iron ores  4  t  Залізні руди
-                                                                                                                                                                                                                                                                                                                                                                                                                   14612000-4  Non-ferrous metal ores  4  f  Руди кольорових металів
-14612100-5  Copper ores  5  t  Мідні руди
-14612200-6  Nickel ores  5  t  Нікелеві руди
-        14612300-7  Aluminium ores  5  t  Алюмінієві руди
-                 14612400-8  Precious-metal ores  5  t  Руди благородних металів
-                             14612500-9  Lead ores  5  t  Свинцеві руди
-                                     14612600-0  Zinc ores  5  t  Цинкові руди
-                                              14612700-1  Tin ores  5  t  Олов’яні руди
-                                                          14613000-1  Uranium AND thorium ores  4  f  Уранові та торієві руди
-                                                                              14613100-2  Uranium ores  5  t  Уранові руди
-                                                                                      14613200-3  Thorium ores  5  t  Торієві руди
-                                                                                               14614000-8  Miscellaneous ores  4  t  Руди різні
-                                                                                                           14620000-3  Alloys  3  f  Сплави
-                                                                                                                               14621000-0  Ferro-alloys  4  f  Феросплави
-                                                                                                                                                            14621100-1  Non-ECSC ferro-alloys  5  f  Феросплави, не класифіковані Європейським об’єднанням вугілля та сталі
-                                                                                                                                                                                                                                                                   14621110-4  Ferro-manganese  6  t  Феромарганець
-                                                                                                                                                                                                                                                                                                      14621120-7  Ferro-chromium  6  t  Ферохром
-14621130-0  Ferro-nickel  6  t  Феронікель
-14622000-7  Steel  4  t  Сталь
-        14630000-6  Slag, dross, ferrous waste AND scrap  3  t  Шлак, окалина, відходи та скрап чорних металів
-                                                                      14700000-8  Basic metals  2  f  Неблагородні метали
-                                                                               14710000-1  Iron, lead, zinc, tin AND copper  3  f  Залізо, свинець, цинк, олово та мідь
-14711000-8  Iron  4  f  Залізо
-14711100-9  Pig iron  5  t  Чавун у чушках
-            14712000-5  Lead  4  t  Свинець
-                        14713000-2  Zinc  4  t  Цинк
-                                                14714000-9  Tin  4  t  Олово
-                                                14715000-6  Copper  4  t  Мідь
-                                                         14720000-4  Aluminium, nickel, scandium, titanium AND vanadium  3  f  Алюміній, нікель, скандій, титан і ванадій
-                                                                                                                                         14721000-1  Aluminium  4  f  Алюміній
-                                                                                                                                                  14721100-2  Aluminium oxide  5  t  Оксид алюмінію
-                                                                                                                                                                               14722000-8  Nickel  4  t  Нікель
-                                                                                                                                                                                                         14723000-5  Scandium  4  t  Скандій
-                                                                                                                                                                                                         14724000-2  Titanium  4  t  Титан
-                                                                                                                                                                                                                  14725000-9  Vanadium  4  t  Ванадій
-                                                                                                                                                                                                                                           14730000-7  Chromium, manganese, cobalt, yttrium AND zirconium  3  f  Хром, марганець, кобальт, ітрій і цирконій
-                                                                                                                                                                                                                                                                                                                                  14731000-4  Chromium  4  t  Хром
-                                                                                                                                                                                                                                                                                                                                                           14732000-1  Manganese  4  t  Марганець
-                                                                                                                                                                                                                                                                                                                                                           14733000-8  Cobalt  4  t  Кобальт
-                                                                                                                                                                                                                                                                                                                                                                   14734000-5  Yttrium  4  t  Ітрій
-                                                                                                                                                                                                                                                                                                                                                                                        14735000-2  Zirconium  4  t  Цирконій
-14740000-0  Molybdenum, technetium, ruthenium AND rhodium  3  f  Молібден, технецій, рутеній і родій
-                                                           14741000-7  Molybdenum  4  t  Молібден
-                                                                   14742000-4  Technetium  4  t  Технецій
-                                                                                           14743000-1  Ruthenium  4  t  Рутеній
-14744000-8  Rhodium  4  t  Родій
-14750000-3  Cadmium, lutetium, hafnium, tantalum AND tungsten  3  f  Кадмій, лютецій, гафній, тантал і вольфрам
-14751000-0  Cadmium  4  t  Кадмій
-14752000-7  Lutetium  4  t  Лютецій
-            14753000-4  Hafnium  4  t  Гафній
-                                       14754000-1  Tantalum  4  t  Тантал
-                                       14755000-8  Tungsten  4  t  Вольфрам
-                                                14760000-6  Iridium, gallium, indium, thallium AND barium  3  f  Іридій, галій, індій, талій і барій
-                                                                                                                         14761000-3  Iridium  4  t  Іридій
-                                                                                                                                  14762000-0  Gallium  4  t  Галій
-                                                                                                                                                          14763000-7  Indium  4  t  Індій
-                                                                                                                                                          14764000-4  Thallium  4  t  Талій
-                                                                                                                                                                  14765000-1  Barium  4  t  Барій
-                                                                                                                                                                                      14770000-9  Caesium, strontium, rubidium AND calcium  3  f  Цезій, стронцій, рубідій і кальцій
-                                                                                                                                                                                                                                                                           14771000-6  Caesium  4  t  Цезій
-                                                                                                                                                                                                                                                                           14772000-3  Strontium  4  t  Стронцій
-                                                                                                                                                                                                                                                                                   14773000-0  Rubidium  4  t  Рубідій
-                                                                                                                                                                                                                                                                                                         14774000-7  Calcium  4  t  Кальцій
-14780000-2  Potassium, magnesium, sodium AND lithium  3  f  Калій, магній, натрій і літій
-                                                      14781000-9  Potassium  4  t  Калій
-                                                              14782000-6  Magnesium  4  t  Магній
-                                                                                     14783000-3  Sodium  4  t  Натрій
-14784000-0  Lithium  4  t  Літій
-14790000-5  Niobium, osmium, rhenium AND palladium  3  f  Ніобій, осмій, реній і паладій
-                                                                  14791000-2  Niobium  4  t  Ніобій
-                                                                                       14792000-9  Osmium  4  t  Осмій
-14793000-6  Rhenium  4  t  Реній
-14794000-3  Palladium  4  t  Паладій
-            14800000-9  Miscellaneous non-metallic mineral products  2  f  Неметалеві корисні копалини різні
-                                          14810000-2  Abrasive products  3  f  Абразивні вироби
-                                                  14811000-9  Millstones, grindstones AND grinding wheels  4  f  Жорнові камені, точильні камені та круги
-                                                                                                                         14811100-0  Millstones  5  t  Жорнові камені
-                                                                                                                                                 14811200-1  Grindstones  5  t  Точильні камені
-                                                                                                                                                                                14811300-2  Grinding wheels  5  t  Точильні круги
-                                                                                                                                                                                                                            14812000-6  Abrasive powder OR grain  4  t  Абразивні порошок або зерно
-                                                                                                                                                                                                                                                                        14813000-3  Artificial corundum  4  t  Корунд штучний
-                                                                                                                                                                                                                                                                                                            14814000-0  Artificial graphite  4  t  Графіт штучний
-                                                                                                                                                                                                                                                                                                                                                   14820000-5  Glass  3  t  Скло
-                                                                                                                                                                                                                                                                                                                                                   14830000-8  Fibreglass  3  t  Скловолокно
-                                                                                                                                                                                                                                                                                                                                                           14900000-0  Recovered secondary raw materials  2  f  Вторинна відновлена сировина
-                                                                                                                                                                                                                                                                                                                                                                                 14910000-3  Recovered secondary metal raw materials  3  t  Вторинна металева відновлена сировина
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              14920000-6  Recovered secondary non-metal raw materials  3  t  Вторинна неметалева відновлена сировина
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        14930000-9  Ash AND residues containing metals  3  t  Зола та металовмісні залишки
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      15000000-8  Food, beverages, tobacco AND related products  1  f  Продукти харчування, напої, тютюн та супутня продукція
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   15100000-9  Animal products, meat AND meat products  2  f  Продукція тваринництва, м’ясо та м’ясопродукти
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            15110000-2  Meat  3  f  М’ясо
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            15250000-5  Seafood  3  f  Морепродукти
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    15111000-9  Bovine meat  4  f  М’ясо великої рогатої худоби родини бикових
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       15111100-0  Beef  5  t  Яловичина
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               15111200-1  Veal  5  t  Телятина
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 15112000-6  Poultry  4  f  М’ясо свійської птиці
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  15112100-7  Fresh poultry  5  f  М’ясо свійської птиці свіже
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         15112110-0  Geese  6  t  Гусятина
-15112120-3  Turkeys  6  t  Індичатина
-15112130-6  Chickens  6  t  Курятина
-            15112140-9  Ducks  6  t  Качатина
-                                     15112300-9  Poultry livers  5  f  Печінка свійської птиці
-                                                                                         15112310-2  Foie gras  6  t  Фуа-гра
-                                                                                                                          15113000-3  Pork  4  t  Свинина
-                                                                                                                          15114000-0  Offal  4  t  Потрухи
-                                                                                                                                   15115000-7  Lamb AND mutton  4  f  Ягнятина та баранина
-                                                                                                                                                        15115100-8  Lamb  5  t  Ягнятина
-                                                                                                                                                                          15115200-9  Mutton  5  t  Баранина
-15117000-1  Goat meat  4  t  Козлятина
-15118000-8  Horse, ass, mule OR hinny meat  4  f  М’ясо коней, віслюків, мулів чи лошаків
-                                               15118100-9  Horsemeat  5  t  Конина
-                                                       15118900-7  Ass, mule OR hinny meat  5  t  М’ясо віслюків, мулів чи лошаків
-                                                                                                                  15119000-5  Various meats  4  f  М’ясо різне
-                                                                                                                                                   15119100-6  Rabbit meat  5  t  Кролятина
-15119200-7  Hare meat  5  t  Зайчатина
-15119300-8  Game  5  t  Дичина
-         15119400-9  Frogs' legs	5	t	Жаб’ячі лапки
+03333000-4	Fresh cows' milk	4	t	Коров’яче молоко сире
+03340000-6	Animal ear tags	3	f	Вушні бирки для тварин
+03341000-3	Bovine ear tags	4	t	Вушні бирки для великої рогатої худоби родини бикових
+03400000-4	Forestry and logging products	2	f	Продукція лісівництва та лісозаготівлі
+03410000-7	Wood	3	f	Деревина
+03411000-4	Coniferous wood	4	t	Деревина хвойних порід
+03412000-1	Tropical wood	4	t	Деревина тропічних порід
+03413000-8	Fuel wood	4	t	Паливна деревина
+03414000-5	Rough wood	4	t	Необроблена деревина
+03415000-2	Softwood	4	t	Деревина м’яких порід
+03416000-9	Wood waste	4	t	Відходи деревини
+03417000-6	Scrap wood	4	f	Деревинна тріска
+03417100-7	Sawdust	5	t	Тирса
+03418000-3	Logs	4	f	Кругляк
+03418100-4	Hardwood	5	t	Деревина твердих порід
+03419000-0	Timber	4	f	Лісоматеріали
+03419100-1	Timber products	5	t	Вироби з лісоматеріалів
+03419200-2	Mining timber	5	t	Кріпильний ліс
+03420000-0	Gums	3	f	Смоли
+03421000-7	Balsams	4	t	Живиці
+03422000-4	Lac	4	t	Шелак
+03430000-3	Cork	3	f	Корок
+03431000-0	Natural cork	4	t	Натуральний корок
+03432000-7	Basketware	4	f	Плетені кошики
+03432100-8	Wickerwork	5	t	Плетені вироби
+03440000-6	Forestry products	3	f	Продукція лісівництва
+03441000-3	Ornamental plants, grasses, mosses or lichens	4	t	Рослини, трави, мохи або лишайники декоративні
+03450000-9	Tree-nursery products	3	f	Розсадницька продукція
+03451000-6	Plants	4	f	Рослини
+03451100-7	Bedding plants	5	t	Саджанці
+03451200-8	Flower bulbs	5	t	Цибулини квітів
+03451300-9	Shrubs	5	t	Кущі
+03452000-3	Trees	4	t	Дерева
+03460000-2	Pulp	3	f	Целюлоза
+03461000-9	Wood pulp	4	f	Деревинна маса
+03461100-0	Chemical wood pulp	5	t	Деревинна маса, оброблена хімічним шляхом
+09000000-3	Petroleum products, fuel, electricity and other sources of energy	1	f	Нафтопродукти, паливо, електроенергія та інші джерела енергії
+09100000-0	Fuels	2	f	Паливо
+09110000-3	Solid fuels	3	f	Тверде паливо
+09111000-0	Coal and coal-based fuels	4	f	Вугілля та паливо на вугільній основі
+09111100-1	Coal	5	t	Вугілля
+09111200-2	Coal-based fuels	5	f	Паливо на вугільній основі
+09111210-5	Hard coal	6	t	Антрацит
+09111220-8	Briquettes	6	t	Брикетоване вугілля
+09111300-3	Fossil fuels	5	t	Викопне паливо
+09111400-4	Wood fuels	5	t	Деревне паливо
+09112000-7	Lignite and peat	4	f	Буре вугілля і торф
+09112100-8	Lignite	5	t	Буре вугілля
+09112200-9	Peat	5	t	Торф
+09113000-4	Coke	4	t	Кокс
+09120000-6	Gaseous fuels	3	f	Газове паливо
+09121000-3	Coal gas, mains gas or similar gases	4	f	Вугільний, магістральний чи подібні гази
+09121100-4	Coal gas or similar gases	5	t	Вугільний газ чи подібні гази
+09121200-5	Mains gas	5	t	Магістральний газ
+09122000-0	Propane and butane	4	f	Пропан і бутан
+09122100-1	Propane gas	5	f	Пропан
+09122110-4	Liquefied propane gas	6	t	Пропан скраплений
+09122200-2	Butane gas	5	f	Бутан
+09122210-5	Liquefied butane gas	6	t	Бутан скраплений
+09123000-7	Natural gas	4	t	Природний газ
+09130000-9	Petroleum and distillates	3	f	Нафта і дистиляти
+09131000-6	Aviation kerosene	4	f	Авіаційний гас
+09131100-7	Kerosene jet type fuels	5	t	Реактивне паливо гасового типу
+09132000-3	Petrol	4	f	Бензин
+09132100-4	Unleaded petrol	5	t	Неетильований бензин
+09132200-5	Leaded petrol	5	t	Етильований бензин
+09132300-6	Petrol with ethanol	5	t	Бензин з етанолом
+09133000-0	Liquefied Petroleum Gas (LPG)	4	t	Нафтовий газ скраплений
+09134000-7	Gas oils	4	f	Газойлі
+09134100-8	Diesel oil	5	t	Дизельна олива
+09134200-9	Diesel fuel	5	f	Дизельне паливо
+09134210-2	Diesel fuel (0,2)	6	t	Дизельне паливо (0,2)
+09134220-5	Diesel fuel (EN 590)	6	t	Дизельне паливо (EN 590)
+09134230-8	Biodiesel	6	f	Біодизельне паливо
+09134231-5	Biodiesel (B20)	7	t	Біодизельне паливо (B20)
+09134232-2	Biodiesel (B100)	7	t	Біодизельне паливо (B100)
+09135000-4	Fuel oils	4	f	Мазути
+09135100-5	Heating oil	5	f	Опалювальний мазут
+09135110-8	Low-sulphur combustible oils	6	t	Паливний малосірчистий мазут
+09200000-1	Petroleum, coal and oil products	2	f	Нафта, вугілля і нафтопродукти
+09210000-4	Lubricating preparations	3	f	Мастильні засоби
+09211000-1	Lubricating oils and lubricating agents	4	f	Мастильні оливи та мастильні матеріали
+09211100-2	Motor oils	5	t	Моторні оливи
+09211200-3	Compressor lube oils	5	t	Компресорні оливи
+09211300-4	Turbine lube oils	5	t	Турбінні оливи
+09211400-5	Gear oils	5	t	Трансмісійні оливи
+09211500-6	Reductor oils	5	t	Редукторні оливи
+09211600-7	Oils for use in hydraulic systems and other purposes	5	f	Оливи для гідравлічних систем та іншого призначення
+09211610-0	Liquids for hydraulic purposes	6	t	Гідравлічні рідини
+09211620-3	Mould release oils	6	t	Формувальні оливи
+09211630-6	Anti-corrosion oils	6	t	Антикорозійні оливи
+09211640-9	Electrical insulating oils	6	t	Електроізоляційні оливи
+09211650-2	Brake fluids	6	t	Гальмівні рідини
+09211700-8	White oils and liquid paraffin	5	f	Білі оливи та рідкий парафін
+09211710-1	White oils	6	t	Білі оливи
+09211720-4	Liquid paraffin	6	t	Рідкий парафін
+09211800-9	Petroleum oils and preparations	5	f	Мінеральні оливи та їх суміші
+09211810-2	Light oils	6	t	Легкі оливи
+09211820-5	Petroleum oils	6	t	Мінеральні оливи
+09211900-0	Lubricating traction oils	5	t	Трансмісійні мастила
+09220000-7	Petroleum jelly, waxes and special spirits	3	f	Вазелін і парафіни нафтові та спеціальні бензини
+09221000-4	Petroleum jelly and waxes	4	f	Вазелін і парафіни нафтові
+09221100-5	Petroleum jelly	5	t	Нафтовий вазелін
+09221200-6	Paraffin wax	5	t	Твердий парафін
+09221300-7	Petroleum wax	5	t	Нафтовий парафін
+09221400-8	Petroleum residues	5	t	Залишки нафтопереробки
+09222000-1	Special spirits	4	f	Спеціальні бензини
+09222100-2	White spirit	5	t	Уайт-спірит
+09230000-0	Petroleum (crude)	3	t	Нафта (сира)
+09240000-3	Oil and coal-related products	3	f	Продукти переробки нафти та вугілля
+09241000-0	Bituminous or oil shale	4	t	Бітумінозні чи нафтоносні сланці
+09242000-7	Coal-related products	4	f	Продукти переробки вугілля
+09242100-8	Coal oil	5	t	Вугільна нафта
+09300000-2	Electricity, heating, solar and nuclear energy	2	f	Електрична, теплова, сонячна та атомна енергія
+09310000-5	Electricity	3	t	Електрична енергія
+09320000-8	Steam, hot water and associated products	3	f	Пара, гаряча вода та пов’язана продукція
+09321000-5	Hot water	4	t	Вода гаряча
+09322000-2	Steam	4	t	Пара
+09323000-9	District heating	4	t	Централізоване опалення
+09324000-6	Long-distance heating	4	t	Центральне опалення
+09330000-1	Solar energy	3	f	Сонячна енергія
+09331000-8	Solar panels	4	f	Сонячні панелі
+09331100-9	Solar collectors for heat production	5	t	Сонячні теплові колектори
+09331200-0	Solar photovoltaic modules	5	t	Фотоелектричні сонячні модулі
+09332000-5	Solar installation	4	t	Сонячна установка
+09340000-4	Nuclear fuels	3	f	Ядерне паливо
+09341000-1	Uranium	4	t	Уран
+09342000-8	Plutonium	4	t	Плутоній
+09343000-5	Radioactive materials	4	t	Радіоактивні матеріали
+09344000-2	Radio-isotopes	4	t	Радіоактивні ізотопи
+14000000-1	Mining, basic metals and related products	1	f	Гірнича продукція, неблагородні метали та супутня продукція
+14200000-3	Sand and clay	2	f	Пісок і глина
+14210000-6	Gravel, sand, crushed stone and aggregates	3	f	Гравій, пісок, щебінь і наповнювачі
+14211000-3	Sand	4	f	Пісок
+14211100-4	Natural sand	5	t	Пісок природний
+14212000-0	Granules, chippings, stone powder, pebbles, gravel, broken and crushed stone, stone mixtures, sand-gravel mixtures and other aggregates	4	f	Гранули, кам’яна крихта, кам’яний порошок, галька, гравій, колотий камінь і щебінь, кам’яні суміші, піщано-гравійні суміші та інші наповнювачі
+14212100-1	Pebbles and gravel	5	f	Галька та гравій
+14212110-4	Pebbles	6	t	Галька
+14212120-7	Gravel	6	t	Гравій
+14212200-2	Aggregates	5	f	Наповнювачі
+14212210-5	Sand-gravel mix	6	t	Піщано-гравійні суміші
+14212300-3	Broken and crushed stone	5	f	Колотий камінь і щебінь
+14212310-6	Ballast	6	t	Баласт
+14212320-9	Crushed granite	6	t	Гранітний щебінь
+14212330-2	Crushed basalt	6	t	Базальтовий щебінь
+14212400-4	Soil	5	f	Ґрунт
+14212410-7	Topsoil	6	t	Гумус
+14212420-0	Subsoil	6	t	Надра
+14212430-3	Stone chippings	6	t	Кам’яна крихта
+14213000-7	Macadam, tarmac and tar sands	4	f	Дорожні щебеневий і щебенево-гудроновий покриви та бітумінозний пісок
+14213100-8	Macadam	5	t	Дорожній щебеневий покрив
+14213200-9	Tarmac	5	t	Дорожній щебенево-гудроновий покрив
+14213300-0	Tar sands	5	t	Бітумінозний пісок
+14220000-9	Clay and kaolin	3	f	Глина та каолін
+14221000-6	Clay	4	t	Глина
+14222000-3	Kaolin	4	t	Каолін
+14300000-4	Chemical and fertiliser minerals	2	f	Мінеральна сировина для хімічної промисловості та для виробництва добрив
+14310000-7	Fertiliser minerals	3	f	Мінеральна сировина для виробництва добрив
+14311000-4	Natural calcium, aluminium calcium phosphate and crude natural potassium salts	4	f	Кальцій природний, алюмінієво-кальцієвий фосфат та природні необроблені калієві солі
+14311100-5	Natural calcium	5	t	Кальцій природний
+14311200-6	Aluminium calcium phosphates	5	t	Алюмінієво-кальцієві фосфати
+14311300-7	Crude natural potassium salts	5	t	Природні необроблені калієві солі
+14312000-1	Iron pyrites	4	f	Пірит
+14312100-2	Unroasted iron pyrites	5	t	Пірит необпалений
+14320000-0	Chemical minerals	3	t	Мінеральна сировина для хімічної промисловості
+14400000-5	Salt and pure sodium chloride	2	f	Сіль і чистий хлорид натрію
+14410000-8	Rock salt	3	t	Кам’яна сіль
+14420000-1	Sea salt	3	t	Морська сіль
+14430000-4	Evaporated salt and pure sodium chloride	3	t	Випарена сіль і чистий хлорид натрію
+14450000-0	Salt in brine	3	t	Ропа
+14500000-6	Related mining and quarrying products	2	f	Продукція гірничо-видобувної промисловості супутня
+14520000-2	Precious and semi-precious stones, pumice stone, emery, natural abrasives, other minerals and precious metals	3	f	Коштовне та напівкоштовне каміння, пемза, наждак, природні абразиви, інші мінерали та благородні метали
+14521000-9	Precious and semi-precious stones	4	f	Коштовне та напівкоштовне каміння
+14521100-0	Precious stones	5	f	Коштовне каміння
+14521140-2	Dust or powder of precious stones	6	t	Пил і порошок коштовного каміння
+14521200-1	Semi-precious stones	5	f	Напівкоштовне каміння
+14521210-4	Dust or powder of semi-precious stones	6	t	Пил і порошок напівкоштовного каміння
+14522000-6	Industrial diamonds, pumice stone, emery and other natural abrasives	4	f	Промислові алмази, пемза, наждак та інші природні абразиви
+14522100-7	Pumice stone	5	t	Пемза
+14522200-8	Industrial diamonds	5	t	Промислові алмази
+14522300-9	Emery	5	t	Наждак
+14522400-0	Natural abrasives	5	t	Природні абразиви
+14523000-3	Related minerals, precious metals and associated products	4	f	Супутні мінерали, благородні метали та пов’язана продукція
+14523100-4	Minerals	5	t	Мінерали
+14523200-5	Gold	5	t	Золото
+14523300-6	Silver	5	t	Срібло
+14523400-7	Platinum	5	t	Платина
+14600000-7	Metal ores and alloys	2	f	Металеві руди та сплави
+14610000-0	Metal ores	3	f	Металеві руди
+14611000-7	Iron ores	4	t	Залізні руди
+14612000-4	Non-ferrous metal ores	4	f	Руди кольорових металів
+14612100-5	Copper ores	5	t	Мідні руди
+14612200-6	Nickel ores	5	t	Нікелеві руди
+14612300-7	Aluminium ores	5	t	Алюмінієві руди
+14612400-8	Precious-metal ores	5	t	Руди благородних металів
+14612500-9	Lead ores	5	t	Свинцеві руди
+14612600-0	Zinc ores	5	t	Цинкові руди
+14612700-1	Tin ores	5	t	Олов’яні руди
+14613000-1	Uranium and thorium ores	4	f	Уранові та торієві руди
+14613100-2	Uranium ores	5	t	Уранові руди
+14613200-3	Thorium ores	5	t	Торієві руди
+14614000-8	Miscellaneous ores	4	t	Руди різні
+14620000-3	Alloys	3	f	Сплави
+14621000-0	Ferro-alloys	4	f	Феросплави
+14621100-1	Non-ECSC ferro-alloys	5	f	Феросплави, не класифіковані Європейським об’єднанням вугілля та сталі
+14621110-4	Ferro-manganese	6	t	Феромарганець
+14621120-7	Ferro-chromium	6	t	Ферохром
+14621130-0	Ferro-nickel	6	t	Феронікель
+14622000-7	Steel	4	t	Сталь
+14630000-6	Slag, dross, ferrous waste and scrap	3	t	Шлак, окалина, відходи та скрап чорних металів
+14700000-8	Basic metals	2	f	Неблагородні метали
+14710000-1	Iron, lead, zinc, tin and copper	3	f	Залізо, свинець, цинк, олово та мідь
+14711000-8	Iron	4	f	Залізо
+14711100-9	Pig iron	5	t	Чавун у чушках
+14712000-5	Lead	4	t	Свинець
+14713000-2	Zinc	4	t	Цинк
+14714000-9	Tin	4	t	Олово
+14715000-6	Copper	4	t	Мідь
+14720000-4	Aluminium, nickel, scandium, titanium and vanadium	3	f	Алюміній, нікель, скандій, титан і ванадій
+14721000-1	Aluminium	4	f	Алюміній
+14721100-2	Aluminium oxide	5	t	Оксид алюмінію
+14722000-8	Nickel	4	t	Нікель
+14723000-5	Scandium	4	t	Скандій
+14724000-2	Titanium	4	t	Титан
+14725000-9	Vanadium	4	t	Ванадій
+14730000-7	Chromium, manganese, cobalt, yttrium and zirconium	3	f	Хром, марганець, кобальт, ітрій і цирконій
+14731000-4	Chromium	4	t	Хром
+14732000-1	Manganese	4	t	Марганець
+14733000-8	Cobalt	4	t	Кобальт
+14734000-5	Yttrium	4	t	Ітрій
+14735000-2	Zirconium	4	t	Цирконій
+14740000-0	Molybdenum, technetium, ruthenium and rhodium	3	f	Молібден, технецій, рутеній і родій
+14741000-7	Molybdenum	4	t	Молібден
+14742000-4	Technetium	4	t	Технецій
+14743000-1	Ruthenium	4	t	Рутеній
+14744000-8	Rhodium	4	t	Родій
+14750000-3	Cadmium, lutetium, hafnium, tantalum and tungsten	3	f	Кадмій, лютецій, гафній, тантал і вольфрам
+14751000-0	Cadmium	4	t	Кадмій
+14752000-7	Lutetium	4	t	Лютецій
+14753000-4	Hafnium	4	t	Гафній
+14754000-1	Tantalum	4	t	Тантал
+14755000-8	Tungsten	4	t	Вольфрам
+14760000-6	Iridium, gallium, indium, thallium and barium	3	f	Іридій, галій, індій, талій і барій
+14761000-3	Iridium	4	t	Іридій
+14762000-0	Gallium	4	t	Галій
+14763000-7	Indium	4	t	Індій
+14764000-4	Thallium	4	t	Талій
+14765000-1	Barium	4	t	Барій
+14770000-9	Caesium, strontium, rubidium and calcium	3	f	Цезій, стронцій, рубідій і кальцій
+14771000-6	Caesium	4	t	Цезій
+14772000-3	Strontium	4	t	Стронцій
+14773000-0	Rubidium	4	t	Рубідій
+14774000-7	Calcium	4	t	Кальцій
+14780000-2	Potassium, magnesium, sodium and lithium	3	f	Калій, магній, натрій і літій
+14781000-9	Potassium	4	t	Калій
+14782000-6	Magnesium	4	t	Магній
+14783000-3	Sodium	4	t	Натрій
+14784000-0	Lithium	4	t	Літій
+14790000-5	Niobium, osmium, rhenium and palladium	3	f	Ніобій, осмій, реній і паладій
+14791000-2	Niobium	4	t	Ніобій
+14792000-9	Osmium	4	t	Осмій
+14793000-6	Rhenium	4	t	Реній
+14794000-3	Palladium	4	t	Паладій
+14800000-9	Miscellaneous non-metallic mineral products	2	f	Неметалеві корисні копалини різні
+14810000-2	Abrasive products	3	f	Абразивні вироби
+14811000-9	Millstones, grindstones and grinding wheels	4	f	Жорнові камені, точильні камені та круги
+14811100-0	Millstones	5	t	Жорнові камені
+14811200-1	Grindstones	5	t	Точильні камені
+14811300-2	Grinding wheels	5	t	Точильні круги
+14812000-6	Abrasive powder or grain	4	t	Абразивні порошок або зерно
+14813000-3	Artificial corundum	4	t	Корунд штучний
+14814000-0	Artificial graphite	4	t	Графіт штучний
+14820000-5	Glass	3	t	Скло
+14830000-8	Fibreglass	3	t	Скловолокно
+14900000-0	Recovered secondary raw materials	2	f	Вторинна відновлена сировина
+14910000-3	Recovered secondary metal raw materials	3	t	Вторинна металева відновлена сировина
+14920000-6	Recovered secondary non-metal raw materials	3	t	Вторинна неметалева відновлена сировина
+14930000-9	Ash and residues containing metals	3	t	Зола та металовмісні залишки
+15000000-8	Food, beverages, tobacco and related products	1	f	Продукти харчування, напої, тютюн та супутня продукція
+15100000-9	Animal products, meat and meat products	2	f	Продукція тваринництва, м’ясо та м’ясопродукти
+15110000-2	Meat	3	f	М’ясо
+15250000-5	Seafood	3	f	Морепродукти
+15111000-9	Bovine meat	4	f	М’ясо великої рогатої худоби родини бикових
+15111100-0	Beef	5	t	Яловичина
+15111200-1	Veal	5	t	Телятина
+15112000-6	Poultry	4	f	М’ясо свійської птиці
+15112100-7	Fresh poultry	5	f	М’ясо свійської птиці свіже
+15112110-0	Geese	6	t	Гусятина
+15112120-3	Turkeys	6	t	Індичатина
+15112130-6	Chickens	6	t	Курятина
+15112140-9	Ducks	6	t	Качатина
+15112300-9	Poultry livers	5	f	Печінка свійської птиці
+15112310-2	Foie gras	6	t	Фуа-гра
+15113000-3	Pork	4	t	Свинина
+15114000-0	Offal	4	t	Потрухи
+15115000-7	Lamb and mutton	4	f	Ягнятина та баранина
+15115100-8	Lamb	5	t	Ягнятина
+15115200-9	Mutton	5	t	Баранина
+15117000-1	Goat meat	4	t	Козлятина
+15118000-8	Horse, ass, mule or hinny meat	4	f	М’ясо коней, віслюків, мулів чи лошаків
+15118100-9	Horsemeat	5	t	Конина
+15118900-7	Ass, mule or hinny meat	5	t	М’ясо віслюків, мулів чи лошаків
+15119000-5	Various meats	4	f	М’ясо різне
+15119100-6	Rabbit meat	5	t	Кролятина
+15119200-7	Hare meat	5	t	Зайчатина
+15119300-8	Game	5	t	Дичина
+15119400-9	Frogs' legs	5	t	Жаб’ячі лапки
 15119500-0	Pigeons	5	t	Голуби
 15119600-1	Fish meat	5	t	М’ясо риби
 15130000-8	Meat products	3	f	М’ясопродукти
@@ -1761,19 +1797,19 @@ COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
 15555200-5	Sorbet	5	t	Сорбе
 15600000-4	Grain mill products, starches and starch products	2	f	Продукція борошномельно-круп’яної промисловості, крохмалі та крохмалепродукти
 15610000-7	Grain mill products	3	f	Продукція борошномельно-круп'яної промисловості
-                                                                    15611000-4  Husked rice  4  t  Облущений рис
-                                                                                                             15612000-1  Cereal OR vegetable flour AND related products  4  f  Борошно зернових та овочевих культур і супутня продукція
-                                                                                                                                                                                                                              15612100-2  Wheat flour  5  f  Борошно пшеничне
-15612110-5  Wholemeal flour  6  t  Борошно цільнозернове
-15612120-8  Breadmaking flour  6  t  Борошно хлібопекарське
-        15612130-1 PLAIN flour  6  t  Борошно загального призначення
-                 15612150-7  Pastry flour  6  t  Борошно кондитерське
-                          15612190-9  Self-raising flour  6  t  Борошно самопіднімальне
-                                      15612200-3  Cereal flour  5  f  Борошно інших зернових культур
-                                               15612210-6  Corn flour  6  t  Борошно кукурудзяне
-                                                       15612220-9  Rice flour  6  t  Борошно рисове
-                                                                15612300-4  Vegetable flour AND meal  5  t  Борошно та вичавки з овочевих культур
-                                                                                                                                 15612400-5  Mixes FOR the preparation OF baker's wares	5	f	Суміші для хлібопекарських виробів
+15611000-4	Husked rice	4	t	Облущений рис
+15612000-1	Cereal or vegetable flour and related products	4	f	Борошно зернових та овочевих культур і супутня продукція
+15612100-2	Wheat flour	5	f	Борошно пшеничне
+15612110-5	Wholemeal flour	6	t	Борошно цільнозернове
+15612120-8	Breadmaking flour	6	t	Борошно хлібопекарське
+15612130-1	Plain flour	6	t	Борошно загального призначення
+15612150-7	Pastry flour	6	t	Борошно кондитерське
+15612190-9	Self-raising flour	6	t	Борошно самопіднімальне
+15612200-3	Cereal flour	5	f	Борошно інших зернових культур
+15612210-6	Corn flour	6	t	Борошно кукурудзяне
+15612220-9	Rice flour	6	t	Борошно рисове
+15612300-4	Vegetable flour and meal	5	t	Борошно та вичавки з овочевих культур
+15612400-5	Mixes for the preparation of baker's wares	5	f	Суміші для хлібопекарських виробів
 15612410-8	Cake mixes	6	t	Суміші для кондитерських виробів
 15612420-1	Baking mixes	6	t	Суміші для хлібобулочних виробів
 15612500-6	Bakery products	5	t	Хлібобулочні вироби
@@ -2147,10 +2183,10 @@ COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
 18512200-3	Medals	5	t	Медалі
 18513000-8	Articles of jewellery	4	f	Ювелірні вироби
 18513100-9	Pearls	5	t	Перли
-18513200-0	Goldsmiths' wares  5  t  Вироби із золота
-                                                                                                                                                                          18513300-1  Articles OF precious metal  5  t  Вироби з благородних металів
-                                                                                                                                                                                                                                             18513400-2  Articles OF precious OR semi-precious stones  5  t  Вироби з коштовного чи напівкоштовного каміння
-18513500-3  Silversmiths' wares	5	t	Вироби зі срібла
+18513200-0	Goldsmiths' wares	5	t	Вироби із золота
+18513300-1	Articles of precious metal	5	t	Вироби з благородних металів
+18513400-2	Articles of precious or semi-precious stones	5	t	Вироби з коштовного чи напівкоштовного каміння
+18513500-3	Silversmiths' wares	5	t	Вироби зі срібла
 18520000-0	Personal horology	3	f	Персональні хронометри
 18521000-7	Watches	4	f	Годинники
 18521100-8	Glass for watches	5	t	Годинникове скло
@@ -5103,270 +5139,268 @@ COPY cpv (cpv_code, cpv_eng, cpv_level, terminal, cpv_ukr) FROM STDIN;
 37322300-4	Mouthpieces	5	t	Мундштуки
 37322400-5	Mutes	5	t	Сурдини
 37322500-6	Tuning bars	5	t	Камертони
-37322600-7	Conductors' batons  5  t  Диригентські палички
-37322700-8  Piccolo pads  5  t  Подушки для флейт-піколо
-                                                 37400000-2  Sports goods AND equipment  2  f  Спортивні товари та інвентар
-                                                                                            37410000-5  Outdoor sports equipment  3  f  Інвентар для спортивних ігор на відкритому повітрі
-37411000-2  Winter equipments  4  f  Спортивний інвентар для зимових видів спорту
-                                                             37411100-3  Skiing AND snowboarding equipment  5  f  Лижний інвентар та інвентар для сноубордів
-                                                                                                            37411110-6  Ski boots  6  t  Лижні черевики
-                                                                                                                     37411120-9  Skis  6  t  Лижі
-                                                                                                                                 37411130-2  Ski poles  6  t  Лижні палиці
-                                                                                                                                                           37411140-5  Bindings  6  t  Лижні кріплення
-                                                                                                                                                                                             37411150-8  Snowboards  6  t  Сноуборди
-                                                                                                                                                                                             37411160-1  Skiing outfits  6  t  Лижні костюми
-                                                                                                                                                                                                      37411200-4  Skating AND ice hockey equipment  5  f  Ковзанярський та хокейний інвентар
-                                                                                                                                                                                                                                                                                    37411210-7  Hockey pucks  6  t  Хокейні шайби
-37411220-0  Ice skates  6  t  Ковзани
-37411230-3  Hockey sticks  6  t  Хокейні ключки
-         37411300-5  Arctic clothing AND equipment  5  t  Спортивні зимові одяг та спорядження
-                                                                                   37412000-9  Water-sports equipment  4  f  Інвентар для водних видів спорту
-                                                                                                                             37412100-0  Water skis  5  t  Водні лижі
-                                                                                                                                                     37412200-1  Scuba AND snorkelling gear  5  f  Інвентар для дайвінгу та сноркелінгу
-                                                                                                                                                                                       37412210-4  Buoyancy compensators  6  t  Компенсатори плавучості
-                                                                                                                                                                                                37412220-7  Scuba tanks  6  t  Балони для дайвінгу
-                                                                                                                                                                                                            37412230-0  Scuba regulators  6  t  Регулятори для аквалангів
-                                                                                                                                                                                                                        37412240-3  Diving instruments OR accessories  6  f  Інструменти чи приладдя для дайвінгу
-                                                                                                                                                                                                                                                                                                         37412241-0  Breathing apparatus FOR diving  7  t  Дихальні апарати для дайвінгу
-                                                                                                                                                                                                                                                                                                                                                           37412242-7  Diving wear  7  t  Водолазні костюми
-                                                                                                                                                                                                                                                                                                                                                                                       37412243-4  Immersion suits  7  t  Термогідрокостюми
-                                                                                                                                                                                                                                                                                                                                                                                                                          37412250-6  Masks, fins OR snorkels  6  t  Маски, ласти чи дихальні трубки
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                  37412260-9  Wetsuits  6  t  Мокрі гідрокостюми
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                              37412270-2  Dry suits  6  t  Сухі гідрокостюми
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     37412300-2  Surf AND swim equipment AND accessories  5  f  Інвентар та приладдя для серфінгу та плавання
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  37412310-5  Wakeboards, kneeboards OR boogieboards  6  t  Вейкборди, ніборди чи бугіборди
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      37412320-8  Windsurfing equipment  6  t  Інвентар для віндсерфінгу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  37412330-1  Surfboards  6  t  Дошки для серфінгу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              37412340-4  Swim goggles OR swim fins  6  t  Плавальні окуляри чи ласти
-37412350-7  Parasailing equipment  6  t  Інвентар для парасейлінгу
-37413000-6  Articles FOR hunting OR fishing  4  f  Мисливське чи риболовне спорядження
-                                                   37413100-7  Fishing tackle  5  f  Риболовні снасті
-                                                                                  37413110-0  Fishing rods  6  t  Риболовні вудки
-                                                                                                                  37413120-3  Fishing line  6  t  Риболовна волосінь
-                                                                                                                                                            37413130-6  Fishing reels  6  t  Котушки для спінінгів
-                                                                                                                                                                                                         37413140-9  Fishing lures  6  t  Блешні
-                                                                                                                                                                                                         37413150-2  Fishing bait  6  t  Риболовні наживки
-                                                                                                                                                                                                                 37413160-5  Fishing weights OR sinkers  6  t  Риболовні тягарці та грузильця
-                                                                                                                                                                                                                                                                                    37413200-8  Hunting products  5  f  Мисливське спорядження
-37413210-1  Animal calls  6  t  Манки для полювання
-37413220-4  Sporting decoys  6  t  Приманки-опудала
-37413230-7  Sporting traps  6  t  Мисливські пастки
-37413240-0  Gun barrel  6  t  Стволи зброї
-        37414000-3  Camping goods  4  f  Спорядження для кемпінгу
-                 37414100-4  Sleeping pads  5  t  Туристичні килимки
-                          37414200-5  Ice chests  5  t  Термоконтейнери
-                                      37414300-6  Tent repair kits  5  t  Набори для ремонту наметів
-                                                              37414600-9  Camping OR outdoor stoves  5  t  Туристичні чи вуличні пальники
-37414700-0  Drink coolers  5  t  Охолоджувачі напоїв
-37414800-1  Survival suits  5  t  Рятувальні костюми
-        37415000-0  Athletics equipment  4  t  Легкоатлетичний інвентар
-                 37416000-7  Leisure equipment  4  t  Інвентар для відпочинку та дозвілля
-                             37420000-8  Gymnasium equipment  3  f  Гімнастичний інвентар
-                                     37421000-5  Gymnasium mats  4  t  Гімнастичні мати
-                                              37422000-2  Gymnastic bars OR beams  4  f  Гімнастичні бруси чи колоди
-37422100-3  Gymnastic bars  5  t  Гімнастичні бруси
-37422200-4  Gymnastic beams  5  t  Гімнастичні колоди
-        37423000-9  Gymnastic ropes OR rings OR climbing accessories  4  f  Скакалки чи обручі для художньої гімнастики або приладдя до гімнастичних драбин
-                                                                                                                                                     37423100-0  Gymnastic ropes  5  t  Скакалки для художньої гімнастики
-                                                                                                                                                                                                     37423200-1  Gymnastic rings  5  t  Обручі для художньої гімнастики
-                                                                                                                                                                                                                                               37423300-2  Gymnastic climbing accessories  5  t  Приладдя до гімнастичних драбин
-                                                                                                                                                                                                                                                                                              37424000-6  Gymnastic vaulting equipment  4  t  Гімнастичні снаряди для стрибків
-                                                                                                                                                                                                                                                                                                                             37425000-3  Gymnastic trampolines  4  t  Гімнастичні трампліни
-                                                                                                                                                                                                                                                                                                                                         37426000-0  Balance equipment  4  t  Снаряди для вправ на рівновагу
-                                                                                                                                                                                                                                                                                                                                                             37430000-1  Boxing equipment  3  f  Інвентар для боксу
-                                                                                                                                                                                                                                                                                                                                                                      37431000-8  Boxing rings  4  t  Боксерські ринги
-                                                                                                                                                                                                                                                                                                                                                                               37432000-5  Punching bags  4  t  Боксерські груші
-                                                                                                                                                                                                                                                                                                                                                                                           37433000-2  Boxing gloves  4  t  Боксерські рукавиці
-                                                                                                                                                                                                                                                                                                                                                                                                              37440000-4  Fitness equipments  3  f  Інвентар для фітнесу
-                                                                                                                                                                                                                                                                                                                                                                                                                                              37441000-1  Aerobic training equipment  4  f  Інвентар для аеробіки
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                           37441100-2  Treadmills  5  t  Бігові доріжки
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37441200-3  Stair climbers  5  t  Степери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  37441300-4  Stationary bicycles  5  t  Велотренажери
-37441400-5  Rowing machines  5  t  Веслувальні тренажери
-37441500-6  Jump ropes  5  t  Скакалки
-        37441600-7  Exercise trampolines  5  t  Спортивні батути
-                    37441700-8  Exercise balls  5  t  Фітболи
-                                         37441800-9  Step aerobic equipment  5  t  Інвентар для степ-аеробіки
-                                                                             37441900-0 CROSS trainers  5  t  Орбітреки
-                                                                                        37442000-8  Weight AND resistance training equipment  4  f  Інвентар для силових вправ
-                                                                                                               37442100-8  Dumbbells  5  t  Гантелі
-                                                                                                                       37442200-8  Barbells  5  t  Штанги
-                                                                                                                                             37442300-8  Lower AND upper body resistance machines  5  f  Силові тренажери для нижньої та верхньої частин тіла
-                                                                                                                                                                                                                                                  37442310-4  Lower body resistance machines  6  t  Силові тренажери для нижньої частини тіла
-                                                                                                                                                                                                                                                                                                 37442320-7  Upper body resistance machines  6  t  Силові тренажери для верхньої частини тіла
-                                                                                                                                                                                                                                                                                                                                                                                 37442400-8  Weight benches OR racks  5  t  Лавки або стійки для штанг і гантелей
-                                                                                                                                                                                                                                                                                                                                                                                                                         37442500-8  Fitness weights  5  t  Гантелі для фітнесу
-                                                                                                                                                                                                                                                                                                                                                                                                                                  37442600-8  Pilates machines  5  t  Тренажери для пілатесу
-                                                                                                                                                                                                                                                                                                                                                                                                                                           37442700-8  Grip strengtheners  5  t  Кистьові еспандери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    37442800-8  Resistance bands AND tubes  5  f  Стрічки-еспандери та еспандери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       37442810-9  Resistance bands  6  t  Стрічки-еспандери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37442820-2  Resistance tubes  6  t  Еспандери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37442900-8  Multi gyms  5  t  Багатофункціональні тренажери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           37450000-7  Field AND court sports equipment  3  f  Спортивний інвентар для полів і кортів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37451000-4  Field sports equipment  4  f  Спортивний інвентар для полів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       37451100-5  Baseballs  5  f  Бейсбольний інвентар
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              37451110-8  Baseball backstops OR fences  6  t  Захисні огорожі чи паркани для бейсбольного поля
-37451120-1  Baseball bases  6  t  Бейсбольні бази
-37451130-4  Baseball bats  6  t  Бейсбольні бити
-        37451140-7  Baseball batting aids  6  t  Бейсбольні тренажери
-                 37451150-0  Baseball gloves  6  t  Бейсбольні рукавиці
-                          37451160-3  Baseball OR softball protective gear  6  t  Захисне спорядження для бейсболу чи софтболу
-                                                                                                          37451200-6  Field hockey equipment  5  f  Інвентар для хокею на траві
-                                                                                                                                                 37451210-9  Field hockey balls  6  t  М’ячі для хокею на траві
-                                                                                                                                                                   37451220-2  Field hockey sticks  6  t  Ключки для хокею на траві
-                                                                                                                                                                                                                           37451300-7  Footballs  5  f  Інвентар для американського футболу
-                                                                                                                                                                                                                                                                     37451310-0  Football blocking sleds  6  t  Тренажери для американського футболу
-                                                                                                                                                                                                                                                                                                                37451320-3  Football kicking tees  6  t  Підставки для м’ячів для американського футболу
-                                                                                                                                                                                                                                                                                                                                                   37451330-6  Football tackling dummies  6  t  Тренувальні манекени для американського футболу
-                                                                                                                                                                                                                                                                                                                                                                                                                                        37451340-9  Flag football gear  6  t  Приладдя для флаг-футболу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       37451400-8  Lacrosse balls  5  t  М’ячі для лакросу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      37451500-9  Lacrosse sticks  5  t  Ключки для лакросу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      37451600-0  Pitching machines  5  t  Машини для подавання м’ячів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        37451700-1  Soccer balls  5  f  Футбольні м’ячі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  37451710-4  Soccer field marking equipment  6  t  Обладнання для розмітки футбольних полів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37451720-7  Soccer protective equipment  6  t  Захисне екіпірування для гри у футбол
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               37451730-0  Soccer training aids  6  t  Футбольні тренажери
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       37451800-2  Softballs  5  f  Інвентар для софтболу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 37451810-5  Softball bats  6  t  Бити для софтболу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           37451820-8  Softball gloves  6  t  Рукавиці для софтболу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           37451900-3  Handballs  5  f  Гандбольний інвентар
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           37451920-9  Team handball school SETS 6  t  Гандбольні набори для шкільних команд
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         37452000-1  Racquet AND court sports equipment  4  f  Інвентар для ракеткових і кортових видів спорту
-37452100-2  Badminton equipment  5  f  Бадмінтонний інвентар
-37823700-0  Paper FOR maps  5  t  Картографічний папір
-        37452110-5  Badminton birdies OR shuttlecocks  6  t  Волани з пластмаси або пір’я для бадмінтону
-                                                                      37452120-8  Badminton rackets  6  t  Ракетки для бадмінтону
-                                                                                                     37452200-3  Basketballs  5  f  Баскетбольний інвентар
-                                                                                                                                 37452210-6  Basketball complete game systems  6  t  Баскетбольні щити з кільцем
-                                                                                                                                                                               37452300-4  Floor hockey protective equipment  5  t  Захисне спорядження для хокею на підлозі
-                                                                                                                                                                                                                                                                     37452400-5  Racquetball balls, grips AND strings  5  f  М’ячі, руків’я та струни ракеток для ракетболу
-37452410-8  Racquetball balls  6  t  М’ячі для ракетболу
-37452420-1  Racquetball grips  6  t  Руків’я ракеток для ракетболу
-                                                         37452430-4  Racquetball strings  6  t  Струни ракеток для ракетболу
-                                                                                                               37452500-6  Racquetball rackets  5  t  Ракетки для ракетболу
-                                                                                                                                                              37452600-7  Squash equipment  5  f  Інвентар для сквошу
-                                                                                                                                                                                                           37452610-0  Squash balls  6  t  М’ячі для сквошу
-                                                                                                                                                                                                                                                 37452620-3  Squash racquets  6  t  Ракетки для сквошу
-                                                                                                                                                                                                                                                                                            37452700-8  Tennis equipment  5  f  Тенісний інвентар
-                                                                                                                                                                                                                                                                                                                                         37452710-1  Tennis balls  6  t  Тенісні м’ячі
-37452720-4  Tennis court equipment  6  t  Обладнання для тенісних кортів
-                                                         37452730-7  Tennis racquets  6  t  Тенісні ракетки
-                                                                                                    37452740-0  Tennis training aids  6  t  Тенісні тренажери
-                                                                                                                                                    37452800-9  Tether balls AND poles  5  f  М’ячі та жердини для тетерболу
-                                                                                                                                                                                              37452810-2  Tether balls  6  t  М’ячі для тетерболу
-                                                                                                                                                                                                                        37452820-5  Tether poles  6  t  Жердини для тетерболу
-                                                                                                                                                                                                                                                  37452900-0  Volleyballs  5  f  Волейбольний інвентар
-                                                                                                                                                                                                                                                                              37452910-3  Volleyball gymnasium standards  6  t  Волейбольні стійки для зали
-                                                                                                                                                                                                                                                                                                                             37452920-6  Volleyball STORAGE FOR balls OR nets  6  t  Приладдя для складання волейбольних м’ячів або сіток
-                                                                                                                                                                                                                                                                                                                                                                                                                         37453000-8  Track sports equipment  4  f  Інвентар для легкої атлетики
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                37453100-9  Javelins  5  t  Метальні списи
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         37453200-0  Jumping bars  5  t  Перекладини для стрибків у висоту
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         37453300-1  Discus  5  t  Диски
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                37453400-2  Shotputs  5  t  Ядра для штовхання
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     37453500-3  Vaulting poles  5  t  Жердини для стрибків у висоту
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   37453600-4  Hurdles  5  t  Бар’єри
-37453700-5  Batons  5  t  Естафетні палички
-37460000-0  Target AND TABLE games AND equipments  3  f  Ігри на влучність, настільні ігри та інвентар
-                                                              37461000-7 TABLE games AND equipment  4  f  Настільні ігри та інвентар
-37461100-8  Air hockey TABLES OR accessories  5  t  Столи та приладдя для повітряного хокею
-                                                    37461200-9  Foosballs  5  f  Інвентар для настільного футболу
-                                                                           37461210-2  Foosball replacement players  6  t  Запасні фігурки гравців для настільного футболу
-37461220-5  Foosball TABLES 6  t  Столи для настільного футболу
-                                                        37461300-0  Pool cues  5  t  Більярдні киї
-37461400-1  Shuffleboard equipment  5  t  Інвентар для шафлборду
-37461500-2  Tennis TABLES 5  f  Столи для настільного тенісу
-                                                      37461510-5 TABLE tennis balls  6  t  М’ячі для настільного тенісу
-                                                                                                 37461520-8 TABLE tennis paddles  6  t  Ракетки для настільного тенісу
-                                                                                                                                     37462000-4  Target games AND equipment  4  f  Ігри на влучність та інвентар
-                                                                                                                                                              37462100-5  Archery equipments  5  f  Інвентар для стрільби з лука
-                                                                                                                                                                                                                            37462110-8  Archery arm guards  6  t  Захисні нарукавники для стрільби з лука
-                                                                                                                                                                                                                                                                          37462120-1  Archery arrows  6  t  Стріли для стрільби з лука
-                                                                                                                                                                                                                                                                                                      37462130-4  Archery backstops  6  t  Захисні огорожі для стрільби з лука
-37462140-7  Archery bow strings  6  t  Тятива для лука
-                                                  37462150-0  Archery bows  6  t  Луки
-                                                  37462160-3  Archery gloves  6  t  Рукавиці для стрільби з лука
-                                                                                                            37462170-6  Archery target stands  6  t  Штативи для мішеней для стрільби з лука
-                                                                                                                                                             37462180-9  Archery targets  6  t  Мішені для стрільби з лука
-                                                                                                                                                                                 37462200-6  Darts  5  f  Дартс
-                                                                                                                                                                                          37462210-9  Dart boards  6  t  Мішені для дартсу
-                                                                                                                                                                                                                   37462300-7  Throwing targets  5  t  Мішені для кидання
-                                                                                                                                                                                                                                                 37462400-8  Trapshooting equipment  5  t  Інвентар для стендової стрільби
-                                                                                                                                                                                                                                                                                     37470000-3  Golf AND bowling equipments  3  f  Інвентар для гольфу та боулінгу
-37471000-0  Golf equipment  4  f  Інвентар для гольфу
-37471100-1  Golf bags  5  t  Сумки для гольфу
-37471200-2  Golf balls  5  t  М’ячі для гольфу
-37471300-3  Golf clubs  5  t  Ключки для гольфу
-37471400-4  Golf tees  5  t  Підставки для м’ячів для гольфу
-                                                  37471500-5  Golf club head covers  5  t  Чохли для головок ключок для гольфу
-                                                                                        37471600-6  Golf gloves  5  t  Рукавички для гольфу
-                                                                                                    37471700-7  Divot fixers  5  t  Вилки для гольфу
-                                                                                                                37471800-8  Golfscopes  5  t  Далекоміри для гольфу
-                                                                                                                            37471900-9  Golf putting partner  5  t  Подавальні машини для гольфу
-                                                                                                                                             37472000-7  Bowling equipments  4  t  Інвентар для боулінгу
-                                                                                                                                                      37480000-6  Machinery OR apparatus FOR leisure equipment  3  f  Техніка чи апаратура для приладдя для відпочину та дозвілля
-                                                                                                                                                                                                                              37481000-3  Ice maintenance machines  4  t  Машини для шліфування льоду на ковзанках
-                                                                                                                                                                                                                                                                                                      37482000-0  Sports information billboards  4  t  Дошки для анонсів спортивних заходів
-                                                                                                                                                                                                                                                                                                                                                       37500000-3  Games AND toys;
-fairground amusements  2  f  Ігри та іграшки;
-атракціони
-37510000-6  Dolls  3  f  Ляльки
-37511000-3  Doll houses  4  t  Лялькові будиночки
-37512000-0  Doll parts OR accessories  4  t  Деталі ляльок чи аксесуари до ляльок
-37513000-7  Puppets  4  f  Маріонетки
-37513100-8  Puppet theatres  5  t  Лялькові театри
-37520000-9  Toys  3  f  Іграшки
-37521000-6  Toy musical instruments  4  t  Іграшкові музичні інструменти
-37522000-3  Wheeled toys  4  t  Іграшки на колесах
-37523000-0  Puzzles  4  t  Пазли
-37524000-7  Games  4  f  Ігри
-37524100-8  Educational games  5  t  Навчальні ігри
-37524200-9  Board games  5  t  Ігри на спеціальній дошці
-37524300-0  Classic games  5  t  Класичні ігри
-37524400-1  Collaborative games  5  t  Колективні ігри
-37524500-2  Strategy games  5  t  Ігри-стратегії
-37524600-3  Memory games  5  t  Ігри для тренування пам’яті
-37524700-4  Game accessories  5  t  Гральне приладдя
-37524800-5  Lotto games  5  f  Лото
-37524810-8  Lottery formulary  6  t  Лотерейні білети
-37524900-6  Game kits  5  t  Ігрові набори
-37525000-4  Toy balloons AND balls  4  t  Повітряні кульки на іграшкові м’ячі
-37526000-1  Toy pails  4  t  Іграшкові відерця
-37527000-8  Toy trains AND vehicles  4  f  Іграшкові поїзди та машинки
-37527100-9  Toy trains  5  t  Іграшкові поїзди
-37527200-0  Toy vehicles  5  t  Іграшкові машинки
-37528000-5  Toy weapons  4  t  Іграшкова зброя
-37529000-2  Inflatable AND riding toys  4  f  Надувні іграшки та іграшки для катання
-37529100-3  Inflatable toys  5  t  Надувні іграшки
-37529200-4  Riding toys  5  t  Іграшки для катання
-37530000-2  Articles FOR funfair, TABLE or parlour games  3  f  Вироби для парків розваг, настільних або кімнатних ігор
-37531000-9  Playing cards  4  t  Гральні карти
-37532000-6  Video games  4  t  Відеоігри
-37533000-3  Billiards  4  f  Більярд
-37533100-4  Billiard balls  5  t  Більярдні кулі
-37533200-5  Billiard chalk  5  t  Більярдна крейда
-37533300-6  Billiard cue tips  5  t  Наконечники для більярдних київ
-37533400-7  Billiard racks  5  t  Більярдні трикутники
-37533500-8  Billiard TABLES 5  t  Більярдні столи
-37534000-0  Coin- OR disc-operated games  4  t  Ігрові автомати (слоти), що приймають монети чи жетони
-37535000-7  Roundabouts, swings, shooting galleries AND other fairground amusements  4  f  Каруселі, гойдалки, тири та інші атракціони
-37535100-8  Swings  5  t  Гойдалки
-37535200-9  Playground equipment  5  f  Обладнання для ігрових майданчиків
-37535210-2  Playground swings  6  t  Гойдалки для ігрових майданчиків
-37535220-5  Playground climbing apparatus  6  t  Лазальні снаряди для ігрових майданчиків
-37535230-8  Playground merry go rounds  6  t  Каруселі для ігрових майданчиків
-37535240-1  Playground slides  6  t  Гірки для ігрових майданчиків
-37535250-4  Playground see saws  6  t  Гойдалки-балансири для ігрових майданчиків
-37535260-7  Playground tunnels  6  t  Тунелі для ігрових майданчиків
-37535270-0  Playground sandboxes  6  t  Пісочниці для ігрових майданчиків
-37535280-3  Playground bleachers  6  t  Лавки-трибуни для ігрових майданчиків
-37535290-6  Wall AND rope climbing equipment  6  f  Спорядження для скалодромів і лазіння канатом
-37535291-3  Wall climbing equipment  7  t  Спорядження для скалодромів
-37535292-0  Rope climbing equipment  7  t  Спорядження для лазіння канатом
-37540000-5  Gambling machines  3  t  Ігрові автомати
-37800000-6  Handicraft AND art supplies  2  f  Приладдя для рукоділля та образотворчого мистецтва
-37810000-9  Handicraft supplies  3  t  Приладдя для рукоділля
-37820000-2  Art supplies  3  f  Приладдя для образотворчого мистецтва
-37821000-9  Artists' brushes	4	t	Пензлі для малювання
+37322600-7	Conductors' batons	5	t	Диригентські палички
+37322700-8	Piccolo pads	5	t	Подушки для флейт-піколо
+37400000-2	Sports goods and equipment	2	f	Спортивні товари та інвентар
+37410000-5	Outdoor sports equipment	3	f	Інвентар для спортивних ігор на відкритому повітрі
+37411000-2	Winter equipments	4	f	Спортивний інвентар для зимових видів спорту
+37411100-3	Skiing and snowboarding equipment	5	f	Лижний інвентар та інвентар для сноубордів
+37411110-6	Ski boots	6	t	Лижні черевики
+37411120-9	Skis	6	t	Лижі
+37411130-2	Ski poles	6	t	Лижні палиці
+37411140-5	Bindings	6	t	Лижні кріплення
+37411150-8	Snowboards	6	t	Сноуборди
+37411160-1	Skiing outfits	6	t	Лижні костюми
+37411200-4	Skating and ice hockey equipment	5	f	Ковзанярський та хокейний інвентар
+37411210-7	Hockey pucks	6	t	Хокейні шайби
+37411220-0	Ice skates	6	t	Ковзани
+37411230-3	Hockey sticks	6	t	Хокейні ключки
+37411300-5	Arctic clothing and equipment	5	t	Спортивні зимові одяг та спорядження
+37412000-9	Water-sports equipment	4	f	Інвентар для водних видів спорту
+37412100-0	Water skis	5	t	Водні лижі
+37412200-1	Scuba and snorkelling gear	5	f	Інвентар для дайвінгу та сноркелінгу
+37412210-4	Buoyancy compensators	6	t	Компенсатори плавучості
+37412220-7	Scuba tanks	6	t	Балони для дайвінгу
+37412230-0	Scuba regulators	6	t	Регулятори для аквалангів
+37412240-3	Diving instruments or accessories	6	f	Інструменти чи приладдя для дайвінгу
+37412241-0	Breathing apparatus for diving	7	t	Дихальні апарати для дайвінгу
+37412242-7	Diving wear	7	t	Водолазні костюми
+37412243-4	Immersion suits	7	t	Термогідрокостюми
+37412250-6	Masks, fins or snorkels	6	t	Маски, ласти чи дихальні трубки
+37412260-9	Wetsuits	6	t	Мокрі гідрокостюми
+37412270-2	Dry suits	6	t	Сухі гідрокостюми
+37412300-2	Surf and swim equipment and accessories	5	f	Інвентар та приладдя для серфінгу та плавання
+37412310-5	Wakeboards, kneeboards or boogieboards	6	t	Вейкборди, ніборди чи бугіборди
+37412320-8	Windsurfing equipment	6	t	Інвентар для віндсерфінгу
+37412330-1	Surfboards	6	t	Дошки для серфінгу
+37412340-4	Swim goggles or swim fins	6	t	Плавальні окуляри чи ласти
+37412350-7	Parasailing equipment	6	t	Інвентар для парасейлінгу
+37413000-6	Articles for hunting or fishing	4	f	Мисливське чи риболовне спорядження
+37413100-7	Fishing tackle	5	f	Риболовні снасті
+37413110-0	Fishing rods	6	t	Риболовні вудки
+37413120-3	Fishing line	6	t	Риболовна волосінь
+37413130-6	Fishing reels	6	t	Котушки для спінінгів
+37413140-9	Fishing lures	6	t	Блешні
+37413150-2	Fishing bait	6	t	Риболовні наживки
+37413160-5	Fishing weights or sinkers	6	t	Риболовні тягарці та грузильця
+37413200-8	Hunting products	5	f	Мисливське спорядження
+37413210-1	Animal calls	6	t	Манки для полювання
+37413220-4	Sporting decoys	6	t	Приманки-опудала
+37413230-7	Sporting traps	6	t	Мисливські пастки
+37413240-0	Gun barrel	6	t	Стволи зброї
+37414000-3	Camping goods	4	f	Спорядження для кемпінгу
+37414100-4	Sleeping pads	5	t	Туристичні килимки
+37414200-5	Ice chests	5	t	Термоконтейнери
+37414300-6	Tent repair kits	5	t	Набори для ремонту наметів
+37414600-9	Camping or outdoor stoves	5	t	Туристичні чи вуличні пальники
+37414700-0	Drink coolers	5	t	Охолоджувачі напоїв
+37414800-1	Survival suits	5	t	Рятувальні костюми
+37415000-0	Athletics equipment	4	t	Легкоатлетичний інвентар
+37416000-7	Leisure equipment	4	t	Інвентар для відпочинку та дозвілля
+37420000-8	Gymnasium equipment	3	f	Гімнастичний інвентар
+37421000-5	Gymnasium mats	4	t	Гімнастичні мати
+37422000-2	Gymnastic bars or beams	4	f	Гімнастичні бруси чи колоди
+37422100-3	Gymnastic bars	5	t	Гімнастичні бруси
+37422200-4	Gymnastic beams	5	t	Гімнастичні колоди
+37423000-9	Gymnastic ropes or rings or climbing accessories	4	f	Скакалки чи обручі для художньої гімнастики або приладдя до гімнастичних драбин
+37423100-0	Gymnastic ropes	5	t	Скакалки для художньої гімнастики
+37423200-1	Gymnastic rings	5	t	Обручі для художньої гімнастики
+37423300-2	Gymnastic climbing accessories	5	t	Приладдя до гімнастичних драбин
+37424000-6	Gymnastic vaulting equipment	4	t	Гімнастичні снаряди для стрибків
+37425000-3	Gymnastic trampolines	4	t	Гімнастичні трампліни
+37426000-0	Balance equipment	4	t	Снаряди для вправ на рівновагу
+37430000-1	Boxing equipment	3	f	Інвентар для боксу
+37431000-8	Boxing rings	4	t	Боксерські ринги
+37432000-5	Punching bags	4	t	Боксерські груші
+37433000-2	Boxing gloves	4	t	Боксерські рукавиці
+37440000-4	Fitness equipments	3	f	Інвентар для фітнесу
+37441000-1	Aerobic training equipment	4	f	Інвентар для аеробіки
+37441100-2	Treadmills	5	t	Бігові доріжки
+37441200-3	Stair climbers	5	t	Степери
+37441300-4	Stationary bicycles	5	t	Велотренажери
+37441400-5	Rowing machines	5	t	Веслувальні тренажери
+37441500-6	Jump ropes	5	t	Скакалки
+37441600-7	Exercise trampolines	5	t	Спортивні батути
+37441700-8	Exercise balls	5	t	Фітболи
+37441800-9	Step aerobic equipment	5	t	Інвентар для степ-аеробіки
+37441900-0	Cross trainers	5	t	Орбітреки
+37442000-8	Weight and resistance training equipment	4	f	Інвентар для силових вправ
+37442100-8	Dumbbells	5	t	Гантелі
+37442200-8	Barbells	5	t	Штанги
+37442300-8	Lower and upper body resistance machines	5	f	Силові тренажери для нижньої та верхньої частин тіла
+37442310-4	Lower body resistance machines	6	t	Силові тренажери для нижньої частини тіла
+37442320-7	Upper body resistance machines	6	t	Силові тренажери для верхньої частини тіла
+37442400-8	Weight benches or racks	5	t	Лавки або стійки для штанг і гантелей
+37442500-8	Fitness weights	5	t	Гантелі для фітнесу
+37442600-8	Pilates machines	5	t	Тренажери для пілатесу
+37442700-8	Grip strengtheners	5	t	Кистьові еспандери
+37442800-8	Resistance bands and tubes	5	f	Стрічки-еспандери та еспандери
+37442810-9	Resistance bands	6	t	Стрічки-еспандери
+37442820-2	Resistance tubes	6	t	Еспандери
+37442900-8	Multi gyms	5	t	Багатофункціональні тренажери
+37450000-7	Field and court sports equipment	3	f	Спортивний інвентар для полів і кортів
+37451000-4	Field sports equipment	4	f	Спортивний інвентар для полів
+37451100-5	Baseballs	5	f	Бейсбольний інвентар
+37451110-8	Baseball backstops or fences	6	t	Захисні огорожі чи паркани для бейсбольного поля
+37451120-1	Baseball bases	6	t	Бейсбольні бази
+37451130-4	Baseball bats	6	t	Бейсбольні бити
+37451140-7	Baseball batting aids	6	t	Бейсбольні тренажери
+37451150-0	Baseball gloves	6	t	Бейсбольні рукавиці
+37451160-3	Baseball or softball protective gear	6	t	Захисне спорядження для бейсболу чи софтболу
+37451200-6	Field hockey equipment	5	f	Інвентар для хокею на траві
+37451210-9	Field hockey balls	6	t	М’ячі для хокею на траві
+37451220-2	Field hockey sticks	6	t	Ключки для хокею на траві
+37451300-7	Footballs	5	f	Інвентар для американського футболу
+37451310-0	Football blocking sleds	6	t	Тренажери для американського футболу
+37451320-3	Football kicking tees	6	t	Підставки для м’ячів для американського футболу
+37451330-6	Football tackling dummies	6	t	Тренувальні манекени для американського футболу
+37451340-9	Flag football gear	6	t	Приладдя для флаг-футболу
+37451400-8	Lacrosse balls	5	t	М’ячі для лакросу
+37451500-9	Lacrosse sticks	5	t	Ключки для лакросу
+37451600-0	Pitching machines	5	t	Машини для подавання м’ячів
+37451700-1	Soccer balls	5	f	Футбольні м’ячі
+37451710-4	Soccer field marking equipment	6	t	Обладнання для розмітки футбольних полів
+37451720-7	Soccer protective equipment	6	t	Захисне екіпірування для гри у футбол
+37451730-0	Soccer training aids	6	t	Футбольні тренажери
+37451800-2	Softballs	5	f	Інвентар для софтболу
+37451810-5	Softball bats	6	t	Бити для софтболу
+37451820-8	Softball gloves	6	t	Рукавиці для софтболу
+37451900-3	Handballs	5	f	Гандбольний інвентар
+37451920-9	Team handball school sets	6	t	Гандбольні набори для шкільних команд
+37452000-1	Racquet and court sports equipment	4	f	Інвентар для ракеткових і кортових видів спорту
+37452100-2	Badminton equipment	5	f	Бадмінтонний інвентар
+37823700-0	Paper for maps	5	t	Картографічний папір
+37452110-5	Badminton birdies or shuttlecocks	6	t	Волани з пластмаси або пір’я для бадмінтону
+37452120-8	Badminton rackets	6	t	Ракетки для бадмінтону
+37452200-3	Basketballs	5	f	Баскетбольний інвентар
+37452210-6	Basketball complete game systems	6	t	Баскетбольні щити з кільцем
+37452300-4	Floor hockey protective equipment	5	t	Захисне спорядження для хокею на підлозі
+37452400-5	Racquetball balls, grips and strings	5	f	М’ячі, руків’я та струни ракеток для ракетболу
+37452410-8	Racquetball balls	6	t	М’ячі для ракетболу
+37452420-1	Racquetball grips	6	t	Руків’я ракеток для ракетболу
+37452430-4	Racquetball strings	6	t	Струни ракеток для ракетболу
+37452500-6	Racquetball rackets	5	t	Ракетки для ракетболу
+37452600-7	Squash equipment	5	f	Інвентар для сквошу
+37452610-0	Squash balls	6	t	М’ячі для сквошу
+37452620-3	Squash racquets	6	t	Ракетки для сквошу
+37452700-8	Tennis equipment	5	f	Тенісний інвентар
+37452710-1	Tennis balls	6	t	Тенісні м’ячі
+37452720-4	Tennis court equipment	6	t	Обладнання для тенісних кортів
+37452730-7	Tennis racquets	6	t	Тенісні ракетки
+37452740-0	Tennis training aids	6	t	Тенісні тренажери
+37452800-9	Tether balls and poles	5	f	М’ячі та жердини для тетерболу
+37452810-2	Tether balls	6	t	М’ячі для тетерболу
+37452820-5	Tether poles	6	t	Жердини для тетерболу
+37452900-0	Volleyballs	5	f	Волейбольний інвентар
+37452910-3	Volleyball gymnasium standards	6	t	Волейбольні стійки для зали
+37452920-6	Volleyball storage for balls or nets	6	t	Приладдя для складання волейбольних м’ячів або сіток
+37453000-8	Track sports equipment	4	f	Інвентар для легкої атлетики
+37453100-9	Javelins	5	t	Метальні списи
+37453200-0	Jumping bars	5	t	Перекладини для стрибків у висоту
+37453300-1	Discus	5	t	Диски
+37453400-2	Shotputs	5	t	Ядра для штовхання
+37453500-3	Vaulting poles	5	t	Жердини для стрибків у висоту
+37453600-4	Hurdles	5	t	Бар’єри
+37453700-5	Batons	5	t	Естафетні палички
+37460000-0	Target and table games and equipments	3	f	Ігри на влучність, настільні ігри та інвентар
+37461000-7	Table games and equipment	4	f	Настільні ігри та інвентар
+37461100-8	Air hockey tables or accessories	5	t	Столи та приладдя для повітряного хокею
+37461200-9	Foosballs	5	f	Інвентар для настільного футболу
+37461210-2	Foosball replacement players	6	t	Запасні фігурки гравців для настільного футболу
+37461220-5	Foosball tables	6	t	Столи для настільного футболу
+37461300-0	Pool cues	5	t	Більярдні киї
+37461400-1	Shuffleboard equipment	5	t	Інвентар для шафлборду
+37461500-2	Tennis tables	5	f	Столи для настільного тенісу
+37461510-5	Table tennis balls	6	t	М’ячі для настільного тенісу
+37461520-8	Table tennis paddles	6	t	Ракетки для настільного тенісу
+37462000-4	Target games and equipment	4	f	Ігри на влучність та інвентар
+37462100-5	Archery equipments	5	f	Інвентар для стрільби з лука
+37462110-8	Archery arm guards	6	t	Захисні нарукавники для стрільби з лука
+37462120-1	Archery arrows	6	t	Стріли для стрільби з лука
+37462130-4	Archery backstops	6	t	Захисні огорожі для стрільби з лука
+37462140-7	Archery bow strings	6	t	Тятива для лука
+37462150-0	Archery bows	6	t	Луки
+37462160-3	Archery gloves	6	t	Рукавиці для стрільби з лука
+37462170-6	Archery target stands	6	t	Штативи для мішеней для стрільби з лука
+37462180-9	Archery targets	6	t	Мішені для стрільби з лука
+37462200-6	Darts	5	f	Дартс
+37462210-9	Dart boards	6	t	Мішені для дартсу
+37462300-7	Throwing targets	5	t	Мішені для кидання
+37462400-8	Trapshooting equipment	5	t	Інвентар для стендової стрільби
+37470000-3	Golf and bowling equipments	3	f	Інвентар для гольфу та боулінгу
+37471000-0	Golf equipment	4	f	Інвентар для гольфу
+37471100-1	Golf bags	5	t	Сумки для гольфу
+37471200-2	Golf balls	5	t	М’ячі для гольфу
+37471300-3	Golf clubs	5	t	Ключки для гольфу
+37471400-4	Golf tees	5	t	Підставки для м’ячів для гольфу
+37471500-5	Golf club head covers	5	t	Чохли для головок ключок для гольфу
+37471600-6	Golf gloves	5	t	Рукавички для гольфу
+37471700-7	Divot fixers	5	t	Вилки для гольфу
+37471800-8	Golfscopes	5	t	Далекоміри для гольфу
+37471900-9	Golf putting partner	5	t	Подавальні машини для гольфу
+37472000-7	Bowling equipments	4	t	Інвентар для боулінгу
+37480000-6	Machinery or apparatus for leisure equipment	3	f	Техніка чи апаратура для приладдя для відпочину та дозвілля
+37481000-3	Ice maintenance machines	4	t	Машини для шліфування льоду на ковзанках
+37482000-0	Sports information billboards	4	t	Дошки для анонсів спортивних заходів
+37500000-3	Games and toys; fairground amusements	2	f	Ігри та іграшки; атракціони
+37510000-6	Dolls	3	f	Ляльки
+37511000-3	Doll houses	4	t	Лялькові будиночки
+37512000-0	Doll parts or accessories	4	t	Деталі ляльок чи аксесуари до ляльок
+37513000-7	Puppets	4	f	Маріонетки
+37513100-8	Puppet theatres	5	t	Лялькові театри
+37520000-9	Toys	3	f	Іграшки
+37521000-6	Toy musical instruments	4	t	Іграшкові музичні інструменти
+37522000-3	Wheeled toys	4	t	Іграшки на колесах
+37523000-0	Puzzles	4	t	Пазли
+37524000-7	Games	4	f	Ігри
+37524100-8	Educational games	5	t	Навчальні ігри
+37524200-9	Board games	5	t	Ігри на спеціальній дошці
+37524300-0	Classic games	5	t	Класичні ігри
+37524400-1	Collaborative games	5	t	Колективні ігри
+37524500-2	Strategy games	5	t	Ігри-стратегії
+37524600-3	Memory games	5	t	Ігри для тренування пам’яті
+37524700-4	Game accessories	5	t	Гральне приладдя
+37524800-5	Lotto games	5	f	Лото
+37524810-8	Lottery formulary	6	t	Лотерейні білети
+37524900-6	Game kits	5	t	Ігрові набори
+37525000-4	Toy balloons and balls	4	t	Повітряні кульки на іграшкові м’ячі
+37526000-1	Toy pails	4	t	Іграшкові відерця
+37527000-8	Toy trains and vehicles	4	f	Іграшкові поїзди та машинки
+37527100-9	Toy trains	5	t	Іграшкові поїзди
+37527200-0	Toy vehicles	5	t	Іграшкові машинки
+37528000-5	Toy weapons	4	t	Іграшкова зброя
+37529000-2	Inflatable and riding toys	4	f	Надувні іграшки та іграшки для катання
+37529100-3	Inflatable toys	5	t	Надувні іграшки
+37529200-4	Riding toys	5	t	Іграшки для катання
+37530000-2	Articles for funfair, table or parlour games	3	f	Вироби для парків розваг, настільних або кімнатних ігор
+37531000-9	Playing cards	4	t	Гральні карти
+37532000-6	Video games	4	t	Відеоігри
+37533000-3	Billiards	4	f	Більярд
+37533100-4	Billiard balls	5	t	Більярдні кулі
+37533200-5	Billiard chalk	5	t	Більярдна крейда
+37533300-6	Billiard cue tips	5	t	Наконечники для більярдних київ
+37533400-7	Billiard racks	5	t	Більярдні трикутники
+37533500-8	Billiard tables	5	t	Більярдні столи
+37534000-0	Coin- or disc-operated games	4	t	Ігрові автомати (слоти), що приймають монети чи жетони
+37535000-7	Roundabouts, swings, shooting galleries and other fairground amusements	4	f	Каруселі, гойдалки, тири та інші атракціони
+37535100-8	Swings	5	t	Гойдалки
+37535200-9	Playground equipment	5	f	Обладнання для ігрових майданчиків
+37535210-2	Playground swings	6	t	Гойдалки для ігрових майданчиків
+37535220-5	Playground climbing apparatus	6	t	Лазальні снаряди для ігрових майданчиків
+37535230-8	Playground merry go rounds	6	t	Каруселі для ігрових майданчиків
+37535240-1	Playground slides	6	t	Гірки для ігрових майданчиків
+37535250-4	Playground see saws	6	t	Гойдалки-балансири для ігрових майданчиків
+37535260-7	Playground tunnels	6	t	Тунелі для ігрових майданчиків
+37535270-0	Playground sandboxes	6	t	Пісочниці для ігрових майданчиків
+37535280-3	Playground bleachers	6	t	Лавки-трибуни для ігрових майданчиків
+37535290-6	Wall and rope climbing equipment	6	f	Спорядження для скалодромів і лазіння канатом
+37535291-3	Wall climbing equipment	7	t	Спорядження для скалодромів
+37535292-0	Rope climbing equipment	7	t	Спорядження для лазіння канатом
+37540000-5	Gambling machines	3	t	Ігрові автомати
+37800000-6	Handicraft and art supplies	2	f	Приладдя для рукоділля та образотворчого мистецтва
+37810000-9	Handicraft supplies	3	t	Приладдя для рукоділля
+37820000-2	Art supplies	3	f	Приладдя для образотворчого мистецтва
+37821000-9	Artists' brushes	4	t	Пензлі для малювання
 37822000-6	Drawing pens	4	f	Рейсфедери
 37822100-7	Crayons	5	t	Кольорові олівці
 37822200-8	Drawing charcoal	5	t	Вугільні олівці
@@ -5830,46 +5864,46 @@ fairground amusements  2  f  Ігри та іграшки;
 39224000-8	Brooms and brushes and other articles of various types	4	f	Мітли, щітки та інше господарське приладдя
 39224100-9	Brooms	5	t	Мітли
 39224200-0	Brushes	5	f	Щітки
-39224210-3	Painters' brushes  6  t  Пензлі для фарбування
-39224300-1  Brooms AND brushes AND other articles FOR household cleaning  5  f  Мітли, щітки та інше прибиральне приладдя
-39224310-4  Toilet brushes  6  t  Туалетні йоржики
-39224320-7  Sponges  6  t  Губки
-39224330-0  Buckets  6  t  Відра
-39224340-3  Bins  6  t  Відра для сміття
-39224350-6  Dustpans  6  t  Совки
-39225000-5  Lighters, articles OF combustible materials, pyrotechnics, matches AND liquid OR liquefied gas fuels  4  f  Запальнички, вироби із горючих матеріалів, піротехнічні вироби, сірники, рідкий та скраплений газ
-39225100-6  Cigarette lighters  5  t  Запальнички для сигарет
-39225200-7  Pyrophoric alloys  5  t  Пірофорні сплави
-39225300-8  Matches  5  t  Сірники
-39225400-9  Gas fuels FOR lighters  5  t  Газ для заправлення запальничок
-39225500-0  Pyrotechnics  5  t  Піротехнічні вироби
-39225600-1  Candles  5  t  Свічки
-39225700-2  Bottles, jars AND phials  5  f  Пляшки, банки та флакони
-39225710-5  Bottles  6  t  Пляшки
-39225720-8  Jars  6  t  Банки
-39225730-1  Phials  6  t  Флакони
-39226000-2  Carboys, bottle cases, flasks AND bobbins  4  f  Бутлі, футляри для пляшок, фляги та котушки
-39226100-3  Bottle cases  5  t  Футляри для пляшок
-39226200-4  Carboys AND flasks  5  f  Бутлі та фляги
-39226210-7  Carboys  6  t  Бутлі
-39226220-0  Flasks  6  t  Фляги
-39226300-5  Spools OR bobbins  5  t  Шпульки чи котушки
-39312200-4  Canteen equipment  5  t  Обладнання для їдалень
-39227000-9  Sewing AND knitting needles, AND thimbles  4  f  Швейні голки, в’язальні спиці та наперстки
-39227100-0  Sewing needles OR knitting needles  5  f  Швейні голки чи в’язальні спиці
-39227110-3  Sewing needles  6  t  Швейні голки
-39227120-6  Knitting needles  6  t  В’язальні спиці
-39227200-1  Thimbles  5  t  Наперстки
-39230000-3  Special-purpose product  3  f  Вироби спеціального призначення
-39234000-1  Compost boxes  4  t  Ящики для компосту
-39235000-8  Tokens  4  t  Жетони
-39236000-5  Spray booths  4  t  Фарбувальні кабіни
-39237000-2  Snow poles  4  t  Снігомірні рейки
-39240000-6  Cutlery  3  f  Різальні інструменти
-39241000-3  Knives AND scissors  4  f  Ножі та ножиці
-39241100 - 4  Knives  5  f  Ножі
-39241110 - 7 TABLE knives  6  t  Столові ножі
-39241120-0  Cooks' knives	6	t	Кухонні ножі
+39224210-3	Painters' brushes	6	t	Пензлі для фарбування
+39224300-1	Brooms and brushes and other articles for household cleaning	5	f	Мітли, щітки та інше прибиральне приладдя
+39224310-4	Toilet brushes	6	t	Туалетні йоржики
+39224320-7	Sponges	6	t	Губки
+39224330-0	Buckets	6	t	Відра
+39224340-3	Bins	6	t	Відра для сміття
+39224350-6	Dustpans	6	t	Совки
+39225000-5	Lighters, articles of combustible materials, pyrotechnics, matches and liquid or liquefied gas fuels	4	f	Запальнички, вироби із горючих матеріалів, піротехнічні вироби, сірники, рідкий та скраплений газ
+39225100-6	Cigarette lighters	5	t	Запальнички для сигарет
+39225200-7	Pyrophoric alloys	5	t	Пірофорні сплави
+39225300-8	Matches	5	t	Сірники
+39225400-9	Gas fuels for lighters	5	t	Газ для заправлення запальничок
+39225500-0	Pyrotechnics	5	t	Піротехнічні вироби
+39225600-1	Candles	5	t	Свічки
+39225700-2	Bottles, jars and phials	5	f	Пляшки, банки та флакони
+39225710-5	Bottles	6	t	Пляшки
+39225720-8	Jars	6	t	Банки
+39225730-1	Phials	6	t	Флакони
+39226000-2	Carboys, bottle cases, flasks and bobbins	4	f	Бутлі, футляри для пляшок, фляги та котушки
+39226100-3	Bottle cases	5	t	Футляри для пляшок
+39226200-4	Carboys and flasks	5	f	Бутлі та фляги
+39226210-7	Carboys	6	t	Бутлі
+39226220-0	Flasks	6	t	Фляги
+39226300-5	Spools or bobbins	5	t	Шпульки чи котушки
+39312200-4	Canteen equipment	5	t	Обладнання для їдалень
+39227000-9	Sewing and knitting needles, and thimbles	4	f	Швейні голки, в’язальні спиці та наперстки
+39227100-0	Sewing needles or knitting needles	5	f	Швейні голки чи в’язальні спиці
+39227110-3	Sewing needles	6	t	Швейні голки
+39227120-6	Knitting needles	6	t	В’язальні спиці
+39227200-1	Thimbles	5	t	Наперстки
+39230000-3	Special-purpose product	3	f	Вироби спеціального призначення
+39234000-1	Compost boxes	4	t	Ящики для компосту
+39235000-8	Tokens	4	t	Жетони
+39236000-5	Spray booths	4	t	Фарбувальні кабіни
+39237000-2	Snow poles	4	t	Снігомірні рейки
+39240000-6	Cutlery	3	f	Різальні інструменти
+39241000-3	Knives and scissors	4	f	Ножі та ножиці
+39241100-4	Knives	5	f	Ножі
+39241110-7	Table knives	6	t	Столові ножі
+39241120-0	Cooks' knives	6	t	Кухонні ножі
 39241130-3	Utility knives	6	t	Багатофункціональні ножі
 39241200-5	Scissors	5	t	Ножиці
 39254000-7	Horology	4	f	Пристрої для вимірювання часу
@@ -6846,228 +6880,226 @@ fairground amusements  2  f  Ігри та іграшки;
 43812000-8	Sawing equipment	4	t	Пиляльне обладнання
 43820000-7	Shoe-making equipment	3	t	Обладнання для пошиття взуття
 43830000-0	Power tools	3	t	Електричні інструменти
-43840000-3	Blacksmiths' equipment  3  t  Ковальське обладнання
-44000000-0  Construction structures AND materials;
-auxiliary products TO construction ( EXCEPT electric apparatus)  1  f  Конструкції та конструкційні матеріали;
-допоміжна будівельна продукція (крім електроапаратури)
-44100000-1  Construction materials AND associated items  2  f  Конструкційні матеріали та супутні вироби
-44110000-4  Construction materials  3  f  Конструкційні матеріали
-44111000-1  Building materials  4  f  Будівельні матеріали
-44111100-2  Bricks  5  t  Цегла
-44111200-3  Cement  5  f  Цемент
-44111210-6  Drilling cement  6  t  Цемент для свердловин
-44111300-4  Ceramics  5  t  Керамічні вироби
-44111400-5  Paints AND wallcoverings  5  t  Фарби та шпалери
-44111500-6  Insulators AND insulating fittings  5  f  Ізолятори та ізоляційне приладдя
-44111510-9  Insulators  6  f  Ізолятори
-44111511-6  Electrical insulators  7  t  Електроізолятори
-44111520-2  Thermal insulating material  6  t  Термоізоляційні матеріали
-44111530-5  Electrical insulating fittings  6  t  Електроізоляційне приладдя
-44111540-8  Insulating glass  6  t  Ізоляційне скло
-44111600-7  Blocks  5  t  Блоки
-44111700-8  Tiles  5  t  Кахель
-44111800-9  Mortar (construction)  5  t  Розчини (будівельні)
-44111900-0  Ceramic flags  5  t  Глазурований декоративний кахель
-44112000-8  Miscellaneous building structures  4  f  Будівельні конструкції різні
-44112100-9  Shelters  5  f  Навіси
-44112110-2  Shelter parts  6  t  Частина навісів
-44112120-5  Profile sections  6  t  Профільний прокат
-44112200-0  Floor coverings  5  f  Підлогове покриття
-44112210-3  Solid flooring  6  t  Тверде підлогове покриття
-44112220-6 FALSE floors  6  t  Фальш-підлоги
-44112230-9  Linoleum  6  t  Лінолеум
-44112240-2  Parquet  6  t  Паркет
-44112300-1  Partitions  5  f  Перегородки
-44112310-4 PARTITION walls  6  t  Стіни-перегородки
-44112400-2  Roof  5  f  Покрівля
-44112410-5  Roof frames  6  t  Крокв’яні ферми
-44112420-8  Roof supports  6  t  Опорні крокви
-44112430-1  Roof trusses  6  t  Ферми
-44112500-3  Roofing materials  5  f  Покрівельні матеріали
-44112510-6  Shingles  6  t  Гнучка черепиця
-44112600-4  Sound insulation  5  t  Звукоізоляційні матеріали
-44113000-5  Road-construction materials  4  f  Матеріали для будівництва доріг
-44113100-6  Paving materials  5  f  Матеріали для мощення доріг
-44113120-2  Paving slabs  6  t  Тротуарна плитка
-44113130-5  Paving stones  6  t  Кам’яна бруківка
-44113140-8  Roadstone  6  t  Каміння для мощення доріг
-44113200-7  Flagstones  5  t  Плитняк
-44113300-8  Coated materials  5  f  Бітумні матеріали
-44113310-1  Coated road materials  6  t  Бітумні матеріали для покриття доріг
-44113320-4  Coated roadstone  6  t  Гравій, оброблений бітумом
-44113330-7  Coating materials  6  t  Матеріали для дорожнього покриття
-44113500-0  Glass beads  5  t  Скляні кульки для дорожньої розмітки
-44113600-1  Bitumen AND asphalt  5  f  Бітум та асфальт
-44113610-4  Bitumen  6  t  Бітум
-44113620-7  Asphalt  6  t  Асфальт
-44113700-2  Road-repair materials  5  t  Матеріали для ремонту дорожнього покриття
-44113800-3  Road-surfacing materials  5  f  Матеріали для влаштування дорожнього покриття
-44113810-6  Surface dressing  6  t  Матеріали для поверхневої обробки дорожнього покриття
-44113900-4  Road-maintenance materials  5  f  Матеріали для технічного обслуговування доріг
-44113910-7  Winter-maintenance materials  6  t  Матеріали для зимової експлуатації доріг
-44114000-2  Concrete  4  f  Бетон
-44114100-3  Ready-mixed concrete  5  t  Бетонні суміші
-44114200-4  Concrete products  5  f  Бетонні вироби
-44114210-7  Concrete piles  6  t  Бетонні палі
-44114220-0  Concrete pipes AND fittings  6  t  Бетонні труби та арматура
-44114250-9  Concrete slabs  6  t  Бетонні плити
-44115000-9  Building fittings  4  f  Будівельна фурнітура
-44115100-0  Ducting  5  t  Повітроводи
-44115200-1  Plumbing AND heating materials  5  f  Матеріали для водопровідних та опалювальних систем
-44115210-4  Plumbing materials  6  t  Матеріали для водопровідних систем
-44115220-7  Heating materials  6  t  Матеріали для опалювальних систем
-44115310-5  Roller- TYPE shutters  6  t  Ролети
-44115400-3  Skylights  5  t  Світлові люки
-44115500-4  Sprinkler systems  5  t  Спринклерні системи
-44115600-5  Stairlifts  5  t  Сходові підіймачі
-44115700-6  Exterior blinds  5  f  Зовнішні жалюзі
-44115710-9  Canopies  6  t  Тенти
-44115800-7  Building INTERNAL fittings  5  f  Внутрішньобудинкове приладдя
-44115810-0  Curtain rails AND hangings  6  f  Карнизи для тканинних і ниткових штор
-44115811-7  Curtain rails  7  t  Карнизи для штор
-44115900-8  Sun protection devices  5  t  Сонцезахисні пристрої
-44130000-0  Sewer mains  3  f  Каналізаційні системи
-44131000-7  Sewage chambers  4  t  Каналізаційні шахти
-44132000-4  Culvert elements  4  t  Елементи дренажних труб
-44133000-1  Ductile-iron END caps  4  t  Чавунні заглушки
-44134000-8  Bends  4  t  Коліна для каналізаційних труб
-44140000-3  Products related TO construction materials  3  f  Продукція, пов’язана з конструкційними матеріалами
-44141000-0  Conduit  4  f  Гнучкі труби
-44141100-1  Electric conduit  5  t  Кабельні короби
-44142000-7  Frames  4  t  Рами
-44143000-4  Pallets  4  t  Піддони
-44144000-1  Posts  4  t  Стовпи
-44160000-9  Pipeline, piping, pipes, casing, tubing AND related items  3  f  Магістралі, трубопроводи, труби, обсадні труби, тюбінги та супутні вироби
-44161000-6  Pipelines  4  f  Магістральні трубопроводи
-44161100-7  Gas pipelines  5  f  Магістральні газопроводи
-44161110-0  Gas-distribution network  6  t  Газорозподільні мережі
-44161200-8  Water mains  5  t  Водогінні труби
-44161400-0  Underwater pipeline  5  f  Підводні магістральні трубопроводи
-44161410-3  Subsea pipelines  6  t  Морські підводні магістральні трубопроводи
-44161500-1  High-pressure pipeline  5  t  Магістральні трубопроводи високого тиску
-44161600-2  Low-pressure pipeline  5  t  Магістральні трубопроводи низького тиску
-44161700-3  Pipeline pigs  5  f  Шкребла для чищення труб
-44161710-6  Pig launchers  6  t  Пускові пристрої для шкребел
-44161720-9  Pig receivers  6  t  Приймальні пристрої для шкребел
-44161730-2  Pig traps  6  t  Пристрої для ловлі шкребел
-44162000-3  Piping  4  f  Трубопроводи
-44162100-4  Piping supplies  5  t  Приладдя для трубопроводів
-44162200-5  Distribution piping  5  t  Розподільні трубопроводи
-44162300-6  Outfall piping  5  t  Дренажні трубопроводи
-44162400-7  Vitrified clay manholes  5  t  Оглядові колодязі з обпеченої глини
-44162500-8  Drinking-water piping  5  t  Трубопроводи питної води
-44163000-0  Pipes AND fittings  4  f  Труби та арматура
-44163100-1  Pipes  5  f  Труби
-44163110-4  Drainage pipes  6  f  Дренажні труби
-44163111-1  Drain pipes  7  t  Стічні труби
-44163112-8  Drainage SYSTEM 7  t  Дренажні системи
-44163120-7  Distance-heating pipes  6  f  Труби централізованих опалювальних систем
-44163121-4  Heating pipes  7  t  Опалювальні труби
-44163130-0  Sewer pipes  6  t  Каналізаційні труби
-44163140-3  Steam AND water pipes  6  t  Паропровідні та водопровідні труби
-44163150-6  Low-pressure pipes  6  t  Труби низького тиску
-44163160-9  Distribution pipes AND accessories  6  t  Розподільні труби та приладдя
-44163200-2  Pipe fittings  5  f  Трубна арматура
-44163210-5  Pipe clamps  6  t  Трубні хомути
-44163230-1  Pipe connectors  6  t  З’єднувачі труб
-44163240-4  Pipe joints  6  f  Трубні муфти
-44163241-1  Insulated joints  7  t  Ізоляційні прокладки
-44164000-7  Casing AND tubing  4  f  Обсадні труби та тюбінги
-44164100-8  Casing  5  t  Обсадні труби
-44164200-9  Tubing  5  t  Тюбінги
-44164300-0  Tubular goods  5  f  Трубні вироби
-44164310-3  Tubes AND fittings  6  t  Трубки та арматура
-44165000-4  Hoses, risers AND sleeves  4  f  Шланги, стояки та рукави
-44165100-5  Hoses  5  f  Шланги
-44165110-8  Drilling hoses  6  t  Бурові шланги
-44165200-6  Risers  5  f  Стояки
-44165210-9  Flexible risers  6  t  Гнучкі стояки
-44165300-7  Sleeves  5  t  Рукави
-44166000-1  Oil country tubular goods  4  t  Трубні вироби для нафтової промисловості
-44167000-8  Various pipe fittings  4  f  Трубна арматура різна
-44167100-9  Couplings  5  f  Муфти
-44167110-2  Flanges  6  f  Фланці
-44167111-9  Flange adaptors  7  t  Фланцеві перехідники
-44167200-0  Repair clamps AND collars  5  t  Ремонтні хомути та манжети
-44167300-1  Bends, tees AND pipe fittings  5  t  Коліна, трійники та арматура до труб
-44167400-2  Elbows  5  t  Патрубки
-44170000-2  Plates, sheets, strip AND foil related TO construction materials  3  f  Плити, листи, стрічки та фольга, пов’язані з конструкційними матеріалами
-44171000-9  Plates (construction)  4  t  Плити (будівельні)
-44172000-6  Sheets (construction)  4  t  Листи (будівельні)
-44173000-3  Strip  4  t  Стрічки
-44174000-0  Foil  4  t  Фольга
-44175000-7  Panels  4  t  Панелі
-44176000-4  Film  4  t  Плівки
-44190000-8  Miscellaneous construction materials  3  f  Конструкційні матеріали різні
-44191000-5  Miscellaneous construction materials IN wood  4  f  Дерев’яні конструкційні матеріали різні
-44191100-6  Plywood  5  t  Фанера
-44191200-7  Laminated wood  5  t  Шарувата деревина
-44191300-8  Particle board  5  t  Деревностружкові плити
-44191400-9  Fibreboard  5  t  Деревноволоконні плити
-44191500-0  Densified wood  5  t  Пресована деревина
-44191600-1  Parquet panels  5  t  Паркетна дошка
-44192000-2  Other miscellaneous construction materials  4  f  Інші різні конструкційні матеріали
-44192100-3  PVC foam  5  t  Полівінілхлоридні пінопласти
-44192200-4  Nails  5  t  Цвяхи
-44200000-2  Structural products  2  f  Конструкційні вироби
-44210000-5  Structures AND parts OF structures  3  f  Конструкції та їх частини
-44211000-2  Prefabricated buildings  4  f  Збірні споруди
-44211100-3  Modular AND portable buildings  5  f  Модульні та переносні споруди
-44211110-6  Cabins  6  t  Котеджі
-44211200-4  Cubicles  5  t  Офісні кубікли
-44211300-5  Field hospital  5  t  Польові госпіталі
-44211400-6  Field kitchens  5  t  Польові кухні
-44211500-7  Glasshouses  5  t  Оранжереї
-44212000-9  Structural products AND parts EXCEPT prefabricated buildings  4  f  Конструкційні вироби та їх частини, крім збірних споруд
-44212100-0  Bridge  5  f  Мости
-44212110-3  Bridge sections  6  t  Мостові секції
-44212120-6  Structures OF bridges  6  t  Мостові конструкції
-44212200-1  Towers, lattice masts, derricks AND pylons  5  f  Вежі, ґратчасті щогли, вишки та опори ліній електропередачі
-44212210-4  Derricks  6  f  Вишки
-44212211-1  Drilling derricks  7  t  Бурові вишки
-44212212-8  Static drilling derricks  7  t  Стаціонарні бурові вишки
-44212220-7  Pylons, poles AND pickets  6  f  Вежі-пілони, стовпи та опори
-44212221-4  Pylons  7  t  Вежі-пілони
-44212222-1  Electricity transmission pylons  7  t  Вежі-пілони ліній електропередачі
-44212223-8  Pylon supports  7  t  Опори веж-пілонів
-44212224-5  Poles FOR carrying overhead lines  7  t  Стовпи повітряних ліній електропередачі
-44212225-2  Poles  7  t  Стовпи
-44212226-9  Electricity poles  7  t  Стовпи для електромереж
-44212227-6  Pickets  7  t  Опори
-44212230-0  Towers  6  f  Вежі
-44212233-1  Water towers  7  t  Водонапірні башти
-44212240-3  Girders  6  t  Балки
-44212250-6  Masts  6  t  Щогли
-44212260-9  Radio OR television masts  6  f  Радіощогли та телевізійні щогли
-44212261-6  Radio masts  7  t  Радіощогли
-44212262-3  Television masts  7  t  Телевізійні щогли
-44212263-0  Lattice masts  7  t  Ґратчасті щогли
-44212300-2  Structures AND parts  5  f  Конструкції та їх частини
-44212310-5  Scaffolding  6  f  Риштовання
-44212311-2  Arch struts  7  t  Дугоподібні ферми
-44212312-9  Arch stilts  7  t  Аркові опори
-44212313-6  Supports  7  t  Підпори
-44212314-3  Pipe-hanging brackets  7  t  Кронштейни для труб
-44212315-0  Equipment FOR scaffolding  7  t  Обладнання для риштування
-44212316-7  Arch clips  7  t  Аркові затискачі
-44212317-4  Scaffolding structures  7  t  Конструкції риштовань
-44212318-1  Pipeline supports  7  t  Опори магістральних трубопроводів
-44212320-8  Miscellaneous structures  6  f  Конструкції різні
-44212321-5  Bus shelters  7  t  Навіси для автобусних зупинок
-44212322-2  Telephone booths  7  t  Телефонні будки
-44212329 - 1 SECURITY screens  7  t  Захисні ґрати
-44212380-6  Parts OF structures  6  f  Частини конструкцій
-44212381-3  Cladding  7  t  Обшивки
-44212382-0  Floodgates  7  t  Водоспускні споруди
-44212383 - 7 LOCK gates  7  t  Шлюзи судноплавних каналів
-44212390-9  Sluices  6  f  Шлюзи
-44212391-6  Sluice gates  7  t  Шлюзові ворота
-44212400-3  Piling  5  f  Палі
-44212410-6  Sheet piling  6  t  Шпунтові палі
-44212500-4  Angles AND sections  5  f  Кутові та камерні профілі
-44212510-7  Angles  6  t  Кутові профілі
-44212520-0  Sections  6  t  Камерні профілі
-44220000-8  Builders' joinery	3	f	Столярні вироби
+43840000-3	Blacksmiths' equipment	3	t	Ковальське обладнання
+44000000-0	Construction structures and materials; auxiliary products to construction (except electric apparatus)	1	f	Конструкції та конструкційні матеріали; допоміжна будівельна продукція (крім електроапаратури)
+44100000-1	Construction materials and associated items	2	f	Конструкційні матеріали та супутні вироби
+44110000-4	Construction materials	3	f	Конструкційні матеріали
+44111000-1	Building materials	4	f	Будівельні матеріали
+44111100-2	Bricks	5	t	Цегла
+44111200-3	Cement	5	f	Цемент
+44111210-6	Drilling cement	6	t	Цемент для свердловин
+44111300-4	Ceramics	5	t	Керамічні вироби
+44111400-5	Paints and wallcoverings	5	t	Фарби та шпалери
+44111500-6	Insulators and insulating fittings	5	f	Ізолятори та ізоляційне приладдя
+44111510-9	Insulators	6	f	Ізолятори
+44111511-6	Electrical insulators	7	t	Електроізолятори
+44111520-2	Thermal insulating material	6	t	Термоізоляційні матеріали
+44111530-5	Electrical insulating fittings	6	t	Електроізоляційне приладдя
+44111540-8	Insulating glass	6	t	Ізоляційне скло
+44111600-7	Blocks	5	t	Блоки
+44111700-8	Tiles	5	t	Кахель
+44111800-9	Mortar (construction)	5	t	Розчини (будівельні)
+44111900-0	Ceramic flags	5	t	Глазурований декоративний кахель
+44112000-8	Miscellaneous building structures	4	f	Будівельні конструкції різні
+44112100-9	Shelters	5	f	Навіси
+44112110-2	Shelter parts	6	t	Частина навісів
+44112120-5	Profile sections	6	t	Профільний прокат
+44112200-0	Floor coverings	5	f	Підлогове покриття
+44112210-3	Solid flooring	6	t	Тверде підлогове покриття
+44112220-6	False floors	6	t	Фальш-підлоги
+44112230-9	Linoleum	6	t	Лінолеум
+44112240-2	Parquet	6	t	Паркет
+44112300-1	Partitions	5	f	Перегородки
+44112310-4	Partition walls	6	t	Стіни-перегородки
+44112400-2	Roof	5	f	Покрівля
+44112410-5	Roof frames	6	t	Крокв’яні ферми
+44112420-8	Roof supports	6	t	Опорні крокви
+44112430-1	Roof trusses	6	t	Ферми
+44112500-3	Roofing materials	5	f	Покрівельні матеріали
+44112510-6	Shingles	6	t	Гнучка черепиця
+44112600-4	Sound insulation	5	t	Звукоізоляційні матеріали
+44113000-5	Road-construction materials	4	f	Матеріали для будівництва доріг
+44113100-6	Paving materials	5	f	Матеріали для мощення доріг
+44113120-2	Paving slabs	6	t	Тротуарна плитка
+44113130-5	Paving stones	6	t	Кам’яна бруківка
+44113140-8	Roadstone	6	t	Каміння для мощення доріг
+44113200-7	Flagstones	5	t	Плитняк
+44113300-8	Coated materials	5	f	Бітумні матеріали
+44113310-1	Coated road materials	6	t	Бітумні матеріали для покриття доріг
+44113320-4	Coated roadstone	6	t	Гравій, оброблений бітумом
+44113330-7	Coating materials	6	t	Матеріали для дорожнього покриття
+44113500-0	Glass beads	5	t	Скляні кульки для дорожньої розмітки
+44113600-1	Bitumen and asphalt	5	f	Бітум та асфальт
+44113610-4	Bitumen	6	t	Бітум
+44113620-7	Asphalt	6	t	Асфальт
+44113700-2	Road-repair materials	5	t	Матеріали для ремонту дорожнього покриття
+44113800-3	Road-surfacing materials	5	f	Матеріали для влаштування дорожнього покриття
+44113810-6	Surface dressing	6	t	Матеріали для поверхневої обробки дорожнього покриття
+44113900-4	Road-maintenance materials	5	f	Матеріали для технічного обслуговування доріг
+44113910-7	Winter-maintenance materials	6	t	Матеріали для зимової експлуатації доріг
+44114000-2	Concrete	4	f	Бетон
+44114100-3	Ready-mixed concrete	5	t	Бетонні суміші
+44114200-4	Concrete products	5	f	Бетонні вироби
+44114210-7	Concrete piles	6	t	Бетонні палі
+44114220-0	Concrete pipes and fittings	6	t	Бетонні труби та арматура
+44114250-9	Concrete slabs	6	t	Бетонні плити
+44115000-9	Building fittings	4	f	Будівельна фурнітура
+44115100-0	Ducting	5	t	Повітроводи
+44115200-1	Plumbing and heating materials	5	f	Матеріали для водопровідних та опалювальних систем
+44115210-4	Plumbing materials	6	t	Матеріали для водопровідних систем
+44115220-7	Heating materials	6	t	Матеріали для опалювальних систем
+44115310-5	Roller-type shutters	6	t	Ролети
+44115400-3	Skylights	5	t	Світлові люки
+44115500-4	Sprinkler systems	5	t	Спринклерні системи
+44115600-5	Stairlifts	5	t	Сходові підіймачі
+44115700-6	Exterior blinds	5	f	Зовнішні жалюзі
+44115710-9	Canopies	6	t	Тенти
+44115800-7	Building internal fittings	5	f	Внутрішньобудинкове приладдя
+44115810-0	Curtain rails and hangings	6	f	Карнизи для тканинних і ниткових штор
+44115811-7	Curtain rails	7	t	Карнизи для штор
+44115900-8	Sun protection devices	5	t	Сонцезахисні пристрої
+44130000-0	Sewer mains	3	f	Каналізаційні системи
+44131000-7	Sewage chambers	4	t	Каналізаційні шахти
+44132000-4	Culvert elements	4	t	Елементи дренажних труб
+44133000-1	Ductile-iron end caps	4	t	Чавунні заглушки
+44134000-8	Bends	4	t	Коліна для каналізаційних труб
+44140000-3	Products related to construction materials	3	f	Продукція, пов’язана з конструкційними матеріалами
+44141000-0	Conduit	4	f	Гнучкі труби
+44141100-1	Electric conduit	5	t	Кабельні короби
+44142000-7	Frames	4	t	Рами
+44143000-4	Pallets	4	t	Піддони
+44144000-1	Posts	4	t	Стовпи
+44160000-9	Pipeline, piping, pipes, casing, tubing and related items	3	f	Магістралі, трубопроводи, труби, обсадні труби, тюбінги та супутні вироби
+44161000-6	Pipelines	4	f	Магістральні трубопроводи
+44161100-7	Gas pipelines	5	f	Магістральні газопроводи
+44161110-0	Gas-distribution network	6	t	Газорозподільні мережі
+44161200-8	Water mains	5	t	Водогінні труби
+44161400-0	Underwater pipeline	5	f	Підводні магістральні трубопроводи
+44161410-3	Subsea pipelines	6	t	Морські підводні магістральні трубопроводи
+44161500-1	High-pressure pipeline	5	t	Магістральні трубопроводи високого тиску
+44161600-2	Low-pressure pipeline	5	t	Магістральні трубопроводи низького тиску
+44161700-3	Pipeline pigs	5	f	Шкребла для чищення труб
+44161710-6	Pig launchers	6	t	Пускові пристрої для шкребел
+44161720-9	Pig receivers	6	t	Приймальні пристрої для шкребел
+44161730-2	Pig traps	6	t	Пристрої для ловлі шкребел
+44162000-3	Piping	4	f	Трубопроводи
+44162100-4	Piping supplies	5	t	Приладдя для трубопроводів
+44162200-5	Distribution piping	5	t	Розподільні трубопроводи
+44162300-6	Outfall piping	5	t	Дренажні трубопроводи
+44162400-7	Vitrified clay manholes	5	t	Оглядові колодязі з обпеченої глини
+44162500-8	Drinking-water piping	5	t	Трубопроводи питної води
+44163000-0	Pipes and fittings	4	f	Труби та арматура
+44163100-1	Pipes	5	f	Труби
+44163110-4	Drainage pipes	6	f	Дренажні труби
+44163111-1	Drain pipes	7	t	Стічні труби
+44163112-8	Drainage system	7	t	Дренажні системи
+44163120-7	Distance-heating pipes	6	f	Труби централізованих опалювальних систем
+44163121-4	Heating pipes	7	t	Опалювальні труби
+44163130-0	Sewer pipes	6	t	Каналізаційні труби
+44163140-3	Steam and water pipes	6	t	Паропровідні та водопровідні труби
+44163150-6	Low-pressure pipes	6	t	Труби низького тиску
+44163160-9	Distribution pipes and accessories	6	t	Розподільні труби та приладдя
+44163200-2	Pipe fittings	5	f	Трубна арматура
+44163210-5	Pipe clamps	6	t	Трубні хомути
+44163230-1	Pipe connectors	6	t	З’єднувачі труб
+44163240-4	Pipe joints	6	f	Трубні муфти
+44163241-1	Insulated joints	7	t	Ізоляційні прокладки
+44164000-7	Casing and tubing	4	f	Обсадні труби та тюбінги
+44164100-8	Casing	5	t	Обсадні труби
+44164200-9	Tubing	5	t	Тюбінги
+44164300-0	Tubular goods	5	f	Трубні вироби
+44164310-3	Tubes and fittings	6	t	Трубки та арматура
+44165000-4	Hoses, risers and sleeves	4	f	Шланги, стояки та рукави
+44165100-5	Hoses	5	f	Шланги
+44165110-8	Drilling hoses	6	t	Бурові шланги
+44165200-6	Risers	5	f	Стояки
+44165210-9	Flexible risers	6	t	Гнучкі стояки
+44165300-7	Sleeves	5	t	Рукави
+44166000-1	Oil country tubular goods	4	t	Трубні вироби для нафтової промисловості
+44167000-8	Various pipe fittings	4	f	Трубна арматура різна
+44167100-9	Couplings	5	f	Муфти
+44167110-2	Flanges	6	f	Фланці
+44167111-9	Flange adaptors	7	t	Фланцеві перехідники
+44167200-0	Repair clamps and collars	5	t	Ремонтні хомути та манжети
+44167300-1	Bends, tees and pipe fittings	5	t	Коліна, трійники та арматура до труб
+44167400-2	Elbows	5	t	Патрубки
+44170000-2	Plates, sheets, strip and foil related to construction materials	3	f	Плити, листи, стрічки та фольга, пов’язані з конструкційними матеріалами
+44171000-9	Plates (construction)	4	t	Плити (будівельні)
+44172000-6	Sheets (construction)	4	t	Листи (будівельні)
+44173000-3	Strip	4	t	Стрічки
+44174000-0	Foil	4	t	Фольга
+44175000-7	Panels	4	t	Панелі
+44176000-4	Film	4	t	Плівки
+44190000-8	Miscellaneous construction materials	3	f	Конструкційні матеріали різні
+44191000-5	Miscellaneous construction materials in wood	4	f	Дерев’яні конструкційні матеріали різні
+44191100-6	Plywood	5	t	Фанера
+44191200-7	Laminated wood	5	t	Шарувата деревина
+44191300-8	Particle board	5	t	Деревностружкові плити
+44191400-9	Fibreboard	5	t	Деревноволоконні плити
+44191500-0	Densified wood	5	t	Пресована деревина
+44191600-1	Parquet panels	5	t	Паркетна дошка
+44192000-2	Other miscellaneous construction materials	4	f	Інші різні конструкційні матеріали
+44192100-3	PVC foam	5	t	Полівінілхлоридні пінопласти
+44192200-4	Nails	5	t	Цвяхи
+44200000-2	Structural products	2	f	Конструкційні вироби
+44210000-5	Structures and parts of structures	3	f	Конструкції та їх частини
+44211000-2	Prefabricated buildings	4	f	Збірні споруди
+44211100-3	Modular and portable buildings	5	f	Модульні та переносні споруди
+44211110-6	Cabins	6	t	Котеджі
+44211200-4	Cubicles	5	t	Офісні кубікли
+44211300-5	Field hospital	5	t	Польові госпіталі
+44211400-6	Field kitchens	5	t	Польові кухні
+44211500-7	Glasshouses	5	t	Оранжереї
+44212000-9	Structural products and parts except prefabricated buildings	4	f	Конструкційні вироби та їх частини, крім збірних споруд
+44212100-0	Bridge	5	f	Мости
+44212110-3	Bridge sections	6	t	Мостові секції
+44212120-6	Structures of bridges	6	t	Мостові конструкції
+44212200-1	Towers, lattice masts, derricks and pylons	5	f	Вежі, ґратчасті щогли, вишки та опори ліній електропередачі
+44212210-4	Derricks	6	f	Вишки
+44212211-1	Drilling derricks	7	t	Бурові вишки
+44212212-8	Static drilling derricks	7	t	Стаціонарні бурові вишки
+44212220-7	Pylons, poles and pickets	6	f	Вежі-пілони, стовпи та опори
+44212221-4	Pylons	7	t	Вежі-пілони
+44212222-1	Electricity transmission pylons	7	t	Вежі-пілони ліній електропередачі
+44212223-8	Pylon supports	7	t	Опори веж-пілонів
+44212224-5	Poles for carrying overhead lines	7	t	Стовпи повітряних ліній електропередачі
+44212225-2	Poles	7	t	Стовпи
+44212226-9	Electricity poles	7	t	Стовпи для електромереж
+44212227-6	Pickets	7	t	Опори
+44212230-0	Towers	6	f	Вежі
+44212233-1	Water towers	7	t	Водонапірні башти
+44212240-3	Girders	6	t	Балки
+44212250-6	Masts	6	t	Щогли
+44212260-9	Radio or television masts	6	f	Радіощогли та телевізійні щогли
+44212261-6	Radio masts	7	t	Радіощогли
+44212262-3	Television masts	7	t	Телевізійні щогли
+44212263-0	Lattice masts	7	t	Ґратчасті щогли
+44212300-2	Structures and parts	5	f	Конструкції та їх частини
+44212310-5	Scaffolding	6	f	Риштовання
+44212311-2	Arch struts	7	t	Дугоподібні ферми
+44212312-9	Arch stilts	7	t	Аркові опори
+44212313-6	Supports	7	t	Підпори
+44212314-3	Pipe-hanging brackets	7	t	Кронштейни для труб
+44212315-0	Equipment for scaffolding	7	t	Обладнання для риштування
+44212316-7	Arch clips	7	t	Аркові затискачі
+44212317-4	Scaffolding structures	7	t	Конструкції риштовань
+44212318-1	Pipeline supports	7	t	Опори магістральних трубопроводів
+44212320-8	Miscellaneous structures	6	f	Конструкції різні
+44212321-5	Bus shelters	7	t	Навіси для автобусних зупинок
+44212322-2	Telephone booths	7	t	Телефонні будки
+44212329-1	Security screens	7	t	Захисні ґрати
+44212380-6	Parts of structures	6	f	Частини конструкцій
+44212381-3	Cladding	7	t	Обшивки
+44212382-0	Floodgates	7	t	Водоспускні споруди
+44212383-7	Lock gates	7	t	Шлюзи судноплавних каналів
+44212390-9	Sluices	6	f	Шлюзи
+44212391-6	Sluice gates	7	t	Шлюзові ворота
+44212400-3	Piling	5	f	Палі
+44212410-6	Sheet piling	6	t	Шпунтові палі
+44212500-4	Angles and sections	5	f	Кутові та камерні профілі
+44212510-7	Angles	6	t	Кутові профілі
+44212520-0	Sections	6	t	Камерні профілі
+44220000-8	Builders' joinery	3	f	Столярні вироби
 44221000-5	Windows, doors and related items	4	f	Вікна, двері та супутні вироби
 44221100-6	Windows	5	f	Вікна
 44221110-9	Window frames	6	f	Віконні рами
@@ -7085,278 +7117,276 @@ auxiliary products TO construction ( EXCEPT electric apparatus)  1  f  Конс�
 44221310-1	Access gates	6	t	В’їзні ворота
 44221400-9	Shutters	5	t	Віконниці
 44221500-0	Thresholds	5	t	Пороги
-44230000-1	Builders' carpentry  3  f  Теслярські вироби
-44231000-8  Made-up fencing panels  4  t  Збірні панельні огорожі
-44232000-5  Timber roof trusses  4  t  Дерев’яні крокви
-44233000-2  Staircases  4  t  Сходи
-44300000-3  Cable, wire AND related products  2  f  Кабелі, дроти та супутня продукція
-44310000-6  Wire products  3  f  Вироби з дроту
-44311000-3  Stranded wire  4  t  Металеві троси
-44312000-0  Fencing wire  4  f  Дріт для огорож
-44312300-3  Barbed wire  5  t  Колючий дріт
-44313000-7  Metal netting  4  f  Металеві сітки
-44313100-8  Wire-mesh fencing  5  t  Огорожі з дротяної сітки
-44313200-9  Wire cloth  5  t  Плетені металеві сітки
-44315000-1  Wire rods  4  f  Катанки
-44315100-2  Welding accessories  5  t  Зварювальне приладдя
-44315200-3  Welding materials  5  t  Зварювальні матеріали
-44315300-4  Soldering OR brazing materials  5  f  Матеріали для паяння м’яким чи твердим припоєм
-44315310-7  Soldering materials  6  t  Матеріали для паяння м’яким припоєм
-44315320-0  Brazing materials  6  t  Матеріали для паяння твердим припоєм
-44316000-8  Ironmongery  4  f  Ковальські пристрої
-44316100-9  Anvils  5  t  Ковадла
-44316200-0  Portable forge  5  t  Переносні горна
-44316300-1  Grilles  5  t  Решітки
-44316400-2  Hardware  5  t  Дрібні залізні вироби
-44316500-3  Smiths' wares	5	f	Ковані вироби
-44316510-6	Blacksmiths' wares  6  t  Слюсарні вироби
-44317000-5  Iron OR steel slings  4  t  Залізні чи сталеві замки-карабіни
-44318000-2  Conductors  4  t  Електричні проводи
-44320000-9  Cable AND related products  3  f  Кабелі та супутня продукція
-44321000-6  Cable  4  t  Кабелі
-44322000-3  Cable accessories  4  f  Кабельне приладдя
-44322100-4  Cable conduits  5  t  Кабельні канали
-44322200-5  Cable connectors  5  t  Кабельні роз’єми
-44322300-6  Cable ducts  5  t  Кабельні оболонки
-44322400-7  Cable fasteners  5  t  Кабельні хомути
-44330000-2  Bars, rods, wire AND profiles used IN construction  3  f  Будівельні прути, стрижні, дроти та профілі
-44331000-9  Bars  4  t  Прути
-44332000-6  Rods (construction)  4  t  Стрижні (будівельні)
-44333000-3  Wire  4  t  Дріт
-44334000-0  Profiles  4  t  Профілі
-44400000-4  Miscellaneous fabricated products AND related items  2  f  Готова продукція різних видів та супутні вироби
-44410000-7  Articles FOR the bathroom AND kitchen  3  f  Вироби для ванної кімнати та кухні
-44411000-4  Sanitary ware  4  f  Санітарна техніка
-44411100-5  Taps  5  t  Водопровідні крани
-44411200-6  Baths  5  t  Ванни
-44411300-7  Washbasins  5  t  Умивальники
-44411400-8  Shower basins  5  t  Душові піддони
-44411600-0  Bidets  5  t  Біде
-44411700-1  Lavatory seats, covers, bowls AND cisterns  5  f  Сидіння для унітазів, кришки для унітазів, унітази та зливні бачки
-44411710-4  Lavatory seats  6  t  Сидіння для унітазів
-44411720-7  Lavatory covers  6  t  Кришки для унітазів
-44411740-3  Lavatory bowls  6  t  Унітази
-44411750-6  Lavatory cisterns  6  t  Зливні бачки
-44411800-2  Urinals  5  t  Пісуари
-44420000-0  Goods used IN construction  3  f  Будівельні товари
-44421000-7  Armoured OR reinforced safes, strongboxes AND doors  4  f  Броньовані чи армовані сейфи, банківські сейфи та двері
-44421300-0  Safes  5  t  Сейфи
-44421500-2  Armoured OR reinforced doors  5  t  Броньовані чи армовані двері
-44421600-3 SAFE -deposit lockers  5  t  Депозитні сейфові скриньки
-44421700-4  Boxes AND lockers  5  f  Шухляди та шафки із замком
-44421710-7 LEFT -luggage lockers  6  t  Камери зберігання багажу
-44421720-0  Lockers  6  f  Шафи із замком
-44421721-7 SAFE -deposit boxes  7  t  Депозитні комірки
-44421722-4  Safety cases  7  t  Кейси із замком
-44421780-8  Deed boxes  6  t  Сейфи для документів
-44421790-1  Cash boxes  6  t  Касові шухляди
-44422000-4  Letterboxes  4  t  Поштові скриньки
-44423000-1  Miscellaneous articles  4  f  Вироби різні
-44423100-2  Bells  5  t  Дзвони
-44423200-3  Ladders  5  f  Драбини
-44423220-9  Folding steps  6  t  Розкладні драбини
-44423230-2  Step stools  6  t  Стільці-драбини
-44423300-4  Goods-handling equipment  5  f  Вантажно-розвантажувальне обладнання
-44423330-3  Platforms FOR handling goods  6  t  Вантажно-розвантажувальні платформи
-44423340-6  Wire-rope accessories FOR handling goods  6  t  Дротяно-канатне приладдя для вантажно-розвантажувальних робіт
-44423400-5  Signs AND related items  5  f  Вказівники та супутні вироби
-44423450-0  Nameplates  6  t  Іменні таблички
-44423460-3  Address plates  6  t  Адресні вивіски
-44423700-8  Manhole elements  5  f  Елементи оглядових колодязів
-44423710-1  Surface boxes  6  t  Каналізаційні люки
-44423720-4  Boundary boxes  6  t  Захисні бокси
-44423730-7  Manhole frames  6  t  Рами оглядових колодязів
-44423740-0  Manhole covers  6  t  Кришки оглядових колодязів
-44423750-3  Drain covers  6  t  Решітки ливнестоків
-44423760-6 ACCESS covers  6  t  Технологічні люки
-44423790-5  Manhole step irons  6  t  Скоби-сходи оглядових колодязів
-44423800-9  Metal stamps  5  f  Металеві пломби
-44423810-2  Rubber stamps  6  t  Гумові пломби
-44423850-4  Shapes  6  t  Пломбіратори
-44423900-0  Sacrificial anodes  5  t  Захисні аноди
-44424000-8  Meter-housing boxes AND tape  4  f  Коробки для побутових лічильників та стрічки
-44424100-9  Meter-housing boxes  5  t  Коробки для побутових лічильників
-44424200-0  Adhesive tape  5  t  Клейкі стрічки
-44424300-1  Reflective tape  5  t  Світловідбивні стрічки
-44425000-5  Rings, seals, bands, sticks AND grout packers  4  f  Кільця, прокладки, смужки, вставки та ущільнювачі
-44425100-6  Elastic rings  5  f  Еластичні кільця
-44425110-9  Self-adhesive reinforcement rings  6  t  Самоклейні кільця-ущільнювачі
-44425200-7  Rubber seals  5  t  Гумові прокладки
-44425300-8  Rubber bands  5  t  Гумові смужки
-44425400-9  Grout packers  5  t  Ущільнювачі
-44425500-0  Plastic sticks  5  t  Пластикові вставки
-44430000-3  Armour plating  3  f  Армована обшивка
-44431000-0  Cover plates  4  t  Накладки
-44440000-6  Bearings  3  f  Вальниці
-44441000-3  Microbeads  4  t  Мікрокульки
-44442000-0  Roller bearings  4  t  Роликові вальниці
-44450000-9  Mild steel  3  f  М’яка сталь
-44451000-6  Coin blanks  4  t  Монетні заготовки
-44452000-3  Coin boxes  4  t  Коробки для монет
-44460000-2  Props AND mining struts  3  f  Стояки та розпірки для шахт
-44461000-9  Props  4  f  Стояки
-44461100-0  Mine props  5  t  Стояки для шахт
-44462000-6  Mining struts  4  t  Розпірки для шахт
-44464000-0  Caterpillar tracks  4  t  Гусеничні рушії
-44470000-5 CAST -iron products  3  t  Чавунні вироби
-44480000-8  Miscellaneous fire-protection equipment  3  f  Протипожежне обладнання різне
-44481000-5  Platforms ladders  4  f  Драбини з платформою
-44481100-6  Fire ladders  5  t  Пожежні драбини
-44482000-2  Fire-protection devices  4  f  Пристрої для пожежогасіння
-44482100-3  Fire hoses  5  t  Пожежні шланги
-44482200-4  Fire hydrants  5  t  Пожежні гідранти
-44500000-5  Tools, locks, keys, hinges, fasteners, chain AND springs  2  f  Знаряддя, замки, ключі, петлі, кріпильні деталі, ланцюги та пружини
-44510000-8  Tools  3  f  Знаряддя
-44511000-5  Hand tools  4  f  Ручні знаряддя
-44511100-6  Spades AND shovels  5  f  Штикові та совкові лопати
-44511110-9  Spades  6  t  Штикові лопати
-44511120-2  Shovels  6  t  Совкові лопати
-44511200-7  Gardening forks  5  t  Садові вила
-44511300-8  Mattocks, picks, hoes, rakes AND beach rakes  5  f  Мотики, кайла, сапи, граблі та пляжні граблі
-44511310-1  Mattocks  6  t  Мотики
-44511320-4  Picks  6  t  Кайла
-44511330-7  Hoes  6  t  Сапи
-44511340-0  Rakes  6  f  Граблі
-44511341-7  Beach rakes  7  t  Пляжні граблі
-44511400-9  Axes  5  t  Сокири
-44511500-0  Hand saws  5  f  Ручні пилки
-44511510-3  Handsaw blades  6  t  Полотна до ручних пилок
-44512000-2  Miscellaneous hand tools  4  f  Ручні інструменти різні
-44512100-3  Chisels  5  t  Долото
-44512200-4  Pliers  5  f  Щипці
-44512210-7  Crimping pliers  6  t  Обтискні щипці
-44512300-5  Hammers  5  t  Молотки
-44512400-6  Wire grips  5  t  Монтажні затискачі
-44512500-7  Spanners  5  t  Гайкові ключі
-44512600-8  Roadworking tools  5  f  Інструменти для дорожніх робіт
-44512610-1  Spikes FOR piercing road surfaces  6  t  Ломи для пробивання дорожнього покриття
-44512700-9  Files OR rasps  5  t  Напилки чи рашпілі
-44512800-0  Screwdrivers  5  t  Викрутки
-44512900-1  Drill bits, screwdriver bits AND other accessories  5  f  Свердла, жала до викруток та інше приладдя
-44512910-4  Drill bits  6  t  Свердла
-44512920-7  Screwdriver bits  6  t  Жала до викруток
-44512930-0  Tool carriers  6  t  Руків’я інструментів
-44512940-3  Tool kits  6  t  Набори інструментів
-44513000-9  Treadle-operated tools  4  t  Інструменти з педальним приводом
-44514000-6  Tool handles AND tool parts  4  f  Руків’я та деталі інструментів
-44514100-7  Tool handles  5  t  Руків’я інструментів
-44514200-8  Tool parts  5  t  Деталі інструментів
-44520000-1  Locks, keys AND hinges  3  f  Замки, ключі та петлі
-44521000-8  Miscellaneous padlocks AND locks  4  f  Навісні та врізні замки різні
-44521100-9  Locks  5  f  Врізні замки
-44521110-2  Door locks  6  t  Дверні замки
-44521120 - 5  Electronic SECURITY LOCK 6  t  Електронні кодові замки
-44521130 - 8  Enhanced SECURITY LOCK 6  t  Замки з високим ступенем захисту та посиленим кріпленням
-44521140-1  Furniture locks  6  t  Замки до меблів
-44521200-0  Padlocks AND chains  5  f  Навісні замки та ланцюжки
-44521210-3  Padlocks  6  t  Навісні замки
-44522000 - 5  Clasps, LOCK parts AND keys  4  f  Клямки, деталі замків та ключі
-44522100-6  Clasps  5  t  Клямки
-44522200-7  Keys  5  t  Ключі
-44522300-8  Parts OF padlocks  5  t  Частини навісних замків
-44522400-9  Parts OF locks  5  t  Частини врізних замків
-44523000-2  Hinges, mountings AND fittings  4  f  Петлі, монтажна арматура та фурнітура
-44523100-3  Hinges  5  t  Петлі
-44523200-4  Mountings  5  t  Монтажна арматура
-44523300-5  Fittings  5  t  Фурнітура
-44530000-4  Fasteners  3  f  Кріпильні деталі
-44531000-1  Threaded fasteners  4  f  Кріпильні деталі з наріззю
-44531100-2  Wood screws  5  t  Шурупи
-44531200-3  Screw hooks OR screw rings  5  t  Шурупи з гачком або кільцем
-44531300-4  Self-tapping screws  5  t  Саморізи
-44531400-5  Bolts  5  t  Болти
-44531500-6  Flange jointing SETS 5  f  Комплекти фланцевих з’єднань
-44531510-9  Bolts AND screws  6  t  Болти та шурупи
-44531520-2  Coach bolts AND screws  6  t  Болти та шурупи із шестигранним шліцем
-44531600-7  Nuts  5  t  Гайки
-44531700-8  Iron OR steel threaded articles  5  t  Залізні чи сталеві вироби з наріззю
-44532000-8  Non-threaded fasteners  4  f  Кріпильні деталі без нарізі
-44532100-9  Rivets  5  t  Заклепки
-44532200-0  Washers  5  t  Шайби
-44532300-1  Cotter pins  5  t  Шплінти
-44532400-2  Steel fishplates  5  t  Сталеві стикові накладки
-44533000-5  Copper fasteners  4  t  Мідні кріпильні деталі
-44541000-4  Articulated chain  4  t  Шарнірні ланцюги
-44542000-1  Parts OF chain  4  t  Елементи ланцюгів
-44550000-0  Springs  3  t  Пружини
-44600000-6  Tanks, reservoirs AND containers;
-central-heating radiators AND boilers  2  f  Цистерни, резервуари та контейнери;
-радіатори та котли для центрального опалення
-44610000-9  Tanks, reservoirs, containers AND pressure vessels  3  f  Цистерни, резервуари, контейнери та посудини високого тиску
-44611000-6  Tanks  4  f  Цистерни
-44611100-7  Air cylinders  5  f  Балони для повітря
-44611110-0  Compressed-air cylinders  6  t  Балони для стисненого повітря
-44611200-8  Breathing apparatus  5  t  Дихальні апарати
-44611400-0 STORAGE tanks  5  f  Цистерни-сховища
-44611410-3  Oil- STORAGE tanks  6  t  Цистерни для зберігання нафтопродуктів
-44611420-6  Sludge- STORAGE tanks  6  t  Цистерни для мулу
-44611500-1  Water tanks  5  t  Цистерни для води
-44611600-2  Reservoirs  5  t  Резервувари
-44612000-3  Liquefied-gas containers  4  f  Балони для скрапленого газу
-44612100-4  Gas cylinders  5  t  Балони для газу
-44612200-5  Gas tanks  5  t  Цистерни для газу
-44613000-0 LARGE containers  4  f  Великогабаритні контейнери
-44613110-4  Silos  6  t  Силоси
-44613200-2  Refrigerated containers  5  f  Холодильні контейнери
-44613210-5  Water chambers  6  t  Баки для води
-44613300-3  Standard freight containers  5  t  Стандартні вантажні контейнери
-44613400-4 STORAGE containers  5  t  Контейнери для зберігання
-44613500-5  Water containers  5  t  Контейнери для води
-44613600-6  Wheeled containers  5  t  Колісні контейнери
-44613700-7  Refuse skips  5  t  Контейнери для сміття
-44613800-8  Containers FOR waste material  5  t  Контейнери для відходів
-44614000-7  Casks  4  f  Діжки
-44614100-8 STORAGE bins  5  t  Накопичувальні бункери
-44614300-0  Container STORAGE SYSTEM 5  f  Контейнерні системи
-44614310-3  Stacking machinery  6  t  Штабелювальні механізми
-44615000-4  Pressure vessels  4  f  Посудини високого тиску
-44615100-5  Steel pressure vessels  5  t  Сталеві посудини високого тиску
-44616000-1  Drums  4  f  Бочки
-44616200-3  Waste drums  5  t  Бочки для відходів
-44617000-8  Boxes  4  f  Коробки
-44617100-9  Cartons  5  t  Картонні коробки
-44617200-0  Meter housings  5  t  Корпуси лічильників
-44617300-1  Prefabricated boxes  5  t  Збірні ящики
-44618000-5  Light containers, corks, tops FOR containers, vats AND lids  4  f  Легкі контейнери, корки, кришки контейнерів, чани та кришки
-44618100-6  Light containers  5  t  Легкі контейнери
-44618300-8  Corks, stoppers, tops FOR containers AND lids  5  f  Корки, пробки, кришки контейнерів та інші кришки
-44618310-1  Corks  6  t  Корки
-44618320-4  Stoppers  6  t  Пробки
-44618330-7  Tops FOR containers  6  t  Кришки контейнерів
-44618340-0  Lids  6  t  Кришки
-44618350-3  Plastic caps  6  t  Пластикові пробки
-44618400-9  Cans  5  f  Металеві банки
-44618420-5  Food cans  6  t  Банки для консервування
-44618500-0  Vats  5  t  Чани
-44619000-2  Other containers  4  f  Інші контейнери
-44619100-3  Cases  5  t  Чохли
-44619200-4  Cable drums  5  t  Кабельні барабани
-44619300-5  Crates  5  t  Ящики
-44619400-6  Barrels  5  t  Дерев’яні діжки
-44619500-7  Pallet boxes  5  t  Ящики-піддони
-44620000-2  Central-heating radiators AND boilers AND parts  3  f  Радіатори і котли для систем центрального опалення та їх деталі
-44621000-9  Radiators AND boilers  4  f  Радіатори та котли
-44621100-0  Radiators  5  f  Радіатори
-44621110-3  Central-heating radiators  6  f  Радіатори для систем центрального опалення
-44621111-0  Non-electrically-heated central-heating radiators  7  t  Неелектричні радіатори для систем центрального опалення
-44621112-7  Parts OF central-heating radiators  7  t  Частини радіаторів систем центрального опалення
-44621200-1  Boilers  5  f  Котли
-44621210-4  Water boilers  6  t  Водяні котли
-44621220-7  Central-heating boilers  6  f  Котли для систем центрального опалення
-44621221-4  Parts OF central-heating boilers  7  t  Частини котлів для систем центрального опалення
-44622000-6  Heat-recovery systems  4  f  Системи рекуперації тепла
-44622100-7  Heat-recovery equipment  5  t  Обладнання для рекуперації тепла
-44800000-8  Paints, varnishes AND mastics  2  f  Фарби, лаки, друкарська фарба та мастики
-44810000-1  Paints  3  f  Фарби
-44811000-8  Road paint  4  t  Фарби для дорожньої розмітки
-44812000-5  Artists' paints	4	f	Художні фарби
+44230000-1	Builders' carpentry	3	f	Теслярські вироби
+44231000-8	Made-up fencing panels	4	t	Збірні панельні огорожі
+44232000-5	Timber roof trusses	4	t	Дерев’яні крокви
+44233000-2	Staircases	4	t	Сходи
+44300000-3	Cable, wire and related products	2	f	Кабелі, дроти та супутня продукція
+44310000-6	Wire products	3	f	Вироби з дроту
+44311000-3	Stranded wire	4	t	Металеві троси
+44312000-0	Fencing wire	4	f	Дріт для огорож
+44312300-3	Barbed wire	5	t	Колючий дріт
+44313000-7	Metal netting	4	f	Металеві сітки
+44313100-8	Wire-mesh fencing	5	t	Огорожі з дротяної сітки
+44313200-9	Wire cloth	5	t	Плетені металеві сітки
+44315000-1	Wire rods	4	f	Катанки
+44315100-2	Welding accessories	5	t	Зварювальне приладдя
+44315200-3	Welding materials	5	t	Зварювальні матеріали
+44315300-4	Soldering or brazing materials	5	f	Матеріали для паяння м’яким чи твердим припоєм
+44315310-7	Soldering materials	6	t	Матеріали для паяння м’яким припоєм
+44315320-0	Brazing materials	6	t	Матеріали для паяння твердим припоєм
+44316000-8	Ironmongery	4	f	Ковальські пристрої
+44316100-9	Anvils	5	t	Ковадла
+44316200-0	Portable forge	5	t	Переносні горна
+44316300-1	Grilles	5	t	Решітки
+44316400-2	Hardware	5	t	Дрібні залізні вироби
+44316500-3	Smiths' wares	5	f	Ковані вироби
+44316510-6	Blacksmiths' wares	6	t	Слюсарні вироби
+44317000-5	Iron or steel slings	4	t	Залізні чи сталеві замки-карабіни
+44318000-2	Conductors	4	t	Електричні проводи
+44320000-9	Cable and related products	3	f	Кабелі та супутня продукція
+44321000-6	Cable	4	t	Кабелі
+44322000-3	Cable accessories	4	f	Кабельне приладдя
+44322100-4	Cable conduits	5	t	Кабельні канали
+44322200-5	Cable connectors	5	t	Кабельні роз’єми
+44322300-6	Cable ducts	5	t	Кабельні оболонки
+44322400-7	Cable fasteners	5	t	Кабельні хомути
+44330000-2	Bars, rods, wire and profiles used in construction	3	f	Будівельні прути, стрижні, дроти та профілі
+44331000-9	Bars	4	t	Прути
+44332000-6	Rods (construction)	4	t	Стрижні (будівельні)
+44333000-3	Wire	4	t	Дріт
+44334000-0	Profiles	4	t	Профілі
+44400000-4	Miscellaneous fabricated products and related items	2	f	Готова продукція різних видів та супутні вироби
+44410000-7	Articles for the bathroom and kitchen	3	f	Вироби для ванної кімнати та кухні
+44411000-4	Sanitary ware	4	f	Санітарна техніка
+44411100-5	Taps	5	t	Водопровідні крани
+44411200-6	Baths	5	t	Ванни
+44411300-7	Washbasins	5	t	Умивальники
+44411400-8	Shower basins	5	t	Душові піддони
+44411600-0	Bidets	5	t	Біде
+44411700-1	Lavatory seats, covers, bowls and cisterns	5	f	Сидіння для унітазів, кришки для унітазів, унітази та зливні бачки
+44411710-4	Lavatory seats	6	t	Сидіння для унітазів
+44411720-7	Lavatory covers	6	t	Кришки для унітазів
+44411740-3	Lavatory bowls	6	t	Унітази
+44411750-6	Lavatory cisterns	6	t	Зливні бачки
+44411800-2	Urinals	5	t	Пісуари
+44420000-0	Goods used in construction	3	f	Будівельні товари
+44421000-7	Armoured or reinforced safes, strongboxes and doors	4	f	Броньовані чи армовані сейфи, банківські сейфи та двері
+44421300-0	Safes	5	t	Сейфи
+44421500-2	Armoured or reinforced doors	5	t	Броньовані чи армовані двері
+44421600-3	Safe-deposit lockers	5	t	Депозитні сейфові скриньки
+44421700-4	Boxes and lockers	5	f	Шухляди та шафки із замком
+44421710-7	Left-luggage lockers	6	t	Камери зберігання багажу
+44421720-0	Lockers	6	f	Шафи із замком
+44421721-7	Safe-deposit boxes	7	t	Депозитні комірки
+44421722-4	Safety cases	7	t	Кейси із замком
+44421780-8	Deed boxes	6	t	Сейфи для документів
+44421790-1	Cash boxes	6	t	Касові шухляди
+44422000-4	Letterboxes	4	t	Поштові скриньки
+44423000-1	Miscellaneous articles	4	f	Вироби різні
+44423100-2	Bells	5	t	Дзвони
+44423200-3	Ladders	5	f	Драбини
+44423220-9	Folding steps	6	t	Розкладні драбини
+44423230-2	Step stools	6	t	Стільці-драбини
+44423300-4	Goods-handling equipment	5	f	Вантажно-розвантажувальне обладнання
+44423330-3	Platforms for handling goods	6	t	Вантажно-розвантажувальні платформи
+44423340-6	Wire-rope accessories for handling goods	6	t	Дротяно-канатне приладдя для вантажно-розвантажувальних робіт
+44423400-5	Signs and related items	5	f	Вказівники та супутні вироби
+44423450-0	Nameplates	6	t	Іменні таблички
+44423460-3	Address plates	6	t	Адресні вивіски
+44423700-8	Manhole elements	5	f	Елементи оглядових колодязів
+44423710-1	Surface boxes	6	t	Каналізаційні люки
+44423720-4	Boundary boxes	6	t	Захисні бокси
+44423730-7	Manhole frames	6	t	Рами оглядових колодязів
+44423740-0	Manhole covers	6	t	Кришки оглядових колодязів
+44423750-3	Drain covers	6	t	Решітки ливнестоків
+44423760-6	Access covers	6	t	Технологічні люки
+44423790-5	Manhole step irons	6	t	Скоби-сходи оглядових колодязів
+44423800-9	Metal stamps	5	f	Металеві пломби
+44423810-2	Rubber stamps	6	t	Гумові пломби
+44423850-4	Shapes	6	t	Пломбіратори
+44423900-0	Sacrificial anodes	5	t	Захисні аноди
+44424000-8	Meter-housing boxes and tape	4	f	Коробки для побутових лічильників та стрічки
+44424100-9	Meter-housing boxes	5	t	Коробки для побутових лічильників
+44424200-0	Adhesive tape	5	t	Клейкі стрічки
+44424300-1	Reflective tape	5	t	Світловідбивні стрічки
+44425000-5	Rings, seals, bands, sticks and grout packers	4	f	Кільця, прокладки, смужки, вставки та ущільнювачі
+44425100-6	Elastic rings	5	f	Еластичні кільця
+44425110-9	Self-adhesive reinforcement rings	6	t	Самоклейні кільця-ущільнювачі
+44425200-7	Rubber seals	5	t	Гумові прокладки
+44425300-8	Rubber bands	5	t	Гумові смужки
+44425400-9	Grout packers	5	t	Ущільнювачі
+44425500-0	Plastic sticks	5	t	Пластикові вставки
+44430000-3	Armour plating	3	f	Армована обшивка
+44431000-0	Cover plates	4	t	Накладки
+44440000-6	Bearings	3	f	Вальниці
+44441000-3	Microbeads	4	t	Мікрокульки
+44442000-0	Roller bearings	4	t	Роликові вальниці
+44450000-9	Mild steel	3	f	М’яка сталь
+44451000-6	Coin blanks	4	t	Монетні заготовки
+44452000-3	Coin boxes	4	t	Коробки для монет
+44460000-2	Props and mining struts	3	f	Стояки та розпірки для шахт
+44461000-9	Props	4	f	Стояки
+44461100-0	Mine props	5	t	Стояки для шахт
+44462000-6	Mining struts	4	t	Розпірки для шахт
+44464000-0	Caterpillar tracks	4	t	Гусеничні рушії
+44470000-5	Cast-iron products	3	t	Чавунні вироби
+44480000-8	Miscellaneous fire-protection equipment	3	f	Протипожежне обладнання різне
+44481000-5	Platforms ladders	4	f	Драбини з платформою
+44481100-6	Fire ladders	5	t	Пожежні драбини
+44482000-2	Fire-protection devices	4	f	Пристрої для пожежогасіння
+44482100-3	Fire hoses	5	t	Пожежні шланги
+44482200-4	Fire hydrants	5	t	Пожежні гідранти
+44500000-5	Tools, locks, keys, hinges, fasteners, chain and springs	2	f	Знаряддя, замки, ключі, петлі, кріпильні деталі, ланцюги та пружини
+44510000-8	Tools	3	f	Знаряддя
+44511000-5	Hand tools	4	f	Ручні знаряддя
+44511100-6	Spades and shovels	5	f	Штикові та совкові лопати
+44511110-9	Spades	6	t	Штикові лопати
+44511120-2	Shovels	6	t	Совкові лопати
+44511200-7	Gardening forks	5	t	Садові вила
+44511300-8	Mattocks, picks, hoes, rakes and beach rakes	5	f	Мотики, кайла, сапи, граблі та пляжні граблі
+44511310-1	Mattocks	6	t	Мотики
+44511320-4	Picks	6	t	Кайла
+44511330-7	Hoes	6	t	Сапи
+44511340-0	Rakes	6	f	Граблі
+44511341-7	Beach rakes	7	t	Пляжні граблі
+44511400-9	Axes	5	t	Сокири
+44511500-0	Hand saws	5	f	Ручні пилки
+44511510-3	Handsaw blades	6	t	Полотна до ручних пилок
+44512000-2	Miscellaneous hand tools	4	f	Ручні інструменти різні
+44512100-3	Chisels	5	t	Долото
+44512200-4	Pliers	5	f	Щипці
+44512210-7	Crimping pliers	6	t	Обтискні щипці
+44512300-5	Hammers	5	t	Молотки
+44512400-6	Wire grips	5	t	Монтажні затискачі
+44512500-7	Spanners	5	t	Гайкові ключі
+44512600-8	Roadworking tools	5	f	Інструменти для дорожніх робіт
+44512610-1	Spikes for piercing road surfaces	6	t	Ломи для пробивання дорожнього покриття
+44512700-9	Files or rasps	5	t	Напилки чи рашпілі
+44512800-0	Screwdrivers	5	t	Викрутки
+44512900-1	Drill bits, screwdriver bits and other accessories	5	f	Свердла, жала до викруток та інше приладдя
+44512910-4	Drill bits	6	t	Свердла
+44512920-7	Screwdriver bits	6	t	Жала до викруток
+44512930-0	Tool carriers	6	t	Руків’я інструментів
+44512940-3	Tool kits	6	t	Набори інструментів
+44513000-9	Treadle-operated tools	4	t	Інструменти з педальним приводом
+44514000-6	Tool handles and tool parts	4	f	Руків’я та деталі інструментів
+44514100-7	Tool handles	5	t	Руків’я інструментів
+44514200-8	Tool parts	5	t	Деталі інструментів
+44520000-1	Locks, keys and hinges	3	f	Замки, ключі та петлі
+44521000-8	Miscellaneous padlocks and locks	4	f	Навісні та врізні замки різні
+44521100-9	Locks	5	f	Врізні замки
+44521110-2	Door locks	6	t	Дверні замки
+44521120-5	Electronic security lock	6	t	Електронні кодові замки
+44521130-8	Enhanced security lock	6	t	Замки з високим ступенем захисту та посиленим кріпленням
+44521140-1	Furniture locks	6	t	Замки до меблів
+44521200-0	Padlocks and chains	5	f	Навісні замки та ланцюжки
+44521210-3	Padlocks	6	t	Навісні замки
+44522000-5	Clasps, lock parts and keys	4	f	Клямки, деталі замків та ключі
+44522100-6	Clasps	5	t	Клямки
+44522200-7	Keys	5	t	Ключі
+44522300-8	Parts of padlocks	5	t	Частини навісних замків
+44522400-9	Parts of locks	5	t	Частини врізних замків
+44523000-2	Hinges, mountings and fittings	4	f	Петлі, монтажна арматура та фурнітура
+44523100-3	Hinges	5	t	Петлі
+44523200-4	Mountings	5	t	Монтажна арматура
+44523300-5	Fittings	5	t	Фурнітура
+44530000-4	Fasteners	3	f	Кріпильні деталі
+44531000-1	Threaded fasteners	4	f	Кріпильні деталі з наріззю
+44531100-2	Wood screws	5	t	Шурупи
+44531200-3	Screw hooks or screw rings	5	t	Шурупи з гачком або кільцем
+44531300-4	Self-tapping screws	5	t	Саморізи
+44531400-5	Bolts	5	t	Болти
+44531500-6	Flange jointing sets	5	f	Комплекти фланцевих з’єднань
+44531510-9	Bolts and screws	6	t	Болти та шурупи
+44531520-2	Coach bolts and screws	6	t	Болти та шурупи із шестигранним шліцем
+44531600-7	Nuts	5	t	Гайки
+44531700-8	Iron or steel threaded articles	5	t	Залізні чи сталеві вироби з наріззю
+44532000-8	Non-threaded fasteners	4	f	Кріпильні деталі без нарізі
+44532100-9	Rivets	5	t	Заклепки
+44532200-0	Washers	5	t	Шайби
+44532300-1	Cotter pins	5	t	Шплінти
+44532400-2	Steel fishplates	5	t	Сталеві стикові накладки
+44533000-5	Copper fasteners	4	t	Мідні кріпильні деталі
+44541000-4	Articulated chain	4	t	Шарнірні ланцюги
+44542000-1	Parts of chain	4	t	Елементи ланцюгів
+44550000-0	Springs	3	t	Пружини
+44600000-6	Tanks, reservoirs and containers; central-heating radiators and boilers	2	f	Цистерни, резервуари та контейнери; радіатори та котли для центрального опалення
+44610000-9	Tanks, reservoirs, containers and pressure vessels	3	f	Цистерни, резервуари, контейнери та посудини високого тиску
+44611000-6	Tanks	4	f	Цистерни
+44611100-7	Air cylinders	5	f	Балони для повітря
+44611110-0	Compressed-air cylinders	6	t	Балони для стисненого повітря
+44611200-8	Breathing apparatus	5	t	Дихальні апарати
+44611400-0	Storage tanks	5	f	Цистерни-сховища
+44611410-3	Oil-storage tanks	6	t	Цистерни для зберігання нафтопродуктів
+44611420-6	Sludge-storage tanks	6	t	Цистерни для мулу
+44611500-1	Water tanks	5	t	Цистерни для води
+44611600-2	Reservoirs	5	t	Резервувари
+44612000-3	Liquefied-gas containers	4	f	Балони для скрапленого газу
+44612100-4	Gas cylinders	5	t	Балони для газу
+44612200-5	Gas tanks	5	t	Цистерни для газу
+44613000-0	Large containers	4	f	Великогабаритні контейнери
+44613110-4	Silos	6	t	Силоси
+44613200-2	Refrigerated containers	5	f	Холодильні контейнери
+44613210-5	Water chambers	6	t	Баки для води
+44613300-3	Standard freight containers	5	t	Стандартні вантажні контейнери
+44613400-4	Storage containers	5	t	Контейнери для зберігання
+44613500-5	Water containers	5	t	Контейнери для води
+44613600-6	Wheeled containers	5	t	Колісні контейнери
+44613700-7	Refuse skips	5	t	Контейнери для сміття
+44613800-8	Containers for waste material	5	t	Контейнери для відходів
+44614000-7	Casks	4	f	Діжки
+44614100-8	Storage bins	5	t	Накопичувальні бункери
+44614300-0	Container storage system	5	f	Контейнерні системи
+44614310-3	Stacking machinery	6	t	Штабелювальні механізми
+44615000-4	Pressure vessels	4	f	Посудини високого тиску
+44615100-5	Steel pressure vessels	5	t	Сталеві посудини високого тиску
+44616000-1	Drums	4	f	Бочки
+44616200-3	Waste drums	5	t	Бочки для відходів
+44617000-8	Boxes	4	f	Коробки
+44617100-9	Cartons	5	t	Картонні коробки
+44617200-0	Meter housings	5	t	Корпуси лічильників
+44617300-1	Prefabricated boxes	5	t	Збірні ящики
+44618000-5	Light containers, corks, tops for containers, vats and lids	4	f	Легкі контейнери, корки, кришки контейнерів, чани та кришки
+44618100-6	Light containers	5	t	Легкі контейнери
+44618300-8	Corks, stoppers, tops for containers and lids	5	f	Корки, пробки, кришки контейнерів та інші кришки
+44618310-1	Corks	6	t	Корки
+44618320-4	Stoppers	6	t	Пробки
+44618330-7	Tops for containers	6	t	Кришки контейнерів
+44618340-0	Lids	6	t	Кришки
+44618350-3	Plastic caps	6	t	Пластикові пробки
+44618400-9	Cans	5	f	Металеві банки
+44618420-5	Food cans	6	t	Банки для консервування
+44618500-0	Vats	5	t	Чани
+44619000-2	Other containers	4	f	Інші контейнери
+44619100-3	Cases	5	t	Чохли
+44619200-4	Cable drums	5	t	Кабельні барабани
+44619300-5	Crates	5	t	Ящики
+44619400-6	Barrels	5	t	Дерев’яні діжки
+44619500-7	Pallet boxes	5	t	Ящики-піддони
+44620000-2	Central-heating radiators and boilers and parts	3	f	Радіатори і котли для систем центрального опалення та їх деталі
+44621000-9	Radiators and boilers	4	f	Радіатори та котли
+44621100-0	Radiators	5	f	Радіатори
+44621110-3	Central-heating radiators	6	f	Радіатори для систем центрального опалення
+44621111-0	Non-electrically-heated central-heating radiators	7	t	Неелектричні радіатори для систем центрального опалення
+44621112-7	Parts of central-heating radiators	7	t	Частини радіаторів систем центрального опалення
+44621200-1	Boilers	5	f	Котли
+44621210-4	Water boilers	6	t	Водяні котли
+44621220-7	Central-heating boilers	6	f	Котли для систем центрального опалення
+44621221-4	Parts of central-heating boilers	7	t	Частини котлів для систем центрального опалення
+44622000-6	Heat-recovery systems	4	f	Системи рекуперації тепла
+44622100-7	Heat-recovery equipment	5	t	Обладнання для рекуперації тепла
+44800000-8	Paints, varnishes and mastics	2	f	Фарби, лаки, друкарська фарба та мастики
+44810000-1	Paints	3	f	Фарби
+44811000-8	Road paint	4	t	Фарби для дорожньої розмітки
+44812000-5	Artists' paints	4	f	Художні фарби
 44812100-6	Enamels and glazes	5	t	Емалі та глазурі
 44812200-7	Oil and water paints	5	f	Олійні та водні фарби
 44812210-0	Oil paints	6	t	Олійні фарби
 44812220-3	Water paints	6	t	Водні фарби
-44812300-8	Students' paints  5  f  Фарби для дитячої творчості
-44812310-1  Colours IN SETS 6  t  Набори фарб
-44812320-4  Signboard painters' colours	6	t	Фарби для оформлення вивісок
+44812300-8	Students' paints	5	f	Фарби для дитячої творчості
+44812310-1	Colours in sets	6	t	Набори фарб
+44812320-4	Signboard painters' colours	6	t	Фарби для оформлення вивісок
 44812400-9	Decorating supplies	5	t	Оздоблювальні матеріали
 44820000-4	Varnishes	3	t	Лаки
 44830000-7	Mastics, fillers, putty and solvents	3	f	Мастики, шпаклівки, замазки та розчинники
@@ -7604,231 +7634,229 @@ central-heating radiators AND boilers  2  f  Цистерни, резервуа�
 45215212-6	Retirement home construction work	7	t	Будівництво будинків пристарілих
 45215213-3	Nursing home construction work	7	t	Будівництво стаціонарних соціально-медичних установ
 45215214-0	Residential homes construction work	7	t	Будівництво будинків-інтернатів
-45215215-7	Children' S home construction WORK 7  t  Будівництво дитячих будинків-інтернатів
-45215220-5  Construction WORK FOR social facilities other than subsidised residential accommodation  6  f  Будівництво об’єктів соціальної сфери, крім соціального житла
-45215221-2  Daycare centre construction WORK 7  t  Будівництво центрів денного догляду
-45215222-9  Civic centre construction WORK 7  t  Будівництво громадських центрів
-45215300-0  Construction WORK FOR crematoriums  5  t  Будівництво крематоріїв
-45215400-1  Cemetery works  5  t  Кладовищні роботи
-45215500-2 PUBLIC conveniences  5  t  Будівництво громадських убиралень
-45216000-4  Construction WORK FOR buildings relating TO law AND ORDER OR emergency services AND FOR military buildings  4  f  Будівництво будівель правоохоронних органів та органів охорони громадського порядку чи служб надзвичайних ситуацій і будівель та приміщень військового призначення
-45216100-5  Construction WORK FOR buildings relating TO law AND ORDER OR emergency services  5  f  Будівництво будівель правоохоронних органів та органів охорони громадського порядку чи служб надзвичайних ситуацій
-45216110-8  Construction WORK FOR buildings relating TO law AND ORDER 6  f  Будівництво будівель правоохоронних органів та органів охорони громадського порядку
-45216111-5  Police station construction WORK 7  t  Будівництво поліцейських відділень
-45216112-2  Court building construction WORK 7  t  Будівництво будівель судів
-45216113-9  Prison building construction WORK 7  t  Будівництво пенітенціарних закладів
-45216114-6  Parliament AND PUBLIC assembly buildings  7  t  Будівництво будівель парламенту та будівель для громадських зібрань
-45216120-1  Construction WORK FOR buildings relating TO emergency services  6  f  Будівництво будівель служб надзвичайних ситуацій
-45216121-8  Fire station construction WORK 7  t  Будівництво пожежних станцій
-45216122-5  Ambulance station construction WORK 7  t  Будівництво пунктів швидкої медичної допомоги
-45216123-2  Mountain-rescue building construction WORK 7  t  Будівництво будівель гірських пошуково-рятувальних служб
-45216124-9  Lifeboat station construction WORK 7  t  Будівництво рятувальних станцій водних на водних об’єктах
-45216125-6  Emergency-services building construction WORK 7  t  Будівництво будівель аварійних служб
-45216126-3  Coastguard building construction WORK 7  t  Будівництво пунктів берегової охорони
-45216127-0  Rescue-service station construction WORK 7  t  Будівництво аварійно-рятувальних станцій
-45216128-7  Lighthouse construction WORK 7  t  Будівництво маяків
-45216129-4  Protective shelters  7  t  Будівництво сховищ
-45216200-6  Construction WORK FOR military buildings AND installations  5  f  Будівництво будівель і споруд військового призначення
-45216220-2  Military bunker construction WORK 6  t  Будівництво військових бункерів
-45216230-5  Military shelter construction WORK 6  t  Будівництво військових укриттів
-45217000-1  Inflatable buildings construction WORK 4  t  Зведення надувних конструкцій
-45220000-5  Engineering works AND construction works  3  f  Інженерні та будівельні роботи
-45221000-2  Construction WORK FOR bridges AND tunnels, shafts AND subways  4  f  Будівництво мостів і тунелів, шахт і метрополітенів
-45221100-3  Construction WORK FOR bridges  5  f  Будівництво мостів
-45221110-6  Bridge construction WORK 6  f  Мостобудівельні роботи
-45221111-3  Road bridge construction WORK 7  t  Будівництво автодорожніх мостів
-45221112-0  Railway bridge construction WORK 7  t  Будівництво залізничних мостів
-45221113-7  Footbridge construction WORK 7  t  Будівництво пішохідних мостів
-45221114-4  Construction WORK FOR iron bridges  7  t  Будівництво залізних мостів
-45221115-1  Construction WORK FOR steel bridges  7  t  Будівництво сталевих мостів
-45221117-5  Weighbridge construction WORK 7  t  Спорудження автомобільних ваг
-45221118-2  Pipeline-carrying bridge construction WORK 7  t  Будівництво мостів-трубопроводів
-45221119-9  Bridge renewal construction WORK 7  t  Реконструкція мостів
-45221120-9  Viaduct construction WORK 6  f  Будівництво мостів-віадуків
-45221121-6  Road viaduct construction WORK 7  t  Будівництво транспортних мостів-віадуків
-45221122-3  Railway viaduct construction WORK 7  t  Будівництво залізничних мостів-віадуків
-45221200-4  Construction WORK FOR tunnels, shafts AND subways  5  f  Будівництво тунелів, шахт і метрополітенів
-45221210-7  Covered OR partially-covered excavations  6  f  Будівництво траншей відкритого чи закритого типу
-45221211-4  Underpass  7  t  Будівництво підземних переходів
-45221213-8  Covered OR partially-covered railway excavations  7  t  Будівництво залізничних тунелів відкритого чи закритого типу
-45221214-5  Covered OR partially-covered road excavations  7  t  Будівництво автомобільних тунелів відкритого чи закритого типу
-45221220-0  Culverts  6  t  Укладення дренажних труб
-45221230-3  Shafts  6  t  Будівництво шахт
-45221240-6  Construction WORK FOR tunnels  6  f  Будівництво тунелів
-45221241-3  Road tunnel construction WORK 7  t  Будівництво автомобільних тунелів
-45221242-0  Railway tunnel construction WORK 7  t  Будівництво залізничних тунелів
-45221243-7  Pedestrian tunnel construction WORK 7  t  Будівництво пішохідних тунелів
-45221244-4  Canal tunnel construction WORK 7  t  Будівництво підводних тунелів
-45221245-1  Under-river tunnel construction WORK 7  t  Будівництво тунелів під річками
-45221246-8  Undersea tunnel construction WORK 7  t  Будівництво тунелів під морським дном
-45221247-5  Tunnelling works  7  t  Прокладання тунелів
-45221248-2  Tunnel linings construction WORK 7  t  Укріплення тунелів
-45221250-9  Underground WORK other than tunnels, shafts AND subways  6  t  Підземні роботи, крім прокладання тунелів, шахт і метрополітенів
-45222000-9  Construction WORK FOR engineering works EXCEPT bridges, tunnels, shafts AND subways  4  f  Зведення інженерних споруд, окрім мостів, тунелів, шахт і метрополітенів
-45222100-0  Waste-treatment plant construction WORK 5  f  Будівництво заводів з переробки відходів
-45222110-3  Waste disposal site construction WORK 6  t  Будівництво пунктів утилізації відходів
-45222200-1  Engineering WORK FOR military installations  5  t  Проектування військових об’єктів
-45222300-2  Engineering WORK FOR SECURITY installations  5  t  Проектування охоронних об’єктів
-45223000-6  Structures construction WORK 4  f  Спорудження конструкцій
-45223100-7  Assembly OF metal structures  5  f  Монтаж металевих конструкцій
-45223110-0  Installation OF metal structures  6  t  Встановлення металевих конструкцій
-45223200-8  Structural works  5  f  Конструкційні роботи
-45223210-1  Structural steelworks  6  t  Зведення тримальних сталевих конструкцій
-45223220-4  Structural shell WORK 6  t  Влаштування тримальних оболонок конструкцій
-45223300-9  Parking lot construction WORK 5  f  Будівництво автомобільних стоянок
-45223310-2  Underground car park construction WORK 6  t  Будівництво підземних автомобільних стоянок
-45223320-5  Park- AND -ride facility construction WORK 6  t  Будівництво перехоплювальних автомобільних стоянок
-45223400-0  Radar station construction WORK 5  t  Будівництво радіолокаційних станцій
-45223500-1  Reinforced-concrete structures  5  t  Зведення залізобетонних конструкцій
-45223600-2  Dog kennels construction WORK 5  t  Будівництво собачих розплідників
-45223700-3  Service area construction WORK 5  f  Будівництво станцій обслуговування
-45223710-6  Motorway service area construction WORK 6  t  Будівництво станцій технічного обслуговування мототранспортних засобів
-45223720-9  Petrol/gas stations construction WORK 6  t  Будівництво бензозаправних / газозаправних станцій
-45223800-4  Assembly AND erection OF prefabricated structures  5  f  Монтаж і зведення збірних конструкцій
-45223810-7  Prefabricated constructions  6  t  Монтаж збірних конструкцій
-45223820-0  Prefabricated units AND components  6  f  Монтаж збірних блоків та елементів
-45223821-7  Prefabricated units  7  t  Монтаж збірних блоків
-45223822-4  Prefabricated components  7  t  Монтаж збірних елементів
-45230000-8  Construction WORK FOR pipelines, communication AND power lines, FOR highways, roads, airfields AND railways;
-flatwork  3  f  Будівництво трубопроводів, ліній зв’язку та електропередач, шосе, доріг, аеродромів і залізничних доріг;
-вирівнювання поверхонь
-45231000-5  Construction WORK FOR pipelines, communication AND power lines  4  f  Будівництво трубопроводів, ліній зв’язку та електропередач
-45231100-6  General construction WORK FOR pipelines  5  f  Загальні трубопровідні роботи
-45231110-9  Pipelaying construction WORK 6  f  Будівництво трубопроводів
-45231111-6  Pipeline lifting AND relaying  7  t  Піднімання та заміна трубопроводів
-45231112-3  Installation OF pipe SYSTEM 7  t  Встановлення трубопровідних систем
-45231113-0  Pipeline relaying works  7  t  Заміна трубопроводів
-45231200-7  Construction WORK FOR oil AND gas pipelines  5  f  Будівництво нафтових і газових трубопроводів
-45231210-0  Construction WORK FOR oil pipelines  6  t  Будівництво нафтових трубопроводів
-45231220-3  Construction WORK FOR gas pipelines  6  f  Будівництво газових трубопроводів
-45231221-0  Gas supply mains construction WORK 7  t  Будівництво магістральних газопроводів
-45231222-7  Gasholder works  7  t  Спорудження газгольдерів
-45231223-4  Gas distribution ancillary WORK 7  t  Допоміжні газорозподільні роботи
-45231300-8  Construction WORK FOR water AND sewage pipelines  5  t  Роботи з прокладання водопроводів та каналізаційних трубопроводів
-45231400-9  Construction WORK FOR electricity power lines  5  t  Прокладання ліній електропередач
-45231500-0  Compressed-air pipeline WORK 5  f  Прокладання трубопроводів для пневматичних систем
-45231510-3  Compressed-air pipeline WORK FOR mailing SYSTEM 6  t  Прокладання трубопроводів для систем пневмопошти
-45231600-1  Construction WORK FOR communication lines  5  t  Прокладання ліній зв’язку
-45232000-2  Ancillary works FOR pipelines AND cables  4  f  Допоміжні роботи з прокладання трубопроводів і кабелів
-45232100-3  Ancillary works FOR water pipelines  5  f  Допоміжні роботи з прокладання водопроводів
-45232120-9  Irrigation works  6  f  Зрошувальні роботи
-45232121-6  Irrigation piping construction WORK 7  t  Прокладання зрошувальних трубопроводів
-45232130-2  Storm-water piping construction WORK 6  t  Прокладання трубопровідних систем відводу дощової води
-45232140-5  District-heating mains construction WORK 6  f  Будівництво магістральних теплових мереж
-45232141-2  Heating works  7  t  Будівництво опалювальних систем
-45232142-9  Heat-transfer station construction WORK 7  t  Будівництво теплорозподільних пунктів
-45232150-8  Works related TO water-distribution pipelines  6  f  Роботи, пов’язані з прокладанням водорозподільних трубопроводів
-45232151-5  Water- MAIN refurbishment construction WORK 7  t  Відновлення водопровідних магістралей
-45232152-2  Pumping station construction WORK 7  t  Будівництво насосних станцій
-45232153-9  Construction WORK FOR water towers  7  t  Спорудження водонапірних башт
-45232154-6  Construction WORK OF elevated tanks FOR drinking water  7  t  Спорудження водонапірних резервуарів з питною водою
-45232200-4  Ancillary works FOR electricity power lines  5  f  Допоміжні роботи з прокладання ліній електропередач
-45232210-7  Overhead line construction  6  t  Прокладання повітряних ліній електропередач
-45232220-0  Substation construction WORK 6  f  Будівництво підстанцій
-45232221-7  Transformer substation  7  t  Будівництво трансформаторних підстанцій
-45232300-5  Construction AND ancillary works FOR telephone AND communication lines  5  f  Прокладання ліній телефонного та інших видів зв’язку і допоміжні роботи
-45232310-8  Construction WORK FOR telephone lines  6  f  Прокладання ліній телефонного зв’язку
-45232311-5  Roadside emergency telephone lines  7  t  Прокладання придорожніх ліній аварійного телефонного зв’язку
-45232320-1  Cable broadcasting lines  6  t  Прокладання ліній мереж кабельного телерадіомовлення
-45232330-4  Erection OF aerials  6  f  Встановлення антен
-45232331-1  Ancillary works FOR broadcasting  7  t  Допоміжні роботи з організації телерадіомовлення
-45232332-8  Ancillary works FOR telecommunications  7  t  Допоміжні роботи у сфері телекомунікацій
-45232340-7  Mobile-telephone base-stations construction WORK 6  t  Будівництво базових станцій мобільного телефонного зв’язку
-45232400-6  Sewer construction WORK 5  f  Будівництво каналізаційних колекторів
-45232410-9  Sewerage WORK 6  f  Будівництво каналізаційних трубопроводів
-45232411-6  Foul-water piping construction WORK 7  t  Будівництво трубопроводів для відведення побутових стічних вод
-45232420-2  Sewage WORK 6  f  Каналізаційні роботи
-45232421-9  Sewage treatment works  7  t  Очищення стічних вод
-45232422-6  Sludge-treatment works  7  t  Обробка мулу
-45232423-3  Sewage pumping stations construction WORK 7  t  Будівництво каналізаційних насосних станцій
-45232424-0  Sewage outfall construction WORK 7  t  Влаштування точок скидання стічних вод
-45232430-5  Water-treatment WORK 6  f  Водоочисні роботи
-45232431-2  Wastewater pumping station  7  t  Будівництво насосних станцій для відведення побутових стічних вод
-45232440-8  Construction WORK FOR sewage pipes  6  t  Прокладання каналізаційних трубопроводів
-45232450-1  Drainage construction works  6  f  Будівництво дренажних систем
-45232451-8  Drainage AND surface works  7  t  Дренажні та поверхневі роботи
-45232452-5  Drainage works  7  t  Спорудження дренажних конструкцій
-45232453-2  Drains construction WORK 7  t  Будівництво водостоків
-45232454-9  Rain-water basin construction WORK 7  t  Будівництво колекторів дощової води
-45232460-4  Sanitary works  6  t  Санітарно-технічні роботи
-45232470-7  Waste transfer station  6  t  Станції перекачування стічних вод
-45233000-9  Construction, foundation AND surface works FOR highways, roads  4  f  Будівництво, влаштовування фундаменту та покриття шосе, доріг
-45233100-0  Construction WORK FOR highways, roads  5  f  Будівництво шосе, доріг
-45233110-3  Motorway construction works  6  t  Будівництво автомагістралей
-45233120-6  Road construction works  6  f  Будівництво доріг
-45233121-3 MAIN road construction works  7  t  Будівництво магістральних доріг
-45233122-0  Ring road construction WORK 7  t  Будівництво кільцевих доріг
-45233123-7  Secondary road construction WORK 7  t  Будівництво другорядних доріг
-45233124-4  Trunk road construction WORK 7  t  Будівництво автострад
-45233125-1  Road junction construction WORK 7  t  Будівництво дорожньо-транспортних вузлів
-45233126-8  Grade-separated junction construction WORK 7  t  Будівництво багаторівневих дорожньо-транспортних вузлів
-45233127-5  T-junction construction WORK 7  t  Будівництво Т-подібних перехресть
-45233128-2  Roundabout construction WORK 7  t  Будівництво кругових перехресть
-45233129-9  Crossroad construction WORK 7  t  Будівництво перехресть
-45233130-9  Construction WORK FOR highways  6  f  Будівництво шосе
-45233131-6  Construction WORK FOR elevated highways  7  t  Будівництво естакадних шосе
-45233139-3  Highway maintenance WORK 7  t  Технічне обслуговування шосе
-45233140-2  Roadworks  6  f  Дорожні роботи
-45233141-9  Road-maintenance works  7  t  Технічне обслуговування доріг
-45233142-6  Road-repair works  7  t  Ремонт доріг
-45233144-0  Overpass construction WORK 7  t  Будівництво естакад
-45233150-5  Traffic-calming works  6  t  Встановлення засобів примусового зниження швидкості дорожнього руху
-45233160-8  Paths AND other metalled surfaces  6  f  Будівництво доріжок та інших поверхонь із твердим покриттям
-45233161-5  Footpath construction WORK 7  t  Будівництво тротуарів
-45233162-2 CYCLE path construction WORK 7  t  Будівництво велосипедних доріжок
-45233200-1  Various surface works  5  f  Влаштування різних видів дорожнього покриття
-45233210-4  Surface WORK FOR highways  6  t  Влаштування шосейного покриття
-45233220-7  Surface WORK FOR roads  6  f  Влаштування дорожнього покриття
-45233221-4  Road-surface painting WORK 7  t  Нанесення дорожньої розмітки
-45233222-1  Paving AND asphalting works  7  t  Брукування та асфальтування
-45233223-8  Carriageway resurfacing works  7  t  Відновлення покриття проїжджої частини доріг
-45233224-5  Dual carriageway construction WORK 7  t  Будівництво доріг із двома смугами для руху
-45233225-2  Single carriageway construction WORK 7  t  Будівництво доріг із однією смугою для руху
-45233226-9 ACCESS road construction WORK 7  t  Будівництво під’їзних доріг
-45233227-6  Slip road construction WORK 7  t  Будівництво об’їзних доріг
-45233228-3  Surface coating construction WORK 7  t  Поверхнева обробка дорожнього покриття
-45233229-0  Verge maintenance WORK 7  t  Технічне обслуговування узбіч
-45233250-6  Surfacing WORK EXCEPT FOR roads  6  f  Влаштування покриття, крім дорожнього
-45233251-3  Resurfacing works  7  t  Відновлення покриття
-45233252-0  Surface WORK FOR streets  7  t  Влаштування вуличного покриття
-45233253-7  Surface WORK FOR footpaths  7  t  Влаштування тротуарного покриття
-45233260-9  Pedestrian ways construction WORK 6  f  Будівництво пішохідних доріг
-45233261-6  Pedestrian overpass construction WORK 7  t  Будівництво пішохідних мостів
-45233262-3  Pedestrian ZONE construction WORK 7  t  Будівництво пішохідних зон
-45233270-2  Parking-lot-surface painting WORK 6  t  Нанесення розмітки автомобільних стоянок
-45233280-5  Erection OF road-barriers  6  t  Спорудження дорожніх бар’єрів
-45233290-8  Installation OF road signs  6  f  Встановлення дорожніх знаків
-45233291-5  Installation OF bollards  7  t  Встановлення болардів
-45233292-2  Installation OF safety equipment  7  t  Встановлення запобіжного обладнання
-45233293-9  Installation OF street furniture  7  t  Встановлення вуличних меблів
-45233294-6  Installation OF road signals  7  t  Встановлення дорожнього сигнального обладнання
-45233300-2  Foundation WORK FOR highways, roads, streets AND footpaths  5  f  Влаштування фундаменту шосе, доріг, вулиць і тротуарів
-45233310-5  Foundation WORK FOR highways  6  t  Влаштовування фундаменту шосе
-45233320-8  Foundation WORK FOR roads  6  t  Влаштовування фундаменту доріг
-45233330-1  Foundation WORK FOR streets  6  t  Влаштування фундаменту вулиць
-45233340-4  Foundation WORK FOR footpaths  6  t  Влаштування фундаменту тротуарів
-45234000-6  Construction WORK FOR railways AND cable transport systems  4  f  Будівництво залізничних і канатних транспортних систем
-45234100-7  Railway construction works  5  f  Будівництво залізничних доріг
-45234110-0  Intercity railway works  6  f  Будівництво міжміських залізничних доріг
-45234111-7  City railway construction WORK 7  t  Будівництво міських залізничних доріг
-45234112-4  Railway depot construction WORK 7  t  Будівництво залізничних депо
-45234113-1  Demolition OF tracks  7  t  Демонтаж залізничних колій
-45234114-8  Railway embankment construction WORK 7  t  Зведення залізничних насипів
-45234115-5  Railway signalling works  7  t  Встановлення залізничного сигнального обладнання
-45234116-2  Track construction works  7  t  Прокладання колій
-45234120-3  Urban railway works  6  f  Прокладання колій міських залізничних доріг
-45234121-0  Tramway works  7  t  Прокладання трамвайних колій
-45234122-7  Underground railway works  7  t  Прокладання підземних залізничних колій
-45234123-4  Partially underground railway works  7  t  Прокладання частково підземних залізничних колій
-45234124-1  Underground passenger railway transport  7  t  Будівництво підземної пасажирської залізничної транспортної системи
-45234125-8  Underground railway station  7  t  Будівництво станцій метро
-45234126-5  Tramline construction works  7  t  Прокладання трамвайних маршрутів
-45234127-2  Tramway depot construction WORK 7  t  Будівництво трамвайних депо
-45234128-9  Tramway platforms construction WORK 7  t  Будівництво трамвайних платформ
-45234129-6  Urban railway track construction works  7  t  Прокладання маршрутів міських залізничних колій
-45234130-6  Ballast construction works  6  t  Насипання баласту
-45234140-9 LEVEL crossing construction works  6  t  Будівництво залізничних переїздів
-45234160-5  Catenary's construction works	6	t	Будівництво контактної мережі
+45215215-7	Children's home construction work	7	t	Будівництво дитячих будинків-інтернатів
+45215220-5	Construction work for social facilities other than subsidised residential accommodation	6	f	Будівництво об’єктів соціальної сфери, крім соціального житла
+45215221-2	Daycare centre construction work	7	t	Будівництво центрів денного догляду
+45215222-9	Civic centre construction work	7	t	Будівництво громадських центрів
+45215300-0	Construction work for crematoriums	5	t	Будівництво крематоріїв
+45215400-1	Cemetery works	5	t	Кладовищні роботи
+45215500-2	Public conveniences	5	t	Будівництво громадських убиралень
+45216000-4	Construction work for buildings relating to law and order or emergency services and for military buildings	4	f	Будівництво будівель правоохоронних органів та органів охорони громадського порядку чи служб надзвичайних ситуацій і будівель та приміщень військового призначення
+45216100-5	Construction work for buildings relating to law and order or emergency services	5	f	Будівництво будівель правоохоронних органів та органів охорони громадського порядку чи служб надзвичайних ситуацій
+45216110-8	Construction work for buildings relating to law and order	6	f	Будівництво будівель правоохоронних органів та органів охорони громадського порядку
+45216111-5	Police station construction work	7	t	Будівництво поліцейських відділень
+45216112-2	Court building construction work	7	t	Будівництво будівель судів
+45216113-9	Prison building construction work	7	t	Будівництво пенітенціарних закладів
+45216114-6	Parliament and public assembly buildings	7	t	Будівництво будівель парламенту та будівель для громадських зібрань
+45216120-1	Construction work for buildings relating to emergency services	6	f	Будівництво будівель служб надзвичайних ситуацій
+45216121-8	Fire station construction work	7	t	Будівництво пожежних станцій
+45216122-5	Ambulance station construction work	7	t	Будівництво пунктів швидкої медичної допомоги
+45216123-2	Mountain-rescue building construction work	7	t	Будівництво будівель гірських пошуково-рятувальних служб
+45216124-9	Lifeboat station construction work	7	t	Будівництво рятувальних станцій водних на водних об’єктах
+45216125-6	Emergency-services building construction work	7	t	Будівництво будівель аварійних служб
+45216126-3	Coastguard building construction work	7	t	Будівництво пунктів берегової охорони
+45216127-0	Rescue-service station construction work	7	t	Будівництво аварійно-рятувальних станцій
+45216128-7	Lighthouse construction work	7	t	Будівництво маяків
+45216129-4	Protective shelters	7	t	Будівництво сховищ
+45216200-6	Construction work for military buildings and installations	5	f	Будівництво будівель і споруд військового призначення
+45216220-2	Military bunker construction work	6	t	Будівництво військових бункерів
+45216230-5	Military shelter construction work	6	t	Будівництво військових укриттів
+45217000-1	Inflatable buildings construction work	4	t	Зведення надувних конструкцій
+45220000-5	Engineering works and construction works	3	f	Інженерні та будівельні роботи
+45221000-2	Construction work for bridges and tunnels, shafts and subways	4	f	Будівництво мостів і тунелів, шахт і метрополітенів
+45221100-3	Construction work for bridges	5	f	Будівництво мостів
+45221110-6	Bridge construction work	6	f	Мостобудівельні роботи
+45221111-3	Road bridge construction work	7	t	Будівництво автодорожніх мостів
+45221112-0	Railway bridge construction work	7	t	Будівництво залізничних мостів
+45221113-7	Footbridge construction work	7	t	Будівництво пішохідних мостів
+45221114-4	Construction work for iron bridges	7	t	Будівництво залізних мостів
+45221115-1	Construction work for steel bridges	7	t	Будівництво сталевих мостів
+45221117-5	Weighbridge construction work	7	t	Спорудження автомобільних ваг
+45221118-2	Pipeline-carrying bridge construction work	7	t	Будівництво мостів-трубопроводів
+45221119-9	Bridge renewal construction work	7	t	Реконструкція мостів
+45221120-9	Viaduct construction work	6	f	Будівництво мостів-віадуків
+45221121-6	Road viaduct construction work	7	t	Будівництво транспортних мостів-віадуків
+45221122-3	Railway viaduct construction work	7	t	Будівництво залізничних мостів-віадуків
+45221200-4	Construction work for tunnels, shafts and subways	5	f	Будівництво тунелів, шахт і метрополітенів
+45221210-7	Covered or partially-covered excavations	6	f	Будівництво траншей відкритого чи закритого типу
+45221211-4	Underpass	7	t	Будівництво підземних переходів
+45221213-8	Covered or partially-covered railway excavations	7	t	Будівництво залізничних тунелів відкритого чи закритого типу
+45221214-5	Covered or partially-covered road excavations	7	t	Будівництво автомобільних тунелів відкритого чи закритого типу
+45221220-0	Culverts	6	t	Укладення дренажних труб
+45221230-3	Shafts	6	t	Будівництво шахт
+45221240-6	Construction work for tunnels	6	f	Будівництво тунелів
+45221241-3	Road tunnel construction work	7	t	Будівництво автомобільних тунелів
+45221242-0	Railway tunnel construction work	7	t	Будівництво залізничних тунелів
+45221243-7	Pedestrian tunnel construction work	7	t	Будівництво пішохідних тунелів
+45221244-4	Canal tunnel construction work	7	t	Будівництво підводних тунелів
+45221245-1	Under-river tunnel construction work	7	t	Будівництво тунелів під річками
+45221246-8	Undersea tunnel construction work	7	t	Будівництво тунелів під морським дном
+45221247-5	Tunnelling works	7	t	Прокладання тунелів
+45221248-2	Tunnel linings construction work	7	t	Укріплення тунелів
+45221250-9	Underground work other than tunnels, shafts and subways	6	t	Підземні роботи, крім прокладання тунелів, шахт і метрополітенів
+45222000-9	Construction work for engineering works except bridges, tunnels, shafts and subways	4	f	Зведення інженерних споруд, окрім мостів, тунелів, шахт і метрополітенів
+45222100-0	Waste-treatment plant construction work	5	f	Будівництво заводів з переробки відходів
+45222110-3	Waste disposal site construction work	6	t	Будівництво пунктів утилізації відходів
+45222200-1	Engineering work for military installations	5	t	Проектування військових об’єктів
+45222300-2	Engineering work for security installations	5	t	Проектування охоронних об’єктів
+45223000-6	Structures construction work	4	f	Спорудження конструкцій
+45223100-7	Assembly of metal structures	5	f	Монтаж металевих конструкцій
+45223110-0	Installation of metal structures	6	t	Встановлення металевих конструкцій
+45223200-8	Structural works	5	f	Конструкційні роботи
+45223210-1	Structural steelworks	6	t	Зведення тримальних сталевих конструкцій
+45223220-4	Structural shell work	6	t	Влаштування тримальних оболонок конструкцій
+45223300-9	Parking lot construction work	5	f	Будівництво автомобільних стоянок
+45223310-2	Underground car park construction work	6	t	Будівництво підземних автомобільних стоянок
+45223320-5	Park-and-ride facility construction work	6	t	Будівництво перехоплювальних автомобільних стоянок
+45223400-0	Radar station construction work	5	t	Будівництво радіолокаційних станцій
+45223500-1	Reinforced-concrete structures	5	t	Зведення залізобетонних конструкцій
+45223600-2	Dog kennels construction work	5	t	Будівництво собачих розплідників
+45223700-3	Service area construction work	5	f	Будівництво станцій обслуговування
+45223710-6	Motorway service area construction work	6	t	Будівництво станцій технічного обслуговування мототранспортних засобів
+45223720-9	Petrol/gas stations construction work	6	t	Будівництво бензозаправних / газозаправних станцій
+45223800-4	Assembly and erection of prefabricated structures	5	f	Монтаж і зведення збірних конструкцій
+45223810-7	Prefabricated constructions	6	t	Монтаж збірних конструкцій
+45223820-0	Prefabricated units and components	6	f	Монтаж збірних блоків та елементів
+45223821-7	Prefabricated units	7	t	Монтаж збірних блоків
+45223822-4	Prefabricated components	7	t	Монтаж збірних елементів
+45230000-8	Construction work for pipelines, communication and power lines, for highways, roads, airfields and railways; flatwork	3	f	Будівництво трубопроводів, ліній зв’язку та електропередач, шосе, доріг, аеродромів і залізничних доріг; вирівнювання поверхонь
+45231000-5	Construction work for pipelines, communication and power lines	4	f	Будівництво трубопроводів, ліній зв’язку та електропередач
+45231100-6	General construction work for pipelines	5	f	Загальні трубопровідні роботи
+45231110-9	Pipelaying construction work	6	f	Будівництво трубопроводів
+45231111-6	Pipeline lifting and relaying	7	t	Піднімання та заміна трубопроводів
+45231112-3	Installation of pipe system	7	t	Встановлення трубопровідних систем
+45231113-0	Pipeline relaying works	7	t	Заміна трубопроводів
+45231200-7	Construction work for oil and gas pipelines	5	f	Будівництво нафтових і газових трубопроводів
+45231210-0	Construction work for oil pipelines	6	t	Будівництво нафтових трубопроводів
+45231220-3	Construction work for gas pipelines	6	f	Будівництво газових трубопроводів
+45231221-0	Gas supply mains construction work	7	t	Будівництво магістральних газопроводів
+45231222-7	Gasholder works	7	t	Спорудження газгольдерів
+45231223-4	Gas distribution ancillary work	7	t	Допоміжні газорозподільні роботи
+45231300-8	Construction work for water and sewage pipelines	5	t	Роботи з прокладання водопроводів та каналізаційних трубопроводів
+45231400-9	Construction work for electricity power lines	5	t	Прокладання ліній електропередач
+45231500-0	Compressed-air pipeline work	5	f	Прокладання трубопроводів для пневматичних систем
+45231510-3	Compressed-air pipeline work for mailing system	6	t	Прокладання трубопроводів для систем пневмопошти
+45231600-1	Construction work for communication lines	5	t	Прокладання ліній зв’язку
+45232000-2	Ancillary works for pipelines and cables	4	f	Допоміжні роботи з прокладання трубопроводів і кабелів
+45232100-3	Ancillary works for water pipelines	5	f	Допоміжні роботи з прокладання водопроводів
+45232120-9	Irrigation works	6	f	Зрошувальні роботи
+45232121-6	Irrigation piping construction work	7	t	Прокладання зрошувальних трубопроводів
+45232130-2	Storm-water piping construction work	6	t	Прокладання трубопровідних систем відводу дощової води
+45232140-5	District-heating mains construction work	6	f	Будівництво магістральних теплових мереж
+45232141-2	Heating works	7	t	Будівництво опалювальних систем
+45232142-9	Heat-transfer station construction work	7	t	Будівництво теплорозподільних пунктів
+45232150-8	Works related to water-distribution pipelines	6	f	Роботи, пов’язані з прокладанням водорозподільних трубопроводів
+45232151-5	Water-main refurbishment construction work	7	t	Відновлення водопровідних магістралей
+45232152-2	Pumping station construction work	7	t	Будівництво насосних станцій
+45232153-9	Construction work for water towers	7	t	Спорудження водонапірних башт
+45232154-6	Construction work of elevated tanks for drinking water	7	t	Спорудження водонапірних резервуарів з питною водою
+45232200-4	Ancillary works for electricity power lines	5	f	Допоміжні роботи з прокладання ліній електропередач
+45232210-7	Overhead line construction	6	t	Прокладання повітряних ліній електропередач
+45232220-0	Substation construction work	6	f	Будівництво підстанцій
+45232221-7	Transformer substation	7	t	Будівництво трансформаторних підстанцій
+45232300-5	Construction and ancillary works for telephone and communication lines	5	f	Прокладання ліній телефонного та інших видів зв’язку і допоміжні роботи
+45232310-8	Construction work for telephone lines	6	f	Прокладання ліній телефонного зв’язку
+45232311-5	Roadside emergency telephone lines	7	t	Прокладання придорожніх ліній аварійного телефонного зв’язку
+45232320-1	Cable broadcasting lines	6	t	Прокладання ліній мереж кабельного телерадіомовлення
+45232330-4	Erection of aerials	6	f	Встановлення антен
+45232331-1	Ancillary works for broadcasting	7	t	Допоміжні роботи з організації телерадіомовлення
+45232332-8	Ancillary works for telecommunications	7	t	Допоміжні роботи у сфері телекомунікацій
+45232340-7	Mobile-telephone base-stations construction work	6	t	Будівництво базових станцій мобільного телефонного зв’язку
+45232400-6	Sewer construction work	5	f	Будівництво каналізаційних колекторів
+45232410-9	Sewerage work	6	f	Будівництво каналізаційних трубопроводів
+45232411-6	Foul-water piping construction work	7	t	Будівництво трубопроводів для відведення побутових стічних вод
+45232420-2	Sewage work	6	f	Каналізаційні роботи
+45232421-9	Sewage treatment works	7	t	Очищення стічних вод
+45232422-6	Sludge-treatment works	7	t	Обробка мулу
+45232423-3	Sewage pumping stations construction work	7	t	Будівництво каналізаційних насосних станцій
+45232424-0	Sewage outfall construction work	7	t	Влаштування точок скидання стічних вод
+45232430-5	Water-treatment work	6	f	Водоочисні роботи
+45232431-2	Wastewater pumping station	7	t	Будівництво насосних станцій для відведення побутових стічних вод
+45232440-8	Construction work for sewage pipes	6	t	Прокладання каналізаційних трубопроводів
+45232450-1	Drainage construction works	6	f	Будівництво дренажних систем
+45232451-8	Drainage and surface works	7	t	Дренажні та поверхневі роботи
+45232452-5	Drainage works	7	t	Спорудження дренажних конструкцій
+45232453-2	Drains construction work	7	t	Будівництво водостоків
+45232454-9	Rain-water basin construction work	7	t	Будівництво колекторів дощової води
+45232460-4	Sanitary works	6	t	Санітарно-технічні роботи
+45232470-7	Waste transfer station	6	t	Станції перекачування стічних вод
+45233000-9	Construction, foundation and surface works for highways, roads	4	f	Будівництво, влаштовування фундаменту та покриття шосе, доріг
+45233100-0	Construction work for highways, roads	5	f	Будівництво шосе, доріг
+45233110-3	Motorway construction works	6	t	Будівництво автомагістралей
+45233120-6	Road construction works	6	f	Будівництво доріг
+45233121-3	Main road construction works	7	t	Будівництво магістральних доріг
+45233122-0	Ring road construction work	7	t	Будівництво кільцевих доріг
+45233123-7	Secondary road construction work	7	t	Будівництво другорядних доріг
+45233124-4	Trunk road construction work	7	t	Будівництво автострад
+45233125-1	Road junction construction work	7	t	Будівництво дорожньо-транспортних вузлів
+45233126-8	Grade-separated junction construction work	7	t	Будівництво багаторівневих дорожньо-транспортних вузлів
+45233127-5	T-junction construction work	7	t	Будівництво Т-подібних перехресть
+45233128-2	Roundabout construction work	7	t	Будівництво кругових перехресть
+45233129-9	Crossroad construction work	7	t	Будівництво перехресть
+45233130-9	Construction work for highways	6	f	Будівництво шосе
+45233131-6	Construction work for elevated highways	7	t	Будівництво естакадних шосе
+45233139-3	Highway maintenance work	7	t	Технічне обслуговування шосе
+45233140-2	Roadworks	6	f	Дорожні роботи
+45233141-9	Road-maintenance works	7	t	Технічне обслуговування доріг
+45233142-6	Road-repair works	7	t	Ремонт доріг
+45233144-0	Overpass construction work	7	t	Будівництво естакад
+45233150-5	Traffic-calming works	6	t	Встановлення засобів примусового зниження швидкості дорожнього руху
+45233160-8	Paths and other metalled surfaces	6	f	Будівництво доріжок та інших поверхонь із твердим покриттям
+45233161-5	Footpath construction work	7	t	Будівництво тротуарів
+45233162-2	Cycle path construction work	7	t	Будівництво велосипедних доріжок
+45233200-1	Various surface works	5	f	Влаштування різних видів дорожнього покриття
+45233210-4	Surface work for highways	6	t	Влаштування шосейного покриття
+45233220-7	Surface work for roads	6	f	Влаштування дорожнього покриття
+45233221-4	Road-surface painting work	7	t	Нанесення дорожньої розмітки
+45233222-1	Paving and asphalting works	7	t	Брукування та асфальтування
+45233223-8	Carriageway resurfacing works	7	t	Відновлення покриття проїжджої частини доріг
+45233224-5	Dual carriageway construction work	7	t	Будівництво доріг із двома смугами для руху
+45233225-2	Single carriageway construction work	7	t	Будівництво доріг із однією смугою для руху
+45233226-9	Access road construction work	7	t	Будівництво під’їзних доріг
+45233227-6	Slip road construction work	7	t	Будівництво об’їзних доріг
+45233228-3	Surface coating construction work	7	t	Поверхнева обробка дорожнього покриття
+45233229-0	Verge maintenance work	7	t	Технічне обслуговування узбіч
+45233250-6	Surfacing work except for roads	6	f	Влаштування покриття, крім дорожнього
+45233251-3	Resurfacing works	7	t	Відновлення покриття
+45233252-0	Surface work for streets	7	t	Влаштування вуличного покриття
+45233253-7	Surface work for footpaths	7	t	Влаштування тротуарного покриття
+45233260-9	Pedestrian ways construction work	6	f	Будівництво пішохідних доріг
+45233261-6	Pedestrian overpass construction work	7	t	Будівництво пішохідних мостів
+45233262-3	Pedestrian zone construction work	7	t	Будівництво пішохідних зон
+45233270-2	Parking-lot-surface painting work	6	t	Нанесення розмітки автомобільних стоянок
+45233280-5	Erection of road-barriers	6	t	Спорудження дорожніх бар’єрів
+45233290-8	Installation of road signs	6	f	Встановлення дорожніх знаків
+45233291-5	Installation of bollards	7	t	Встановлення болардів
+45233292-2	Installation of safety equipment	7	t	Встановлення запобіжного обладнання
+45233293-9	Installation of street furniture	7	t	Встановлення вуличних меблів
+45233294-6	Installation of road signals	7	t	Встановлення дорожнього сигнального обладнання
+45233300-2	Foundation work for highways, roads, streets and footpaths	5	f	Влаштування фундаменту шосе, доріг, вулиць і тротуарів
+45233310-5	Foundation work for highways	6	t	Влаштовування фундаменту шосе
+45233320-8	Foundation work for roads	6	t	Влаштовування фундаменту доріг
+45233330-1	Foundation work for streets	6	t	Влаштування фундаменту вулиць
+45233340-4	Foundation work for footpaths	6	t	Влаштування фундаменту тротуарів
+45234000-6	Construction work for railways and cable transport systems	4	f	Будівництво залізничних і канатних транспортних систем
+45234100-7	Railway construction works	5	f	Будівництво залізничних доріг
+45234110-0	Intercity railway works	6	f	Будівництво міжміських залізничних доріг
+45234111-7	City railway construction work	7	t	Будівництво міських залізничних доріг
+45234112-4	Railway depot construction work	7	t	Будівництво залізничних депо
+45234113-1	Demolition of tracks	7	t	Демонтаж залізничних колій
+45234114-8	Railway embankment construction work	7	t	Зведення залізничних насипів
+45234115-5	Railway signalling works	7	t	Встановлення залізничного сигнального обладнання
+45234116-2	Track construction works	7	t	Прокладання колій
+45234120-3	Urban railway works	6	f	Прокладання колій міських залізничних доріг
+45234121-0	Tramway works	7	t	Прокладання трамвайних колій
+45234122-7	Underground railway works	7	t	Прокладання підземних залізничних колій
+45234123-4	Partially underground railway works	7	t	Прокладання частково підземних залізничних колій
+45234124-1	Underground passenger railway transport	7	t	Будівництво підземної пасажирської залізничної транспортної системи
+45234125-8	Underground railway station	7	t	Будівництво станцій метро
+45234126-5	Tramline construction works	7	t	Прокладання трамвайних маршрутів
+45234127-2	Tramway depot construction work	7	t	Будівництво трамвайних депо
+45234128-9	Tramway platforms construction work	7	t	Будівництво трамвайних платформ
+45234129-6	Urban railway track construction works	7	t	Прокладання маршрутів міських залізничних колій
+45234130-6	Ballast construction works	6	t	Насипання баласту
+45234140-9	Level crossing construction works	6	t	Будівництво залізничних переїздів
+45234160-5	Catenary's construction works	6	t	Будівництво контактної мережі
 45234170-8	Locomotive-substations construction works	6	t	Будівництво локомотивних підстанцій
 45234180-1	Construction work for railways workshop	6	f	Будівництво залізничних цехів
 45234181-8	Construction work for rail track sectioning cabins	7	t	Будівництво цехів для нарізання рейок
@@ -7858,384 +7886,384 @@ flatwork  3  f  Будівництво трубопроводів, ліній з
 45236114-2	Flatwork for running tracks	7	t	Вирівнювання поверхонь бігових доріжок
 45236119-7	Repair work on sports fields	7	t	Ремонт спортивних полів
 45236200-2	Flatwork for recreation installations	5	f	Вирівнювання поверхонь зон відпочинку
-45236210-5	Flatwork for children' S play area  6  t  Вирівнювання поверхонь дитячих ігрових майданчиків
-45236220-8  Flatwork FOR zoo  6  t  Вирівнювання поверхонь зоопарків
-45236230-1  Flatwork FOR gardens  6  t  Вирівнювання поверхонь садів
-45236250-7  Flatwork FOR parks  6  t  Вирівнювання поверхонь парків
-45236290-9  Repair WORK ON recreational areas  6  t  Ремонт покриття зон відпочинку
-45236300-3  Flatwork FOR cemeteries  5  t  Вирівнювання поверхонь кладовищ
-45237000-7  Stage construction works  4  t  Будівництво сцен
-45240000-1  Construction WORK FOR water projects  3  f  Будівництво гідротехнічних об’єктів
-45241000-8  Harbour construction works  4  f  Будівництво портів
-45241100-9  Quay construction WORK 5  t  Будівництво пристаней
-45241200-0  Offshore terminal IN situ construction WORK 5  t  Будівництво на місцях рейдових причалів
-45241300-1  Pier construction WORK 5  t  Будівництво пірсів
-45241400-2  Dock construction WORK 5  t  Будівництво доків
-45241500-3  Wharf construction WORK 5  t  Будівництво верфей
-45241600-4  Installation OF port lighting equipment  5  t  Встановлення портового освітлювального обладнання
-45242000-5  Waterside leisure facilities construction WORK 4  f  Будівництво прибережних об’єктів дозвілля
-45242100-6  Water-sports facilities construction WORK 5  f  Будівництво спортивних об’єктів для водних видів спорту
-45242110-9  Launchway construction WORK 6  t  Будівництво спускових доріжок
-45242200-7  Marina construction WORK 5  f  Будівництво стоянок для малих суден
-45242210-0  Yacht harbour construction WORK 6  t  Будівництво яхтових стоянок
-45243000-2  Coastal-defence works  4  f  Укріплення берегових ліній
-45243100-3  Cliff-protection works  5  f  Зміцнення схилів
-45243110-6  Cliff-stabilisation works  6  t  Стабілізація зсувних схилів
-45243200-4  Breakwater construction WORK 5  t  Будівництво хвилерізів
-45243300-5  Sea wall construction WORK 5  t  Будівництво хвилевідбійних стін
-45243400-6  Beach-consolidation works  5  t  Захист пляжів від розмиву
-45243500-7  Sea defences construction WORK 5  f  Будівництво берегозахисних морських споруд
-45243510-0  Embankment works  6  t  Спорудження набережних
-45243600-8  Quay wall construction WORK 5  t  Будівництво стін набережних
-45244000-9  Marine construction works  4  f  Будівництво морських споруд
-45244100-0  Marine installations  5  t  Зведення конструкцій для стоянок для малих суден
-45244200-1  Jetties  5  t  Будівництво молів
-45245000-6  Dredging AND pumping works FOR water treatment plant installations  4  t  Драгування та відкачування води для спорудження водоочисних станцій
-45246000-3  River regulation AND flood control works  4  f  Регулювання річкового стоку та протипаводкові роботи
-45246100-4  River-wall construction  5  t  Будівництво річкових дамб
-45246200-5  Riverbank protection works  5  t  Укріплення берегів річок
-45246400-7  Flood-prevention works  5  f  Профілактика паводків
-45246410-0  Flood-defences maintenance works  6  t  Технічне обслуговування протипаводкових споруд
-45246500-8  Promenade construction WORK 5  f  Будівництво променадів
-45246510-1  Boardwalk construction WORK 6  t  Будівництво дощаних пішохідних доріжок
-45247000-0  Construction WORK FOR dams, canals, irrigation channels AND aqueducts  4  f  Будівництво гребель, каналів, зрошувальних каналів та акведуків
-45247100-1  Construction WORK FOR waterways  5  f  Прокладання водних шляхів
-45247110-4  Canal construction  6  f  Будування каналів
-45247111-1  Irrigation channel construction WORK 7  t  Будівництво зрошувальних каналів
-45247112-8  Drainage canal construction WORK 7  t  Будівництво дренажних каналів
-45247120-7  Waterways EXCEPT canals  6  t  Роботи з прокладання водних шляхів, окрім каналів
-45247130-0  Aqueduct construction WORK 6  t  Будівництво акведуків
-45247200-2  Construction WORK FOR dams AND SIMILAR fixed structures  5  f  Будівництво гребель і подібних стаціонарних споруд
-45247210-5  Dam construction WORK 6  f  Будівництво гребель
-45247211-2  Dam wall construction WORK 7  t  Зведення стін гребель
-45247212-9  Dam-reinforcement works  7  t  Укріплення гребель
-45247220-8  Weir construction WORK 6  t  Будівництво загат
-45247230-1  Dyke construction WORK 6  t  Будівництво канав
-45247240-4  Static barrage construction WORK 6  t  Будівництво стаціонарних загат
-45247270-3  Reservoir construction works  6  t  Будівництво водосховищ
-45248000-7  Construction WORK FOR hydro-mechanical structures  4  f  Спорудження гідромеханічних конструкцій
-45248100-8  Canal locks construction WORK 5  t  Будівництво шлюзів судноплавних каналів
-45248200-9  Dry docks construction WORK 5  t  Будівництво сухих доків
-45248300-0  Construction WORK FOR floating docks  5  t  Будівництво плавучих доків
-45248400-1  Landing stages construction WORK 5  t  Будівництво плавучих причалів
-45248500-2  Movable barrages construction WORK 5  t  Будівництво пересувних загат
-45250000-4  Construction works FOR plants, mining AND manufacturing AND FOR buildings relating TO the oil AND gas industry  3  f  Будівництво заводів / установок, гірничодобувних і переробних об’єктів та об’єктів нафтогазової інфраструктури
-45251000-1  Construction works FOR power plants AND heating plants  4  f  Будівництво електростанцій і теплових станцій
-45251100-2  Construction WORK FOR power plant  5  f  Будівництво електростанцій
-45251110-5  Nuclear-power station construction WORK 6  f  Будівництво атомних електростанцій
-45251111-2  Construction WORK FOR nuclear reactors  7  t  Будівництво атомних реакторів
-45251120-8  Hydro-electric plant construction WORK 6  t  Будівництво гідроелектростанцій
-45251140-4  Thermal power plant construction WORK 6  f  Будівництво теплових електростанцій
-45251141-1  Geothermal power station construction WORK 7  t  Будівництво геотермальних електростанцій
-45251142-8  Wood-fired power station construction WORK 7  t  Будівництво електростанцій, що працюють на деревному паливі
-45251143-5  Compressed-air generating plant construction WORK 7  t  Будівництво установок для виробництва стисненого повітря
-45251150-7  Construction WORK FOR cooling towers  6  t  Будівництво градирень
-45251160-0  Wind-power installation works  6  t  Будівництво вітрових електростанцій
-45251200-3  Heating plant construction WORK 5  f  Будівництво теплових станцій
-45251220-9  Cogeneration plant construction WORK 6  t  Будівництво когенераційних установок
-45251230-2  Steam-generation plant construction WORK 6  t  Будівництво парогенераторних установок
-45251240-5  Landfill-gas electricity generating plant construction WORK 6  t  Будівництво електростанцій, що працюють на біогазі
-45251250-8  District-heating plant construction WORK 6  t  Будівництво опалювальних районних котелень
-45252000-8  Construction works FOR sewage treatment plants, purification plants AND refuse incineration plants  4  f  Будівництво споруд для очищення стічних вод, водоочисних і сміттєспалювальних заводів
-45252100-9  Sewage-treatment plant construction WORK 5  f  Будівництво станцій очищення стічних вод
-45252110-2  Mobile plant construction WORK 6  t  Будівництво пересувних станцій
-45252120-5  Water-treatment plant construction WORK 6  f  Будівництво водоочисних станцій
-45252121-2  Sedimentation installations  7  t  Монтаж седиментаційних перегородок
-45252122-9  Sewage digesters  7  t  Будівництво басейнів для ферментації стічних вод
-45252123-6  Screening installations  7  t  Встановлення механічних фільтрів
-45252124-3  Dredging AND pumping works  7  t  Роботи з драгування та відкачування
-45252125-0  Rock-dumping WORK 7  t  Насипання породи
-45252126-7  Drinking-water treatment plant construction WORK 7  t  Будівництво станцій очищення питної води
-45252127-4  Wastewater treatment plant construction WORK 7  t  Будівництво станцій очищення стічної води
-45252130-8  Sewage plant equipment  6  t  Устаткування станцій очищення стічних вод
-45252140-1  Sludge-dewatering plant construction WORK 6  t  Будівництво установок зі зневоднення мулу
-45252150-4  Coal-handling plant construction WORK 6  t  Будівництво систем вуглеподачі
-45252200-0  Purification plant equipment  5  f  Устаткування очисних заводів
-45252210-3  Water purification plant construction WORK 6  t  Будівництво водоочисних станцій
-45252300-1  Refuse-incineration plant construction WORK 5  t  Будівництво сміттєспалювальних заводів
-45253000-5  Construction WORK FOR chemical-processing plant  4  f  Будівництво заводів хімічної переробки
-45253100-6  Demineralisation plant construction WORK 5  t  Будівництво установок демінералізації
-45253200-7  Desulphurisation plant construction WORK 5  t  Будівництво установок десульфуризації
-45253300-8  Distilling OR rectifying plant construction WORK 5  f  Будівництво дистиляційних та ректифікаційних установок
-45253310-1  Water-distillation plants construction WORK 6  t  Будівництво установок для дистилювання води
-45253320-4  Alcohol-distillation plants construction WORK 6  t  Будівництво установок для дистилювання спиртів
-45253400-9  Construction WORK FOR petrochemical plant  5  t  Будівництво нафтохімічних заводів
-45253500-0  Construction WORK FOR pharmaceutical plant  5  t  Будівництво фармацевтичних заводів
-45253600-1  Deionisation plant construction WORK 5  t  Будівництво установок деіонізації
-45253700-2  Digestion plant construction WORK 5  t  Будівництво бродильних установок
-45253800-3  Composting plant construction WORK 5  t  Будівництво компостувальних установок
-45254000-2  Construction WORK FOR mining AND manufacturing  4  f  Будівництво гірничодобувних і переробних об’єктів
-45254100-3  Construction WORK FOR mining  5  f  Будівництво гірничодобувних об’єктів
-45254110-6  Pithead construction WORK 6  t  Будівництво надшахтних споруд
-45254200-4  Construction WORK FOR manufacturing plant  5  t  Будівництво переробних заводів
-45255000-9  Construction WORK FOR the oil AND gas industry  4  f  Будівництво об’єктів нафтогазової інфраструктури
-45255100-0  Construction WORK FOR production platforms  5  f  Будівництво промислових платформ
-45255110-3  Wells construction WORK 6  t  Будівництво свердловин
-45255120-6  Platforms facilities construction WORK 6  f  Будівництво платформних споруд
-45255121-3  Topside facilities construction WORK 7  t  Будівництво надземних споруд
-45255200-1  Oil refinery construction WORK 5  f  Будівництво нафтоочисних заводів
-45255210-4  Oil terminal construction WORK 6  t  Будівництво нафтових терміналів
-45255300-2  Gas terminal construction WORK 5  t  Будівництво газових терміналів
-45255400-3  Fabrication WORK 5  f  Монтаж конструкцій
-45255410-6  Offshore fabrication WORK 6  t  Монтаж конструкцій у відкритому морі
-45255420-9  Onshore fabrication WORK 6  t  Монтаж конструкцій на суші
-45255430-2  Demolition OF oil platforms  6  t  Демонтаж нафтових платформ
-45255500-4  Drilling AND exploration WORK 5  t  Буріння та розвідка
-45255600-5  Coiled-tubing wellwork  5  t  Колтюбінгове буріння свердловин
-45255700-6  Coal-gasification plant construction WORK 5  t  Будівництво заводів з газифікації вугілля
-45255800-7  Gas-production plant construction WORK 5  t  Будівництво газодобувних заводів
-45259000-7  Repair AND maintenance OF plant  4  f  Ремонт і технічне обслуговування установок
-45259100-8  Wastewater-plant repair AND maintenance WORK 5  t  Ремонт і технічне обслуговування станцій очищення стічних вод
-45259200-9  Purification-plant repair AND maintenance WORK 5  t  Ремонт і технічне обслуговування водоочисних станцій
-45259300-0  Heating-plant repair AND maintenance WORK 5  t  Ремонт і технічне обслуговування теплових станцій
-45259900-6  Plant upgrade WORK 5  t  Модернізація установок
-45260000-7  Roof works AND other special trade construction works  3  f  Покрівельні роботи та інші спеціалізовані будівельні роботи
-45261000-4  Erection AND related works OF roof frames AND coverings  4  f  Зведення крокв’яних ферм і покривання дахів та пов’язані роботи
-45261100-5  Roof-framing WORK 5  t  Зведення каркасів дахів
-45261200-6  Roof-covering AND roof-painting WORK 5  f  Покривання і фарбування дахів
-45261210-9  Roof-covering WORK 6  f  Покривання дахів
-45261211-6  Roof-tiling WORK 7  t  Покривання дахів черепицею
-45261212-3  Roof-slating WORK 7  t  Покривання дахів шифером
-45261213-0  Metal roof-covering WORK 7  t  Покривання дахів металом
-45261214-7  Bituminous roof-covering WORK 7  t  Покривання дахів бітумом
-45261215-4  Solar panel roof-covering WORK 7  t  Встановлення на дахах сонячних панелей
-45261220-2  Roof-painting AND other coating WORK 6  f  Фарбування дахів та інші види обробки дахового покриття
-45261221-9  Roof-painting WORK 7  t  Фарбування дахів
-45261222-6  Cement roof-coating WORK 7  t  Цементування дахів
-45261300-7  Flashing AND guttering WORK 5  f  Гідроізоляція дахів і влаштовування водостоків
-45261310-0  Flashing WORK 6  t  Гідроізоляційні роботи
-45261320-3  Guttering WORK 6  t  Влаштовування водостоків
-45261400-8  Sheeting WORK 5  f  Настилання дахів
-45261410-1  Roof insulation WORK 6  t  Ізолювання дахового покриття
-45261420-4  Waterproofing WORK 6  t  Гідроізолювання
-45261900-3  Roof repair AND maintenance WORK 5  f  Ремонт і технічне обслуговування дахів
-45261910-6  Roof repair  6  t  Ремонт дахів
-45261920-9  Roof maintenance WORK 6  t  Технічне обслуговування дахів
-45313210-9  Travelator installation WORK 6  t  Монтаж пасажирських конвеєрів
-45262000-1  Special trade construction works other than roof works  4  f  Спеціалізовані будівельні роботи, крім покрівельних
-45262100-2  Scaffolding WORK 5  f  Монтаж риштовання
-45262110-5  Scaffolding dismantling WORK 6  t  Демонтаж риштовання
-45262120-8  Scaffolding erection WORK 6  t  Зведення риштувальних конструкцій
-45262200-3  Foundation WORK AND water-well drilling  5  f  Влаштовування фундаментів і буріння водних свердловин
-45262210-6  Foundation WORK 6  f  Влаштовування фундаментів
-45262211-3  Pile driving  7  t  Занурення паль
-45262212-0  Trench sheeting WORK 7  t  Укріплення стін котлованів
-45262213-7  Diaphragm wall technique  7  t  Влаштовування фундаментів типу «стіна в ґрунті»
-45262220-9  Water-well drilling  6  t  Буріння водних свердловин
-45262300-4  Concrete WORK 5  f  Бетонні роботи
-45262310-7  Reinforced-concrete WORK 6  f  Залізобетонні роботи
-45262311-4  Concrete carcassing WORK 7  t  Зведення бетонних каркасів
-45262320-0  Screed works  6  f  Вирівнювальні роботи
-45262321-7  Floor-screed works  7  t  Вирівнювання підлоги
-45262330-3  Concrete repair WORK 6  t  Ремонт бетонних конструкцій
-45262340-6  Grouting WORK 6  t  Заливання цементним розчином
-45262350-9  Unreinforced-concrete WORK 6  t  Роботи з неармованим бетоном
-45262360-2  Cementing WORK 6  t  Цементування
-45262370-5  Concrete-coating WORK 6  t  Бетонування
-45262400-5  Structural steel erection WORK 5  f  Монтаж металевих конструкцій
-45262410-8  Structural steel erection WORK FOR buildings  6  t  Монтаж металевих конструкцій будівель
-45262420-1  Structural steel erection WORK FOR structures  6  f  Монтаж металевих конструкцій споруд
-45262421-8  Offshore mooring WORK 7  t  Влаштовування рейдових причалів
-45262422-5  Subsea drilling WORK 7  t  Підводні бурильні роботи
-45262423-2  Deck-fabrication WORK 7  t  Монтаж терас
-45262424-9  Offshore-module fabrication WORK 7  t  Монтаж модульних конструкцій у відкритому морі
-45262425-6  Jacket-fabrication WORK 7  t  Ізоляційні роботи
-45262426-3  Pile-fabrication WORK 7  t  Монтаж паль
-45262500-6  Masonry AND bricklaying WORK 5  f  Мурування цеглою і каменем
-45262510-9  Stonework  6  f  Кам’яна кладка
-45262511-6  Stone carving  7  t  Обробка каменю
-45262512-3  Dressed stonework  7  t  Мурування тесаним каменем
-45262520-2  Bricklaying WORK 6  f  Мурування цеглою
-45262521-9  Facing brickwork  7  t  Мурування личкувальною цеглою
-45262522-6  Masonry WORK 7  t  Мурування каменем
-45262600-7  Miscellaneous special-trade construction WORK 5  f  Спеціалізовані будівельні роботи різні
-45262610-0  Industrial chimneys  6  t  Монтаж промислових димарів
-45262620-3  Supporting walls  6  t  Зведення тримальних стін
-45262630-6  Construction OF furnaces  6  t  Будування печей
-45262640-9  Environmental improvement works  6  t  Меліоративні роботи
-45262650-2  Cladding works  6  t  Личкування
-45262660-5  Asbestos-removal WORK 6  t  Вилучення азбесту
-45262670-8  Metalworking  6  t  Робота з металом
-45262680-1  Welding  6  t  Зварювання
-45262690-4  Refurbishment OF run-down buildings  6  t  Реставрація занедбаних будівель
-45262700-8  Building alteration WORK 5  f  Перебудовування будівель
-45262710-1  Fresco maintenance WORK 6  t  Догляд за фресками
-45262800-9  Building EXTENSION WORK 5  t  Розширення будівель
-45262900-0  Balcony WORK 5  t  Балконні роботи
-45300000-0  Building installation WORK 2  f  Будівельно-монтажні роботи
-45310000-3  Electrical installation WORK 3  f  Електромонтажні роботи
-45311000-0  Electrical wiring AND fitting WORK 4  f  Монтаж електропроводки та електроарматури
-45311100-1  Electrical wiring WORK 5  t  Монтаж електропроводки
-45311200-2  Electrical fitting WORK 5  t  Монтаж електроарматури
-45312000-7  Alarm SYSTEM AND antenna installation WORK 4  f  Встановлення систем аварійної сигналізації та антен
-45312100-8  Fire-alarm SYSTEM installation WORK 5  t  Встановлення систем пожежної сигналізації
-45312200-9  Burglar-alarm SYSTEM installation WORK 5  t  Встановлення систем охоронної сигналізації
-45312300-0  Antenna installation WORK 5  f  Встановлення антен
-45312310-3  Lightning-protection works  6  f  Встановлення обладнання для захисту від блискавок
-45312311-0  Lightning-conductor installation WORK 7  t  Встановлення блискавичників
-45312320-6  Television aerial installation WORK 6  t  Встановлення телевізійних антен
-45312330-9  Radio aerial installation WORK 6  t  Встановлення радіоантен
-45313000-4  Lift AND escalator installation WORK 4  f  Монтаж ліфтів та ескалаторів
-45313100-5  Lift installation WORK 5  t  Монтаж ліфтів
-45313200-6  Escalator installation WORK 5  f  Монтаж ескалаторів
-45314000-1  Installation OF telecommunications equipment  4  f  Встановлення телекомунікаційного обладнання
-45314100-2  Installation OF telephone exchanges  5  f  Встановлення телефонних станцій
-45314120-8  Installation OF switchboards  6  t  Встановлення комутаторів
-45314200-3  Installation OF telephone lines  5  t  Монтаж ліній телефонного зв’язку
-45314300-4  Installation OF cable infrastructure  5  f  Монтаж кабельної інфраструктури
-45314310-7  Installation OF cable laying  6  t  Укладання кабелів
-45314320-0  Installation OF computer cabling  6  t  Укладання комп’ютерних кабелів
-45315000-8  Electrical installation WORK OF heating AND other electrical building-equipment  4  f  Встановлення електричних систем опалення та іншого побутового електричного обладнання
-45315100-9  Electrical engineering installation works  5  t  Встановлення електротехнічного обладнання
-45315200-0  Turbine works  5  t  Роботи, пов’язані з турбінами
-45315300-1  Electricity supply installations  5  t  Монтаж систем електроживлення
-45315400-2  High voltage installation WORK 5  t  Монтаж обладнання високої напруги
-45315500-3  Medium-voltage installation WORK 5  t  Монтаж обладнання середньої напруги
-45315600-4  Low-voltage installation WORK 5  t  Монтаж обладнання низької напруги
-45315700-5  Switching station installation WORK 5  t  Монтаж комутаційних станцій
-45316000-5  Installation WORK OF illumination AND signalling systems  4  f  Монтаж систем освітлення і сигналізації
-45316100-6  Installation OF outdoor illumination equipment  5  f  Монтаж обладнання зовнішнього освітлення
-45316110-9  Installation OF road lighting equipment  6  t  Монтаж обладнання дорожнього освітлення
-45316200-7  Installation OF signalling equipment  5  f  Встановлення сигналізаційного обладнання
-45316210-0  Installation OF traffic monitoring equipment  6  f  Встановлення обладнання для моніторингу руху транспорту
-45316211-7  Installation OF illuminated road signs  7  t  Встановлення підсвічуваних дорожніх знаків
-45316212-4  Installation OF traffic lights  7  t  Встановлення світлофорів
-45316213-1  Installation OF traffic guidance equipment  7  t  Встановлення обладнання для регулювання дорожнього руху
-45316220-3  Installation OF airport signalling equipment  6  t  Встановлення сигнального обладнання для аеропортів
-45316230-6  Installation OF port signalling equipment  6  t  Встановлення портового сигнального обладнання
-45317000-2  Other electrical installation WORK 4  f  Інші електромонтажні роботи
-45317100-3  Electrical installation WORK OF pumping equipment  5  t  Електромонтажні роботи зі встановлення насосного обладнання
-45317200-4  Electrical installation WORK OF transformers  5  t  Електромонтажні роботи зі встановлення трансформаторів
-45317300-5  Electrical installation WORK OF electrical distribution apparatus  5  t  Електромонтажні роботи зі встановлення електророзподільної апаратури
-45317400-6  Electrical installation WORK OF filtration equipment  5  t  Електромонтажні роботи зі встановлення фільтрувального обладнання
-45320000-6  Insulation WORK 3  f  Ізоляційні роботи
-45321000-3  Thermal insulation WORK 4  t  Термоізоляційні роботи
-45323000-7  Sound insulation WORK 4  t  Шумоізоляційні роботи
-45324000-4  Plasterboard works  4  t  Монтаж гіпсокартонних конструкцій
-45330000-9  Plumbing AND sanitary works  3  f  Водопровідні та санітарно-технічні роботи
-45331000-6  Heating, ventilation AND air-conditioning installation WORK 4  f  Встановлення опалювальних, вентиляційних систем і систем кондиціонування повітря
-45331100-7  Central-heating installation WORK 5  f  Встановлення систем центрального опалення
-45331110-0  Boiler installation WORK 6  t  Встановлення котлів
-45331200-8  Ventilation AND air-conditioning installation WORK 5  f  Встановлення вентиляційних систем і систем кондиціонування повітря
-45331210-1  Ventilation installation WORK 6  f  Встановлення вентиляційних систем
-45331211-8  Outdoor ventilation installation WORK 7  t  Встановлення зовнішніх вентиляційних систем
-45331220-4  Air-conditioning installation WORK 6  f  Встановлення систем кондиціонування повітря
-45331221-1 PARTIAL air-conditioning installation WORK 7  t  Встановлення систем кондиціонування повітря в окремих приміщеннях
-45331230-7  Installation WORK OF cooling equipment  6  f  Встановлення охолоджувального обладнання
-45331231-4  Installation WORK OF refrigeration equipment  7  t  Встановлення холодильного обладнання
-45332000-3  Plumbing AND drain-laying WORK 4  f  Водопровідні роботи та влаштування водостоків
-45332200-5  Water plumbing WORK 5  t  Водопровідні роботи
-45332300-6  Drain-laying WORK 5  t  Влаштування водостоків
-45332400-7  Sanitary fixture installation WORK 5  t  Встановлення санітарно-технічного обладнання
-45442100-8  Painting WORK 5  f  Малярні роботи
-45333000-0  Gas-fitting installation WORK 4  f  Встановлення газового обладнання
-45333100-1  Gas regulation equipment installation WORK 5  t  Встановлення пристроїв регулювання подачі газу
-45333200-2  Gas meter installation WORK 5  t  Встановлення лічильників газу
-45340000-2  Fencing, railing AND safety equipment installation WORK 3  f  Зведення огорож, монтаж поручнів і захисних засобів
-45341000-9  Erection OF railings  4  t  Монтаж поручнів
-45342000-6  Erection OF fencing  4  t  Зведення огорож
-45343000-3  Fire-prevention installation works  4  f  Встановлення протипожежного обладнання
-45343100-4  Fireproofing WORK 5  t  Роботи із забезпечення вогнезахисту
-45343200-5  Firefighting equipment installation WORK 5  f  Встановлення обладнання для пожежогасіння
-45343210-8  CO2 fire-extinguishing equipment installation WORK 6  t  Встановлення вуглекислотних засобів пожежогасіння
-45343220-1  Fire-extinguishers installation WORK 6  t  Встановлення вогнегасників
-45343230-4  Sprinkler systems installation WORK 6  t  Встановлення спринклерних систем
-45350000-5  Mechanical installations  3  f  Механо-монтажні роботи
-45351000-2  Mechanical engineering installation works  4  t  Встановлення механічного обладнання
-45400000-1  Building completion WORK 2  f  Завершальні будівельні роботи
-45410000-4  Plastering WORK 3  t  Штукатурні роботи
-45420000-7  Joinery AND carpentry installation WORK 3  f  Столярні та теслярні роботи
-45421000-4  Joinery WORK 4  f  Столярні роботи
-45421100-5  Installation OF doors AND windows AND related components  5  f  Встановлення дверей, вікон і пов’язаних конструкцій
-45421110-8  Installation OF door AND WINDOW frames  6  f  Встановлення дверних і віконних рам
-45421111-5  Installation OF door frames  7  t  Встановлення дверних рам
-45421112-2  Installation OF WINDOW frames  7  t  Встановлення віконних рам
-45421120-1  Installation OF thresholds  6  t  Встановлення порогів
-45421130-4  Installation OF doors AND windows  6  f  Встановлення дверей і вікон
-45421131-1  Installation OF doors  7  t  Встановлення дверей
-45421132-8  Installation OF windows  7  t  Встановлення вікон
-45421140-7  Installation OF metal joinery EXCEPT doors AND windows  6  f  Монтаж металевих профільних конструкцій, окрім дверей і вікон
-45421141-4  Installation OF partitioning  7  t  Монтаж перегородок
-45421142-1  Installation OF shutters  7  t  Монтаж віконниць
-45421143-8  Installation WORK OF blinds  7  t  Монтаж жалюзі
-45421144-5  Installation WORK OF awnings  7  t  Монтаж тентів
-45421145-2  Installation WORK OF roller blinds  7  t  Монтаж ролет
-45421146-9  Installation OF suspended ceilings  7  t  Монтаж підвісних стель
-45421147-6  Installation OF grilles  7  t  Встановлення ґрат
-45421148-3  Installation OF gates  7  t  Встановлення воріт
-45421150-0  Non-metal joinery installation WORK 6  f  Встановлення неметалевих профільних конструкцій
-45421151-7  Installation OF fitted kitchens  7  t  Монтаж убудованих кухонь
-45421152-4  Installation OF PARTITION walls  7  t  Монтаж стін-перегородок
-45421153-1  Installation OF built- IN furniture  7  t  Монтаж убудованих меблів
-45421160-3  Ironmongery WORK 6  t  Монтаж віконної і дверної фурнітури
-45422000-1  Carpentry installation WORK 4  f  Теслярі роботи
-45422100-2  Woodwork  5  t  Роботи з деревом
-45430000-0  Floor AND wall covering WORK 3  f  Покривання підлоги та стін
-45431000-7  Tiling WORK 4  f  Укладання кахлю
-45431100-8  Floor-tiling WORK 5  t  Укладання підлогового кахлю
-45431200-9  Wall-tiling WORK 5  t  Укладання настінного кахлю
-45432000-4  Floor-laying AND covering, wall-covering AND wall-papering WORK 4  f  Монтаж і покривання підлоги, покривання та обклеювання шпалерами стін
-45432100-5  Floor laying AND covering WORK 5  f  Монтаж і покривання підлоги
-45432110-8  Floor-laying WORK 6  f  Монтаж підлоги
-45432111-5  Laying WORK OF flexible floor coverings  7  t  Укладання м’якого підлогового покриття
-45432112-2  Laying OF paving  7  t  Мощення підлоги
-45432113-9  Parquet flooring  7  t  Укладання паркету
-45432114-6  Wood flooring WORK 7  t  Укладання дерев’яної підлоги
-45432120-1 FALSE floor installation WORK 6  f  Монтаж фальшпідлоги
-45432121-8  Computer floors  7  t  Монтаж фальшпідлоги для прокладення під нею комунікацій
-45432130-4  Floor-covering WORK 6  t  Покривання підлоги
-45432200-6  Wall-covering AND wall-papering WORK 5  f  Покривання та обклеювання шпалерами стін
-45432210-9  Wall-covering WORK 6  t  Покривання стін
-45432220-2  Wall-papering WORK 6  t  Обклеювання стін шпалерами
-45440000-3  Painting AND glazing WORK 3  f  Фарбування та скління
-45441000-0  Glazing WORK 4  t  Скління
-45442000-7  Application WORK OF protective coatings  4  f  Нанесення захисного покриття
-45442110-1  Painting WORK OF buildings  6  t  Фарбування будівель
-45442120-4  Painting AND protective-coating WORK OF structures  6  f  Фарбування конструкцій і нанесення на них захисного покриття
-45442121-1  Painting WORK OF structures  7  t  Фарбування конструкцій
-45442180-2  Repainting WORK 6  t  Перефарбовувальні роботи
-45442190-5  Paint-stripping WORK 6  t  Видалення лакофарбового покриття
-45442200-9  Application WORK OF anti-corrosive coatings  5  f  Нанесення антикорозійного покриття
-45442210-2  Galvanizing works  6  t  Гальванувальні роботи
-45442300-0  Surface-protection WORK 5  t  Захист поверхонь
-45443000-4  Facade WORK 4  t  Фасадні роботи
-45450000-6  Other building completion WORK 3  f  Інші завершальні будівельні роботи
-45451000-3  Decoration WORK 4  f  Декорувальні роботи
-45451100-4  Ornamentation fitting WORK 5  t  Оздоблювальні роботи
-45451200-5  Panelling WORK 5  t  Оббивальні / обшивальні роботи
-45451300-6  Interior gardens  5  t  Улаштування зимових садів
-45452000-0  Exterior cleaning WORK FOR buildings  4  f  Очищення зовнішньої частини будівель
-45452100-1  Blast cleaning WORK FOR building exteriors  5  t  Струминне очищення зовнішніх частин будівель
-45453000-7  Overhaul AND refurbishment WORK 4  f  Капітальний ремонт і реставрація
-45453100-8  Refurbishment WORK 5  t  Реставраційні роботи
-45454000-4  Restructuring WORK 4  f  Перебудовування
-45454100-5  Restoration WORK 5  t  Відновлювальні роботи
-45500000-2  Hire OF construction AND civil engineering machinery AND equipment WITH operator 2  f  Прокат техніки та обладнання з оператором для виконання будівельних робіт та цивільного будівництва
-                                                                                                                                                                       45510000-5  Hire OF cranes WITH OPERATOR 3  t  Прокат підіймальних кранів із оператором
-                                                                                                                                                                                                  45520000-8  Hire OF earthmoving equipment WITH OPERATOR 3  t  Прокат обладнання з оператором для виконання земляних робіт
-                                                                                                                                                                                                                                                                48000000-8  Software package AND information systems  1  f  Пакети програмного забезпечення та інформаційні системи
-                                                                                                                                                                                                                                                                                                                                               48100000-9  Industry specific software package  2  f  Пакети галузевого програмного забезпечення
-                                                                                                                                                                                                                                                                                                                                                                                      48110000-2  Point OF sale (POS) software package  3  t  Пакети програмного забезпечення для автоматизованих точок продажу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        48120000-5  Flight control software package  3  f  Пакети програмного забезпечення для автоматизованих систем управління польотами
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           48121000-2  Air traffic control software package  4  t  Пакети програмного забезпечення для систем керування повітряним рухом
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      48130000-8  Aviation ground support AND test software package  3  f  Пакети програмного забезпечення для наземних засобів забезпечення польотів та випробувань авіаційної техніки
-48131000-5  Aviation ground support software package  4  t  Пакети програмного забезпечення для наземних засобів забезпечення польотів
-                                                            48132000-2  Aviation test software package  4  t  Пакети програмного забезпечення для випробувань авіаційної техніки
-                                                                                                                                              48140000-1  Railway traffic control software package  3  t  Пакети програмного забезпечення для систем контролю залізничного руху
-                                                                                                                                                                                                                                                              48150000-4  Industrial control software package  3  f  Пакети програмного забезпечення для керування виробничими процесами
-                                                                                                                                                                                                                                                                                                                  48151000-1  Computer control SYSTEM 4  t  Системи комп’ютерного керування
-                                                                                                                                                                                                                                                                                                                           48160000-7  Library software package  3  f  Пакети програмного забезпечення для бібліотек
-                                                                                                                                                                                                                                                                                                                                                                                                       48161000-4  Library management SYSTEM 4  t  Системи управління бібліотечними фондами
-                                                                                                                                                                                                                                                                                                                                                                                                                                                   48170000-0  Compliance software package  3  t  Пакети програмного забезпечення для контролю відповідності
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            48180000-3  Medical software package  3  t  Пакети медичного програмного забезпечення
-48190000-6  Educational software package  3  t  Пакети освітнього програмного забезпечення
-                                                                  48200000-0  Networking, Internet AND intranet software package  2  f  Пакети мережевого програмного забезпечення, а також програмного забезпечення для мереж Інтернет та Інтранет
-                                                                                                                                                                                      48210000-3  Networking software package  3  f  Пакети мережевого програмного забезпечення
-48211000-0  Platform interconnectivity software package  4  t  Пакети програмного забезпечення для забезпечення міжплатформної взаємодії
-                                                                      48212000-7  Optical jukebox SERVER software package  4  t  Пакети програмного забезпечення для серверів для роботи з оптичними накопичувачами
-                                                                                                                                                                     48213000-4  Operating SYSTEM enhancement software package  4  t  Пакети програмного забезпечення для оптимізації операційних систем
-                                                                                                                                                                                                                                                                          48214000-1  Network operating SYSTEM software package  4  t  Пакети програмного забезпечення для мережевих операційних систем
-48215000-8  Networking developers' software package	4	t	Пакети програмного забезпечення для розробників мереж
+45236210-5	Flatwork for children's play area	6	t	Вирівнювання поверхонь дитячих ігрових майданчиків
+45236220-8	Flatwork for zoo	6	t	Вирівнювання поверхонь зоопарків
+45236230-1	Flatwork for gardens	6	t	Вирівнювання поверхонь садів
+45236250-7	Flatwork for parks	6	t	Вирівнювання поверхонь парків
+45236290-9	Repair work on recreational areas	6	t	Ремонт покриття зон відпочинку
+45236300-3	Flatwork for cemeteries	5	t	Вирівнювання поверхонь кладовищ
+45237000-7	Stage construction works	4	t	Будівництво сцен
+45240000-1	Construction work for water projects	3	f	Будівництво гідротехнічних об’єктів
+45241000-8	Harbour construction works	4	f	Будівництво портів
+45241100-9	Quay construction work	5	t	Будівництво пристаней
+45241200-0	Offshore terminal in situ construction work	5	t	Будівництво на місцях рейдових причалів
+45241300-1	Pier construction work	5	t	Будівництво пірсів
+45241400-2	Dock construction work	5	t	Будівництво доків
+45241500-3	Wharf construction work	5	t	Будівництво верфей
+45241600-4	Installation of port lighting equipment	5	t	Встановлення портового освітлювального обладнання
+45242000-5	Waterside leisure facilities construction work	4	f	Будівництво прибережних об’єктів дозвілля
+45242100-6	Water-sports facilities construction work	5	f	Будівництво спортивних об’єктів для водних видів спорту
+45242110-9	Launchway construction work	6	t	Будівництво спускових доріжок
+45242200-7	Marina construction work	5	f	Будівництво стоянок для малих суден
+45242210-0	Yacht harbour construction work	6	t	Будівництво яхтових стоянок
+45243000-2	Coastal-defence works	4	f	Укріплення берегових ліній
+45243100-3	Cliff-protection works	5	f	Зміцнення схилів
+45243110-6	Cliff-stabilisation works	6	t	Стабілізація зсувних схилів
+45243200-4	Breakwater construction work	5	t	Будівництво хвилерізів
+45243300-5	Sea wall construction work	5	t	Будівництво хвилевідбійних стін
+45243400-6	Beach-consolidation works	5	t	Захист пляжів від розмиву
+45243500-7	Sea defences construction work	5	f	Будівництво берегозахисних морських споруд
+45243510-0	Embankment works	6	t	Спорудження набережних
+45243600-8	Quay wall construction work	5	t	Будівництво стін набережних
+45244000-9	Marine construction works	4	f	Будівництво морських споруд
+45244100-0	Marine installations	5	t	Зведення конструкцій для стоянок для малих суден
+45244200-1	Jetties	5	t	Будівництво молів
+45245000-6	Dredging and pumping works for water treatment plant installations	4	t	Драгування та відкачування води для спорудження водоочисних станцій
+45246000-3	River regulation and flood control works	4	f	Регулювання річкового стоку та протипаводкові роботи
+45246100-4	River-wall construction	5	t	Будівництво річкових дамб
+45246200-5	Riverbank protection works	5	t	Укріплення берегів річок
+45246400-7	Flood-prevention works	5	f	Профілактика паводків
+45246410-0	Flood-defences maintenance works	6	t	Технічне обслуговування протипаводкових споруд
+45246500-8	Promenade construction work	5	f	Будівництво променадів
+45246510-1	Boardwalk construction work	6	t	Будівництво дощаних пішохідних доріжок
+45247000-0	Construction work for dams, canals, irrigation channels and aqueducts	4	f	Будівництво гребель, каналів, зрошувальних каналів та акведуків
+45247100-1	Construction work for waterways	5	f	Прокладання водних шляхів
+45247110-4	Canal construction	6	f	Будування каналів
+45247111-1	Irrigation channel construction work	7	t	Будівництво зрошувальних каналів
+45247112-8	Drainage canal construction work	7	t	Будівництво дренажних каналів
+45247120-7	Waterways except canals	6	t	Роботи з прокладання водних шляхів, окрім каналів
+45247130-0	Aqueduct construction work	6	t	Будівництво акведуків
+45247200-2	Construction work for dams and similar fixed structures	5	f	Будівництво гребель і подібних стаціонарних споруд
+45247210-5	Dam construction work	6	f	Будівництво гребель
+45247211-2	Dam wall construction work	7	t	Зведення стін гребель
+45247212-9	Dam-reinforcement works	7	t	Укріплення гребель
+45247220-8	Weir construction work	6	t	Будівництво загат
+45247230-1	Dyke construction work	6	t	Будівництво канав
+45247240-4	Static barrage construction work	6	t	Будівництво стаціонарних загат
+45247270-3	Reservoir construction works	6	t	Будівництво водосховищ
+45248000-7	Construction work for hydro-mechanical structures	4	f	Спорудження гідромеханічних конструкцій
+45248100-8	Canal locks construction work	5	t	Будівництво шлюзів судноплавних каналів
+45248200-9	Dry docks construction work	5	t	Будівництво сухих доків
+45248300-0	Construction work for floating docks	5	t	Будівництво плавучих доків
+45248400-1	Landing stages construction work	5	t	Будівництво плавучих причалів
+45248500-2	Movable barrages construction work	5	t	Будівництво пересувних загат
+45250000-4	Construction works for plants, mining and manufacturing and for buildings relating to the oil and gas industry	3	f	Будівництво заводів / установок, гірничодобувних і переробних об’єктів та об’єктів нафтогазової інфраструктури
+45251000-1	Construction works for power plants and heating plants	4	f	Будівництво електростанцій і теплових станцій
+45251100-2	Construction work for power plant	5	f	Будівництво електростанцій
+45251110-5	Nuclear-power station construction work	6	f	Будівництво атомних електростанцій
+45251111-2	Construction work for nuclear reactors	7	t	Будівництво атомних реакторів
+45251120-8	Hydro-electric plant construction work	6	t	Будівництво гідроелектростанцій
+45251140-4	Thermal power plant construction work	6	f	Будівництво теплових електростанцій
+45251141-1	Geothermal power station construction work	7	t	Будівництво геотермальних електростанцій
+45251142-8	Wood-fired power station construction work	7	t	Будівництво електростанцій, що працюють на деревному паливі
+45251143-5	Compressed-air generating plant construction work	7	t	Будівництво установок для виробництва стисненого повітря
+45251150-7	Construction work for cooling towers	6	t	Будівництво градирень
+45251160-0	Wind-power installation works	6	t	Будівництво вітрових електростанцій
+45251200-3	Heating plant construction work	5	f	Будівництво теплових станцій
+45251220-9	Cogeneration plant construction work	6	t	Будівництво когенераційних установок
+45251230-2	Steam-generation plant construction work	6	t	Будівництво парогенераторних установок
+45251240-5	Landfill-gas electricity generating plant construction work	6	t	Будівництво електростанцій, що працюють на біогазі
+45251250-8	District-heating plant construction work	6	t	Будівництво опалювальних районних котелень
+45252000-8	Construction works for sewage treatment plants, purification plants and refuse incineration plants	4	f	Будівництво споруд для очищення стічних вод, водоочисних і сміттєспалювальних заводів
+45252100-9	Sewage-treatment plant construction work	5	f	Будівництво станцій очищення стічних вод
+45252110-2	Mobile plant construction work	6	t	Будівництво пересувних станцій
+45252120-5	Water-treatment plant construction work	6	f	Будівництво водоочисних станцій
+45252121-2	Sedimentation installations	7	t	Монтаж седиментаційних перегородок
+45252122-9	Sewage digesters	7	t	Будівництво басейнів для ферментації стічних вод
+45252123-6	Screening installations	7	t	Встановлення механічних фільтрів
+45252124-3	Dredging and pumping works	7	t	Роботи з драгування та відкачування
+45252125-0	Rock-dumping work	7	t	Насипання породи
+45252126-7	Drinking-water treatment plant construction work	7	t	Будівництво станцій очищення питної води
+45252127-4	Wastewater treatment plant construction work	7	t	Будівництво станцій очищення стічної води
+45252130-8	Sewage plant equipment	6	t	Устаткування станцій очищення стічних вод
+45252140-1	Sludge-dewatering plant construction work	6	t	Будівництво установок зі зневоднення мулу
+45252150-4	Coal-handling plant construction work	6	t	Будівництво систем вуглеподачі
+45252200-0	Purification plant equipment	5	f	Устаткування очисних заводів
+45252210-3	Water purification plant construction work	6	t	Будівництво водоочисних станцій
+45252300-1	Refuse-incineration plant construction work	5	t	Будівництво сміттєспалювальних заводів
+45253000-5	Construction work for chemical-processing plant	4	f	Будівництво заводів хімічної переробки
+45253100-6	Demineralisation plant construction work	5	t	Будівництво установок демінералізації
+45253200-7	Desulphurisation plant construction work	5	t	Будівництво установок десульфуризації
+45253300-8	Distilling or rectifying plant construction work	5	f	Будівництво дистиляційних та ректифікаційних установок
+45253310-1	Water-distillation plants construction work	6	t	Будівництво установок для дистилювання води
+45253320-4	Alcohol-distillation plants construction work	6	t	Будівництво установок для дистилювання спиртів
+45253400-9	Construction work for petrochemical plant	5	t	Будівництво нафтохімічних заводів
+45253500-0	Construction work for pharmaceutical plant	5	t	Будівництво фармацевтичних заводів
+45253600-1	Deionisation plant construction work	5	t	Будівництво установок деіонізації
+45253700-2	Digestion plant construction work	5	t	Будівництво бродильних установок
+45253800-3	Composting plant construction work	5	t	Будівництво компостувальних установок
+45254000-2	Construction work for mining and manufacturing	4	f	Будівництво гірничодобувних і переробних об’єктів
+45254100-3	Construction work for mining	5	f	Будівництво гірничодобувних об’єктів
+45254110-6	Pithead construction work	6	t	Будівництво надшахтних споруд
+45254200-4	Construction work for manufacturing plant	5	t	Будівництво переробних заводів
+45255000-9	Construction work for the oil and gas industry	4	f	Будівництво об’єктів нафтогазової інфраструктури
+45255100-0	Construction work for production platforms	5	f	Будівництво промислових платформ
+45255110-3	Wells construction work	6	t	Будівництво свердловин
+45255120-6	Platforms facilities construction work	6	f	Будівництво платформних споруд
+45255121-3	Topside facilities construction work	7	t	Будівництво надземних споруд
+45255200-1	Oil refinery construction work	5	f	Будівництво нафтоочисних заводів
+45255210-4	Oil terminal construction work	6	t	Будівництво нафтових терміналів
+45255300-2	Gas terminal construction work	5	t	Будівництво газових терміналів
+45255400-3	Fabrication work	5	f	Монтаж конструкцій
+45255410-6	Offshore fabrication work	6	t	Монтаж конструкцій у відкритому морі
+45255420-9	Onshore fabrication work	6	t	Монтаж конструкцій на суші
+45255430-2	Demolition of oil platforms	6	t	Демонтаж нафтових платформ
+45255500-4	Drilling and exploration work	5	t	Буріння та розвідка
+45255600-5	Coiled-tubing wellwork	5	t	Колтюбінгове буріння свердловин
+45255700-6	Coal-gasification plant construction work	5	t	Будівництво заводів з газифікації вугілля
+45255800-7	Gas-production plant construction work	5	t	Будівництво газодобувних заводів
+45259000-7	Repair and maintenance of plant	4	f	Ремонт і технічне обслуговування установок
+45259100-8	Wastewater-plant repair and maintenance work	5	t	Ремонт і технічне обслуговування станцій очищення стічних вод
+45259200-9	Purification-plant repair and maintenance work	5	t	Ремонт і технічне обслуговування водоочисних станцій
+45259300-0	Heating-plant repair and maintenance work	5	t	Ремонт і технічне обслуговування теплових станцій
+45259900-6	Plant upgrade work	5	t	Модернізація установок
+45260000-7	Roof works and other special trade construction works	3	f	Покрівельні роботи та інші спеціалізовані будівельні роботи
+45261000-4	Erection and related works of roof frames and coverings	4	f	Зведення крокв’яних ферм і покривання дахів та пов’язані роботи
+45261100-5	Roof-framing work	5	t	Зведення каркасів дахів
+45261200-6	Roof-covering and roof-painting work	5	f	Покривання і фарбування дахів
+45261210-9	Roof-covering work	6	f	Покривання дахів
+45261211-6	Roof-tiling work	7	t	Покривання дахів черепицею
+45261212-3	Roof-slating work	7	t	Покривання дахів шифером
+45261213-0	Metal roof-covering work	7	t	Покривання дахів металом
+45261214-7	Bituminous roof-covering work	7	t	Покривання дахів бітумом
+45261215-4	Solar panel roof-covering work	7	t	Встановлення на дахах сонячних панелей
+45261220-2	Roof-painting and other coating work	6	f	Фарбування дахів та інші види обробки дахового покриття
+45261221-9	Roof-painting work	7	t	Фарбування дахів
+45261222-6	Cement roof-coating work	7	t	Цементування дахів
+45261300-7	Flashing and guttering work	5	f	Гідроізоляція дахів і влаштовування водостоків
+45261310-0	Flashing work	6	t	Гідроізоляційні роботи
+45261320-3	Guttering work	6	t	Влаштовування водостоків
+45261400-8	Sheeting work	5	f	Настилання дахів
+45261410-1	Roof insulation work	6	t	Ізолювання дахового покриття
+45261420-4	Waterproofing work	6	t	Гідроізолювання
+45261900-3	Roof repair and maintenance work	5	f	Ремонт і технічне обслуговування дахів
+45261910-6	Roof repair	6	t	Ремонт дахів
+45261920-9	Roof maintenance work	6	t	Технічне обслуговування дахів
+45313210-9	Travelator installation work	6	t	Монтаж пасажирських конвеєрів
+45262000-1	Special trade construction works other than roof works	4	f	Спеціалізовані будівельні роботи, крім покрівельних
+45262100-2	Scaffolding work	5	f	Монтаж риштовання
+45262110-5	Scaffolding dismantling work	6	t	Демонтаж риштовання
+45262120-8	Scaffolding erection work	6	t	Зведення риштувальних конструкцій
+45262200-3	Foundation work and water-well drilling	5	f	Влаштовування фундаментів і буріння водних свердловин
+45262210-6	Foundation work	6	f	Влаштовування фундаментів
+45262211-3	Pile driving	7	t	Занурення паль
+45262212-0	Trench sheeting work	7	t	Укріплення стін котлованів
+45262213-7	Diaphragm wall technique	7	t	Влаштовування фундаментів типу «стіна в ґрунті»
+45262220-9	Water-well drilling	6	t	Буріння водних свердловин
+45262300-4	Concrete work	5	f	Бетонні роботи
+45262310-7	Reinforced-concrete work	6	f	Залізобетонні роботи
+45262311-4	Concrete carcassing work	7	t	Зведення бетонних каркасів
+45262320-0	Screed works	6	f	Вирівнювальні роботи
+45262321-7	Floor-screed works	7	t	Вирівнювання підлоги
+45262330-3	Concrete repair work	6	t	Ремонт бетонних конструкцій
+45262340-6	Grouting work	6	t	Заливання цементним розчином
+45262350-9	Unreinforced-concrete work	6	t	Роботи з неармованим бетоном
+45262360-2	Cementing work	6	t	Цементування
+45262370-5	Concrete-coating work	6	t	Бетонування
+45262400-5	Structural steel erection work	5	f	Монтаж металевих конструкцій
+45262410-8	Structural steel erection work for buildings	6	t	Монтаж металевих конструкцій будівель
+45262420-1	Structural steel erection work for structures	6	f	Монтаж металевих конструкцій споруд
+45262421-8	Offshore mooring work	7	t	Влаштовування рейдових причалів
+45262422-5	Subsea drilling work	7	t	Підводні бурильні роботи
+45262423-2	Deck-fabrication work	7	t	Монтаж терас
+45262424-9	Offshore-module fabrication work	7	t	Монтаж модульних конструкцій у відкритому морі
+45262425-6	Jacket-fabrication work	7	t	Ізоляційні роботи
+45262426-3	Pile-fabrication work	7	t	Монтаж паль
+45262500-6	Masonry and bricklaying work	5	f	Мурування цеглою і каменем
+45262510-9	Stonework	6	f	Кам’яна кладка
+45262511-6	Stone carving	7	t	Обробка каменю
+45262512-3	Dressed stonework	7	t	Мурування тесаним каменем
+45262520-2	Bricklaying work	6	f	Мурування цеглою
+45262521-9	Facing brickwork	7	t	Мурування личкувальною цеглою
+45262522-6	Masonry work	7	t	Мурування каменем
+45262600-7	Miscellaneous special-trade construction work	5	f	Спеціалізовані будівельні роботи різні
+45262610-0	Industrial chimneys	6	t	Монтаж промислових димарів
+45262620-3	Supporting walls	6	t	Зведення тримальних стін
+45262630-6	Construction of furnaces	6	t	Будування печей
+45262640-9	Environmental improvement works	6	t	Меліоративні роботи
+45262650-2	Cladding works	6	t	Личкування
+45262660-5	Asbestos-removal work	6	t	Вилучення азбесту
+45262670-8	Metalworking	6	t	Робота з металом
+45262680-1	Welding	6	t	Зварювання
+45262690-4	Refurbishment of run-down buildings	6	t	Реставрація занедбаних будівель
+45262700-8	Building alteration work	5	f	Перебудовування будівель
+45262710-1	Fresco maintenance work	6	t	Догляд за фресками
+45262800-9	Building extension work	5	t	Розширення будівель
+45262900-0	Balcony work	5	t	Балконні роботи
+45300000-0	Building installation work	2	f	Будівельно-монтажні роботи
+45310000-3	Electrical installation work	3	f	Електромонтажні роботи
+45311000-0	Electrical wiring and fitting work	4	f	Монтаж електропроводки та електроарматури
+45311100-1	Electrical wiring work	5	t	Монтаж електропроводки
+45311200-2	Electrical fitting work	5	t	Монтаж електроарматури
+45312000-7	Alarm system and antenna installation work	4	f	Встановлення систем аварійної сигналізації та антен
+45312100-8	Fire-alarm system installation work	5	t	Встановлення систем пожежної сигналізації
+45312200-9	Burglar-alarm system installation work	5	t	Встановлення систем охоронної сигналізації
+45312300-0	Antenna installation work	5	f	Встановлення антен
+45312310-3	Lightning-protection works	6	f	Встановлення обладнання для захисту від блискавок
+45312311-0	Lightning-conductor installation work	7	t	Встановлення блискавичників
+45312320-6	Television aerial installation work	6	t	Встановлення телевізійних антен
+45312330-9	Radio aerial installation work	6	t	Встановлення радіоантен
+45313000-4	Lift and escalator installation work	4	f	Монтаж ліфтів та ескалаторів
+45313100-5	Lift installation work	5	t	Монтаж ліфтів
+45313200-6	Escalator installation work	5	f	Монтаж ескалаторів
+45314000-1	Installation of telecommunications equipment	4	f	Встановлення телекомунікаційного обладнання
+45314100-2	Installation of telephone exchanges	5	f	Встановлення телефонних станцій
+45314120-8	Installation of switchboards	6	t	Встановлення комутаторів
+45314200-3	Installation of telephone lines	5	t	Монтаж ліній телефонного зв’язку
+45314300-4	Installation of cable infrastructure	5	f	Монтаж кабельної інфраструктури
+45314310-7	Installation of cable laying	6	t	Укладання кабелів
+45314320-0	Installation of computer cabling	6	t	Укладання комп’ютерних кабелів
+45315000-8	Electrical installation work of heating and other electrical building-equipment	4	f	Встановлення електричних систем опалення та іншого побутового електричного обладнання
+45315100-9	Electrical engineering installation works	5	t	Встановлення електротехнічного обладнання
+45315200-0	Turbine works	5	t	Роботи, пов’язані з турбінами
+45315300-1	Electricity supply installations	5	t	Монтаж систем електроживлення
+45315400-2	High voltage installation work	5	t	Монтаж обладнання високої напруги
+45315500-3	Medium-voltage installation work	5	t	Монтаж обладнання середньої напруги
+45315600-4	Low-voltage installation work	5	t	Монтаж обладнання низької напруги
+45315700-5	Switching station installation work	5	t	Монтаж комутаційних станцій
+45316000-5	Installation work of illumination and signalling systems	4	f	Монтаж систем освітлення і сигналізації
+45316100-6	Installation of outdoor illumination equipment	5	f	Монтаж обладнання зовнішнього освітлення
+45316110-9	Installation of road lighting equipment	6	t	Монтаж обладнання дорожнього освітлення
+45316200-7	Installation of signalling equipment	5	f	Встановлення сигналізаційного обладнання
+45316210-0	Installation of traffic monitoring equipment	6	f	Встановлення обладнання для моніторингу руху транспорту
+45316211-7	Installation of illuminated road signs	7	t	Встановлення підсвічуваних дорожніх знаків
+45316212-4	Installation of traffic lights	7	t	Встановлення світлофорів
+45316213-1	Installation of traffic guidance equipment	7	t	Встановлення обладнання для регулювання дорожнього руху
+45316220-3	Installation of airport signalling equipment	6	t	Встановлення сигнального обладнання для аеропортів
+45316230-6	Installation of port signalling equipment	6	t	Встановлення портового сигнального обладнання
+45317000-2	Other electrical installation work	4	f	Інші електромонтажні роботи
+45317100-3	Electrical installation work of pumping equipment	5	t	Електромонтажні роботи зі встановлення насосного обладнання
+45317200-4	Electrical installation work of transformers	5	t	Електромонтажні роботи зі встановлення трансформаторів
+45317300-5	Electrical installation work of electrical distribution apparatus	5	t	Електромонтажні роботи зі встановлення електророзподільної апаратури
+45317400-6	Electrical installation work of filtration equipment	5	t	Електромонтажні роботи зі встановлення фільтрувального обладнання
+45320000-6	Insulation work	3	f	Ізоляційні роботи
+45321000-3	Thermal insulation work	4	t	Термоізоляційні роботи
+45323000-7	Sound insulation work	4	t	Шумоізоляційні роботи
+45324000-4	Plasterboard works	4	t	Монтаж гіпсокартонних конструкцій
+45330000-9	Plumbing and sanitary works	3	f	Водопровідні та санітарно-технічні роботи
+45331000-6	Heating, ventilation and air-conditioning installation work	4	f	Встановлення опалювальних, вентиляційних систем і систем кондиціонування повітря
+45331100-7	Central-heating installation work	5	f	Встановлення систем центрального опалення
+45331110-0	Boiler installation work	6	t	Встановлення котлів
+45331200-8	Ventilation and air-conditioning installation work	5	f	Встановлення вентиляційних систем і систем кондиціонування повітря
+45331210-1	Ventilation installation work	6	f	Встановлення вентиляційних систем
+45331211-8	Outdoor ventilation installation work	7	t	Встановлення зовнішніх вентиляційних систем
+45331220-4	Air-conditioning installation work	6	f	Встановлення систем кондиціонування повітря
+45331221-1	Partial air-conditioning installation work	7	t	Встановлення систем кондиціонування повітря в окремих приміщеннях
+45331230-7	Installation work of cooling equipment	6	f	Встановлення охолоджувального обладнання
+45331231-4	Installation work of refrigeration equipment	7	t	Встановлення холодильного обладнання
+45332000-3	Plumbing and drain-laying work	4	f	Водопровідні роботи та влаштування водостоків
+45332200-5	Water plumbing work	5	t	Водопровідні роботи
+45332300-6	Drain-laying work	5	t	Влаштування водостоків
+45332400-7	Sanitary fixture installation work	5	t	Встановлення санітарно-технічного обладнання
+45442100-8	Painting work	5	f	Малярні роботи
+45333000-0	Gas-fitting installation work	4	f	Встановлення газового обладнання
+45333100-1	Gas regulation equipment installation work	5	t	Встановлення пристроїв регулювання подачі газу
+45333200-2	Gas meter installation work	5	t	Встановлення лічильників газу
+45340000-2	Fencing, railing and safety equipment installation work	3	f	Зведення огорож, монтаж поручнів і захисних засобів
+45341000-9	Erection of railings	4	t	Монтаж поручнів
+45342000-6	Erection of fencing	4	t	Зведення огорож
+45343000-3	Fire-prevention installation works	4	f	Встановлення протипожежного обладнання
+45343100-4	Fireproofing work	5	t	Роботи із забезпечення вогнезахисту
+45343200-5	Firefighting equipment installation work	5	f	Встановлення обладнання для пожежогасіння
+45343210-8	CO2 fire-extinguishing equipment installation work	6	t	Встановлення вуглекислотних засобів пожежогасіння
+45343220-1	Fire-extinguishers installation work	6	t	Встановлення вогнегасників
+45343230-4	Sprinkler systems installation work	6	t	Встановлення спринклерних систем
+45350000-5	Mechanical installations	3	f	Механо-монтажні роботи
+45351000-2	Mechanical engineering installation works	4	t	Встановлення механічного обладнання
+45400000-1	Building completion work	2	f	Завершальні будівельні роботи
+45410000-4	Plastering work	3	t	Штукатурні роботи
+45420000-7	Joinery and carpentry installation work	3	f	Столярні та теслярні роботи
+45421000-4	Joinery work	4	f	Столярні роботи
+45421100-5	Installation of doors and windows and related components	5	f	Встановлення дверей, вікон і пов’язаних конструкцій
+45421110-8	Installation of door and window frames	6	f	Встановлення дверних і віконних рам
+45421111-5	Installation of door frames	7	t	Встановлення дверних рам
+45421112-2	Installation of window frames	7	t	Встановлення віконних рам
+45421120-1	Installation of thresholds	6	t	Встановлення порогів
+45421130-4	Installation of doors and windows	6	f	Встановлення дверей і вікон
+45421131-1	Installation of doors	7	t	Встановлення дверей
+45421132-8	Installation of windows	7	t	Встановлення вікон
+45421140-7	Installation of metal joinery except doors and windows	6	f	Монтаж металевих профільних конструкцій, окрім дверей і вікон
+45421141-4	Installation of partitioning	7	t	Монтаж перегородок
+45421142-1	Installation of shutters	7	t	Монтаж віконниць
+45421143-8	Installation work of blinds	7	t	Монтаж жалюзі
+45421144-5	Installation work of awnings	7	t	Монтаж тентів
+45421145-2	Installation work of roller blinds	7	t	Монтаж ролет
+45421146-9	Installation of suspended ceilings	7	t	Монтаж підвісних стель
+45421147-6	Installation of grilles	7	t	Встановлення ґрат
+45421148-3	Installation of gates	7	t	Встановлення воріт
+45421150-0	Non-metal joinery installation work	6	f	Встановлення неметалевих профільних конструкцій
+45421151-7	Installation of fitted kitchens	7	t	Монтаж убудованих кухонь
+45421152-4	Installation of partition walls	7	t	Монтаж стін-перегородок
+45421153-1	Installation of built-in furniture	7	t	Монтаж убудованих меблів
+45421160-3	Ironmongery work	6	t	Монтаж віконної і дверної фурнітури
+45422000-1	Carpentry installation work	4	f	Теслярі роботи
+45422100-2	Woodwork	5	t	Роботи з деревом
+45430000-0	Floor and wall covering work	3	f	Покривання підлоги та стін
+45431000-7	Tiling work	4	f	Укладання кахлю
+45431100-8	Floor-tiling work	5	t	Укладання підлогового кахлю
+45431200-9	Wall-tiling work	5	t	Укладання настінного кахлю
+45432000-4	Floor-laying and covering, wall-covering and wall-papering work	4	f	Монтаж і покривання підлоги, покривання та обклеювання шпалерами стін
+45432100-5	Floor laying and covering work	5	f	Монтаж і покривання підлоги
+45432110-8	Floor-laying work	6	f	Монтаж підлоги
+45432111-5	Laying work of flexible floor coverings	7	t	Укладання м’якого підлогового покриття
+45432112-2	Laying of paving	7	t	Мощення підлоги
+45432113-9	Parquet flooring	7	t	Укладання паркету
+45432114-6	Wood flooring work	7	t	Укладання дерев’яної підлоги
+45432120-1	False floor installation work	6	f	Монтаж фальшпідлоги
+45432121-8	Computer floors	7	t	Монтаж фальшпідлоги для прокладення під нею комунікацій
+45432130-4	Floor-covering work	6	t	Покривання підлоги
+45432200-6	Wall-covering and wall-papering work	5	f	Покривання та обклеювання шпалерами стін
+45432210-9	Wall-covering work	6	t	Покривання стін
+45432220-2	Wall-papering work	6	t	Обклеювання стін шпалерами
+45440000-3	Painting and glazing work	3	f	Фарбування та скління
+45441000-0	Glazing work	4	t	Скління
+45442000-7	Application work of protective coatings	4	f	Нанесення захисного покриття
+45442110-1	Painting work of buildings	6	t	Фарбування будівель
+45442120-4	Painting and protective-coating work of structures	6	f	Фарбування конструкцій і нанесення на них захисного покриття
+45442121-1	Painting work of structures	7	t	Фарбування конструкцій
+45442180-2	Repainting work	6	t	Перефарбовувальні роботи
+45442190-5	Paint-stripping work	6	t	Видалення лакофарбового покриття
+45442200-9	Application work of anti-corrosive coatings	5	f	Нанесення антикорозійного покриття
+45442210-2	Galvanizing works	6	t	Гальванувальні роботи
+45442300-0	Surface-protection work	5	t	Захист поверхонь
+45443000-4	Facade work	4	t	Фасадні роботи
+45450000-6	Other building completion work	3	f	Інші завершальні будівельні роботи
+45451000-3	Decoration work	4	f	Декорувальні роботи
+45451100-4	Ornamentation fitting work	5	t	Оздоблювальні роботи
+45451200-5	Panelling work	5	t	Оббивальні / обшивальні роботи
+45451300-6	Interior gardens	5	t	Улаштування зимових садів
+45452000-0	Exterior cleaning work for buildings	4	f	Очищення зовнішньої частини будівель
+45452100-1	Blast cleaning work for building exteriors	5	t	Струминне очищення зовнішніх частин будівель
+45453000-7	Overhaul and refurbishment work	4	f	Капітальний ремонт і реставрація
+45453100-8	Refurbishment work	5	t	Реставраційні роботи
+45454000-4	Restructuring work	4	f	Перебудовування
+45454100-5	Restoration work	5	t	Відновлювальні роботи
+45500000-2	Hire of construction and civil engineering machinery and equipment with operator	2	f	Прокат техніки та обладнання з оператором для виконання будівельних робіт та цивільного будівництва
+45510000-5	Hire of cranes with operator	3	t	Прокат підіймальних кранів із оператором
+45520000-8	Hire of earthmoving equipment with operator	3	t	Прокат обладнання з оператором для виконання земляних робіт
+48000000-8	Software package and information systems	1	f	Пакети програмного забезпечення та інформаційні системи
+48100000-9	Industry specific software package	2	f	Пакети галузевого програмного забезпечення
+48110000-2	Point of sale (POS) software package	3	t	Пакети програмного забезпечення для автоматизованих точок продажу
+48120000-5	Flight control software package	3	f	Пакети програмного забезпечення для автоматизованих систем управління польотами
+48121000-2	Air traffic control software package	4	t	Пакети програмного забезпечення для систем керування повітряним рухом
+48130000-8	Aviation ground support and test software package	3	f	Пакети програмного забезпечення для наземних засобів забезпечення польотів та випробувань авіаційної техніки
+48131000-5	Aviation ground support software package	4	t	Пакети програмного забезпечення для наземних засобів забезпечення польотів
+48132000-2	Aviation test software package	4	t	Пакети програмного забезпечення для випробувань авіаційної техніки
+48140000-1	Railway traffic control software package	3	t	Пакети програмного забезпечення для систем контролю залізничного руху
+48150000-4	Industrial control software package	3	f	Пакети програмного забезпечення для керування виробничими процесами
+48151000-1	Computer control system	4	t	Системи комп’ютерного керування
+48160000-7	Library software package	3	f	Пакети програмного забезпечення для бібліотек
+48161000-4	Library management system	4	t	Системи управління бібліотечними фондами
+48170000-0	Compliance software package	3	t	Пакети програмного забезпечення для контролю відповідності
+48180000-3	Medical software package	3	t	Пакети медичного програмного забезпечення
+48190000-6	Educational software package	3	t	Пакети освітнього програмного забезпечення
+48200000-0	Networking, Internet and intranet software package	2	f	Пакети мережевого програмного забезпечення, а також програмного забезпечення для мереж Інтернет та Інтранет
+48210000-3	Networking software package	3	f	Пакети мережевого програмного забезпечення
+48211000-0	Platform interconnectivity software package	4	t	Пакети програмного забезпечення для забезпечення міжплатформної взаємодії
+48212000-7	Optical jukebox server software package	4	t	Пакети програмного забезпечення для серверів для роботи з оптичними накопичувачами
+48213000-4	Operating system enhancement software package	4	t	Пакети програмного забезпечення для оптимізації операційних систем
+48214000-1	Network operating system software package	4	t	Пакети програмного забезпечення для мережевих операційних систем
+48215000-8	Networking developers' software package	4	t	Пакети програмного забезпечення для розробників мереж
 48326100-0	Digital mapping system	5	t	Цифрові системи картографування
 48216000-5	Network connectivity terminal emulation software package	4	t	Пакети емуляторів мережевих терміналів
 48217000-2	Transaction-processing software package	4	f	Пакети програмного забезпечення для обробки транзакцій
@@ -8759,286 +8787,284 @@ flatwork  3  f  Будівництво трубопроводів, ліній з
 55240000-4	Holiday centre and holiday home services	3	f	Послуги центрів і будинків відпочинку
 55241000-1	Holiday centre services	4	t	Послуги центрів відпочинку
 55242000-8	Holiday home services	4	t	Послуги будинків відпочинку
-55243000-5	Children' S holiday-camp services  4  t  Послуги дитячих таборів
-                                     55250000-7  Letting services OF short-stay furnished accommodation  3  t  Послуги з надання в короткострокову оренду умебльованого житла
-                                                                                                                       55270000-3  Services provided BY bed AND breakfast establishments  3  t  Послуги закладів, що пропонують ночівлю та сніданок
-                                                                                                                                                                                                        55300000-3  Restaurant AND food-serving services  2  f  Ресторанні послуги та послуги офіціантів
-                                                                                                                                                                                                                                                                                   55310000-6  Restaurant waiter services  3  f  Послуги з ресторанного обслуговування
-                                                                                                                                                                                                                                                                                                                              55311000-3 RESTRICTED -clientele restaurant waiter services  4  t  Послуги з обслуговування у ресторанах закритого типу
-                                                                                                                                                                                                                                                                                                                                                                                                                            55312000-0  Unrestricted-clientele restaurant waiter services  4  t  Послуги з обслуговування у ресторанах відкритого типу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  55320000-9  Meal-serving services  3  f  Послуги офіціантів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           55321000-6  Meal-preparation services  4  t  Послуги з готування їжі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     55322000-3  Meal-cooking services  4  t  Послуги кухарів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      55330000-2  Cafeteria services  3  t  Послуги кафе
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            55400000-4  Beverage-serving services  2  f  Послуги з подавання напоїв
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 55410000-7  Bar management services  3  t  Послуги адміністраторів барів
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          55500000-5  Canteen AND catering services  2  f  Послуги їдалень та кейтерингові послуги
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           55510000-8  Canteen services  3  f  Послуги їдалень
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               55511000-5  Canteen AND other RESTRICTED -clientele cafeteria services  4  t  Послуги їдалень та інших кафе закритого типу
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           55512000-2  Canteen management services  4  t  Послуги адміністраторів їдалень
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          55520000-1  Catering services  3  f  Кейтерингові послуги
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               55521000-8  Catering services FOR private households  4  f  Послуги з доставки їжі додому
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     55521100-9  Meals- ON -wheels services  5  t  Послуги пересувних кухонь
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      55521200-0  Meal delivery service  5  t  Послуги з доставки їжі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       55522000-5  Catering services FOR transport enterprises  4  t  Кейтерингові послуги для транспортних підприємств
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   55523000-2  Catering services FOR other enterprises OR other institutions  4  f  Кейтерингові послуги для інших підприємств або установ
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 55523100-3  School-meal services  5  t  Послуги з організації шкільного харчування
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               55524000-9  School catering services  4  t  Кейтерингові послуги для шкіл
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           55900000-9  Retail trade services  2  t  Послуги з роздрібної торгівлі
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              60000000-8  Transport services (excl.Waste transport)  1  f  Транспортні послуги (крім транспортування відходів)
-60100000-9  Road transport services  2  f  Послуги з автомобільних перевезень
-                                                     60112000-6 PUBLIC road transport services  4  t  Послуги громадського автомобільного транспорту
-                                                                                                   60120000-5  Taxi services  3  t  Послуги таксі
-                                                                                                                              60130000-8  Special-purpose road passenger-transport services  3  t  Послуги спеціалізованих автомобільних перевезень пасажирів
-                                                                                                                                                                                                                                         60140000-1  Non-scheduled passenger transport  3  t  Нерегулярні пасажирські перевезення
-                                                                                                                                                                                                                                                                                        60150000-4  Passenger transport BY animal-drawn vehicles  3  t  Перевезення пасажирів гужовим транспортом
-                                                                                                                                                                                                                                                                                                                                                                                      60160000-7  Mail transport BY road  3  f  Перевезення пошти автомобільним транспортом
-                                                                                                                                                                                                                                                                                                                                                                                                                                60161000-4  Parcel transport services  4  t  Послуги з перевезення пакунків
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                       60170000-0  Hire OF passenger transport vehicles WITH driver  3  f  Прокат пасажирських транспортних засобів із водієм
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               60171000-7  Hire OF passenger cars WITH driver  4  t  Прокат легкових автомобілів із водієм
-60172000-4  Hire OF buses AND coaches WITH driver  4  t  Прокат автобусів і туристичних автобусів із водієм
-                                                   60180000-3  Hire OF goods-transport vehicles WITH driver  3  f  Прокат вантажних транспортних засобів із водієм для перевезення товарів
-                                                                                                                                                                                   60181000-0  Hire OF trucks WITH driver  4  t  Прокат вантажних автомобілів із водієм
-                                                                                                                                                                                                                              60182000-7  Hire OF industrial vehicles WITH driver  4  t  Прокат промислових транспортних засобів із водієм
-                                                                                                                                                                                                                                                                                                                         60183000-4  Hire OF vans WITH driver  4  t  Прокат фургонів із водієм
-                                                                                                                                                                                                                                                                                                                                                       60200000-0  Railway transport services  2  f  Послуги із залізничних перевезень
-                                                                                                                                                                                                                                                                                                                                                                   60210000-3 PUBLIC transport services BY railways  3  t  Послуги з перевезень громадським залізничним транспортом
-                                                                                                                                                                                                                                                                                                                                                                                                                                   60220000-6  Mail transport BY railway  3  t  Перевезення пошти залізничним транспортом
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              60300000-1  Pipeline transport services  2  t  Послуги з транспортування трубопроводами
-60400000-2  Air transport services  2  f  Послуги з авіаційних перевезень
-                                                    60410000-5  Scheduled air transport services  3  f  Послуги з регулярних авіаційних перевезень
-                                                                                                     60411000-2  Scheduled airmail transport services  4  t  Послуги з перевезення пошти регулярними авіаційними рейсами
-                                                                                                                                                                                                     60420000-8  Non-scheduled air transport services  3  f  Послуги з нерегулярних авіаційних перевезень
-                                                                                                                                                                                                                                             60421000-5  Non-scheduled airmail transport services  4  t  Послуги з перевезення пошти нерегулярними авіаційними рейсами
-                                                                                                                                                                                                                                                                                                                 60423000-9  Air-charter services  4  t  Послуги з чартерних авіаційних перевезень
-60424000-6  Hire OF air transport equipment WITH crew  4  f  Прокат авіаційного транспортного устаткування з екіпажем
-                                                       60424100-7  Hire OF aircraft WITH crew  5  f  Прокат літальних апаратів із екіпажем
-                                                                                                                      60424110-0  Hire OF fixed-wing aircraft WITH crew  6  t  Прокат літальних апаратів із нерухомими крилами із екіпажем
-                                                                                                                                                                                                            60424120-3  Hire OF helicopters WITH crew  6  t  Прокат вертольотів із екіпажем
-                                                                                                                                                                                                                                            60440000-4  Aerial AND related services  3  f  Послуги у сфері повітряного сполучення та супутні послуги
-                                                                                                                                                                                                                                                                                                           60441000-1  Aerial spraying services  4  t  Послуги з обприскування з повітря
-                                                                                                                                                                                                                                                                                                                                       60442000-8  Aerial forest-firefighting services  4  t  Послуги з гасіння лісових пожеж із повітря
-                                                                                                                                                                                                                                                                                                                                                                                                        60443000-5  Air-rescue services  4  f  Послуги з проведення авіаційно-рятувальних операцій
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          60443100-6  Air-sea rescue services  5  t  Послуги з проведення авіаційно-рятувальних операцій у морі
-60444000-2  Aircraft-operation services  4  f  Послуги з експлуатації літальних апаратів
-                                                       60444100-3  Pilot services  5  t  Послуги з пілотування
-                                                                                      60445000-9  Aircraft operating services  4  t  Послуги з обслуговування літальних апаратів
-                                                                                                                               60500000-3  Space transport services  2  f  Послуги з космічних перевезень
-                                                                                                                                           60510000-6  Satellite launch services  3  t  Послуги із запуску супутників
-                                                                                                                                                                                                           60520000-9  Experimental payload services  3  t  Послуги з експериментального корисного навантаження
-                                                                                                                                                                                                                                                                    60600000-4  Water transport services  2  f  Послуги з водних перевезень
-                                                                                                                                                                                                                                                                                                          60610000-7  Ferry transport services  3  t  Послуги з перевезення поромним транспортом
-                                                                                                                                                                                                                                                                                                                            60620000-0  Transport BY water OF mail  3  t  Перевезення пошти водним транспортом
-                                                                                                                                                                                                                                                                                                                                                                                      60630000-3  Cable-laying ship services  3  t  Послуги суден з укладання кабелів
-                                                                                                                                                                                                                                                                                                                                                                                                                    60640000-6  Shipping operations  3  t  Перевезення вантажів морським транспортом
-                                                                                                                                                                                                                                                                                                                                                                                                                             60650000-9  Hire OF water transport equipment WITH crew  3  f  Прокат водного транспортного устаткування з екіпажем
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         60651000-6  Hire OF vessels WITH crew  4  f  Прокат суден із екіпажем
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      60651100-7  Hire OF sea-going vessels WITH crew  5  t  Прокат морських суден із екіпажем
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            60651200-8  Hire OF inland waterway vessels WITH crew  5  t  Прокат суден внутрішнього плавання з екіпажем
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      60651300-9  Anti-pollution ship services  5  t  Послуги очисних суден
-60651400-0  Heavy-lift ship services  5  t  Послуги суден великої тоннажності
-                                            60651500-1  Standby ship services  5  t  Послуги резервних суден
-                                                                               60651600-2  Offshore supply ship services  5  t  Послуги суден-постачальників із обслуговування морських платформ
-                                                                                                                                                                               60653000-0  Hire OF boats WITH crew  4  t  Прокат човнів із екіпажем
-                                                                                                                                                                                                                    63000000-9  Supporting AND auxiliary transport services;
-travel agencies services  1  f  Додаткові та допоміжні транспортні послуги;
-послуги туристичних агентств
-63100000-0  Cargo handling AND STORAGE services  2  f  Послуги з обробки та зберігання вантажів
-63110000-3  Cargo handling services  3  f  Послуги з обробки вантажів
-63111000-0  Container handling services  4  t  Послуги з обробки вантажів у контейнерах
-63112000-7  Baggage handling services  4  f  Послуги з обробки багажу
-63112100-8  Passenger baggage handling services  5  f  Послуги з обробки пасажирського багажу
-63112110-1  Baggage collection services  6  t  Послуги з приймання багажу
-63120000-6 STORAGE AND warehousing services  3  f  Послуги зберігання та складування
-63121000-3 STORAGE AND retrieval services  4  f  Послуги зберігання та видачі
-63121100-4 STORAGE services  5  f  Послуги зберігання
-63121110-7  Gas STORAGE services  6  t  Послуги зі зберігання газу
-63122000-0  Warehousing services  4  t  Послуги складування
-63500000-4  Travel agency, tour OPERATOR AND tourist assistance services  2  f  Послуги туристичних агентств, туристичних операторів і туристичної підтримки
-63510000-7  Travel agency AND SIMILAR services  3  f  Послуги туристичних агентств та подібні послуги
-63511000-4  Organisation OF package tours  4  t  Організація пакетних турів
-63512000-1  Sale OF travel tickets AND package tours services  4  t  Послуги з продажу квитків і пакетних турів
-63513000-8  Tourist information services  4  t  Послуги з надання туристичної інформації
-63514000-5  Tourist guide services  4  t  Послуги туристичних гідів
-63515000-2  Travel services  4  t  Туристичні послуги
-63516000-9  Travel management services  4  t  Послуги з управління подорожами
-63520000-0  Transport agency services  3  f  Послуги транспортних агентств
-63521000-7  Freight transport agency services  4  t  Послуги агентств вантажних перевезень
-63522000-4  Ship brokerage services  4  t  Послуги суднових брокерів
-63523000-1  Port AND forwarding agency services  4  t  Послуги портових та експедиційних агентств
-63524000-8  Transport DOCUMENT preparation services  4  t  Послуги з оформлення транспортної документації
-63700000-6  Support services FOR land, water AND air transport  2  f  Послуги з обслуговування наземних, водних або повітряних видів транспорту
-63710000-9  Support services FOR land transport  3  f  Послуги з обслуговування наземних видів транспорту
-63711000-6  Support services FOR railway transport  4  f  Послуги з обслуговування залізничного транспорту
-63711100-7  Train monitoring services  5  t  Послуги з моніторингу руху поїздів
-63711200-8  Moving workshops services  5  t  Послуги пересувних цехів
-63712000-3  Support services FOR road transport  4  f  Послуги з обслуговування автомобільного транспорту
-63712100-4  Bus station services  5  t  Послуги автовокзалів
-63712200-5  Highway operation services  5  f  Послуги з експлуатації автомобільних доріг
-63712210-8  Highway toll services  6  t  Послуги зі стягнення плати за користування автомобільними дорогами
-63712300-6  Bridge AND tunnel operation services  5  f  Послуги з експлуатації мостів і тунелів
-63712310-9  Bridge operating services  6  f  Послуги з експлуатації мостів
-63712311-6  Bridge toll services  7  t  Послуги зі стягнення плати за користування мостами
-63712320-2  Tunnel operation services  6  f  Послуги з експлуатації тунелів
-63712321-9  Tunnel toll services  7  t  Послуги зі стягнення плати за користування тунелями
-63712400-7  Parking services  5  t  Паркувальні послуги
-63712500-8  Weighbridge services  5  t  Послуги операторів автомобільних ваг
-63712600-9  Vehicle refuelling services  5  t  Послуги із заправлення транспортних засобів
-63712700-0  Traffic control services  5  f  Послуги з керування дорожнім рухом
-63712710-3  Traffic monitoring services  6  t  Послуги з моніторингу дорожнього руху
-63720000-2  Support services FOR water transport  3  f  Послуги з обслуговування водних видів транспорту
-63721000-9  Port AND waterway operation services AND associated services  4  f  Послуги з експлуатації портів і водних шляхів та супутні послуги
-63721100-0  Bunkering services  5  t  Послуги з бункерування
-63721200-1  Port operation services  5  t  Послуги з експлуатації портів
-63721300-2  Waterway operation services  5  t  Послуги з експлуатації водних шляхів
-63721400-3  Ship refuelling services  5  t  Послуги із заправлення суден
-63721500-4  Passenger terminal operation services  5  t  Послуги з експлуатації пасажирських терміналів
-63722000-6  Ship-piloting services  4  t  Послуги лоцманів
-63723000-3  Berthing services  4  t  Послуги з причалювання
-63724000-0  Navigation services  4  f  Навігаційні послуги
-63724100-1  Offshore positioning services  5  f  Послуги з позиціонування суден у відкритому морі
-63724110-4  Lightship positioning services  6  t  Послуги з позиціонування пливучих маяків
-63724200-2  Lightship services  5  t  Послуги пливучих маяків
-63724300-3  Buoy positioning services  5  f  Послуги з позиціонування буїв
-63724310-6  Buoy marking services  6  t  Послуги з позначення за допомогою буїв
-63724400-4  Lighthouse services  5  t  Послуги маяків
-63725000-7  Salvage AND refloating services  4  f  Послуги з рятування суден і знімання суден з мілини
-63725100-8  Vessel-salvaging services  5  t  Послуги з рятування суден
-63725200-9  Standby vessel services  5  t  Послуги резервних суден
-63725300-0  Vessel refloating services  5  t  Послуги зі знімання суден з мілини
-63726000-4  Miscellaneous water transport support services  4  f  Послуги з обслуговування водного транспорту різні
-63726100-5  Vessel registration services  5  t  Послуги з реєстрації суден
-63726200-6  Ice-breaking services  5  t  Послуги з ламання криги
-63726300-7  Vessel STORAGE services  5  t  Послуги зі зберігання суден
-63726400-8  Ship chartering services  5  t  Послуги з фрахтування суден
-63726500-9  Vessel laying-up services  5  t  Послуги зі швартування суден
-63726600-0  Ship-operating services  5  f  Послуги з експлуатації суден
-63726610-3  Ship-launching services  6  t  Послуги зі спускання суден на воду
-63726620-6  ROV services  6  t  Послуги транспортних засобів із дистанційним керуванням
-63726700-1  Fishing-vessel services  5  t  Послуги риболовних суден
-63726800-2  Research vessel services  5  t  Послуги науково-дослідницьких суден
-63726900-3  Anchor handling services  5  t  Послуги з якорування
-63727000-1  Towing AND pushing services OF ships  4  f  Послуги з буксирування та штовхання суден
-63727100-2  Towing services  5  t  Послуги з буксирування суден
-63727200-3  Pushing services  5  t  Послуги зі штовхання суден
-63730000-5  Support services FOR air transport  3  f  Послуги з обслуговування повітряного транспорту
-63731000-2  Airport operation services  4  f  Послуги з експлуатації аеропортів
-63731100-3  Airport slot coordination services  5  t  Послуги з координування слотів аеропортів
-63732000-9  Air-traffic control services  4  t  Послуги з керування повітряним рухом
-64000000-6  Postal AND telecommunications services  1  f  Поштові та телекомунікаційні послуги
-64100000-7  Post AND courier services  2  f  Поштові та кур’єрські послуги
-64110000-0  Postal services  3  f  Поштові послуги
-64111000-7  Postal services related TO newspapers AND periodicals  4  t  Поштові послуги з доставки газет і періодичних видань
-64112000-4  Postal services related TO letters  4  t  Поштові послуги з доставки письмової кореспонденції
-64113000-1  Postal services related TO parcels  4  t  Поштові послуги з доставки пакунків
-64114000-8  Post office counter services  4  t  Послуги поштових відділень
-64115000-5  Mailbox rental  4  t  Оренда поштових скриньок
-64116000-2  Post-restante services  4  t  Поштові послуги «до запитання»
-64120000-3  Courier services  3  f  Кур’єрські послуги
-64121000-0  Multi-modal courier services  4  f  Кур’єрські послуги за мультимодальною системою
-64121100-1  Mail delivery services  5  t  Послуги з доставки пошти
-64121200-2  Parcel delivery services  5  t  Послуги з доставки пакунків
-64122000-7 INTERNAL office mail AND messenger services  4  t  Послуги з доставки пошти і повідомлень у межах організації
-64200000-8  Telecommunications services  2  f  Телекомунікаційні послуги
-64210000-1  Telephone AND DATA transmission services  3  f  Послуги телефонного зв’язку та передачі даних
-64211000-8 PUBLIC -telephone services  4  f  Послуги громадського телефонного зв’язку
-64211100-9 LOCAL telephone services  5  t  Послуги міського телефонного зв’язку
-64211200-0  Long distance telephone services  5  t  Послуги міжміського телефонного зв’язку
-64212000-5  Mobile-telephone services  4  f  Послуги мобільного телефонного зв’язку
-64212100-6  Short MESSAGE Service (SMS) services  5  t  Послуги служби коротких повідомлень (SMS)
-64212200-7  Enhanced Messaging Service (EMS) services  5  t  Послуги служби розширених повідомлень (EMS)
-64212300-8  Multimedia MESSAGE Service (MMS) services  5  t  Послуги служби мультимедійних повідомлень (MMS)
-64212400-9  Wireless Application Protocol (WAP) services  5  t  Послуги передачі даних за протоколом бездротового доступу (WAP)
-64212500-0  General Packet Radio Services (GPRS) services  5  t  Послуги загального сервісу пакетної радіопередачі (GMRS)
-64212600-1  Enhanced DATA FOR GSM Evolution (EDGE) services  5  t  Послуги передачі великих обсягів даних у мережі мобільного зв’язку за технологією EDGE
-64212700-2  Universal Mobile Telephone SYSTEM (UMTS) services  5  t  Послуги універсальної мобільної системи телефонії (UMTS)
-64212800-3  Pay phone provider services  5  t  Послуги провайдерів таксофонного зв’язку
-64212900-4  Pre-paid phone card provider services  5  t  Послуги провайдерів передоплатного телефонного зв’язку за телефонними картками
-64213000-2  Shared-business telephone network services  4  t  Послуги офісних міні-АТС
-64214000-9  Dedicated-business telephone network services  4  f  Послуги офісних міні-АТС спеціального призначення
-64214100-0  Satellite circuit rental services  5  t  Послуги з оренди каналу супутникового зв’язку
-64214200-1  Telephone switchboard services  5  t  Послуги телефонних комутаторів
-64214400-3  Communication land-line rental  5  t  Оренда наземних ліній зв’язку
-64215000-6  IP telephone services  4  t  Послуги ІР-телефонії
-64216000-3  Electronic MESSAGE AND information services  4  f  Послуги систем електронної передачі електронних повідомлень та інформації
-64216100-4  Electronic MESSAGE services  5  f  Послуги систем електронної передачі електронних повідомлень
-64216110-7  Electronic DATA exchange services  6  t  Послуги систем електронного обміну даними
-64216120-0  Electronic mail services  6  t  Послуги електронної пошти
-64216130-3  Telex services  6  t  Послуги телексного зв’язку
-64216140-6  Telegraph services  6  t  Послуги телеграфного зв’язку
-64216200-5  Electronic information services  5  f  Електронні інформаційні послуги
-64216210-8 VALUE -added information services  6  t  Додаткові інформаційні послуги
-64216300-6  Teletext services  5  t  Послуги телетекстового зв’язку
-64220000-4  Telecommunication services EXCEPT telephone AND DATA transmission services  3  f  Телекомунікаційні послуги, крім послуг телефонного зв’язку і передачі даних
-64221000-1  Interconnection services  4  t  Послуги з під’єднання
-64222000-8  Teleworking services  4  t  Послуги, пов’язані з дистанційною роботою
-64223000-5  Paging services  4  t  Послуги пейджингового зв’язку
-64224000-2  Teleconferencing services  4  t  Послуги зв’язку з режимі телеконференції
-64225000-9  Air- TO -ground telecommunications services  4  t  Послуги телекомунікаційного зв’язку каналом «повітря – земля»
-64226000-6  Telematics services  4  t  Телематичні послуги
-64227000-3  Integrated telecommunications services  4  t  Інтегровані телекомунікаційні послуги
-64228000-0  Television AND radio broadcast transmission services  4  f  Послуги з транслювання теле- та радіопередач
-64228100-1  Television broadcast transmission services  5  t  Послуги з транслювання телепередач
-64228200-2  Radio broadcast transmission services  5  t  Послуги з транслювання радіопередач
-65000000-3 PUBLIC utilities  1  f  Комунальні послуги
-65100000-4  Water distribution AND related services  2  f  Послуги з розподілу води та супутні послуги
-65110000-7  Water distribution  3  f  Розподіл води
-65111000-4  Drinking-water distribution  4  t  Розподіл питної води
-65120000-0  Operation OF a water-purification plant  3  f  Експлуатація водоочищувальних станцій
-65121000-7  Water demineralisation services  4  t  Послуги з демінералізації води
-65122000-0  Water desalination services  4  t  Послуги з опріснення води
-65123000-3  Water softening services  4  t  Послуги з пом’якшення води
-65130000-3  Operation OF water supplies  3  t  Експлуатування систем водопостачання
-65200000-5  Gas distribution AND related services  2  f  Послуги з розподілу газу та супутні послуги
-65210000-8  Gas distribution  3  t  Розподіл газу
-65300000-6  Electricity distribution AND related services  2  f  Розподіл електричної енергії та супутні послуги
-65310000-9  Electricity distribution  3  t  Розподіл електричної енергії
-65320000-2  Operation OF electrical installations  3  t  Експлуатація електричних установок
-65400000-7  Other sources OF energy supplies AND distribution  2  f  Інші джерела постачання та розподілу енергії
-65410000-0  Operation OF a power plant  3  t  Експлуатація енергетичних станцій
-65500000-8  Meter reading service  2  t  Послуги з реєстрації показів лічильників
-66000000-0  Financial AND insurance services  1  f  Фінансові та страхові послуги
-66100000-1  Banking AND investment services  2  f  Банківські та інвестиційні послуги
-66110000-4  Banking services  3  f  Банківські послуги
-66111000-1  Central bank services  4  t  Послуги центральних банків
-66112000-8  Deposit services  4  t  Депозитні послуги
-66113000-5  Credit granting services  4  f  Послуги з кредитування
-66113100-6  Micro-credit granting services  5  t  Послуги з мікрокредитування
-66114000-2  Financial leasing services  4  t  Послуги у сфері фінансового лізингу
-66115000-9  International payment transfer services  4  t  Послуги з міжнародних розрахунків
-66120000-7  Investment banking services AND related services  3  f  Послуги у сфері банківських інвестицій і супутні послуги
-66121000-4  Mergers AND acquisition services  4  t  Послуги, пов’язані зі злиттями і поглинаннями
-66122000-1  Corporate finance AND venture capital services  4  t  Послуги у сфері корпоративного фінансування та венчурного капіталу
-66130000-0  Brokerage AND related securities AND commodities services  3  f  Брокерські послуги та пов’язані послуги на ринках цінних паперів і товарів
-66131000-7 SECURITY brokerage services  4  f  Брокерські послуги на ринках цінних паперів
-66131100-8  Pension investment services  5  t  Послуги у сфері пенсійного інвестування
-66132000-4  Commodity brokerage services  4  t  Брокерські послуги на ринках товарів
-66133000-1  Processing AND clearing services  4  t  Послуги з митного оформлення та розмитнення
-66140000-3  Portfolio management services  3  f  Послуги з управління портфелями активів
-66141000-0  Pension fund management services  4  t  Послуги з управління пенсійними фондами
-66150000-6  Financial markets administration services  3  f  Послуги з управління фінансовими ринками
-66151000-3  Financial market operational services  4  f  Послуги з оперативного управління фінансовими ринками
-66151100-4  Electronic marketplace retailing services  5  t  Послуги з роздрібної торгівлі на електронних ринках
-66152000-0  Financial market regulatory services  4  t  Послуги з регулювання фінансових ринків
-66160000-9  Trust AND custody services  3  f  Послуги з довірчого управління та депозитарного зберігання
-66161000-6  Trust services  4  t  Послуги з довірчого управління
-66162000-3  Custody services  4  t  Послуги з депозитарного зберігання
-66170000-2  Financial consultancy, financial TRANSACTION processing AND clearing-house services  3  f  Послуги з надання фінансових консультацій, обробки фінансових транзакцій і клірингові послуги
-66171000-9  Financial consultancy services  4  t  Послуги з надання фінансових консультацій
-66172000-6  Financial TRANSACTION processing AND clearing-house services  4  t  Послуги з обробки фінансових транзакцій і клірингові послуги
-66180000-5 FOREIGN exchange services  3  t  Послуги з обміну іноземних валют
-66190000-8  Loan brokerage services  3  t  Послуги кредитних брокерів
-66500000-5  Insurance AND pension services  2  f  Страхові та пенсійні послуги
-66510000-8  Insurance services  3  f  Страхові послуги
-66511000-5  Life insurance services  4  t  Послуги зі страхування життя
-66512000-2  Accident AND health insurance services  4  f  Послуги зі страхування від нещасних випадків і страхування здоров’я
-66512100-3  Accident insurance services  5  t  Послуги зі страхування від нещасних випадків
-66512200-4  Health insurance services  5  f  Послуги зі страхування здоров’я
-66512210-7  Voluntary health insurance services  6  t  Послуги з добровільного страхування здоров’я
-66512220-0  Medical insurance services  6  t  Послуги з медичного страхування
-66513000-9  Legal insurance AND ALL -risk insurance services  4  f  Послуги зі страхування юридичних витрат і страхування від усіх ризиків
-66513100-0  Legal expenses insurance services  5  t  Послуги зі страхування юридичних витрат
-66513200-1  Contractor's all-risk insurance services	5	t	Послуги зі страхування підрядників від усіх ризиків
+55243000-5	Children's holiday-camp services	4	t	Послуги дитячих таборів
+55250000-7	Letting services of short-stay furnished accommodation	3	t	Послуги з надання в короткострокову оренду умебльованого житла
+55270000-3	Services provided by bed and breakfast establishments	3	t	Послуги закладів, що пропонують ночівлю та сніданок
+55300000-3	Restaurant and food-serving services	2	f	Ресторанні послуги та послуги офіціантів
+55310000-6	Restaurant waiter services	3	f	Послуги з ресторанного обслуговування
+55311000-3	Restricted-clientele restaurant waiter services	4	t	Послуги з обслуговування у ресторанах закритого типу
+55312000-0	Unrestricted-clientele restaurant waiter services	4	t	Послуги з обслуговування у ресторанах відкритого типу
+55320000-9	Meal-serving services	3	f	Послуги офіціантів
+55321000-6	Meal-preparation services	4	t	Послуги з готування їжі
+55322000-3	Meal-cooking services	4	t	Послуги кухарів
+55330000-2	Cafeteria services	3	t	Послуги кафе
+55400000-4	Beverage-serving services	2	f	Послуги з подавання напоїв
+55410000-7	Bar management services	3	t	Послуги адміністраторів барів
+55500000-5	Canteen and catering services	2	f	Послуги їдалень та кейтерингові послуги
+55510000-8	Canteen services	3	f	Послуги їдалень
+55511000-5	Canteen and other restricted-clientele cafeteria services	4	t	Послуги їдалень та інших кафе закритого типу
+55512000-2	Canteen management services	4	t	Послуги адміністраторів їдалень
+55520000-1	Catering services	3	f	Кейтерингові послуги
+55521000-8	Catering services for private households	4	f	Послуги з доставки їжі додому
+55521100-9	Meals-on-wheels services	5	t	Послуги пересувних кухонь
+55521200-0	Meal delivery service	5	t	Послуги з доставки їжі
+55522000-5	Catering services for transport enterprises	4	t	Кейтерингові послуги для транспортних підприємств
+55523000-2	Catering services for other enterprises or other institutions	4	f	Кейтерингові послуги для інших підприємств або установ
+55523100-3	School-meal services	5	t	Послуги з організації шкільного харчування
+55524000-9	School catering services	4	t	Кейтерингові послуги для шкіл
+55900000-9	Retail trade services	2	t	Послуги з роздрібної торгівлі
+60000000-8	Transport services (excl. Waste transport)	1	f	Транспортні послуги (крім транспортування відходів)
+60100000-9	Road transport services	2	f	Послуги з автомобільних перевезень
+60112000-6	Public road transport services	4	t	Послуги громадського автомобільного транспорту
+60120000-5	Taxi services	3	t	Послуги таксі
+60130000-8	Special-purpose road passenger-transport services	3	t	Послуги спеціалізованих автомобільних перевезень пасажирів
+60140000-1	Non-scheduled passenger transport	3	t	Нерегулярні пасажирські перевезення
+60150000-4	Passenger transport by animal-drawn vehicles	3	t	Перевезення пасажирів гужовим транспортом
+60160000-7	Mail transport by road	3	f	Перевезення пошти автомобільним транспортом
+60161000-4	Parcel transport services	4	t	Послуги з перевезення пакунків
+60170000-0	Hire of passenger transport vehicles with driver	3	f	Прокат пасажирських транспортних засобів із водієм
+60171000-7	Hire of passenger cars with driver	4	t	Прокат легкових автомобілів із водієм
+60172000-4	Hire of buses and coaches with driver	4	t	Прокат автобусів і туристичних автобусів із водієм
+60180000-3	Hire of goods-transport vehicles with driver	3	f	Прокат вантажних транспортних засобів із водієм для перевезення товарів
+60181000-0	Hire of trucks with driver	4	t	Прокат вантажних автомобілів із водієм
+60182000-7	Hire of industrial vehicles with driver	4	t	Прокат промислових транспортних засобів із водієм
+60183000-4	Hire of vans with driver	4	t	Прокат фургонів із водієм
+60200000-0	Railway transport services	2	f	Послуги із залізничних перевезень
+60210000-3	Public transport services by railways	3	t	Послуги з перевезень громадським залізничним транспортом
+60220000-6	Mail transport by railway	3	t	Перевезення пошти залізничним транспортом
+60300000-1	Pipeline transport services	2	t	Послуги з транспортування трубопроводами
+60400000-2	Air transport services	2	f	Послуги з авіаційних перевезень
+60410000-5	Scheduled air transport services	3	f	Послуги з регулярних авіаційних перевезень
+60411000-2	Scheduled airmail transport services	4	t	Послуги з перевезення пошти регулярними авіаційними рейсами
+60420000-8	Non-scheduled air transport services	3	f	Послуги з нерегулярних авіаційних перевезень
+60421000-5	Non-scheduled airmail transport services	4	t	Послуги з перевезення пошти нерегулярними авіаційними рейсами
+60423000-9	Air-charter services	4	t	Послуги з чартерних авіаційних перевезень
+60424000-6	Hire of air transport equipment with crew	4	f	Прокат авіаційного транспортного устаткування з екіпажем
+60424100-7	Hire of aircraft with crew	5	f	Прокат літальних апаратів із екіпажем
+60424110-0	Hire of fixed-wing aircraft with crew	6	t	Прокат літальних апаратів із нерухомими крилами із екіпажем
+60424120-3	Hire of helicopters with crew	6	t	Прокат вертольотів із екіпажем
+60440000-4	Aerial and related services	3	f	Послуги у сфері повітряного сполучення та супутні послуги
+60441000-1	Aerial spraying services	4	t	Послуги з обприскування з повітря
+60442000-8	Aerial forest-firefighting services	4	t	Послуги з гасіння лісових пожеж із повітря
+60443000-5	Air-rescue services	4	f	Послуги з проведення авіаційно-рятувальних операцій
+60443100-6	Air-sea rescue services	5	t	Послуги з проведення авіаційно-рятувальних операцій у морі
+60444000-2	Aircraft-operation services	4	f	Послуги з експлуатації літальних апаратів
+60444100-3	Pilot services	5	t	Послуги з пілотування
+60445000-9	Aircraft operating services	4	t	Послуги з обслуговування літальних апаратів
+60500000-3	Space transport services	2	f	Послуги з космічних перевезень
+60510000-6	Satellite launch services	3	t	Послуги із запуску супутників
+60520000-9	Experimental payload services	3	t	Послуги з експериментального корисного навантаження
+60600000-4	Water transport services	2	f	Послуги з водних перевезень
+60610000-7	Ferry transport services	3	t	Послуги з перевезення поромним транспортом
+60620000-0	Transport by water of mail	3	t	Перевезення пошти водним транспортом
+60630000-3	Cable-laying ship services	3	t	Послуги суден з укладання кабелів
+60640000-6	Shipping operations	3	t	Перевезення вантажів морським транспортом
+60650000-9	Hire of water transport equipment with crew	3	f	Прокат водного транспортного устаткування з екіпажем
+60651000-6	Hire of vessels with crew	4	f	Прокат суден із екіпажем
+60651100-7	Hire of sea-going vessels with crew	5	t	Прокат морських суден із екіпажем
+60651200-8	Hire of inland waterway vessels with crew	5	t	Прокат суден внутрішнього плавання з екіпажем
+60651300-9	Anti-pollution ship services	5	t	Послуги очисних суден
+60651400-0	Heavy-lift ship services	5	t	Послуги суден великої тоннажності
+60651500-1	Standby ship services	5	t	Послуги резервних суден
+60651600-2	Offshore supply ship services	5	t	Послуги суден-постачальників із обслуговування морських платформ
+60653000-0	Hire of boats with crew	4	t	Прокат човнів із екіпажем
+63000000-9	Supporting and auxiliary transport services; travel agencies services	1	f	Додаткові та допоміжні транспортні послуги; послуги туристичних агентств
+63100000-0	Cargo handling and storage services	2	f	Послуги з обробки та зберігання вантажів
+63110000-3	Cargo handling services	3	f	Послуги з обробки вантажів
+63111000-0	Container handling services	4	t	Послуги з обробки вантажів у контейнерах
+63112000-7	Baggage handling services	4	f	Послуги з обробки багажу
+63112100-8	Passenger baggage handling services	5	f	Послуги з обробки пасажирського багажу
+63112110-1	Baggage collection services	6	t	Послуги з приймання багажу
+63120000-6	Storage and warehousing services	3	f	Послуги зберігання та складування
+63121000-3	Storage and retrieval services	4	f	Послуги зберігання та видачі
+63121100-4	Storage services	5	f	Послуги зберігання
+63121110-7	Gas storage services	6	t	Послуги зі зберігання газу
+63122000-0	Warehousing services	4	t	Послуги складування
+63500000-4	Travel agency, tour operator and tourist assistance services	2	f	Послуги туристичних агентств, туристичних операторів і туристичної підтримки
+63510000-7	Travel agency and similar services	3	f	Послуги туристичних агентств та подібні послуги
+63511000-4	Organisation of package tours	4	t	Організація пакетних турів
+63512000-1	Sale of travel tickets and package tours services	4	t	Послуги з продажу квитків і пакетних турів
+63513000-8	Tourist information services	4	t	Послуги з надання туристичної інформації
+63514000-5	Tourist guide services	4	t	Послуги туристичних гідів
+63515000-2	Travel services	4	t	Туристичні послуги
+63516000-9	Travel management services	4	t	Послуги з управління подорожами
+63520000-0	Transport agency services	3	f	Послуги транспортних агентств
+63521000-7	Freight transport agency services	4	t	Послуги агентств вантажних перевезень
+63522000-4	Ship brokerage services	4	t	Послуги суднових брокерів
+63523000-1	Port and forwarding agency services	4	t	Послуги портових та експедиційних агентств
+63524000-8	Transport document preparation services	4	t	Послуги з оформлення транспортної документації
+63700000-6	Support services for land, water and air transport	2	f	Послуги з обслуговування наземних, водних або повітряних видів транспорту
+63710000-9	Support services for land transport	3	f	Послуги з обслуговування наземних видів транспорту
+63711000-6	Support services for railway transport	4	f	Послуги з обслуговування залізничного транспорту
+63711100-7	Train monitoring services	5	t	Послуги з моніторингу руху поїздів
+63711200-8	Moving workshops services	5	t	Послуги пересувних цехів
+63712000-3	Support services for road transport	4	f	Послуги з обслуговування автомобільного транспорту
+63712100-4	Bus station services	5	t	Послуги автовокзалів
+63712200-5	Highway operation services	5	f	Послуги з експлуатації автомобільних доріг
+63712210-8	Highway toll services	6	t	Послуги зі стягнення плати за користування автомобільними дорогами
+63712300-6	Bridge and tunnel operation services	5	f	Послуги з експлуатації мостів і тунелів
+63712310-9	Bridge operating services	6	f	Послуги з експлуатації мостів
+63712311-6	Bridge toll services	7	t	Послуги зі стягнення плати за користування мостами
+63712320-2	Tunnel operation services	6	f	Послуги з експлуатації тунелів
+63712321-9	Tunnel toll services	7	t	Послуги зі стягнення плати за користування тунелями
+63712400-7	Parking services	5	t	Паркувальні послуги
+63712500-8	Weighbridge services	5	t	Послуги операторів автомобільних ваг
+63712600-9	Vehicle refuelling services	5	t	Послуги із заправлення транспортних засобів
+63712700-0	Traffic control services	5	f	Послуги з керування дорожнім рухом
+63712710-3	Traffic monitoring services	6	t	Послуги з моніторингу дорожнього руху
+63720000-2	Support services for water transport	3	f	Послуги з обслуговування водних видів транспорту
+63721000-9	Port and waterway operation services and associated services	4	f	Послуги з експлуатації портів і водних шляхів та супутні послуги
+63721100-0	Bunkering services	5	t	Послуги з бункерування
+63721200-1	Port operation services	5	t	Послуги з експлуатації портів
+63721300-2	Waterway operation services	5	t	Послуги з експлуатації водних шляхів
+63721400-3	Ship refuelling services	5	t	Послуги із заправлення суден
+63721500-4	Passenger terminal operation services	5	t	Послуги з експлуатації пасажирських терміналів
+63722000-6	Ship-piloting services	4	t	Послуги лоцманів
+63723000-3	Berthing services	4	t	Послуги з причалювання
+63724000-0	Navigation services	4	f	Навігаційні послуги
+63724100-1	Offshore positioning services	5	f	Послуги з позиціонування суден у відкритому морі
+63724110-4	Lightship positioning services	6	t	Послуги з позиціонування пливучих маяків
+63724200-2	Lightship services	5	t	Послуги пливучих маяків
+63724300-3	Buoy positioning services	5	f	Послуги з позиціонування буїв
+63724310-6	Buoy marking services	6	t	Послуги з позначення за допомогою буїв
+63724400-4	Lighthouse services	5	t	Послуги маяків
+63725000-7	Salvage and refloating services	4	f	Послуги з рятування суден і знімання суден з мілини
+63725100-8	Vessel-salvaging services	5	t	Послуги з рятування суден
+63725200-9	Standby vessel services	5	t	Послуги резервних суден
+63725300-0	Vessel refloating services	5	t	Послуги зі знімання суден з мілини
+63726000-4	Miscellaneous water transport support services	4	f	Послуги з обслуговування водного транспорту різні
+63726100-5	Vessel registration services	5	t	Послуги з реєстрації суден
+63726200-6	Ice-breaking services	5	t	Послуги з ламання криги
+63726300-7	Vessel storage services	5	t	Послуги зі зберігання суден
+63726400-8	Ship chartering services	5	t	Послуги з фрахтування суден
+63726500-9	Vessel laying-up services	5	t	Послуги зі швартування суден
+63726600-0	Ship-operating services	5	f	Послуги з експлуатації суден
+63726610-3	Ship-launching services	6	t	Послуги зі спускання суден на воду
+63726620-6	ROV services	6	t	Послуги транспортних засобів із дистанційним керуванням
+63726700-1	Fishing-vessel services	5	t	Послуги риболовних суден
+63726800-2	Research vessel services	5	t	Послуги науково-дослідницьких суден
+63726900-3	Anchor handling services	5	t	Послуги з якорування
+63727000-1	Towing and pushing services of ships	4	f	Послуги з буксирування та штовхання суден
+63727100-2	Towing services	5	t	Послуги з буксирування суден
+63727200-3	Pushing services	5	t	Послуги зі штовхання суден
+63730000-5	Support services for air transport	3	f	Послуги з обслуговування повітряного транспорту
+63731000-2	Airport operation services	4	f	Послуги з експлуатації аеропортів
+63731100-3	Airport slot coordination services	5	t	Послуги з координування слотів аеропортів
+63732000-9	Air-traffic control services	4	t	Послуги з керування повітряним рухом
+64000000-6	Postal and telecommunications services	1	f	Поштові та телекомунікаційні послуги
+64100000-7	Post and courier services	2	f	Поштові та кур’єрські послуги
+64110000-0	Postal services	3	f	Поштові послуги
+64111000-7	Postal services related to newspapers and periodicals	4	t	Поштові послуги з доставки газет і періодичних видань
+64112000-4	Postal services related to letters	4	t	Поштові послуги з доставки письмової кореспонденції
+64113000-1	Postal services related to parcels	4	t	Поштові послуги з доставки пакунків
+64114000-8	Post office counter services	4	t	Послуги поштових відділень
+64115000-5	Mailbox rental	4	t	Оренда поштових скриньок
+64116000-2	Post-restante services	4	t	Поштові послуги «до запитання»
+64120000-3	Courier services	3	f	Кур’єрські послуги
+64121000-0	Multi-modal courier services	4	f	Кур’єрські послуги за мультимодальною системою
+64121100-1	Mail delivery services	5	t	Послуги з доставки пошти
+64121200-2	Parcel delivery services	5	t	Послуги з доставки пакунків
+64122000-7	Internal office mail and messenger services	4	t	Послуги з доставки пошти і повідомлень у межах організації
+64200000-8	Telecommunications services	2	f	Телекомунікаційні послуги
+64210000-1	Telephone and data transmission services	3	f	Послуги телефонного зв’язку та передачі даних
+64211000-8	Public-telephone services	4	f	Послуги громадського телефонного зв’язку
+64211100-9	Local telephone services	5	t	Послуги міського телефонного зв’язку
+64211200-0	Long distance telephone services	5	t	Послуги міжміського телефонного зв’язку
+64212000-5	Mobile-telephone services	4	f	Послуги мобільного телефонного зв’язку
+64212100-6	Short Message Service (SMS) services	5	t	Послуги служби коротких повідомлень (SMS)
+64212200-7	Enhanced Messaging Service (EMS) services	5	t	Послуги служби розширених повідомлень (EMS)
+64212300-8	Multimedia Message Service (MMS) services	5	t	Послуги служби мультимедійних повідомлень (MMS)
+64212400-9	Wireless Application Protocol (WAP) services	5	t	Послуги передачі даних за протоколом бездротового доступу (WAP)
+64212500-0	General Packet Radio Services (GPRS) services	5	t	Послуги загального сервісу пакетної радіопередачі (GMRS)
+64212600-1	Enhanced Data for GSM Evolution (EDGE) services	5	t	Послуги передачі великих обсягів даних у мережі мобільного зв’язку за технологією EDGE
+64212700-2	Universal Mobile Telephone System (UMTS) services	5	t	Послуги універсальної мобільної системи телефонії (UMTS)
+64212800-3	Pay phone provider services	5	t	Послуги провайдерів таксофонного зв’язку
+64212900-4	Pre-paid phone card provider services	5	t	Послуги провайдерів передоплатного телефонного зв’язку за телефонними картками
+64213000-2	Shared-business telephone network services	4	t	Послуги офісних міні-АТС
+64214000-9	Dedicated-business telephone network services	4	f	Послуги офісних міні-АТС спеціального призначення
+64214100-0	Satellite circuit rental services	5	t	Послуги з оренди каналу супутникового зв’язку
+64214200-1	Telephone switchboard services	5	t	Послуги телефонних комутаторів
+64214400-3	Communication land-line rental	5	t	Оренда наземних ліній зв’язку
+64215000-6	IP telephone services	4	t	Послуги ІР-телефонії
+64216000-3	Electronic message and information services	4	f	Послуги систем електронної передачі електронних повідомлень та інформації
+64216100-4	Electronic message services	5	f	Послуги систем електронної передачі електронних повідомлень
+64216110-7	Electronic data exchange services	6	t	Послуги систем електронного обміну даними
+64216120-0	Electronic mail services	6	t	Послуги електронної пошти
+64216130-3	Telex services	6	t	Послуги телексного зв’язку
+64216140-6	Telegraph services	6	t	Послуги телеграфного зв’язку
+64216200-5	Electronic information services	5	f	Електронні інформаційні послуги
+64216210-8	Value-added information services	6	t	Додаткові інформаційні послуги
+64216300-6	Teletext services	5	t	Послуги телетекстового зв’язку
+64220000-4	Telecommunication services except telephone and data transmission services	3	f	Телекомунікаційні послуги, крім послуг телефонного зв’язку і передачі даних
+64221000-1	Interconnection services	4	t	Послуги з під’єднання
+64222000-8	Teleworking services	4	t	Послуги, пов’язані з дистанційною роботою
+64223000-5	Paging services	4	t	Послуги пейджингового зв’язку
+64224000-2	Teleconferencing services	4	t	Послуги зв’язку з режимі телеконференції
+64225000-9	Air-to-ground telecommunications services	4	t	Послуги телекомунікаційного зв’язку каналом «повітря – земля»
+64226000-6	Telematics services	4	t	Телематичні послуги
+64227000-3	Integrated telecommunications services	4	t	Інтегровані телекомунікаційні послуги
+64228000-0	Television and radio broadcast transmission services	4	f	Послуги з транслювання теле- та радіопередач
+64228100-1	Television broadcast transmission services	5	t	Послуги з транслювання телепередач
+64228200-2	Radio broadcast transmission services	5	t	Послуги з транслювання радіопередач
+65000000-3	Public utilities	1	f	Комунальні послуги
+65100000-4	Water distribution and related services	2	f	Послуги з розподілу води та супутні послуги
+65110000-7	Water distribution	3	f	Розподіл води
+65111000-4	Drinking-water distribution	4	t	Розподіл питної води
+65120000-0	Operation of a water-purification plant	3	f	Експлуатація водоочищувальних станцій
+65121000-7	Water demineralisation services	4	t	Послуги з демінералізації води
+65122000-0	Water desalination services	4	t	Послуги з опріснення води
+65123000-3	Water softening services	4	t	Послуги з пом’якшення води
+65130000-3	Operation of water supplies	3	t	Експлуатування систем водопостачання
+65200000-5	Gas distribution and related services	2	f	Послуги з розподілу газу та супутні послуги
+65210000-8	Gas distribution	3	t	Розподіл газу
+65300000-6	Electricity distribution and related services	2	f	Розподіл електричної енергії та супутні послуги
+65310000-9	Electricity distribution	3	t	Розподіл електричної енергії
+65320000-2	Operation of electrical installations	3	t	Експлуатація електричних установок
+65400000-7	Other sources of energy supplies and distribution	2	f	Інші джерела постачання та розподілу енергії
+65410000-0	Operation of a power plant	3	t	Експлуатація енергетичних станцій
+65500000-8	Meter reading service	2	t	Послуги з реєстрації показів лічильників
+66000000-0	Financial and insurance services	1	f	Фінансові та страхові послуги
+66100000-1	Banking and investment services	2	f	Банківські та інвестиційні послуги
+66110000-4	Banking services	3	f	Банківські послуги
+66111000-1	Central bank services	4	t	Послуги центральних банків
+66112000-8	Deposit services	4	t	Депозитні послуги
+66113000-5	Credit granting services	4	f	Послуги з кредитування
+66113100-6	Micro-credit granting services	5	t	Послуги з мікрокредитування
+66114000-2	Financial leasing services	4	t	Послуги у сфері фінансового лізингу
+66115000-9	International payment transfer services	4	t	Послуги з міжнародних розрахунків
+66120000-7	Investment banking services and related services	3	f	Послуги у сфері банківських інвестицій і супутні послуги
+66121000-4	Mergers and acquisition services	4	t	Послуги, пов’язані зі злиттями і поглинаннями
+66122000-1	Corporate finance and venture capital services	4	t	Послуги у сфері корпоративного фінансування та венчурного капіталу
+66130000-0	Brokerage and related securities and commodities services	3	f	Брокерські послуги та пов’язані послуги на ринках цінних паперів і товарів
+66131000-7	Security brokerage services	4	f	Брокерські послуги на ринках цінних паперів
+66131100-8	Pension investment services	5	t	Послуги у сфері пенсійного інвестування
+66132000-4	Commodity brokerage services	4	t	Брокерські послуги на ринках товарів
+66133000-1	Processing and clearing services	4	t	Послуги з митного оформлення та розмитнення
+66140000-3	Portfolio management services	3	f	Послуги з управління портфелями активів
+66141000-0	Pension fund management services	4	t	Послуги з управління пенсійними фондами
+66150000-6	Financial markets administration services	3	f	Послуги з управління фінансовими ринками
+66151000-3	Financial market operational services	4	f	Послуги з оперативного управління фінансовими ринками
+66151100-4	Electronic marketplace retailing services	5	t	Послуги з роздрібної торгівлі на електронних ринках
+66152000-0	Financial market regulatory services	4	t	Послуги з регулювання фінансових ринків
+66160000-9	Trust and custody services	3	f	Послуги з довірчого управління та депозитарного зберігання
+66161000-6	Trust services	4	t	Послуги з довірчого управління
+66162000-3	Custody services	4	t	Послуги з депозитарного зберігання
+66170000-2	Financial consultancy, financial transaction processing and clearing-house services	3	f	Послуги з надання фінансових консультацій, обробки фінансових транзакцій і клірингові послуги
+66171000-9	Financial consultancy services	4	t	Послуги з надання фінансових консультацій
+66172000-6	Financial transaction processing and clearing-house services	4	t	Послуги з обробки фінансових транзакцій і клірингові послуги
+66180000-5	Foreign exchange services	3	t	Послуги з обміну іноземних валют
+66190000-8	Loan brokerage services	3	t	Послуги кредитних брокерів
+66500000-5	Insurance and pension services	2	f	Страхові та пенсійні послуги
+66510000-8	Insurance services	3	f	Страхові послуги
+66511000-5	Life insurance services	4	t	Послуги зі страхування життя
+66512000-2	Accident and health insurance services	4	f	Послуги зі страхування від нещасних випадків і страхування здоров’я
+66512100-3	Accident insurance services	5	t	Послуги зі страхування від нещасних випадків
+66512200-4	Health insurance services	5	f	Послуги зі страхування здоров’я
+66512210-7	Voluntary health insurance services	6	t	Послуги з добровільного страхування здоров’я
+66512220-0	Medical insurance services	6	t	Послуги з медичного страхування
+66513000-9	Legal insurance and all-risk insurance services	4	f	Послуги зі страхування юридичних витрат і страхування від усіх ризиків
+66513100-0	Legal expenses insurance services	5	t	Послуги зі страхування юридичних витрат
+66513200-1	Contractor's all-risk insurance services	5	t	Послуги зі страхування підрядників від усіх ризиків
 66514000-6	Freight insurance and Insurance services relating to transport	4	f	Послуги зі страхування вантажів та послуги з транспортного страхування
 66514100-7	Insurance related to Transport	5	f	Транспортне страхування
 66514110-0	Motor vehicle insurance services	6	t	Послуги зі страхування транспортних засобів
@@ -10354,7 +10380,7 @@ travel agencies services  1  f  Додаткові та допоміжні тр�
 92310000-7	Artistic and literary creation and interpretation services	3	f	Послуги зі створювання та інтерпретування мистецьких і літературних творів
 92311000-4	Works of art	4	t	Витвори мистецтва
 92312000-1	Artistic services	4	f	Мистецькі послуги
-92312100-2	Theatrical producers', singer groups', bands' AND orchestras' entertainment services	5	f	Розважальні послуги театральних продюсерів, співочих і музичних гуртів та оркестрів
+92312100-2	Theatrical producers', singer groups', bands' and orchestras' entertainment services	5	f	Розважальні послуги театральних продюсерів, співочих і музичних гуртів та оркестрів
 92312110-5	Theatrical producer entertainment services	6	t	Розважальні послуги театральних продюсерів
 92312120-8	Singer group entertainment services	6	t	Розважальні послуги співочих гуртів
 92312130-1	Band entertainment services	6	t	Розважальні послуги музичних гуртів
@@ -10444,66 +10470,66 @@ travel agencies services  1  f  Додаткові та допоміжні тр�
 98316000-1	Dyeing services	4	t	Послуги з фарбування
 98320000-2	Hairdressing and beauty treatment services	3	f	Послуги перукарень і салонів краси
 98321000-9	Hairdressing services	4	f	Послуги жіночого перукаря
-98321100-0	Barbers' services  5  t  Послуги чоловічого перукаря
-98322000-6  Beauty treatment services  4  f  Послуги салонів краси
-98322100-7  Cosmetic treatment, manicuring AND pedicuring services  5  f  Косметичні, манікюрні та педикюрні послуги
-98322110-0  Cosmetic treatment services  6  t  Косметичні послуги
-98322120-3  Manicuring services  6  t  Манікюрні послуги
-98322130-6  Pedicuring services  6  t  Педикюрні послуги
-98322140-9  Make-up services  6  t  Послуги візажиста
-98330000-5  Physical well-being services  3  f  Послуги у сфері фітнесу та догляду за тілом
-98331000-2  Turkish bath services  4  t  Послуги турецьких лазень
-98332000-9  Spa services  4  t  Спа-послуги
-98333000-6  Massage services  4  t  Масажні послуги
-98334000-3  Wellness services  4  t  Велнес-послуги
-98336000-7  Training, workout OR aerobic services  4  t  Послуги у сфері спортивних тренувань, фізичних вправ та аеробіки
-98340000-8  Accommodation AND office services  3  f  Послуги з тимчасового розміщення (проживання) та офісні послуги
-98341000-5  Accommodation services  4  f  Послуги з тимчасового розміщення (проживання)
-98341100-6  Accommodation management services  5  f  Управлінські послуги у сфері тимчасового розміщення (проживання)
-98341110-9  Housekeeping services  6  t  Послуги з ведення домашнього господарства
-98341120-2  Portering services  6  t  Послуги консьєржів
-98341130-5  Janitorial services  6  t  Послуги з прибирання
-98341140-8  Caretaker services  6  t  Послуги з доглядання за будинками
-98342000-2 WORK environment services  4  t  Послуги у сфері організації робочого середовища
-98350000-1  Civic-amenity services  3  f  Послуги громадських пунктів збору та переробки сміття
-98351000-8  Car park management services  4  f  Послуги з управління автостоянками
-98351100-9  Car park services  5  f  Послуги автостоянок
-98351110-2  Parking enforcement services  6  t  Послуги з контролю оплати послуг автостоянок
-98360000-4  Marine services  3  f  Послуги у сфері морських перевезень
-98361000-1  Aquatic marine services  4  t  Послуги, пов’язані з використанням морської акваторії
-98362000-8  Port management services  4  f  Послуги з управління портами
-98362100-9  Marine-base support services  5  t  Послуги з обслуговування морських баз
-98363000-5  Diving services  4  t  Послуги водолазів
-98370000-7  Funeral AND related services  3  f  Поховальні та супутні послуги
-98371000-4  Funeral services  4  f  Поховальні послуги
-98371100-5  Cemetery services AND cremation services  5  f  Послуги кладовищ і крематоріїв
-98371110-8  Cemetery services  6  f  Послуги кладовищ
-98371111-5  Cemetery maintenance services  7  t  Послуги з обслуговування кладовищ
-98371120-1  Cremation services  6  t  Послуги крематоріїв
-98371200-6  Undertaking services  5  t  Ритуальні послуги
-98380000-0  Dog kennel services  3  t  Послуги собачих розплідників
-98390000-3  Other services  3  f  Інші послуги
-98391000-0  Decommissioning services  4  t  Послуги виведення з експлуатації
-98392000-7  Relocation services  4  t  Послуги з передислокування
-98393000-4  Tailoring services  4  t  Кравецькі послуги
-98394000-1  Upholstering services  4  t  Послуги з оббивання
-98395000-8  Locksmith services  4  t  Слюсарські послуги
-98396000-5  Instrument tuning services  4  t  Послуги з настроювання музичних інструментів
-98500000 - 8  Private households WITH employed persons  2  f  Послуги приватних домогосподарств із найманим працівниками
-                                                        98510000-1  Services OF commercial AND industrial workers  3  f  Послуги працівників у сфері торгівлі та промисловості
-                                                                                                                                 98511000-8  Services OF commercial workers  4  t  Послуги працівників у сфері торгівлі
-98512000-5  Services OF industrial workers  4  t  Послуги працівників у сфері промисловості
-                                                          98513000-2  Manpower services FOR households  4  f  Послуги із забезпечення домогосподарств робочою силою
-                                                                                            98513100-3  Agency staff services FOR households  5  t  Послуги агентств з підбору персоналу для домогосподарств
-                                                                                                                                                            98513200-4  Clerical staff services FOR households  5  t  Послуги конторського персоналу для домогосподарств
-                                                                                                                                                                                                                                                         98513300-5 TEMPORARY staff FOR households  5  f  Послуги тимчасового персоналу для домогосподарств
-                                                                                                                                                                                                                                                                                                          98513310-8  Home-help services  6  t  Послуги хатніх робітниць
-                                                                                                                                                                                                                                                                                                                           98514000-9  Domestic services  4  t  Побутові послуги
-                                                                                                                                                                                                                                                                                                                                       98900000-2  Services provided BY extra-territorial organisations AND bodies  2  f  Послуги іноземних організацій та органів
-                                                                                                                                                                                                                                                                                                                                                                                                                          98910000-5  Services specific TO international organisations AND bodies  3  t  Послуги міжнародних організацій та органів
-                                               \.
+98321100-0	Barbers' services	5	t	Послуги чоловічого перукаря
+98322000-6	Beauty treatment services	4	f	Послуги салонів краси
+98322100-7	Cosmetic treatment, manicuring and pedicuring services	5	f	Косметичні, манікюрні та педикюрні послуги
+98322110-0	Cosmetic treatment services	6	t	Косметичні послуги
+98322120-3	Manicuring services	6	t	Манікюрні послуги
+98322130-6	Pedicuring services	6	t	Педикюрні послуги
+98322140-9	Make-up services	6	t	Послуги візажиста
+98330000-5	Physical well-being services	3	f	Послуги у сфері фітнесу та догляду за тілом
+98331000-2	Turkish bath services	4	t	Послуги турецьких лазень
+98332000-9	Spa services	4	t	Спа-послуги
+98333000-6	Massage services	4	t	Масажні послуги
+98334000-3	Wellness services	4	t	Велнес-послуги
+98336000-7	Training, workout or aerobic services	4	t	Послуги у сфері спортивних тренувань, фізичних вправ та аеробіки
+98340000-8	Accommodation and office services	3	f	Послуги з тимчасового розміщення (проживання) та офісні послуги
+98341000-5	Accommodation services	4	f	Послуги з тимчасового розміщення (проживання)
+98341100-6	Accommodation management services	5	f	Управлінські послуги у сфері тимчасового розміщення (проживання)
+98341110-9	Housekeeping services	6	t	Послуги з ведення домашнього господарства
+98341120-2	Portering services	6	t	Послуги консьєржів
+98341130-5	Janitorial services	6	t	Послуги з прибирання
+98341140-8	Caretaker services	6	t	Послуги з доглядання за будинками
+98342000-2	Work environment services	4	t	Послуги у сфері організації робочого середовища
+98350000-1	Civic-amenity services	3	f	Послуги громадських пунктів збору та переробки сміття
+98351000-8	Car park management services	4	f	Послуги з управління автостоянками
+98351100-9	Car park services	5	f	Послуги автостоянок
+98351110-2	Parking enforcement services	6	t	Послуги з контролю оплати послуг автостоянок
+98360000-4	Marine services	3	f	Послуги у сфері морських перевезень
+98361000-1	Aquatic marine services	4	t	Послуги, пов’язані з використанням морської акваторії
+98362000-8	Port management services	4	f	Послуги з управління портами
+98362100-9	Marine-base support services	5	t	Послуги з обслуговування морських баз
+98363000-5	Diving services	4	t	Послуги водолазів
+98370000-7	Funeral and related services	3	f	Поховальні та супутні послуги
+98371000-4	Funeral services	4	f	Поховальні послуги
+98371100-5	Cemetery services and cremation services	5	f	Послуги кладовищ і крематоріїв
+98371110-8	Cemetery services	6	f	Послуги кладовищ
+98371111-5	Cemetery maintenance services	7	t	Послуги з обслуговування кладовищ
+98371120-1	Cremation services	6	t	Послуги крематоріїв
+98371200-6	Undertaking services	5	t	Ритуальні послуги
+98380000-0	Dog kennel services	3	t	Послуги собачих розплідників
+98390000-3	Other services	3	f	Інші послуги
+98391000-0	Decommissioning services	4	t	Послуги виведення з експлуатації
+98392000-7	Relocation services	4	t	Послуги з передислокування
+98393000-4	Tailoring services	4	t	Кравецькі послуги
+98394000-1	Upholstering services	4	t	Послуги з оббивання
+98395000-8	Locksmith services	4	t	Слюсарські послуги
+98396000-5	Instrument tuning services	4	t	Послуги з настроювання музичних інструментів
+98500000-8	Private households with employed persons	2	f	Послуги приватних домогосподарств із найманим працівниками
+98510000-1	Services of commercial and industrial workers	3	f	Послуги працівників у сфері торгівлі та промисловості
+98511000-8	Services of commercial workers	4	t	Послуги працівників у сфері торгівлі
+98512000-5	Services of industrial workers	4	t	Послуги працівників у сфері промисловості
+98513000-2	Manpower services for households	4	f	Послуги із забезпечення домогосподарств робочою силою
+98513100-3	Agency staff services for households	5	t	Послуги агентств з підбору персоналу для домогосподарств
+98513200-4	Clerical staff services for households	5	t	Послуги конторського персоналу для домогосподарств
+98513300-5	Temporary staff for households	5	f	Послуги тимчасового персоналу для домогосподарств
+98513310-8	Home-help services	6	t	Послуги хатніх робітниць
+98514000-9	Domestic services	4	t	Побутові послуги
+98900000-2	Services provided by extra-territorial organisations and bodies	2	f	Послуги іноземних організацій та органів
+98910000-5	Services specific to international organisations and bodies	3	t	Послуги міжнародних організацій та органів
+\.
 
-                                               \echo 'All done!'
+\echo 'All done!'
 
 --
 -- PostgreSQL database dump complete
