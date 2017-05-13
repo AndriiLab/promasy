@@ -126,7 +126,7 @@ public class CreateEmployeeDialog extends JDialog {
             }
         });
 
-        addOrganizationButton.addActionListener(e -> parent.getEditOrgDialog().setVisible(true));
+        addOrganizationButton.addActionListener(e -> parent.setEditOrgDialogVisible());
         okButton.addActionListener(e -> {
             if (isValidFields() && listener != null) {
                 if (currentEmployeeModel.getModelId() == 0) {

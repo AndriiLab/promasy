@@ -20,7 +20,7 @@ public class RegistrationQueries {
         if (model != null) {
             registrationNumber = model.getRegistrationTicketNumber();
 
-            model.setRegistrationTicketNumber(--registrationNumber);
+            model.setRegistrationTicketNumber(registrationNumber <= 0 ? 0 : --registrationNumber);
 
         } else {
             // TODO change to function

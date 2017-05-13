@@ -42,7 +42,7 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
 
             <!-- Create/update tables automatically using mapping metadata -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
 
             <property name="hibernate.format_sql" value="true"/>
         </properties>

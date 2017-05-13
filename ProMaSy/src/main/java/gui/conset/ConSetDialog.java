@@ -1,5 +1,6 @@
 package gui.conset;
 
+import gui.MainFrame;
 import gui.commons.Labels;
 import model.models.ConnectionSettingsModel;
 
@@ -17,9 +18,9 @@ public class ConSetDialog extends JDialog {
     private JTextField dbField;
     private JTextField userField;
     private JPasswordField passField;
-    private ConSetListener prefsListener;
+    private ConSetListener listener;
 
-    public ConSetDialog(JFrame parent) {
+    public ConSetDialog(MainFrame parent) {
         super(parent, Labels.getProperty("connectionWithDBSettings"), true);
 
         okButton = new JButton(Labels.getProperty("okBtn"));
@@ -46,12 +47,17 @@ public class ConSetDialog extends JDialog {
             ConnectionSettingsModel model = new ConnectionSettingsModel(server, database, schema, portNumber, user,
                     String.valueOf(password));
 
-            if (prefsListener != null) {
-                prefsListener.preferencesSetEventOccurred(model);
+            if (listener != null) {
+                listener.preferencesSetEventOccurred(model);
             }
         });
 
-        cancelButton.addActionListener(e -> setVisible(false));
+        cancelButton.addActionListener(e -> {
+            setVisible(false);
+            if (!parent.isVisible() && listener != null) {
+                listener.forceCloseEventOccurred();
+            }
+        });
 
         setSize(500, 180);
         setResizable(false);
@@ -160,7 +166,7 @@ public class ConSetDialog extends JDialog {
     }
 
     public void setConSetListener(ConSetListener prefsListener) {
-        this.prefsListener = prefsListener;
+        this.listener = prefsListener;
     }
 
     public void setDefaults(ConnectionSettingsModel model) {

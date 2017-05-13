@@ -6,4 +6,6 @@ public interface ConSetListener {
 
 	void preferencesSetEventOccurred(ConnectionSettingsModel model);
 
+    void forceCloseEventOccurred();
+
 }

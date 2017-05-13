@@ -95,7 +95,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                 } else if (key == KeyEvent.VK_ENTER) {
                     printResult();
                 } else if (key == KeyEvent.VK_BACK_SPACE) {
-                    removeNum();
+                    removeSymbol();
                 } else if (key == KeyEvent.VK_COMMA || key == KeyEvent.VK_PERIOD || key == KeyEvent.VK_DECIMAL) {
                     printPeriod();
                 } else if (key == KeyEvent.VK_PLUS ||
@@ -127,7 +127,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                         clear();
                         break;
                     case "<":
-                        removeNum();
+                        removeSymbol();
                         break;
                     case ".":
                         printPeriod();
@@ -152,12 +152,16 @@ public class CalculatorDialog extends JDialog implements ActionListener {
     }
 
     private void printOperator(String btnText) {
-        if (operator != null) {
+        if (sb.length() > 0 && operator != null) {
             printResult();
         }
         if (sb.length() == 0) {
-            panelAdd(String.valueOf(result), Colors.BLUE);
-            number1 = result;
+            if (number1 == null) {
+                panelAdd(String.valueOf(result), Colors.BLUE);
+                number1 = result;
+            } else {
+                removeSymbol();
+            }
 
         } else {
             number1 = new BigDecimal(sb.toString());
@@ -174,15 +178,17 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         printNumber(".");
     }
 
-    private void removeNum() {
+    private void removeSymbol() {
         if (logPane.getStyledDocument().getLength() > 0 && sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
             panelRemove(logPane.getStyledDocument().getLength() - 1, 1);
+        } else if (logPane.getStyledDocument().getLength() > 2) {
+            panelRemove(logPane.getStyledDocument().getLength() - 3, 3);
         }
     }
 
     private void printResult() {
-        if (sb.length() > 0) {
+        if (sb.length() > 0 && operator != null) {
             number2 = new BigDecimal(sb.toString());
             calculateResult();
             panelAdd("\n=\n" + result + "\n", Colors.RED_LIGHT_SELECTED);

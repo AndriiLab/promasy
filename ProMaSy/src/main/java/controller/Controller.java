@@ -11,6 +11,7 @@ import gui.bids.BidsListPanelListener;
 import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
+import gui.conset.ConSetListener;
 import gui.cpv.CpvReqEvent;
 import gui.cpv.CpvSearchListener;
 import gui.employee.CreateEmployeeDialogListener;
@@ -53,20 +54,12 @@ public class Controller {
         this.mainFrame = mainFrame;
 
         parseArgs(args);
-
-        //precompiling report files
-        try {
-            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.BIDS_REPORT, mainFrame);
-            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.CPV_AMOUNT_REPORT, mainFrame);
-        } catch (IOException e) {
-            Logger.errorEvent(mainFrame, e);
-        }
-
+        precompileReports();
         initPrimaryListeners();
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
-        setConnectionSettings();
+        loadConnectionSettings();
 
         //show ConSettDialog if it was defined in command line arguments
         if (parameters.contains("connectionSettings")) {
@@ -83,18 +76,35 @@ public class Controller {
         mainFrame.showLoginPane();
     }
 
+    private void precompileReports() {
+        try {
+            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.BIDS_REPORT, mainFrame);
+            ReportsGenerator.compileReportFileIfNew(ReportsGenerator.CPV_AMOUNT_REPORT, mainFrame);
+        } catch (IOException e) {
+            Logger.errorEvent(mainFrame, e);
+        }
+    }
+
     private void initPrimaryListeners() {
         // if user entered new settings for connection to DB - putting them to Prefs
-        mainFrame.setConSetListener(model -> {
-            try {
-                Utils.saveConnectionSettings(model);
-            } catch (IOException e) {
-                Logger.errorEvent(mainFrame, e);
+        mainFrame.setConSetListener(new ConSetListener() {
+            @Override
+            public void preferencesSetEventOccurred(ConnectionSettingsModel model) {
+                try {
+                    Utils.saveConnectionSettings(model);
+                } catch (IOException e) {
+                    Logger.errorEvent(mainFrame, e);
+                }
+
+                // trying to connect with new settings
+                loadConnectionSettings();
+                connect();
             }
 
-            // trying to connect with new settings
-            setConnectionSettings();
-            connect();
+            @Override
+            public void forceCloseEventOccurred() {
+                close();
+            }
         });
 
         // init LoginListener here, because loginDialog appears before the MainFrame
@@ -146,32 +156,26 @@ public class Controller {
 
         // setting listener to MainFrame
         mainFrame.setMainFrameListener(new MainFrameListener() {
-
             @Override
-            public List<EmployeeModel> searchForPerson(Role role, long selectedDepartmentId) {
-                return getEmployees(role, selectedDepartmentId);
+            public List<EmployeeModel> searchForPerson(Role role, long depId) {
+                return getEmployees(role, depId);
             }
-
             @Override
             public List<EmployeeModel> searchForPerson(Role role) {
                 return getEmployees(role);
             }
-
             @Override
             public void exitEventOccurred() {
                 closeDialog();
             }
-
             @Override
             public void setMinimumVersionEventOccurred() {
                 setCurrentVersionAsMinimum();
             }
-
             @Override
-            public void getAllDepartments(InstituteModel institute) {
-                mainFrame.setDepartmentModelList(getDepartments(institute.getModelId()));
+            public void getAllDepartments(InstituteModel inst) {
+                mainFrame.setDepartmentModelList(getDepartments(inst.getModelId()));
             }
-
             @Override
             public CPVModel validateCpv(String cpvCode) {
                 return Database.CPV.validateCode(cpvCode);
@@ -183,7 +187,6 @@ public class Controller {
             public void cpvSelectionEventOccurred(CpvReqEvent ev) {
                 mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest()));
             }
-
             @Override
             public void getTopCodes() {
                 mainFrame.setCpvModelList(getCpvRequest(""));
@@ -196,7 +199,6 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setEmployeeModelList(getEmployees());
             }
-
             @Override
             public void getAllEmployees() {
                 mainFrame.setEmployeeModelList(getEmployees());
@@ -204,18 +206,15 @@ public class Controller {
         });
 
         mainFrame.setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
-
             @Override
             public void persistModelEventOccurred(EmployeeModel model) {
                 createOrUpdate(model);
                 mainFrame.setEmployeeModelList(getEmployees());
             }
-
             @Override
             public boolean checkUniqueLogin(String login) {
                 return isLoginUnique(login);
             }
-
             @Override
             public void loadInstitutes() {
                 mainFrame.setInstituteModelList(getInstRequest());
@@ -223,25 +222,21 @@ public class Controller {
         });
 
         mainFrame.setOrganizationDialogListener(new OrganizationDialogListener() {
-
             @Override
             public void persistModelEventOccurred(InstituteModel model) {
                 createOrUpdate(model);
                 mainFrame.setInstituteModelList(getInstRequest());
             }
-
             @Override
             public void persistModelEventOccurred(DepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setDepartmentModelList(getDepartments(model.getInstitute().getModelId()));
             }
-
             @Override
             public void persistModelEventOccurred(SubdepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setSubdepartmentModelList(getSubdepRequest(model.getDepartment().getModelId()));
             }
-
             @Override
             public void getAllInstitutes() {
                 mainFrame.setInstituteModelList(getInstRequest());
@@ -254,7 +249,6 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setAmountUnitsModelList(getAmUnits());
             }
-
             @Override
             public void getAllEntries() {
                 mainFrame.setAmountUnitsModelList(getAmUnits());
@@ -267,7 +261,6 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setProducerModelList(getProd());
             }
-
             @Override
             public void getAllEntries() {
                 mainFrame.setProducerModelList(getProd());
@@ -280,7 +273,6 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setSupplierModelList(getSupl());
             }
-
             @Override
             public void getAllEntries() {
                 mainFrame.setSupplierModelList(getSupl());
@@ -293,7 +285,6 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setReasonsModelList(getReasons());
             }
-
             @Override
             public void getAllEntries() {
                 mainFrame.setReasonsModelList(getReasons());
@@ -306,23 +297,19 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
-
             @Override
             public void persistModelEventOccurred(FinanceDepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(model.getModelId()));
             }
-
             @Override
             public void loadDepartments() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
             }
-
             @Override
             public void getFinancesByDepartment(DepartmentModel department) {
                 mainFrame.setFinanceModelList(getFinanceByDepartment(department));
             }
-
             @Override
             public void getAllData() {
                 mainFrame.setFinanceModelList(getFinances());
@@ -335,33 +322,27 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
-
             @Override
             public void persistModelEventOccurred(BidStatusModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
-
             @Override
             public void selectAllBidsEventOccurred(BidType type) {
                 mainFrame.setBidModelList(getBids(type));
             }
-
             @Override
             public void getBidsByDepartment(BidType type, DepartmentModel selectedDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedDepartmentModel));
             }
-
             @Override
             public void getBidsBySubdepartment(BidType type, SubdepartmentModel selectedSubdepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedSubdepartmentModel));
             }
-
             @Override
             public void getBidsByFinanceDepartment(BidType type, FinanceDepartmentModel selectedFinanceDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
             }
-
             @Override
             public void getAllData() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
@@ -373,12 +354,12 @@ public class Controller {
         });
 
         mainFrame.setReportParametersDialogListener(new ReportParametersDialogListener() {
-
             @Override
             public void roleSelectionOccurred(Role role) {
                 mainFrame.setEmployeeModelList(getEmployees(role));
             }
 
+            @Override
             public void reportParametersSelectionOccurred(Map<String, Object> parameters) {
                 mainFrame.bidListPrint(parameters);
             }
@@ -389,7 +370,6 @@ public class Controller {
             public void getData() {
                 mainFrame.setCpvAmountDialogList(getCpvAmount());
             }
-
             @Override
             public String getEmployeeName(Role role) {
                 List<EmployeeModel> models = getEmployees(role);
@@ -405,7 +385,7 @@ public class Controller {
     private void checkVersion() {
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
-        Logger.infoEvent(mainFrame, "Your vesrion: " + currentVersion.get() + " DB version: " + dbVersion.get());
+        Logger.infoEvent(mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
         if (currentVersion.compareTo(dbVersion) == -1) {
             JOptionPane.showMessageDialog(mainFrame,
                     Labels.getProperty("youCantUseThisVersion") + "\n" +
@@ -421,7 +401,7 @@ public class Controller {
     private void checkFirstRun() {
         if (isFirstRun()) {
             int option = JOptionPane.showConfirmDialog(mainFrame, Labels.getProperty("firstRunLong"), Labels.getProperty("firstRun"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
-            if (option == JOptionPane.OK_OPTION) {
+            if (option == JOptionPane.YES_OPTION) {
                 createAdmin();
             } else if (option == JOptionPane.NO_OPTION) {
                 closeDialog();
@@ -458,7 +438,7 @@ public class Controller {
     }
 
     // sets connection settings to Properties object
-    private void setConnectionSettings() {
+    private void loadConnectionSettings() {
         ConnectionSettingsModel model = null;
         try {
             model = Utils.loadConnectionSettings();
@@ -470,7 +450,12 @@ public class Controller {
             Logger.errorEvent(mainFrame, e);
         }
 
+        if (parameters.contains("tableUpdater")) {
+            model.getProperties().put("hibernate.hbm2ddl.auto", "update");
+        }
+
         this.conSet = model;
+
         mainFrame.setDefaultConnectionSettings(model);
     }
 
@@ -774,13 +759,16 @@ public class Controller {
     private void parseArgs(String[] args) {
         parameters = new ArrayList<>();
         for (String arg : args) {
-            if (arg.contains("-c") || arg.contains("--connectionSettings")) {
+            if (arg.contains("-c") || arg.contains("--config")) {
                 parameters.add("connectionSettings");
+            }
+            if (arg.contains("-g") || arg.contains("--generate")) {
+                parameters.add("tableUpdater");
             }
             if (arg.contains("-s") || arg.contains("--statistics")) {
                 parameters.add("connectionStatistics");
             }
-            if (arg.contains("-l") || arg.contains("--logSave")) {
+            if (arg.contains("-l") || arg.contains("--log")) {
                 parameters.add("logSave");
             }
         }

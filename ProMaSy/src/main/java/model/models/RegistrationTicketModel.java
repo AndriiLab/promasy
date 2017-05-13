@@ -23,7 +23,7 @@ public class RegistrationTicketModel {
     }
 
     public RegistrationTicketModel(int registrationTicketNumber) {
-        this.registrationTicketNumber = registrationTicketNumber;
+        this.registrationTicketNumber = registrationTicketNumber < 0 ? 0 : registrationTicketNumber;
     }
 
     public int getRegistrationTicketNumber() {
@@ -31,6 +31,6 @@ public class RegistrationTicketModel {
     }
 
     public void setRegistrationTicketNumber(int registrationTicketNumber) {
-        this.registrationTicketNumber = registrationTicketNumber;
+        this.registrationTicketNumber = registrationTicketNumber < 0 ? 0 : registrationTicketNumber;
     }
 }

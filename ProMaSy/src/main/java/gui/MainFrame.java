@@ -222,7 +222,6 @@ public class MainFrame extends JFrame {
             public void exportToTableEventOccurred() {
                 onExportToTableClick();
             }
-
             @Override
             public void refreshTable() {
                 onRefreshClick();
@@ -234,64 +233,52 @@ public class MainFrame extends JFrame {
             public void showEmpEditDialog() {
                 editEmpDialog.setVisible(true);
             }
-
             @Override
             public void showEditOrgDialog() {
                 editOrgDialog.setVisible(true);
             }
-
             @Override
             public void showConSetDialog() {
                 conSettDialog.setVisible(true);
             }
-
             @Override
             public void printAction() {
                 onPrintClick();
             }
-
             @Override
             public void exportToTableAction() {
                 onExportToTableClick();
             }
-
             @Override
             public void showCpvAmountDialog() {
                 cpvAmountDialog.setVisible(true);
             }
-
             @Override
             public void showAmUnitsDialog() {
                 amUnitsDialog.setVisible(true);
             }
-
             @Override
             public void showProducerDialog() {
                 producerDialog.setVisible(true);
             }
-
             @Override
             public void showSupplierDialog() {
                 supplierDialog.setVisible(true);
             }
-
             @Override
             public void editCurrentUserAction() {
                 createEmployeeDialog.setEmployeeModel(LoginData.getInstance());
             }
-
             @Override
             public void showInfoDialog() {
                 infoDialog.setVisible(true);
             }
-
             @Override
             public void exitAction() {
                 if (listener != null) {
                     listener.exitEventOccurred();
                 }
             }
-
             @Override
             public void setCurrentVersionAsMinimum() {
                 {
@@ -385,25 +372,25 @@ public class MainFrame extends JFrame {
 
     private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint() && listener != null) {
-            // search for heads of department (id 5000) in department
+            // search for heads of department in department
             reportParametersDialog.setDepartmentHeadBoxData(
                     listener.searchForPerson(Role.HEAD_OF_DEPARTMENT, bidsListPanel.getSelectedDepartment().getModelId()));
-            // search for personally liable employee (id 6000) in department
+            // search for personally liable employee in department
             reportParametersDialog.setPersonallyLiableEmpBoxData(
                     listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE, bidsListPanel.getSelectedDepartment().getModelId()));
-            // search for chief accountant (id 4000)
+            // search for chief accountant
             reportParametersDialog.setAccountantBoxData(
                     listener.searchForPerson(Role.ACCOUNTANT));
-            // search for chief economist (id 3000)
+            // search for chief economist
             reportParametersDialog.setEconomistBoxData(
                     listener.searchForPerson(Role.ECONOMIST));
-            // search for HEAD OF TENDER COMMITTEE (id 2500)
+            // search for SECRETARY OF TENDER COMMITTEE
             reportParametersDialog.setHeadTenderBoxData(
                     listener.searchForPerson(Role.SECRETARY_OF_TENDER_COMMITTEE));
-            // search for director (id 1000)
+            // search for director
             reportParametersDialog.setHeadBoxData(
                     listener.searchForPerson(Role.DIRECTOR));
-            // show dialog with selectors for director, head of department, PLE, accountant, economist, HEAD OF TENDER COMMITTEE
+            // show dialog with selectors for director, head of department, PLE, accountant, economist, SECRETARY OF TENDER COMMITTEE
             reportParametersDialog.setVisible(true);
         }
     }
@@ -542,14 +529,15 @@ public class MainFrame extends JFrame {
         this.bidsListPanel.getCreateBidPanel().setSelectedCPV(cpvModel);
     }
 
+    public void setEditOrgDialogVisible() {
+        editOrgDialog.setVisible(true);
+    }
+
     public CreateEmployeeDialog getCreateEmployeeDialog() {
         return createEmployeeDialog;
     }
     public CreateBidPanel getCreateBidPanel() {
         return bidsListPanel.getCreateBidPanel();
-    }
-    public OrganizationDialog getEditOrgDialog() {
-        return editOrgDialog;
     }
     public DrawSplashScreen getSplashScreen() {
         return splashScreen;

@@ -37,18 +37,24 @@ public class CpvDialog extends JDialog {
         JPanel searchPanel = new JPanel();
         searchField = new JTextField(43);
 
+        Dimension buttonDim = new Dimension(40, 26);
+
         JButton homeButton = new JButton(Icons.HOME);
         homeButton.setToolTipText(Labels.getProperty("goToTopCategory"));
+        homeButton.setPreferredSize(buttonDim);
 
         upButton = new JButton(Icons.LEVEL_UP);
         upButton.setToolTipText(Labels.getProperty("upCategory"));
         upButton.setEnabled(false);
+        upButton.setPreferredSize(buttonDim);
 
         JButton searchButton = new JButton(Icons.SEARCH);
         searchButton.setToolTipText(Labels.getProperty("search"));
+        searchButton.setPreferredSize(buttonDim);
 
         selectButton = new JButton(Labels.getProperty("selectCode"));
         selectButton.setEnabled(false);
+//        selectButton.setPreferredSize(buttonDim);
 
         //set format for table
         table.getColumnModel().getColumn(0).setMaxWidth(150);
