@@ -30,4 +30,6 @@ public interface MenuBarListener {
     void editCurrentUserAction();
 
     void showInfoDialog();
+
+    void changeRegistrationsNumber();
 }

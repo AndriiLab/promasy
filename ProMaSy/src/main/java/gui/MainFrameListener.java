@@ -23,4 +23,6 @@ public interface MainFrameListener {
     void getAllDepartments(InstituteModel institute);
 
     CPVModel validateCpv(String cpvCode);
+
+    void setNumberOfRegistrations(int regNumber);
 }

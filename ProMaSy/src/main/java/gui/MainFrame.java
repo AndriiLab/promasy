@@ -210,18 +210,22 @@ public class MainFrame extends JFrame {
             public void printEventOccurred() {
                 onPrintClick();
             }
+
             @Override
             public void showCpvSearchDialog() {
                 cpvDialog.setVisible(true);
             }
+
             @Override
             public void showCalculator() {
                 calculatorDialog.setVisible(true);
             }
+
             @Override
             public void exportToTableEventOccurred() {
                 onExportToTableClick();
             }
+
             @Override
             public void refreshTable() {
                 onRefreshClick();
@@ -233,52 +237,69 @@ public class MainFrame extends JFrame {
             public void showEmpEditDialog() {
                 editEmpDialog.setVisible(true);
             }
+
             @Override
             public void showEditOrgDialog() {
                 editOrgDialog.setVisible(true);
             }
+
             @Override
             public void showConSetDialog() {
                 conSettDialog.setVisible(true);
             }
+
             @Override
             public void printAction() {
                 onPrintClick();
             }
+
             @Override
             public void exportToTableAction() {
                 onExportToTableClick();
             }
+
             @Override
             public void showCpvAmountDialog() {
                 cpvAmountDialog.setVisible(true);
             }
+
             @Override
             public void showAmUnitsDialog() {
                 amUnitsDialog.setVisible(true);
             }
+
             @Override
             public void showProducerDialog() {
                 producerDialog.setVisible(true);
             }
+
             @Override
             public void showSupplierDialog() {
                 supplierDialog.setVisible(true);
             }
+
             @Override
             public void editCurrentUserAction() {
                 createEmployeeDialog.setEmployeeModel(LoginData.getInstance());
             }
+
             @Override
             public void showInfoDialog() {
                 infoDialog.setVisible(true);
             }
+
+            @Override
+            public void changeRegistrationsNumber() {
+                changeNumberOfRegistrations();
+            }
+
             @Override
             public void exitAction() {
                 if (listener != null) {
                     listener.exitEventOccurred();
                 }
             }
+
             @Override
             public void setCurrentVersionAsMinimum() {
                 {
@@ -289,6 +310,34 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+    }
+
+    private void changeNumberOfRegistrations() {
+        String regNumberStr = (String) JOptionPane.showInputDialog(
+                this,
+                Labels.withColon("enterNumberOfRegistrions"),
+                Labels.getProperty("changeRegistrationsNumber"),
+                JOptionPane.PLAIN_MESSAGE,
+                Icons.QUESTION,
+                null,
+                null);
+        if (regNumberStr == null) return;
+        try {
+            int regNumber = Integer.parseInt(regNumberStr);
+            regNumber = regNumber >= 0 ? regNumber : 0;
+            if (listener != null) {
+                listener.setNumberOfRegistrations(regNumber);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showConfirmDialog(this,
+                    Labels.getProperty("wrongFloatFormat"),
+                    Labels.getProperty("error"),
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    Icons.ERROR);
+            changeNumberOfRegistrations();
+        }
+
     }
 
     private void onExportToTableClick() {
@@ -351,21 +400,27 @@ public class MainFrame extends JFrame {
     public void showConSettDialog() {
         conSettDialog.setVisible(true);
     }
+
     public void showProducerDialog() {
         producerDialog.setVisible(true);
     }
+
     public void showSupplierDialog() {
         supplierDialog.setVisible(true);
     }
+
     public void showReasonsDialog() {
         reasonsDialog.setVisible(true);
     }
+
     public void showAmUnitsDialog() {
         amUnitsDialog.setVisible(true);
     }
+
     public void showCpvDialog() {
         cpvDialog.setVisible(true);
     }
+
     public void showCpvDialog(String cpv) {
         cpvDialog.showWithCode(cpv);
     }
@@ -419,45 +474,59 @@ public class MainFrame extends JFrame {
     public void setMainFrameListener(MainFrameListener listener) {
         this.listener = listener;
     }
+
     public void setLoginListener(LoginListener loginListener) {
         loginPanel.setLoginListener(loginListener);
     }
+
     public void setConSetListener(ConSetListener listener) {
         conSettDialog.setConSetListener(listener);
     }
+
     public void setCpvListener(CpvSearchListener listener) {
         cpvDialog.setCpvListener(listener);
     }
+
     public void setEmployeeDialogListener(EditEmployeeDialogListener listener) {
         editEmpDialog.setListener(listener);
     }
+
     public void setCreateEmployeeDialogListener(CreateEmployeeDialogListener listener) {
         createEmployeeDialog.setListener(listener);
     }
+
     public void setOrganizationDialogListener(OrganizationDialogListener listener) {
         editOrgDialog.setListener(listener);
     }
+
     public void setAmUnitsDialogListener(AmUnitsDialogListener listener) {
         amUnitsDialog.setListener(listener);
     }
+
     public void setProducerDialogListener(ProducerDialogListener listener) {
         producerDialog.setListener(listener);
     }
+
     public void setSupplierDialogListener(SupplierDialogListener listener) {
         supplierDialog.setListener(listener);
     }
+
     public void setReasonsDialogListener(ReasonsDialogListener listener) {
         reasonsDialog.setListener(listener);
     }
+
     public void setFinancePanelListener(FinancePanelListener listener) {
         financePanel.setListener(listener);
     }
+
     public void setBidsListPanelListener(BidsListPanelListener listener) {
         bidsListPanel.setListener(listener);
     }
+
     public void setReportParametersDialogListener(ReportParametersDialogListener listener) {
         reportParametersDialog.setListener(listener);
     }
+
     public void setCpvAmountDialogListener(CpvAmountDialogListener listener) {
         cpvAmountDialog.setListener(listener);
     }
@@ -522,9 +591,11 @@ public class MainFrame extends JFrame {
     public void setCpvAmountDialogList(List<CpvAmountModel> cpvAmounts) {
         cpvAmountDialog.setTableData(cpvAmounts);
     }
+
     public void setBidModelList(List<BidModel> bidModelList) {
         bidsListPanel.setBidsTableData(bidModelList);
     }
+
     public void setCpvModel(CPVModel cpvModel) {
         this.bidsListPanel.getCreateBidPanel().setSelectedCPV(cpvModel);
     }
@@ -536,9 +607,11 @@ public class MainFrame extends JFrame {
     public CreateEmployeeDialog getCreateEmployeeDialog() {
         return createEmployeeDialog;
     }
+
     public CreateBidPanel getCreateBidPanel() {
         return bidsListPanel.getCreateBidPanel();
     }
+
     public DrawSplashScreen getSplashScreen() {
         return splashScreen;
     }

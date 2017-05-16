@@ -160,25 +160,35 @@ public class Controller {
             public List<EmployeeModel> searchForPerson(Role role, long depId) {
                 return getEmployees(role, depId);
             }
+
             @Override
             public List<EmployeeModel> searchForPerson(Role role) {
                 return getEmployees(role);
             }
+
             @Override
             public void exitEventOccurred() {
                 closeDialog();
             }
+
             @Override
             public void setMinimumVersionEventOccurred() {
                 setCurrentVersionAsMinimum();
             }
+
             @Override
             public void getAllDepartments(InstituteModel inst) {
                 mainFrame.setDepartmentModelList(getDepartments(inst.getModelId()));
             }
+
             @Override
             public CPVModel validateCpv(String cpvCode) {
                 return Database.CPV.validateCode(cpvCode);
+            }
+
+            @Override
+            public void setNumberOfRegistrations(int regNumber) {
+                setRegistrationsNumber(regNumber);
             }
         });
 
@@ -187,6 +197,7 @@ public class Controller {
             public void cpvSelectionEventOccurred(CpvReqEvent ev) {
                 mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest()));
             }
+
             @Override
             public void getTopCodes() {
                 mainFrame.setCpvModelList(getCpvRequest(""));
@@ -199,6 +210,7 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setEmployeeModelList(getEmployees());
             }
+
             @Override
             public void getAllEmployees() {
                 mainFrame.setEmployeeModelList(getEmployees());
@@ -211,10 +223,12 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setEmployeeModelList(getEmployees());
             }
+
             @Override
             public boolean checkUniqueLogin(String login) {
                 return isLoginUnique(login);
             }
+
             @Override
             public void loadInstitutes() {
                 mainFrame.setInstituteModelList(getInstRequest());
@@ -227,16 +241,19 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setInstituteModelList(getInstRequest());
             }
+
             @Override
             public void persistModelEventOccurred(DepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setDepartmentModelList(getDepartments(model.getInstitute().getModelId()));
             }
+
             @Override
             public void persistModelEventOccurred(SubdepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setSubdepartmentModelList(getSubdepRequest(model.getDepartment().getModelId()));
             }
+
             @Override
             public void getAllInstitutes() {
                 mainFrame.setInstituteModelList(getInstRequest());
@@ -249,6 +266,7 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setAmountUnitsModelList(getAmUnits());
             }
+
             @Override
             public void getAllEntries() {
                 mainFrame.setAmountUnitsModelList(getAmUnits());
@@ -261,6 +279,7 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setProducerModelList(getProd());
             }
+
             @Override
             public void getAllEntries() {
                 mainFrame.setProducerModelList(getProd());
@@ -273,6 +292,7 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setSupplierModelList(getSupl());
             }
+
             @Override
             public void getAllEntries() {
                 mainFrame.setSupplierModelList(getSupl());
@@ -285,6 +305,7 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setReasonsModelList(getReasons());
             }
+
             @Override
             public void getAllEntries() {
                 mainFrame.setReasonsModelList(getReasons());
@@ -297,19 +318,23 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
+
             @Override
             public void persistModelEventOccurred(FinanceDepartmentModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(model.getModelId()));
             }
+
             @Override
             public void loadDepartments() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
             }
+
             @Override
             public void getFinancesByDepartment(DepartmentModel department) {
                 mainFrame.setFinanceModelList(getFinanceByDepartment(department));
             }
+
             @Override
             public void getAllData() {
                 mainFrame.setFinanceModelList(getFinances());
@@ -322,27 +347,33 @@ public class Controller {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
+
             @Override
             public void persistModelEventOccurred(BidStatusModel model) {
                 createOrUpdate(model);
                 mainFrame.setFinanceModelList(getFinances());
             }
+
             @Override
             public void selectAllBidsEventOccurred(BidType type) {
                 mainFrame.setBidModelList(getBids(type));
             }
+
             @Override
             public void getBidsByDepartment(BidType type, DepartmentModel selectedDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedDepartmentModel));
             }
+
             @Override
             public void getBidsBySubdepartment(BidType type, SubdepartmentModel selectedSubdepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedSubdepartmentModel));
             }
+
             @Override
             public void getBidsByFinanceDepartment(BidType type, FinanceDepartmentModel selectedFinanceDepartmentModel) {
                 mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
             }
+
             @Override
             public void getAllData() {
                 mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment().getDepartment().getInstitute().getModelId()));
@@ -370,6 +401,7 @@ public class Controller {
             public void getData() {
                 mainFrame.setCpvAmountDialogList(getCpvAmount());
             }
+
             @Override
             public String getEmployeeName(Role role) {
                 List<EmployeeModel> models = getEmployees(role);
@@ -728,11 +760,25 @@ public class Controller {
 
     private int registrationsLeft() {
         try {
-            return Database.REGISTRATION.getRegistrationNumber();
+            return Database.REGISTRATION.useRegistration();
         } catch (SQLException e) {
             Logger.errorEvent(mainFrame, e);
             return 0;
         }
+    }
+
+
+    private void setRegistrationsNumber(int registrationsNumber) {
+        Database.REGISTRATION.changeNumberOfRegistrationTickets(registrationsNumber);
+        String message = Labels.withColon("numberOfRegistrionsAvailable") +
+                Database.REGISTRATION.getRegistrationsLeft();
+        Logger.infoEvent(mainFrame, message);
+        JOptionPane.showConfirmDialog(mainFrame,
+                message,
+                Labels.getProperty("notification"),
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                Icons.INFO);
     }
 
     // default close method

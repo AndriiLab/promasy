@@ -289,10 +289,6 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setEmployeeModel(EmployeeModel model) {
-        if (LoginData.getInstance().getRole() != Role.ADMIN) {
-            roleBox.setEnabled(false);
-            addOrganizationButton.setEnabled(false);
-        }
         this.currentEmployeeModel = model;
         nameField.setText(currentEmployeeModel.getEmpFName());
         middleNameField.setText(currentEmployeeModel.getEmpMName());
@@ -308,6 +304,16 @@ public class CreateEmployeeDialog extends JDialog {
         instituteBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
         departmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment());
         subdepartmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment());
+
+        if (LoginData.getInstance().getRole() != Role.ADMIN) {
+            roleBox.setEnabled(false);
+            addOrganizationButton.setEnabled(false);
+            if (!LoginData.getInstance().getSubdepartment().equals(EmptyModel.SUBDEPARTMENT)) {
+                instituteBox.setEnabled(false);
+                departmentBox.setEnabled(false);
+                subdepartmentBox.setEnabled(false);
+            }
+        }
         super.setVisible(true);
     }
 

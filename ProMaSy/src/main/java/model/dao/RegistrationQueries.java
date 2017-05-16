@@ -10,22 +10,29 @@ import java.sql.SQLException;
  */
 public class RegistrationQueries {
 
-    public int getRegistrationNumber() throws SQLException {
-        int registrationNumber;
+    public int getRegistrationsLeft() {
+        EntityManager em = Database.DB.getEntityManager();
+        em.getTransaction().begin();
+
+        RegistrationTicketModel model = em.find(RegistrationTicketModel.class, 1);
+
+        int registrationsLeft = model != null ? model.getRegistrationTicketNumber() : 0;
+
+        em.getTransaction().commit();
+
+        return registrationsLeft;
+    }
+
+    public int useRegistration() throws SQLException {
+        int registrationNumber = getRegistrationsLeft();
         EntityManager em = Database.DB.getEntityManager();
 
         em.getTransaction().begin();
         RegistrationTicketModel model = em.find(RegistrationTicketModel.class, 1);
 
         if (model != null) {
-            registrationNumber = model.getRegistrationTicketNumber();
-
-            model.setRegistrationTicketNumber(registrationNumber <= 0 ? 0 : --registrationNumber);
-
+            model.setRegistrationTicketNumber(registrationNumber < 0 ? 0 : --registrationNumber);
         } else {
-            // TODO change to function
-            registrationNumber = 100;
-
             model = new RegistrationTicketModel(registrationNumber);
         }
 
@@ -36,9 +43,6 @@ public class RegistrationQueries {
     }
 
     public void changeNumberOfRegistrationTickets(int numberOfRegistrationTickets) {
-        if (numberOfRegistrationTickets < 0) {
-            numberOfRegistrationTickets = 0;
-        }
 
         EntityManager em = Database.DB.getEntityManager();
         em.getTransaction().begin();

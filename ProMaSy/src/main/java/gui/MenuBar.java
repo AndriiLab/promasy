@@ -70,12 +70,16 @@ class MenuBar {
             JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
             editEmpItem.setIcon(Icons.USERS);
             editMenu.add(editEmpItem);
+            editEmpItem.addActionListener(e -> listener.showEmpEditDialog());
 
             JMenuItem setCurrentVersionAsMinimum = new JMenuItem(Labels.getProperty("setMinimumVersion"));
             settingsMenu.addSeparator();
             settingsMenu.add(setCurrentVersionAsMinimum);
             setCurrentVersionAsMinimum.addActionListener(e -> listener.setCurrentVersionAsMinimum());
-            editEmpItem.addActionListener(e -> listener.showEmpEditDialog());
+
+            JMenuItem changeRegistrationsNumber = new JMenuItem(Labels.withThreeDots("changeRegistrationsNumber"));
+            settingsMenu.add(changeRegistrationsNumber);
+            changeRegistrationsNumber.addActionListener(e -> listener.changeRegistrationsNumber());
 
             menuBar.add(settingsMenu);
 
