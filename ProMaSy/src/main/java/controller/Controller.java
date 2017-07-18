@@ -12,7 +12,7 @@ import gui.commons.Icons;
 import gui.commons.Labels;
 import gui.components.PJOptionPane;
 import gui.conset.ConSetListener;
-import gui.cpv.CpvReqEvent;
+import gui.cpv.CpvRequestContainer;
 import gui.cpv.CpvSearchListener;
 import gui.employee.CreateEmployeeDialogListener;
 import gui.employee.CreateEmployeeFromLoginListener;
@@ -119,6 +119,7 @@ public class Controller {
                     // if login was successful init MainFrame and make it visible
                     initMainFrame();
                     mainFrame.setVisible(true);
+                    mainFrame.writeStatusPanelCurrentDb(conSet.getDatabase());
                     mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
                 } else {
                     // if login wasn't successful showing error dialog
@@ -194,13 +195,13 @@ public class Controller {
 
         mainFrame.setCpvListener(new CpvSearchListener() {
             @Override
-            public void cpvSelectionEventOccurred(CpvReqEvent ev) {
-                mainFrame.setCpvModelList(getCpvRequest(ev.getCpvRequest()));
+            public void cpvSelectionEventOccurred(CpvRequestContainer ev) {
+                mainFrame.setCpvModelList(getCpvRequest(ev));
             }
 
             @Override
             public void getTopCodes() {
-                mainFrame.setCpvModelList(getCpvRequest(""));
+                mainFrame.setCpvModelList(getCpvRequest(new CpvRequestContainer(EmptyModel.STRING, 0)));
             }
         });
 
@@ -516,7 +517,7 @@ public class Controller {
 
     // methods requesting the DB
     // GETTERS
-    private List<CPVModel> getCpvRequest(String cpvRequest) {
+    private List<CPVModel> getCpvRequest(CpvRequestContainer cpvRequest) {
         try {
             return Database.CPV.retrieve(cpvRequest);
         } catch (SQLException e) {

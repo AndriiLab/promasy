@@ -42,5 +42,7 @@ public interface Model {
 
     void createOrUpdate() throws SQLException;
 
+    void refresh();
+
     String getMessage();
 }

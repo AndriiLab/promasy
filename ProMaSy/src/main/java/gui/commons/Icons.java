@@ -21,6 +21,7 @@ public class Icons {
     public static final Icon LEVEL_UP = IconFontSwing.buildIcon(FontAwesome.LEVEL_UP, 18);
     public static final Icon ABOUT = IconFontSwing.buildIcon(FontAwesome.INFO, 18);
     public static final Icon CONNECTION_SETTINGS = IconFontSwing.buildIcon(FontAwesome.DATABASE, 18);
+    public static final Icon CONNECTION_SETTINGS_RED = IconFontSwing.buildIcon(FontAwesome.DATABASE, 18, Colors.RED);
     public static final Icon USER = IconFontSwing.buildIcon(FontAwesome.USER, 18);
     public static final Icon USER_GREEN = IconFontSwing.buildIcon(FontAwesome.USER, 18, Colors.GREEN);
     public static final Icon USERS = IconFontSwing.buildIcon(FontAwesome.USERS, 18);

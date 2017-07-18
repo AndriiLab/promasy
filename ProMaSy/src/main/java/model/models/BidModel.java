@@ -284,6 +284,11 @@ public class BidModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.BIDS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "createOrUpdateUserBid";
     }

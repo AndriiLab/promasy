@@ -109,6 +109,11 @@ public class SubdepartmentModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.SUBDEPARTMENS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateSubdepartment";
     }

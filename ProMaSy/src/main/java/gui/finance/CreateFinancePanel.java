@@ -2,7 +2,6 @@ package gui.finance;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import controller.Logger;
 import gui.Utils;
 import gui.commons.Icons;
 import gui.commons.Labels;
@@ -29,7 +28,7 @@ public class CreateFinancePanel extends JPanel {
 
     private final LocalDate defaultStartDate = LocalDate.of(Year.now().getValue(), Month.JANUARY, 1);
     private final LocalDate defaultEndDate = LocalDate.of(Year.now().getValue(), Month.DECEMBER, 31);
-    private int orderNumber;
+    private String orderNumber;
     private Integer kpkvk;
     private String orderName;
     private Date startDate;
@@ -53,7 +52,7 @@ public class CreateFinancePanel extends JPanel {
     private JButton closeButton;
     private CreateFinancePanelListener listener;
 
-    public CreateFinancePanel(JFrame parent) {
+    CreateFinancePanel(JFrame parent) {
         this.parent = parent;
 
         currentFinanceModel = new FinanceModel();
@@ -134,7 +133,7 @@ public class CreateFinancePanel extends JPanel {
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
         fundBox.setSelectedIndex(0);
-        orderNumber = 0;
+        orderNumber = EmptyModel.STRING;
         orderName = emptyString;
         kpkvk = null;
         startDate = null;
@@ -146,7 +145,7 @@ public class CreateFinancePanel extends JPanel {
         currentFinanceModel = new FinanceModel();
     }
 
-    public void setFinanceModel(FinanceModel selectedFinanceModel) {
+    void setFinanceModel(FinanceModel selectedFinanceModel) {
         this.currentFinanceModel = selectedFinanceModel;
         orderNumberField.setText(String.valueOf(currentFinanceModel.getFinanceNumber()));
         orderNameField.setText(currentFinanceModel.getFinanceName());
@@ -172,19 +171,22 @@ public class CreateFinancePanel extends JPanel {
         super.setVisible(visible);
     }
 
-    public void setFinanceDialogListener(CreateFinancePanelListener listener) {
+    void setFinanceDialogListener(CreateFinancePanelListener listener) {
         this.listener = listener;
     }
 
     private boolean checkInput() {
-        try {
-            orderNumber = Integer.parseInt(orderNumberField.getText());
-        } catch (NumberFormatException e) {
-            Logger.warnEvent(e);
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("financeNumber"), Labels.getProperty("integersOnly"));
+        String orderNumTxt = orderNumberField.getText();
+        if (orderNumTxt.isEmpty()) {
+            PJOptionPane.emptyField(parent, Labels.getProperty("financeNumber"));
+            orderNumberField.requestFocusInWindow();
+            return false;
+        } else if (orderNumTxt.length() > 30) {
+            PJOptionPane.longField(parent, Labels.getProperty("financeNumber"), 30);
             orderNumberField.requestFocusInWindow();
             return false;
         }
+        orderNumber = orderNumTxt;
         orderName = orderNameField.getText();
         startDate = Date.valueOf(startDatePicker.getDate());
         endDate = Date.valueOf(endDatePicker.getDate());

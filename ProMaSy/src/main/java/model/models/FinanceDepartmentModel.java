@@ -210,6 +210,11 @@ public class FinanceDepartmentModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.DEPARTMENT_FINANCES.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateDepOrder";
     }

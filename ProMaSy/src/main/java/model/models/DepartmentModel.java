@@ -93,6 +93,11 @@ public class DepartmentModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.DEPARTMENTS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateDepartment";
     }

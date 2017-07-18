@@ -163,7 +163,12 @@ public class FinancePanel extends JPanel {
                     listener.persistModelEventOccurred(model);
                 }
                 financeTable.getSelectionModel().setSelectionInterval(selectedFinanceRow, selectedFinanceRow);
-                selectedFinanceModel = (FinanceModel) financeTable.getValueAt(selectedFinanceRow, 0);
+                try {
+                    selectedFinanceModel = (FinanceModel) financeTable.getValueAt(selectedFinanceRow, 0);
+                } catch (IndexOutOfBoundsException ex) {
+                    //won't change the selected model
+                }
+
                 setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
             }
 

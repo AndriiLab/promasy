@@ -323,11 +323,11 @@ public class BidsListPanel extends JPanel {
     }
 
     private boolean isSelectedSubepartmentModelEmpty() {
-        return selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT) && !isSelectedDepartmentModelEmpty();
+        return isSelectedDepartmentModelEmpty() || selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT);
     }
 
     private boolean isSelectedFinanceDepartmentModelEmpty() {
-        return selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT) && !isSelectedSubepartmentModelEmpty();
+        return isSelectedSubepartmentModelEmpty() || selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT);
     }
 
     private void setFinanceLabels() {
@@ -495,7 +495,13 @@ public class BidsListPanel extends JPanel {
 
 
     public void refresh() {
-        if (listener != null) {
+        //if subdepartment selected - refreshing, else - retrieving all bids
+        if (!isSelectedSubepartmentModelEmpty()) {
+            FinanceDepartmentModel selected = (FinanceDepartmentModel) financeDepartmentBox.getSelectedItem();
+            selectedSubdepartmentModel.refresh();
+            financeDepartmentBox.setBoxData(selectedSubdepartmentModel.getFinanceDepartments(), EmptyModel.FINANCE_DEPARTMENT, true);
+            financeDepartmentBox.setSelectedModel(selected);
+        } else {
             getBids();
         }
     }
@@ -503,7 +509,7 @@ public class BidsListPanel extends JPanel {
     @Override
     public void setVisible(boolean visible) {
         if (visible && listener != null) {
-            getBids();
+            refresh();
         }
         super.setVisible(visible);
     }

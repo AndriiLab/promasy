@@ -154,6 +154,11 @@ public class Address extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        //won't need here
+    }
+
+    @Override
     public String getMessage() {
         return null;
     }

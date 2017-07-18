@@ -11,6 +11,8 @@ import java.util.List;
 public interface Query<T extends Model> {
     void createOrUpdate(T object) throws SQLException;
 
+    void refresh(T object);
+
     List<T> getList();
 
     List<T> getResults() throws SQLException;

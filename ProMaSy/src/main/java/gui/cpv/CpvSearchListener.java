@@ -4,7 +4,7 @@ import java.util.EventListener;
 
 public interface CpvSearchListener extends EventListener {
 
-    void cpvSelectionEventOccurred(CpvReqEvent ev);
+    void cpvSelectionEventOccurred(CpvRequestContainer ev);
 
     void getTopCodes();
 }

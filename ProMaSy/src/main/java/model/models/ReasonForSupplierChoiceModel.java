@@ -42,6 +42,11 @@ public class ReasonForSupplierChoiceModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.REASONS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateReasonForSupplierChoice";
     }

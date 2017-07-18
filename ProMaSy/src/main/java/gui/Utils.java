@@ -38,7 +38,7 @@ public class Utils {
         return -1;
     }
 
-    public static long makeSalt(){
+    public static long makeSalt() {
         return new SecureRandom().nextLong();
     }
 
@@ -71,9 +71,13 @@ public class Utils {
         return model;
     }
 
-    private static String formatBigDecimal(String bigDecimal) {
+    public static String formatFinanceString(String bigDecimal) throws NumberFormatException {
         if (bigDecimal.contains(",")) {
             bigDecimal = bigDecimal.replace(",", ".");
+            //if has more than 2 digits after '.' + dot (3) throw exception
+            if (bigDecimal.substring(bigDecimal.indexOf(".")).length() > 3) {
+                throw new NumberFormatException();
+            }
         }
         if (bigDecimal.contains(" ")) {
             bigDecimal = bigDecimal.replace(" ", "");
@@ -82,7 +86,7 @@ public class Utils {
     }
 
     public static Integer parseInteger(JFrame parent, JTextField jTextField, String fieldName) {
-        String targetIntegerText = Utils.formatBigDecimal(jTextField.getText());
+        String targetIntegerText = jTextField.getText();
         if (targetIntegerText.isEmpty()) {
             PJOptionPane.emptyField(parent, fieldName);
             jTextField.requestFocusInWindow();
@@ -90,9 +94,10 @@ public class Utils {
         }
         Integer integer;
         try {
+            targetIntegerText = formatFinanceString(targetIntegerText);
             integer = Integer.parseInt(targetIntegerText);
         } catch (NumberFormatException ex) {
-            PJOptionPane.wrongFormat(parent, fieldName, Labels.getProperty("wrongFloatFormat"));
+            PJOptionPane.wrongFormat(parent, fieldName, Labels.getProperty("wrongIntegerFormat"));
             jTextField.requestFocusInWindow();
             return null;
         }
@@ -100,17 +105,19 @@ public class Utils {
     }
 
     public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
-        String targetBigDecimalText = Utils.formatBigDecimal(jTextField.getText());
+        String targetBigDecimalText = jTextField.getText();
+
         if (targetBigDecimalText.isEmpty()) {
             PJOptionPane.emptyField(parent, fieldName);
             jTextField.requestFocusInWindow();
             return null;
         }
 
-        jTextField.setText(targetBigDecimalText);
-
         BigDecimal targetBigDecimal;
+
         try {
+            targetBigDecimalText = formatFinanceString(targetBigDecimalText);
+
             targetBigDecimal = new BigDecimal(targetBigDecimalText);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);

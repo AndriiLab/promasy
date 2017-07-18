@@ -94,6 +94,12 @@ public class EmployeeModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.EMPLOYEES.refresh(this);
+    }
+
+
+    @Override
     public String getMessage() {
         return "createOrUpdateUser";
     }

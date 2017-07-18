@@ -20,7 +20,7 @@ import java.util.*;
 public class FinanceModel extends AbstractModel {
 
     @Column(name = "number")
-    private int financeNumber;
+    private String financeNumber;
 
     @Column(name = "name")
     private String financeName;
@@ -52,7 +52,7 @@ public class FinanceModel extends AbstractModel {
     @Transient
     private Map<BidType, BigDecimal> leftAmount;
 
-    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Fund fundType, Integer kpkvk) {
+    public FinanceModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate, boolean active, String financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, List<FinanceDepartmentModel> financeDepartmentModels, Fund fundType, Integer kpkvk) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
         this.financeNumber = financeNumber;
         this.financeName = financeName;
@@ -66,7 +66,7 @@ public class FinanceModel extends AbstractModel {
         this.kpkvk = kpkvk;
     }
 
-    public FinanceModel(int financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, Fund fundType, Integer kpkvk) {
+    public FinanceModel(String financeNumber, String financeName, BigDecimal totalMaterials, BigDecimal totalEquipment, BigDecimal totalServices, Date startDate, Date endDate, Fund fundType, Integer kpkvk) {
         this.financeNumber = financeNumber;
         this.financeName = financeName;
         this.totalMaterials = totalMaterials;
@@ -98,11 +98,11 @@ public class FinanceModel extends AbstractModel {
         return financeDepartmentModels;
     }
 
-    public int getFinanceNumber() {
+    public String getFinanceNumber() {
         return financeNumber;
     }
 
-    public void setFinanceNumber(int financeNumber) {
+    public void setFinanceNumber(String financeNumber) {
         this.financeNumber = financeNumber;
     }
 
@@ -218,7 +218,7 @@ public class FinanceModel extends AbstractModel {
 
     @Override
     public String toString() {
-        if (financeNumber == 0 && financeName == null) {
+        if (financeNumber == null && financeName == null) {
             return EmptyModel.STRING;
         }
         return "(" + financeNumber + ") " + financeName;
@@ -244,6 +244,11 @@ public class FinanceModel extends AbstractModel {
     @Override
     public void createOrUpdate() throws SQLException {
         Database.FINANCES.createOrUpdate(this);
+    }
+
+    @Override
+    public void refresh() {
+        Database.FINANCES.refresh(this);
     }
 
     @Override

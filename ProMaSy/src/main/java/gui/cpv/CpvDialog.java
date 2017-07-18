@@ -69,7 +69,7 @@ public class CpvDialog extends JDialog {
 
         homeButton.addActionListener(e -> {
             upButton.setEnabled(false);
-            makeCpvQuery(EmptyModel.STRING, true);
+            makeCpvQuery(EmptyModel.STRING, 0);
             searchField.setText(null);
             selectButton.setEnabled(false);
         });
@@ -78,30 +78,40 @@ public class CpvDialog extends JDialog {
             selectButton.setEnabled(false);
             String cpvRequest = searchField.getText();
             if (cpvRequest.length() > 8) {
-                cpvRequest = cpvRequest.substring(0, 6);
-                while (cpvRequest.length() > 2 && cpvRequest.endsWith("0")) {
-                    cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
+                int zeroIndex = cpvRequest.indexOf("0", 2);
+                if (zeroIndex != -1) {
+                    cpvRequest = cpvRequest.substring(0, zeroIndex > 2 ? zeroIndex - 1 : zeroIndex);
                 }
             }
+
+            makeCpvQuery(cpvRequest, -1);
+
             cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
-            if (cpvRequest.length() <= 1) {
-                cpvRequest = EmptyModel.STRING;
-                searchField.setText(null);
+            if (cpvRequest.length() < 2) {
                 upButton.setEnabled(false);
+                cpvRequest = EmptyModel.STRING;
             }
             searchField.setText(cpvRequest);
-            makeCpvQuery(cpvRequest, false);
         });
 
         searchButton.addActionListener(e -> {
             upButton.setEnabled(false);
             String cpvRequest = searchField.getText();
-            makeCpvQuery(cpvRequest, true);
+            makeCpvQuery(cpvRequest, 0);
         });
 
         selectButton.addActionListener(e -> {
-            parent.setCpvModel(selectedCpvModel);
-            setVisible(false);
+            int answer = JOptionPane.showConfirmDialog(parent,
+                    Labels.withColon("selectCpvCode") + selectedCpvModel.getCpvId() + "\n" +
+                            selectedCpvModel.getCpvUkr() + "?",
+                    Labels.getProperty("confirmAction"),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    Icons.QUESTION);
+            if (answer == JOptionPane.YES_OPTION) {
+                parent.setCpvModel(selectedCpvModel);
+                setVisible(false);
+            }
         });
 
         table.addMouseListener(new MouseAdapter() {
@@ -116,7 +126,7 @@ public class CpvDialog extends JDialog {
                     boolean isTerminal = selectedCpvModel.isCpvTerminal();
                     searchField.setText(cpvRequest + " " + selectedCpvModel.getCpvUkr());
                     if (!isTerminal) {
-                        makeCpvQuery(cpvRequest, false);
+                        makeCpvQuery(cpvRequest, 1);
                     }
                     selectButton.setEnabled(isTerminal || selectedCpvModel.getCpvLevel() > 2);
                 }
@@ -157,9 +167,9 @@ public class CpvDialog extends JDialog {
 
     }
 
-    public void makeCpvQuery(String cpvRequest, boolean sameLvlShow) {
+    public void makeCpvQuery(String cpvRequest, int depth) {
 
-        CpvReqEvent ev = new CpvReqEvent(this, cpvRequest, sameLvlShow);
+        CpvRequestContainer ev = new CpvRequestContainer(cpvRequest, depth);
 
         if (cpvListener != null) {
             cpvListener.cpvSelectionEventOccurred(ev);
@@ -169,7 +179,7 @@ public class CpvDialog extends JDialog {
 
     public void showWithCode(String code) {
         searchField.setText(code);
-        makeCpvQuery(code, true);
+        makeCpvQuery(code, 0);
         super.setVisible(true);
     }
 
@@ -178,7 +188,7 @@ public class CpvDialog extends JDialog {
         selectButton.setVisible(parent.getCreateBidPanel().isVisible());
         selectedCpvModel = EmptyModel.CPV;
         if (visible) {
-            makeCpvQuery(EmptyModel.STRING, true);
+            makeCpvQuery(EmptyModel.STRING, 0);
         } else if (!visible) {
             searchField.setText(EmptyModel.STRING);
             selectButton.setVisible(true);

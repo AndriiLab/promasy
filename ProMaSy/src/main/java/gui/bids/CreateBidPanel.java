@@ -337,15 +337,13 @@ public class CreateBidPanel extends JPanel {
         String amountString = amountField.getText();
         if (!onePriceString.isEmpty() && !amountString.isEmpty()) {
             try {
-                if (onePriceString.contains(",")) {
-                    onePriceString = onePriceString.replace(",", ".");
-                    oneUnitPriceField.setText(onePriceString);
-                }
+                onePriceString = Utils.formatFinanceString(onePriceString);
                 BigDecimal onePrice = new BigDecimal(onePriceString);
                 BigDecimal amount = new BigDecimal(amountString);
                 totalPrice = onePrice.multiply(amount);
 
                 totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
+                oneUnitPriceField.setText(onePriceString);
             } catch (NumberFormatException ex) {
                 Logger.warnEvent(ex);
                 totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
@@ -415,8 +413,8 @@ public class CreateBidPanel extends JPanel {
             searchCPVButton.requestFocusInWindow();
             return false;
         }
-
-        if (cpvCode.matches("^\\d{8}-\\d$")) {
+        // matches codes like '02340000-0' and '20340000-0', do not match '02300000-0'
+        if (selectedCPV.equals(EmptyModel.CPV) && cpvCode.matches("^\\d{2}[1-9]{2}\\d{4}-\\d$")) {
             selectedCPV = parent.validateCpv(cpvCode);
         }
 
@@ -477,10 +475,11 @@ public class CreateBidPanel extends JPanel {
 
         BigDecimal onePrice;
         try {
+            System.out.println(onePriceString);
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongFloatFormat"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongIntegerFormat"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
         }

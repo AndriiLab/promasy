@@ -156,7 +156,7 @@ public class CreateOrganizationDialog extends JDialog {
         try {
             edrpou = Integer.parseInt(edrpouStr);
         } catch (NumberFormatException ex) {
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("edrpou"), Labels.getProperty("wrongFloatFormat"));
+            PJOptionPane.wrongFormat(parent, Labels.getProperty("edrpou"), Labels.getProperty("wrongIntegerFormat"));
             return false;
         }
 

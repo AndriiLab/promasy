@@ -48,6 +48,11 @@ public class BidStatusModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.BID_STATUSES.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "statusWasSet";
     }

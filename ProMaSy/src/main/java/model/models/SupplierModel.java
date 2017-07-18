@@ -57,6 +57,11 @@ public class SupplierModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.SUPPLIERS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateSupl";
     }

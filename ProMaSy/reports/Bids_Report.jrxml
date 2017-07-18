@@ -39,7 +39,7 @@
 	<field name="catNum" class="java.lang.String">
 		<fieldDescription><![CDATA[catNum]]></fieldDescription>
 	</field>
-    <field name="financeNumber" class="java.lang.Integer">
+    <field name="financeNumber" class="java.lang.String">
         <fieldDescription><![CDATA[financeNumber]]></fieldDescription>
     </field>
 	<field name="financeName" class="java.lang.String">

@@ -1,5 +1,6 @@
 package model.dao;
 
+import gui.cpv.CpvRequestContainer;
 import model.models.CPVModel;
 import model.models.CPVModel_;
 import model.models.EmptyModel;
@@ -17,7 +18,9 @@ public class CPVQueries {
 
     private List<CPVModel> list = new LinkedList<>();
 
-    public List<CPVModel> retrieve(String requestedCpv) throws SQLException {
+    public List<CPVModel> retrieve(CpvRequestContainer requestedCpvEvent) throws SQLException {
+        String requestedCpv = requestedCpvEvent.getCpvRequest();
+
         list.clear();
 
         EntityManager em = Database.DB.getEntityManager();
@@ -29,48 +32,18 @@ public class CPVQueries {
         //case: empty request
         if (requestedCpv.isEmpty()) {
             // selecting general Groups
-            requestedCpv = "__000000-_";
-
-            criteria.where(cb.like(root.get(CPVModel_.cpvId), requestedCpv));
             criteria.where(cb.equal(root.get(CPVModel_.cpvLevel), 1));
 
             //case: first char is digit
         } else if (Character.isDigit(requestedCpv.charAt(0))) {
-            if (requestedCpv.length() > 8) {
-                // if more then 8 char, trim to 7 char and till non 0 value found
-                requestedCpv = requestedCpv.substring(0, 8);
-                while (requestedCpv.length() > 2 && requestedCpv.endsWith("0")) {
-                    requestedCpv = requestedCpv.substring(0, requestedCpv.length() - 1);
-                }
-            }
+            CPVRequestObject reqObj = prepareDigitCpv(requestedCpv, requestedCpvEvent.getDepth());
 
-            if (requestedCpv.length() < 2) {
-                // selecting ParentGroups (level 1)
-                requestedCpv = "0" + requestedCpv + "_00000-_";
-            } else if (requestedCpv.length() < 3) {
-                // selecting ParentGroups (level 1)
-                requestedCpv = requestedCpv + "_00000-_";
-            } else if (requestedCpv.length() < 4) {
-                // selecting ParentClasses (level 2)
-                requestedCpv = requestedCpv + "_0000-_";
-            } else if (requestedCpv.length() < 5) {
-                // selecting ParentCategories (level 3)
-                requestedCpv = requestedCpv + "_000-_";
-            } else if (requestedCpv.length() < 6) {
-                // selecting exact Category (level 4)
-                requestedCpv = requestedCpv + "_00-_";
-            } else if (requestedCpv.length() < 7) {
-                // selecting exact Category (level 5)
-                requestedCpv = requestedCpv + "_0-_";
-            } else if (requestedCpv.length() < 8) {
-                // selecting exact Category (level 6)
-                requestedCpv = requestedCpv + "_-_";
-            } else if (requestedCpv.length() < 9) {
-                // selecting exact Category (level 7)
-                requestedCpv = requestedCpv + "-_";
+            if (reqObj.getLvl() != 0) {
+                criteria.where(cb.equal(root.get(CPVModel_.cpvLevel), reqObj.getLvl()),
+                        cb.like(root.get(CPVModel_.cpvId), reqObj.getCpvRequest()));
+            } else {
+                criteria.where(cb.like(root.get(CPVModel_.cpvId), reqObj.getCpvRequest()));
             }
-
-            criteria.where(cb.like(root.get(CPVModel_.cpvId), requestedCpv));
 
             //case: first char is literal
         } else {
@@ -93,6 +66,43 @@ public class CPVQueries {
         return Collections.unmodifiableList(list);
     }
 
+    // 0 - exact lvl, -1 - upper level, 1 - lower level
+    private CPVRequestObject prepareDigitCpv(String requestedCpv, int depth) {
+        // trim string if more than 8 char
+        if (requestedCpv.length() > 8) {
+            requestedCpv = requestedCpv.substring(0, 8);
+        }
+
+        if (depth == 0) { //if we want to see same level, i.e. direct search mode
+            return new CPVRequestObject(requestedCpv, 0); // 0 - will search for every occurrence with any level
+        }
+
+        //else trim to first 0 value
+        int zeroIndex = requestedCpv.indexOf("0", 2);
+        if (zeroIndex != -1) {
+            requestedCpv = requestedCpv.substring(0, zeroIndex);
+        }
+
+        // if one level up
+        if (depth == -1) {
+            if (requestedCpv.length() < 3) { // if request is shorter than 3 char return general groups
+                return new CPVRequestObject(EmptyModel.STRING, 1);
+            } else { //else trim last char
+                requestedCpv = requestedCpv.substring(0, requestedCpv.length() - 1);
+            }
+        } //if one lvl down - do nothing
+
+        return new CPVRequestObject(requestedCpv, determineLevel(requestedCpv) + 1);
+    }
+
+    private int determineLevel(String requestedCpv) {
+        if (requestedCpv.length() < 3) {
+            return 1;
+        } else {
+            return requestedCpv.length() - 1;
+        }
+    }
+
     public void create(CPVModel model) throws SQLException {
         EntityManager entityManager = Database.DB.getEntityManager();
         entityManager.getTransaction().begin();
@@ -112,6 +122,24 @@ public class CPVQueries {
             return list.get(0);
         } else {
             return EmptyModel.CPV;
+        }
+    }
+
+    private class CPVRequestObject {
+        private String cpvRequest;
+        private int lvl;
+
+        CPVRequestObject(String cpvRequest, int lvl) {
+            this.cpvRequest = cpvRequest + "%";
+            this.lvl = lvl;
+        }
+
+        String getCpvRequest() {
+            return cpvRequest;
+        }
+
+        int getLvl() {
+            return lvl;
         }
     }
 }

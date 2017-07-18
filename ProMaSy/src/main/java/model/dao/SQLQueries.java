@@ -20,7 +20,7 @@ abstract class SQLQueries<T extends Model> implements Query<T> {
     private List<T> list = new LinkedList<>();
     private EntityManager entityManager;
 
-    SQLQueries(Class<T> entityClass) {
+    protected SQLQueries(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -29,6 +29,14 @@ abstract class SQLQueries<T extends Model> implements Query<T> {
         entityManager = Database.DB.getEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(object);
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public void refresh(T object) {
+        entityManager = Database.DB.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.refresh(object);
         entityManager.getTransaction().commit();
     }
 

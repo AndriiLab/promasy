@@ -41,6 +41,11 @@ public class AmountUnitsModel extends AbstractModel{
     }
 
     @Override
+    public void refresh() {
+        Database.AMOUNTUNITS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateAmUnit";
     }

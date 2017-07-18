@@ -330,7 +330,7 @@ public class MainFrame extends JFrame {
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showConfirmDialog(this,
-                    Labels.getProperty("wrongFloatFormat"),
+                    Labels.getProperty("wrongIntegerFormat"),
                     Labels.getProperty("error"),
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.ERROR_MESSAGE,
@@ -455,6 +455,9 @@ public class MainFrame extends JFrame {
     }
 
     // Status panel writers
+    public void writeStatusPanelCurrentDb(String dbName) {
+        statusPanel.setCurrentDb(dbName);
+    }
     public void writeStatusPanelCurrentUser(String userName) {
         statusPanel.setCurrentUserLabel(userName);
     }

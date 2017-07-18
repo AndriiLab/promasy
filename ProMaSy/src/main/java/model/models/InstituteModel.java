@@ -144,6 +144,11 @@ public class InstituteModel extends AbstractModel {
     }
 
     @Override
+    public void refresh() {
+        Database.INSTITUTES.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateInstitute";
     }

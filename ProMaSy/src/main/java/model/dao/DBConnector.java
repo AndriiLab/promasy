@@ -47,7 +47,7 @@ public enum DBConnector {
         if (entityManagerFactory != null) {
             entityManagerFactory.close();
             entityManagerFactory = null;
-            if (mainFrame != null) {
+            if (mainFrame != null && stat != null) {
                 Logger.infoEvent(mainFrame, stat.toString().replace(",", ",\n\t\t\t\t"));
             }
         }

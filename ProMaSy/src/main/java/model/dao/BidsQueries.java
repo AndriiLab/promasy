@@ -1,5 +1,6 @@
 package model.dao;
 
+import gui.cpv.CpvRequestContainer;
 import model.enums.BidType;
 import model.models.*;
 
@@ -111,7 +112,7 @@ public class BidsQueries extends SQLQueries<BidModel> {
                 cpvAmountModel.addToTotalAmount(bidAmount);
                 map.put(key, cpvAmountModel);
             } else {
-                CPVModel fourDigitCpv = Database.CPV.retrieve(key).get(0);
+                CPVModel fourDigitCpv = Database.CPV.retrieve(new CpvRequestContainer(key, 0)).get(0);
                 map.put(key, new CpvAmountModel(fourDigitCpv, type, bidAmount, bidModel));
             }
         }

@@ -46,6 +46,11 @@ public class ProducerModel extends AbstractModel{
     }
 
     @Override
+    public void refresh() {
+        Database.PRODUCERS.refresh(this);
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateProd";
     }

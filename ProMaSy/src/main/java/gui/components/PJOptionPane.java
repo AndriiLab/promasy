@@ -22,6 +22,14 @@ public class PJOptionPane {
                 JOptionPane.ERROR_MESSAGE, Icons.ERROR);
     }
 
+    public static void longField(JFrame parent, String fieldName, int size) {
+        String field = fieldName == null ? EmptyModel.STRING : " \"" + fieldName + "\" ";
+        JOptionPane.showMessageDialog(parent,
+                Labels.getProperty("maxFieldSize") + field + size + Labels.withSpaceBefore("chars"),
+                Labels.getProperty("tooLongField") + field,
+                JOptionPane.ERROR_MESSAGE, Icons.ERROR);
+    }
+
     public static int renameEntry(JFrame parent, String oldFieldName, String newFieldName) {
         return JOptionPane.showConfirmDialog(parent,
                 Labels.getProperty("renameField") +
