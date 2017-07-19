@@ -36,6 +36,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         super(parent, Labels.getProperty("calculator"), false);
         setSize(240, 347);
         setResizable(false);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         Dimension buttonDim = new Dimension(45, 45);
 
         Font buttonFont = new Font(UIManager.getDefaults().getFont("Button.font").getName(), Font.BOLD, 15);
@@ -110,6 +111,14 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                 } else if ((key == KeyEvent.VK_C) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
                     copyToClipboard();
                 }
+            }
+        });
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                sb.setLength(0);
+                logPane.setText(EmptyModel.STRING);
+                setVisible(false);
             }
         });
     }
