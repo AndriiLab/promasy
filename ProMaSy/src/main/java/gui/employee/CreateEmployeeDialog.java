@@ -300,7 +300,7 @@ public class CreateEmployeeDialog extends JDialog {
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("edit"));
         if (listener != null) listener.loadInstitutes();
-        roleBox.setSelectedObject(currentEmployeeModel.getRole());
+        roleBox.setSelectedItem(currentEmployeeModel.getRole());
         instituteBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
         departmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment());
         subdepartmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment());
@@ -318,7 +318,7 @@ public class CreateEmployeeDialog extends JDialog {
     }
 
     public void setRoleBox(Role role) {
-        roleBox.setSelectedObject(role);
+        roleBox.setSelectedItem(role);
         roleBox.setEnabled(false);
         if (role == Role.ADMIN) {
             addOrganizationButton.setEnabled(true);

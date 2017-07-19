@@ -65,7 +65,7 @@ public class CreateBidPanel extends JPanel {
     private MainFrame parent;
     private boolean isEditMode;
 
-    public CreateBidPanel(MainFrame parent) {
+    CreateBidPanel(MainFrame parent) {
         this.parent = parent;
 
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));

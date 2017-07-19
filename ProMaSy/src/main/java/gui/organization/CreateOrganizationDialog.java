@@ -119,8 +119,8 @@ public class CreateOrganizationDialog extends JDialog {
             buildingNumberField.setText(model.getAddress().getBuildingNumber());
             corpusNumberField.setText(model.getAddress().getCorpusNumber());
             postalCodeField.setText(model.getAddress().getPostalCode());
-            cityTypeBox.setSelectedObject(model.getAddress().getCityType());
-            streetTypeBox.setSelectedObject(model.getAddress().getStreetType());
+            cityTypeBox.setSelectedItem(model.getAddress().getCityType());
+            streetTypeBox.setSelectedItem(model.getAddress().getStreetType());
         }
         setVisible(true);
     }

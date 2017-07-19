@@ -43,5 +43,6 @@ public class Icons {
     public static final Icon CLOSE = IconFontSwing.buildIcon(FontAwesome.TIMES, 15, Color.WHITE);
     public static final Icon OK = IconFontSwing.buildIcon(FontAwesome.CHECK_CIRCLE_O, 15, Colors.GREEN);
     public static final Icon CANCEL = IconFontSwing.buildIcon(FontAwesome.BAN, 15, Colors.RED);
+    public static final Icon ARROW_RIGHT = IconFontSwing.buildIcon(FontAwesome.ARROW_RIGHT, 15, Colors.BLUE);
 
 }

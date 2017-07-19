@@ -35,6 +35,7 @@ public class FinancePanel extends JPanel {
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
     private JButton deleteDepOrderButton;
+    private JButton showBidsButton;
     private JTable depFinanceTable;
     private DepartmentFinanceTableModel departmentFinanceTableModel;
     private FinancePanelListener listener;
@@ -84,6 +85,7 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(false);
                         deleteDepOrderButton.setEnabled(false);
+                        showBidsButton.setEnabled(false);
                     }
                 }
             }
@@ -93,10 +95,13 @@ public class FinancePanel extends JPanel {
         createDepOrderButton = cedDepartmentFinances.getCreateButton();
         editDepOrderButton = cedDepartmentFinances.getEditButton();
         deleteDepOrderButton = cedDepartmentFinances.getDeleteButton();
+        showBidsButton = new JButton(Icons.ARROW_RIGHT);
+        showBidsButton.setToolTipText(Labels.getProperty("showAssociatedBids"));
 
         createDepOrderButton.setEnabled(false);
         editDepOrderButton.setEnabled(false);
         deleteDepOrderButton.setEnabled(false);
+        showBidsButton.setEnabled(false);
 
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
         depFinanceTable = new JTable(departmentFinanceTableModel);
@@ -117,6 +122,7 @@ public class FinancePanel extends JPanel {
                         createDepOrderButton.setEnabled(true);
                         editDepOrderButton.setEnabled(true);
                         deleteDepOrderButton.setEnabled(true);
+                        showBidsButton.setEnabled(true);
                     }
                 }
             }
@@ -211,6 +217,8 @@ public class FinancePanel extends JPanel {
                 selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
         });
+
+        showBidsButton.addActionListener(e -> showAssociatedBids());
     }
 
     private static List<BidModel> getBidsList(FinanceModel financeModel) {
@@ -258,6 +266,7 @@ public class FinancePanel extends JPanel {
         createDepOrderButton.setVisible(false);
         editDepOrderButton.setVisible(false);
         deleteDepOrderButton.setVisible(false);
+        showBidsButton.setVisible(false);
     }
 
     public void setUseUserDepartment() {
@@ -269,6 +278,10 @@ public class FinancePanel extends JPanel {
 
     public CreateDepartmentFinancePanel getCreateDepartmentFinancePanel() {
         return createDepartmentFinancePanel;
+    }
+
+    private void showAssociatedBids() {
+        parent.setBidsListPanelSelectedModel(selectedDepFinModel);
     }
 
     private void createLayout() {
@@ -291,6 +304,7 @@ public class FinancePanel extends JPanel {
         addDepOrderButtonPanel.add(createDepOrderButton);
         addDepOrderButtonPanel.add(editDepOrderButton);
         addDepOrderButtonPanel.add(deleteDepOrderButton);
+        addDepOrderButtonPanel.add(showBidsButton);
 
         depFinancePanel.add(addDepOrderButtonPanel, BorderLayout.NORTH);
         depFinancePanel.add(new JScrollPane(depFinanceTable), BorderLayout.CENTER);

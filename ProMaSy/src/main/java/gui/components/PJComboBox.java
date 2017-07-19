@@ -59,16 +59,7 @@ public class PJComboBox<T> extends JComboBox<T> {
 
     public <T extends Model> void setSelectedModel(T model) {
         if (model != null && model.getModelId() != 0L) {
-            setSelectedObject(model);
-        }
-    }
-
-    public void setSelectedObject(Object object) {
-        for (int i = 0; i <= this.getItemCount(); i++) {
-            if (this.getItemAt(i).equals(object)) {
-                this.setSelectedIndex(i);
-                break;
-            }
+            setSelectedItem(model);
         }
     }
 }

@@ -390,6 +390,11 @@ public class MainFrame extends JFrame {
         conSettDialog.setDefaults(model);
     }
 
+    public void setBidsListPanelSelectedModel(FinanceDepartmentModel model) {
+        bidsListPanel.setSelectedModel(model);
+        tabPane.setSelectedComponent(bidsListPanel);
+    }
+
     //windows controls
     public void showLoginPane() {
         add(loginPanel, BorderLayout.CENTER);

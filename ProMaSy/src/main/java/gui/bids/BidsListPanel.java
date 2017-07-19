@@ -1,5 +1,6 @@
 package gui.bids;
 
+import controller.Logger;
 import controller.ReportsGenerator;
 import gui.MainFrame;
 import gui.bids.status.StatusDialog;
@@ -27,10 +28,7 @@ import java.util.List;
  */
 public class BidsListPanel extends JPanel {
 
-    private JButton createBidButton;
-    private JButton copyBidButton;
-    private JButton editBidButton;
-    private JButton deleteBidButton;
+    private JButton createBidButton, copyBidButton, editBidButton, deleteBidButton;
     private JButton changeStatusButton;
     private PJComboBox<DepartmentModel> departmentBox;
     private PJComboBox<SubdepartmentModel> subdepartmentBox;
@@ -52,6 +50,7 @@ public class BidsListPanel extends JPanel {
     private BidType selectedBidType;
     private CreateBidPanel createBidPanel;
     private JSplitPane splitPane;
+    private Thread bidRequestThread;
 
     public BidsListPanel(MainFrame parent) {
         this.parent = parent;
@@ -293,14 +292,24 @@ public class BidsListPanel extends JPanel {
     }
 
     public void getBids() {
-        if (isSelectedDepartmentModelEmpty()) {
-            listener.selectAllBidsEventOccurred(selectedBidType);
-        } else if (isSelectedSubepartmentModelEmpty()) {
-            listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
-        } else if (isSelectedFinanceDepartmentModelEmpty()) {
-            listener.getBidsBySubdepartment(selectedBidType, selectedSubdepartmentModel);
-        } else if (!isSelectedFinanceDepartmentModelEmpty()) {
-            listener.getBidsByFinanceDepartment(selectedBidType, selectedFinanceDepartmentModel);
+        if (bidRequestThread == null || !bidRequestThread.isAlive()) {
+            bidRequestThread = new Thread(() -> {
+                try {
+                    Thread.sleep(250);
+                    if (isSelectedDepartmentModelEmpty()) {
+                        listener.selectAllBidsEventOccurred(selectedBidType);
+                    } else if (isSelectedSubepartmentModelEmpty()) {
+                        listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+                    } else if (isSelectedFinanceDepartmentModelEmpty()) {
+                        listener.getBidsBySubdepartment(selectedBidType, selectedSubdepartmentModel);
+                    } else if (!isSelectedFinanceDepartmentModelEmpty()) {
+                        listener.getBidsByFinanceDepartment(selectedBidType, selectedFinanceDepartmentModel);
+                    }
+                } catch (InterruptedException e) {
+                    Logger.warnEvent(e);
+                }
+            });
+            bidRequestThread.start();
         }
     }
 
@@ -403,6 +412,22 @@ public class BidsListPanel extends JPanel {
 
     public CreateBidPanel getCreateBidPanel() {
         return createBidPanel;
+    }
+
+    public void setSelectedModel(FinanceDepartmentModel model) {
+        if (model.getTotalAmount(BidType.MATERIALS).compareTo(BigDecimal.ZERO) > 0) {
+            bidTypeBox.setSelectedItem(BidType.MATERIALS);
+        } else if (model.getTotalAmount(BidType.EQUIPMENT).compareTo(BigDecimal.ZERO) > 0) {
+            bidTypeBox.setSelectedItem(BidType.EQUIPMENT);
+        } else {
+            bidTypeBox.setSelectedItem(BidType.SERVICES);
+        }
+
+        departmentBox.setSelectedModel(model.getSubdepartment().getDepartment());
+        subdepartmentBox.setSelectedModel(model.getSubdepartment());
+        financeDepartmentBox.setSelectedModel(model);
+
+        getBids();
     }
 
     private void createLayout() {
