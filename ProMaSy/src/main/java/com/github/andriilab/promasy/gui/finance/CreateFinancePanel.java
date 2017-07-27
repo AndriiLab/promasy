@@ -154,10 +154,7 @@ class CreateFinancePanel extends JPanel {
         servicesAmountField.setText(String.valueOf(currentFinanceModel.getTotalServices()));
         startDatePicker.setDate(currentFinanceModel.getStartDate().toLocalDate());
         endDatePicker.setDate(currentFinanceModel.getEndDate().toLocalDate());
-        //TODO remove if statement after patch
-        if (selectedFinanceModel.getFundType() != null) {
-            fundBox.setSelectedItem(selectedFinanceModel.getFundType());
-        }
+        fundBox.setSelectedItem(selectedFinanceModel.getFundType());
         kpkvkField.setText(String.valueOf(selectedFinanceModel.getKPKVK()));
         okButton.setText(Labels.getProperty("edit"));
         super.setVisible(true);

@@ -211,22 +211,22 @@ ALTER TABLE finance_dep OWNER TO postgres;
 --
 
 CREATE TABLE finances (
-    id bigint NOT NULL,
-    active boolean,
-    created_date timestamp without time zone,
-    modified_date timestamp without time zone,
-    version bigint NOT NULL,
-    created_by bigint,
-    modified_by bigint,
-    due_to date,
-    name character varying(255),
-    number integer,
-    fundtype character varying(255),
-    kpkvk integer,
-    starts_on date,
-    total_equpment numeric(19,2),
-    total_materials numeric(19,2),
-    total_services numeric(19,2)
+  id              bigint NOT NULL,
+  active          boolean,
+  created_date    timestamp without time zone,
+  modified_date   timestamp without time zone,
+  version         bigint NOT NULL,
+  created_by      bigint,
+  modified_by     bigint,
+  due_to          date,
+  name            character varying(255),
+  number          CHARACTER VARYING(255),
+  fundtype        character varying(255),
+  kpkvk           integer,
+  starts_on       date,
+  total_equpment  numeric(19,2),
+  total_materials numeric(19,2),
+  total_services  numeric(19,2)
 );
 
 
