@@ -6,7 +6,7 @@ import gui.commons.Labels;
 import javax.swing.*;
 import java.awt.*;
 
-public class Toolbar extends JToolBar {
+class Toolbar extends JToolBar {
 
     private ToolbarListener btnListener;
 

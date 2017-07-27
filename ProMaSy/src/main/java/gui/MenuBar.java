@@ -11,7 +11,7 @@ import javax.swing.*;
  */
 class MenuBar {
 
-    private Role role;
+    private final Role role;
     private MenuBarListener listener;
 
     MenuBar(Role role) {
@@ -48,8 +48,11 @@ class MenuBar {
         editMenu.add(editCurrentUserItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
+        JMenuItem manualItem = new JMenuItem(Labels.getProperty("manual"));
         JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware"));
+        manualItem.setIcon(Icons.MANUAL);
         infoItem.setIcon(Icons.ABOUT);
+        helpMenu.add(manualItem);
         helpMenu.add(infoItem);
 
         menuBar.add(fileMenu);
@@ -109,6 +112,7 @@ class MenuBar {
         editProdItem.addActionListener(e -> listener.showProducerDialog());
         editSuplItem.addActionListener(e -> listener.showSupplierDialog());
         editCurrentUserItem.addActionListener(e -> listener.editCurrentUserAction());
+        manualItem.addActionListener(e -> listener.showManual());
         infoItem.addActionListener(e -> listener.showInfoDialog());
 
 

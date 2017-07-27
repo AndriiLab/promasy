@@ -12,10 +12,10 @@ import java.awt.*;
 
 class StatusPanel extends JPanel {
 
-    private JLabel currentUserLabel;
-    private JLabel currentDbLabel;
-    private JLabel status;
-    private MainFrame parent;
+    private final JLabel currentUserLabel;
+    private final JLabel currentDbLabel;
+    private final JLabel status;
+    private final MainFrame parent;
 
     StatusPanel(MainFrame parent) {
         this.parent = parent;

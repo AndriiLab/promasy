@@ -27,7 +27,7 @@ public enum Status {
         return statusDesc;
     }
 
-    public int getIdNum() {
+    private int getIdNum() {
         return idNum;
     }
 

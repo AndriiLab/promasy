@@ -13,7 +13,6 @@ import gui.commons.Labels;
 import gui.components.PJOptionPane;
 import gui.conset.ConSetListener;
 import gui.cpv.CpvRequestContainer;
-import gui.cpv.CpvSearchListener;
 import gui.employee.CreateEmployeeDialogListener;
 import gui.employee.CreateEmployeeFromLoginListener;
 import gui.employee.EditEmployeeDialogListener;
@@ -47,7 +46,7 @@ import java.util.prefs.Preferences;
 public class Controller {
 
     private ConnectionSettingsModel conSet;
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
     private List<String> parameters;
 
     public Controller(String[] args, MainFrame mainFrame) {
@@ -193,17 +192,7 @@ public class Controller {
             }
         });
 
-        mainFrame.setCpvListener(new CpvSearchListener() {
-            @Override
-            public void cpvSelectionEventOccurred(CpvRequestContainer ev) {
-                mainFrame.setCpvModelList(getCpvRequest(ev));
-            }
-
-            @Override
-            public void getTopCodes() {
-                mainFrame.setCpvModelList(getCpvRequest(new CpvRequestContainer(EmptyModel.STRING, 0)));
-            }
-        });
+        mainFrame.setCpvListener(ev -> mainFrame.setCpvModelList(getCpvRequest(ev)));
 
         mainFrame.setEmployeeDialogListener(new EditEmployeeDialogListener() {
             @Override
@@ -419,7 +408,7 @@ public class Controller {
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
         Logger.infoEvent(mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
-        if (currentVersion.compareTo(dbVersion) == -1) {
+        if (currentVersion.compareTo(dbVersion) < 0) {
             JOptionPane.showMessageDialog(mainFrame,
                     Labels.getProperty("youCantUseThisVersion") + "\n" +
                             Labels.withColon("yourVersion") + currentVersion.get() + "\n" +

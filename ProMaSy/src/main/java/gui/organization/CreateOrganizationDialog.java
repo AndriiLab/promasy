@@ -18,24 +18,24 @@ import java.awt.event.WindowEvent;
 /**
  * Dialog for creation and edit of {@link model.models.InstituteModel}
  */
-public class CreateOrganizationDialog extends JDialog {
-    private JTextField instituteNameField;
-    private JTextField mailField;
-    private JTextField phoneField;
-    private JTextField faxField;
-    private JTextField edrpouField;
-    private JTextField countryField;
-    private JTextField regionField;
-    private PJComboBox<CityTypes> cityTypeBox;
-    private JTextField cityField;
-    private PJComboBox<StreetTypes> streetTypeBox;
-    private JTextField streetField;
-    private JTextField buildingNumberField;
-    private JTextField corpusNumberField;
-    private JTextField postalCodeField;
-    private JButton createButton;
-    private JButton cancelButton;
-    private MainFrame parent;
+class CreateOrganizationDialog extends JDialog {
+    private final JTextField instituteNameField;
+    private final JTextField mailField;
+    private final JTextField phoneField;
+    private final JTextField faxField;
+    private final JTextField edrpouField;
+    private final JTextField countryField;
+    private final JTextField regionField;
+    private final PJComboBox<CityTypes> cityTypeBox;
+    private final JTextField cityField;
+    private final PJComboBox<StreetTypes> streetTypeBox;
+    private final JTextField streetField;
+    private final JTextField buildingNumberField;
+    private final JTextField corpusNumberField;
+    private final JTextField postalCodeField;
+    private final JButton createButton;
+    private final JButton cancelButton;
+    private final MainFrame parent;
     private InstituteModel model;
     private CreateOrganizationDialogListener listener;
 

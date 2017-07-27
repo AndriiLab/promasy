@@ -69,7 +69,7 @@ public class ReportsGenerator {
             BasicFileAttributes jasperAttr = Files.readAttributes(jasperFile, BasicFileAttributes.class);
             Path jrxmlFile = FileSystems.getDefault().getPath(reportPath + ".jrxml");
             BasicFileAttributes jrxmlAttr = Files.readAttributes(jrxmlFile, BasicFileAttributes.class);
-            if (jasperAttr.lastModifiedTime().compareTo(jrxmlAttr.lastModifiedTime()) == -1) {
+            if (jasperAttr.lastModifiedTime().compareTo(jrxmlAttr.lastModifiedTime()) < 0) {
                 Logger.infoEvent(parent, "Outdated report file: " + reportPath + ".jrxml");
                 compileReport(reportPath, parent);
             } else {

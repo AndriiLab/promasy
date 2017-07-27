@@ -1,0 +1,835 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1251"/>
+    <title>ІНСТРУКЦІЯ ДО ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ ProMaSy</title>
+    <meta name="generator" content="LibreOffice 5.3.4.2 (Windows)"/>
+    <meta name="created" content="2017-05-12T12:26:04.349000000"/>
+    <meta name="changed" content="2017-07-26T12:15:51.371000000"/>
+    <style type="text/css">
+        @page {
+            margin: 2cm
+        }
+
+        p {
+            margin-bottom: 0.25cm;
+            line-height: 120%
+        }
+
+        h2.western {
+            font-family: "Liberation Sans", sans-serif;
+            font-size: 16pt
+        }
+
+        h3.western {
+            font-family: "Liberation Sans", sans-serif;
+            font-size: 14pt
+        }
+    </style>
+</head>
+<body>
+<br>
+<p align="center" style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; page-break-after: avoid"><a
+        name="__RefHeading___Toc785_3406917643"></a>
+    <font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><strong>ІНСТРУКЦІЯ
+        ДО ПРОГРАМНОГО ЗАБЕЗПЕЧЕННЯ ProMaSy</strong></font></font></p>
+<p align="center"><font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><strong>версії
+    0.8</strong></font></font></p>
+<div id="Зміст1" dir="ltr">
+    <div id="Зміст1_Head" dir="ltr">
+        <p style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; page-break-after: avoid">
+            <font face="Liberation Sans, sans-serif"><font size="4"
+                                                           style="font-size: 16pt"><strong>Зміст</strong></font></font>
+        </p>
+    </div>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc787_3406917643">Про програму</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc789_3406917643">Системні вимоги</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc791_3406917643">Системні вимоги до сервера з базою даних</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc793_3406917643">Системні вимоги до користувацького ПК</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc795_3406917643">Налаштування</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc797_3406917643">Налаштування сервера</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc799_3406917643">Налаштування
+            при першому запуску програми для адміністратора</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc801_3406917643">Налаштування
+            при першому запуску програми для користувача</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc803_3406917643">Оновлення</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc838_3406917643">Опис структури програми</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc840_3406917643">Основне вікно програми</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc842_3406917643">Меню</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc844_3406917643">Панель кнопок швидкого доступу</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc846_3406917643">Основна панель</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc848_3406917643">Нижня панель</a></p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc1505_515692897">Бічна панель створення нового/редагування обраного замовлення</a>
+    </p>
+    <p style="margin-left: 1cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc1507_515692897">Вікно &ldquo;Пошук CPV коду&rdquo;</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc850_3406917643">Створення замовлення</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc1509_515692897">Додавання, редагування
+            або видалення пункту з випадаючого списку</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc1511_515692897">Пошук CPV коду</a></p>
+    <p style="margin-left: 0.5cm; margin-bottom: 0; line-height: 100%">
+        <a href="#__RefHeading___Toc1600_3922876930">Параметри запуску з командного рядку</a></p>
+</div>
+<p>
+    <br/>
+    <br/>
+</p>
+<p style="margin-bottom: 0; line-height: 115%; page-break-before: always">
+<span lang="uk-UA"><strong>УВАГА!</strong> Програмне забезпечення Procurement Management System або
+Система керування закупівлями (&ldquo;ProMaSy&rdquo;)
+розповсюджується під ліцензією Apache, версія 2.0
+(&ldquo;Ліцензія&rdquo;); Ви можете використовувати це
+програмне забезпечення лише у відповідності до Ліцензії. Ви можете
+отримати копію Ліцензії за посиланням </span><span lang="en-US">
+    <a href="http://www.apache.org/licenses/LICENSE-2.0">
+        http://www.apache.org/licenses/LICENSE-2.0</a>. <br/></span>
+    <span lang="uk-UA">Якщо не передбачено чинним законодавством або не погоджено в письмовій
+формі, програмне забезпечення, що поширюються за Ліцензією, поширюється у
+існуючому вигляді &quot;ЯК Є&quot;, БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ І УМОВ, виражених або
+неявних.</span></p>
+<p style="margin-bottom: 0; line-height: 115%"><span lang="uk-UA">В даний момент
+ProMaSy знаходиться у фазі активної розробки та, незважаючи на
+ретельне тестування, може містити значну кількість
+помилок. Якщо Ви хочете повідомити про виявлені помилки, то можете
+зв&rsquo;язатися з розробником за адресою </span><span lang="en-US">
+    <a href="mailto:lab.andrey@gmail.com">lab.andrey@gmail.com</a>.</span></p>
+<h2 class="western">
+    <a name="__RefHeading___Toc787_3406917643"></a><span lang="uk-UA">Про програму</span>
+</h2>
+<p style="margin-bottom: 0; line-height: 115%"><span lang="uk-UA">Основне завдання ProMaSy &mdash;
+спрощення процесу створення та відслідковування стану
+замовлень, які створює організація для закупівель матеріалів, обладнання та послуг.
+Всередині ProMaSy можливо створювати фінансові рахунки
+та визначати їх як джерела фінансування створених замовлень, вести
+облік залишку коштів на цих рахунках та формувати звіти за
+використаними коштами. Модуль, що відповідає за створення замовлень,
+спрощує процедуру формування замовлення, допомагає у виборі джерел
+фінансування, коду Єдиного закупівельного словника (набуття
+чинності: з 01.01.2016р. Наказ МЕРіТУ № 1474 від 19.11.2015р),
+відповідних виробників та постачальників цього замовлення. Створене
+замовлення можливо роздрукувати у вигляді визначеної форми.</span>
+</p>
+<p style="margin-bottom: 0; line-height: 115%">Всі дані програми
+    зберігаються на сервері та, у разі вимкнення сервера, будуть
+    недоступні користувацькому персональному комп&rsquo;ютері (далі ПК).</p>
+
+<h2 class="western"><a name="__RefHeading___Toc789_3406917643"></a>Системні вимоги</h2>
+
+<h3 class="western"><a name="__RefHeading___Toc791_3406917643">
+</a>Системні вимоги до сервера з базою даних</h3>
+<p style="margin-bottom: 0; line-height: 115%">Мінімальні вимоги до сервера відповідають мінімальним вимогам системи
+    керуванням баз даних PostgreSQL
+    (<a href="https://www.postgresql.org/docs/current/static/install-requirements.html">
+        https://www.postgresql.org/docs/current/static/install-requirements.html</a>).
+</p>
+<p style="margin-bottom: 0; line-height: 115%">Для роботи програми необхідно мати на сервері встановлене програмне
+    забезпечення PostgreSQL не нижче версії 9.6.</p>
+<p style="margin-bottom: 0; line-height: 115%">Останню версію завжди можливо завантажити з офіційного сайту
+    (<a href="https://www.postgresql.org/download/">https://www.postgresql.org/download/</a>).</p>
+<h3 class="western"><a name="__RefHeading___Toc793_3406917643"></a>
+    <span lang="uk-UA">Системні вимоги до користувацького ПК</span></h3>
+<p style="margin-bottom: 0; line-height: 115%">Для роботи програми необхідна встановлена віртуальна машина
+    <span lang="en-US">Java</span> не нижче версії 8.</p>
+<p style="margin-bottom: 0; line-height: 115%">Останню версію завжди можливо завантажити з офіційного сайту
+    (<a href="https://www.java.com/en/download/manual.jsp">https://www.java.com/en/download/manual.jsp</a>).</p>
+<p style="margin-bottom: 0; line-height: 115%"><strong>УВАГА!</strong> Для встановлення <span lang="en-US">Java </span>Вам
+    необхідно мати
+    адміністраторські привілеї на ПК.</p>
+<p style="margin-bottom: 0; line-height: 115%">Для встановлення та використання ProMaSy адміністраторські привілеї не
+    потрібні.</p>
+<p style="margin-bottom: 0; line-height: 115%"><span lang="uk-UA">Мінімальні вимоги аналогічні до вимог </span><span
+        lang="en-US">Java 8
+(</span><a href="https://www.java.com/en/download/help/sysreq.xml">https://www.java.com/en/download/help/sysreq.xml</a>)
+</p>
+<p style="margin-bottom: 0; line-height: 115%">Рекомендовані вимоги:</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%">Операційна система: <span
+        lang="en-US">Windows 7, 8, 10</span></p>
+<p style="margin-bottom: 0; line-height: 115%">Архітектура системи: 32- або 64-біт</p>
+<p style="margin-bottom: 0; line-height: 115%">Процесор: архітектури х86 з частотою від 1ГГц</p>
+<p style="margin-bottom: 0; line-height: 115%">Оперативна пам&rsquo;ять: від 1 Гб</p>
+<p style="margin-bottom: 0; line-height: 115%">Вільне місце на диску: від 300 Мб</p>
+
+<h2 class="western"><a name="__RefHeading___Toc795_3406917643"></a>Налаштування</h2>
+<h3 class="western"><a name="__RefHeading___Toc797_3406917643"></a>Налаштування сервера</h3>
+<p style="margin-bottom: 0; line-height: 115%">1. Встановіть обрану
+    версію системи керуванням баз даних PostgreSQL (на версіях нижче 9.6
+    робота програми не гарантується). В процесі встановлення вам буде
+    запропоновано ввести логін та пароль адміністратора та порт доступу
+    до бази даних. Збережіть їх у надійному місці!</p>
+<p style="margin-bottom: 0; line-height: 115%">2. Перевірте
+    доступність вибраного порту з локальної мережі організації, де буде
+    використовуватися ProMaSy.</p>
+<p style="margin-bottom: 0; line-height: 115%">3. Відкрйте
+    командний рядок (наприклад <span lang="en-US">Win+R &rarr; cmd &rarr;
+OK) </span>та перейдіть до теки з PostgreSQL<span lang="en-US">\bin\</span>
+    (наприклад &ldquo;<span lang="en-US"><em>cd c:\Program
+Files\PostgreSQL\9.6\bin\</em></span><span lang="en-US">&rdquo;).</span></p>
+<p style="margin-bottom: 0; line-height: 115%"><span lang="en-US">4.
+</span>Створіть структуру таблиць для роботи з ProMaSy з
+    використанням наданого файлу &ldquo;<em>db_clean.sql</em>&rdquo;:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    <span lang="uk-UA">- введіть команду &ldquo;<em>psql -h адреса_сервера -p порт -d назва_бази_даних
+        -U логін_адміністратора -f шлях_до_файлу</em>&rdquo;
+    </span></p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    Наприклад: <em>psql -h 127.0.0.1 -p 5432 -d postgres -U postgres -f D:\db_clean.sql</em>
+</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - введіть пароль адміністраторського акаунту</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - дочекайтеся появи напису<span lang="uk-UA"> &laquo;All done!&raquo;
+</span>(Орієнтовний час завершення &mdash; 2 хв)</p>
+<h3 class="western"><a name="__RefHeading___Toc799_3406917643"></a>Налаштування
+    при першому запуску програми для адміністратора</h3>
+<p style="margin-bottom: 0; line-height: 115%"><strong>УВАГА!</strong> Для
+    успішного завершення цього етапу Вам знадобляться наступні дані:</p>
+<p style="margin-bottom: 0; line-height: 115%">а) дані адміністратора:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - ПІБ</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - електронна пошта</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - внутрішній телефон</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - логін і пароль</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - повна назва організації, відділу та підрозділу до якого належить адміністратор</p>
+<p style="margin-bottom: 0; line-height: 115%">б) відомості про організацію:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - повна назва організації</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - повна адреса</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - телефон</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - факс</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - електронна пошта</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - ЄДРПОУ</p>
+<p style="margin-bottom: 0; line-height: 115%">Введені дані можливо
+    буде пізніше змінити з адміністраторського акаунту.</p>
+<p style="margin-bottom: 0; line-height: 115%">Наведені налаштування можливо проводити
+    на сервері або будь-якому ПК з доступом до локальної мережі організації.</p>
+<p style="margin-bottom: 0; line-height: 115%">1. Встановіть
+    віртуальну машину <span lang="en-US">Java</span> не нижче версії 8.</p>
+<p style="margin-bottom: 0; line-height: 115%">2. Розпакуйте архів
+    з ProMaSy до будь-якої теки, яка не потребує адміністраторських
+    привілеїв для доступу (наприклад <em>&ldquo;D:\&rdquo;</em> або <em>&ldquo;C:\Users\&lt;ім&rsquo;я
+        користувача&gt;\&rdquo;</em>).</p>
+<p style="margin-bottom: 0; line-height: 115%">3. Відкрийте
+    командний рядок (наприклад <span lang="en-US">Win+R &rarr; cmd &rarr;
+OK) </span>та перейдіть до теки з ProMaSy (наприклад &ldquo;<span lang="en-US"><em>cd
+d:\promasy&rdquo;</em>).</span></p>
+<p style="margin-bottom: 0; line-height: 115%">4. Запустіть команду
+    &ldquo;<span lang="en-US"><em>java -jar ProMaSy-ххх.jar --config --log&rdquo;</em></span>
+    (де ххх &mdash; версія ProMaSy). Це призведе до запуску ProMaSy в режимі конфігурації настройок доступу
+    до сервера із збереженням логу роботи програми.</p>
+<p style="margin-bottom: 0; line-height: 115%">5. У вікні настройок
+    введіть <span lang="en-US">IP </span>адресу сервера (за замовчуванням
+    <span lang="en-US">localhost</span>), порт доступу до бази даних (за
+    замовчуванням 5432), назву бази даних (за замовчуванням postgres).
+    Назву схеми змінювати не потрібно, підтримка схем з іншими назвами
+    поки відсутня.</p>
+<p style="margin-bottom: 0; line-height: 115%"><strong>ВАЖЛИВО!</strong> Ні в якому
+    випадку не змінюйте логін та пароль доступу до бази даних на
+    адміністраторські, оскільки це може становити небезпеку для
+    цілісності даних при подальшому використанні програми.</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%">6.
+    <span lang="uk-UA">Після натиснення кнопки &ldquo;ОК&rdquo; ProMaSy
+запропонує створити акаунт адміністратора.</span></p>
+<p style="margin-bottom: 0; line-height: 115%">7. Для створення
+    акаунту адміністратора натисніть &ldquo;Так&rdquo; у діалоговому
+    вікні та в наступному вікні введіть необхідні персональні дані
+    адміністратора.</p>
+<p style="margin-bottom: 0; line-height: 115%">8. Для того щоб
+    внести дані про організацію натисніть &ldquo;+&rdquo; та в наступному
+    вікні натисніть &ldquo;+&rdquo; навпроти поля &ldquo;Організація&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">9. У вікні додавання
+    даних про організацію введіть необхідні дані та натисніть &ldquo;Створити&rdquo;.</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%">10.
+    Для створення відділів. Виберіть з випадаючого списку в полі
+    &ldquo;Організація&rdquo; необхідну організацію та в полі &ldquo;Відділ&rdquo;
+    введіть назву відділу. Для створення нового відділу натисніть кнопку
+    &ldquo;+&rdquo; навпроти поля &ldquo;Відділ&rdquo;. Після створення
+    відділу до нього автоматично призначається новий підрозділ з назвою
+    &ldquo;&lt;підрозділ відсутній&gt;&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">11. Для створення
+    підрозділів. Виберіть з випадаючого списку в полі &ldquo;Відділ&rdquo;
+    необхідний відділ та в полі &ldquo;Підрозділ&rdquo; введіть назву
+    підрозділу. Для створення нового підрозділу натисніть кнопку &ldquo;+&rdquo;
+    навпроти поля &ldquo;Підрозділ&rdquo;.</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%"><span lang="uk-UA">12.
+Після створення структури організації (або хоча б організації,
+відділу та підрозділу
+де працює адміністратор) закрийте вікно
+створення структури організації. У
+вікні створення адміністратора необхідно
+вибрати відповідність до цієї організації.</span></p>
+<p style="margin-bottom: 0; line-height: 115%">13. Завершити
+    створення акаунту адміністратора необхідно натисненням кнопки &ldquo;Створити користвувача&rdquo;.</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%">
+    14.Після створення акаунту адміністратора Вам буде запропоновано
+    повторно завантажити ProMaSy та увійти до програми із зареєстрованими логіном та паролем.</p>
+<p style="margin-bottom: 0; line-height: 115%">15. Програму можливо
+    використовувати запускаючи файл <span lang="en-US"><em>ProMaSy-ххх.jar</em></span>
+    (де ххх &mdash; версія ProMaSy) в теці з програмою. Якщо при наступному запуску ProMaSy не зможе
+    з&rsquo;єднатися з сервером, буде запропоновано повторно ввести параметри з&rsquo;єднання.</p>
+<p style="margin-bottom: 0; line-height: 115%"><strong>ВАЖЛИВО!</strong> Ні в якому
+    випадку не змінюйте логін та пароль доступу до бази даних на
+    адміністраторські, оскільки це може становити небезпеку для
+    цілісності даних при подальшому використанні програми.</p>
+<p style="margin-bottom: 0; line-height: 115%"><strong>ВАЖЛИВО!</strong> Ви можете
+    додати згенерований файл settings.ser з налаштуваннями доступу до
+    сервера до архіву з ProMaSy для спрощення процесу налаштування
+    ProMaSy користувачами.</p>
+
+<h3 class="western"><a name="__RefHeading___Toc801_3406917643"></a>Налаштування
+    при першому запуску програми для користувача</h3>
+<p style="margin-bottom: 0; line-height: 115%"><strong>УВАГА!</strong> Перед
+    початком налаштування перевірте наявність в архіві ProMaSy файла
+    settings.ser або чи маєте Ви надані адміністратором <span lang="en-US">IP
+</span>адресу та порт доступу до бази даних сервера.</p>
+<p style="margin-bottom: 0; line-height: 115%"><strong>УВАГА!</strong> Якщо Ви ще не
+    маєте власного логіна і пароля доступу, д<span lang="uk-UA">ля
+</span>успішного завершення цього етапу Вам знадобляться наступні
+    дані:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - ПІБ</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - електронна пошта</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - внутрішній телефон</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - логін і пароль</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - повна назва організації, відділу та підрозділу до якого Ви належите</p>
+<p style="margin-bottom: 0; line-height: 115%">1. Встановіть
+    віртуальну машину <span lang="en-US">Java</span> не нижче версії 8
+    (якщо не маєте адміністраторських привілеїв на ПК зверніться до
+    локального адміністратора).</p>
+<p style="margin-bottom: 0; line-height: 115%">2. Розпакуйте архів
+    з ProMaSy до будь-якої теки, яка не потребує адміністраторських
+    привілеїв для доступу (наприклад &ldquo;<em>D:\</em>&rdquo;
+    або &ldquo;<em>C:\Users\&lt;ім&rsquo;я користувача&gt;</em>&rdquo;).</p>
+<p style="margin-bottom: 0; line-height: 115%">4. Запустіть в
+    створеній теці файл <span lang="en-US"><em>ProMaSy-ххх.jar</em></span>
+    (де ххх &mdash; версія ProMaSy).</p>
+<p style="margin-bottom: 0; line-height: 115%">5. Якщо з&rsquo;явиться
+    помилка про відсутність доступу до бази даних змініть у вікні, що
+    з&rsquo;явилось, <span lang="en-US">IP </span>адресу та/або порт
+    доступу до бази даних, які були надані адміністратором. Для
+    збереження налаштувань та повторного з&rsquo;єднання натисніть &ldquo;ОК&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">6. У вікні вводу
+    даних входу Ви введіть отриманий логін і пароль та натисніть &ldquo;Вхід&rdquo;.
+    Після цього з&rsquo;явиться головне вікно програми. В такому випадку
+    налаштування є завершеним. Якщо Ви не маєте власних логіна та пароля
+    входу натисніть на кнопку зі знаком &ldquo;+&rdquo; - &ldquo;Створити
+    нового користувача&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">7. Введіть необхідні
+    персональні дані та вигадані логін і пароль користувача, виберіть з
+    випадаючого списку належність до організації та її підрозділів. Для
+    створення облікового запису натисніть кнопку &ldquo;Створити
+    користувача&rdquo;. При вдалому створенні облікового запису Ви
+    побачите інформаційне вікно з підтверженням.</p>
+<p style="margin-bottom: 0; line-height: 115%">8. Для входу до
+    системи повторно запустіть <span lang="en-US"><em>ProMaSy-ххх.jar</em></span>
+    (де ххх &mdash; версія ProMaSy),
+    введіть Ваші логін та пароль та натисніть &ldquo;Вхід&rdquo;.</p>
+
+<h2 class="western"><a name="__RefHeading___Toc803_3406917643"></a>Оновлення</h2>
+<p style="margin-bottom: 0; line-height: 115%"><strong>УВАГА!</strong> Перед
+    початком налаштування перевірте наявність в архіві з оновленням
+    ProMaSy файла settings.ser або чи маєте Ви, надані адміністратором,
+    <span lang="en-US">IP </span>адресу та порт доступу до бази даних
+    сервера.</p>
+<p style="margin-bottom: 0; line-height: 115%">Оновлення
+    встановлюються у ручному режимі та не потребують адміністраторських
+    привілеїв на ПК.</p>
+<p style="margin-bottom: 0; line-height: 115%">1. Повністю видаліть теку зі старою версією ProMaSy.</p>
+<p style="margin-bottom: 0; line-height: 115%">2. Розпакуйте архів з оновленням ProMaSy до будь-якої теки, яка не
+    потребує
+    адміністраторських привілеїв для доступу (наприклад &ldquo;<em>D:\</em>&rdquo;
+    або &ldquo;<em>C:\Users\ім&rsquo;я користувача</em>&rdquo;).</p>
+<p style="margin-bottom: 0; line-height: 115%">3. Для входу до системи запустіть <span
+        lang="en-US"><em>ProMaSy-ххх.jar </em></span>
+    (де ххх &mdash; версія ProMaSy), введіть Ваші логін та пароль та натисніть &ldquo;Вхід&rdquo;.</p>
+
+<h2 class="western"><a name="__RefHeading___Toc838_3406917643"></a>Опис структури програми</h2>
+<h3 class="western"><a name="__RefHeading___Toc840_3406917643"></a>Основне вікно програми</h3>
+<p style="margin-bottom: 0; line-height: 115%">ProMaSy була оптимізована для роботи у режимі єдиного вікна.
+    Відповідно, більшість операцій проходить у основному вікні програми.</p>
+<p style="margin-bottom: 0; line-height: 115%">Основне вікно програми складається з декількох регіонів:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - меню, яке містить підменю &ldquo;Файл&rdquo;, &ldquo;Редагувати&rdquo;, &ldquo;Допомога&rdquo; тощо</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - панелі кнопок, що дозволяє швидко скористатися функціями &ldquo;Друк&rdquo;, &ldquo;Експорт&rdquo;, &ldquo;Оновлення
+    таблиць&rdquo;, &ldquo;Пошук
+    за <span lang="en-US">CPV </span>кодом&rdquo;, &ldquo;Калькулятор&rdquo; тощо</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    -основної панелі, що містить таблицю з замовленнями</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    -нижньої панелі, яка містить інформацію про користувача та короткий лог роботи програми</p>
+<h3 class="western"><a name="__RefHeading___Toc842_3406917643"></a>Меню</h3>
+<p style="margin-bottom: 0; line-height: 115%">&ldquo;<strong>Файл&rdquo;</strong>
+    містить наступні опції:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Друк</strong> &mdash; друк обраних або всіх позицій зі списку замовлень</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Експорт до <span lang="en-US">xls </span>файлу</strong>
+    &mdash; експорт обраних або всіх позицій зі списку замовлень до файлу
+    електронних таблиць</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Вихід</strong> &mdash; вихід з програми</p>
+<p style="margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    &ldquo;<strong>Редагувати&rdquo;</strong> містить наступні опції:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Додати/змінити розмірності</strong> &mdash; створення, редагування та
+    видалення розмірностей, які необхідні для описання кількісних
+    параметрів замовлення</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Додати/змінити виробників</strong> &mdash; створення, редагування та
+    видалення виробників товарів або послуг, які є предметом замовлення</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Додати/змінити постачальників</strong> &mdash; створення, редагування
+    та видалення постачальників товарів або послуг, які є предметом
+    замовлення</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Редагувати власний профіль</strong> &mdash; редагування параметрів
+    власного профілю, які були введені при його реєстрації</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Редагувати організації/відділи</strong> &mdash; редагування та
+    додавання організацій, їх відділів та відомостей про них</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Редагувати користувачів</strong> &mdash; редагування та
+    активація/деактивація користувацьких облікових записів</p>
+<p style="margin-bottom: 0; line-height: 115%; background: transparent">
+    &ldquo;<strong>Налаштування&rdquo;</strong> містить наступні опції:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Параметри з&rsquo;єднання з БД</strong> &mdash; зміна параметрів
+    доступу до бази даних</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Встановити мінімальну версію доступу </strong>&mdash; встановлення
+    мінімальної версії доступу до БД програми відповідно до версії
+    поточної програми (Призводить до появи інформаційного вікна у
+    користувачів більш низьких версій, про неможливість використання
+    старої версії програми та необхідність оновлення).</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Встановити кількість нових користувачів</strong> &mdash; задає
+    кількість реєстрацій для нових користувачів. Наприклад, якщо
+    необхідно зареєструвати ще 10 нових користувачів &mdash; встановіть
+    число 10. Якщо потрібно заборонити створення нових користувачів,
+    встановіть число 0. В такому випадку, при спробі самостійної
+    реєстрації користувач отримає відмову у створенні нового облікового
+    запису. Адміністратор може створювати нові користувацькі облікові
+    записи навіть якщо число реєстрацій нових користувачів встановлено на
+    0.</p>
+<p style="margin-bottom: 0; line-height: 115%; background: transparent">
+    &ldquo;<strong>Звіти&rdquo;</strong> містить наступні опції:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Замовлення за <span lang="en-US">CPV </span>кодами </strong>
+    &mdash; виводить вікно звіту замовлень відсортованих за 4м знаком <span lang="en-US">CPV коду.</span></p>
+<p style="margin-bottom: 0; line-height: 115%">&ldquo;<strong>Допомога</strong>&rdquo; містить наступні опції:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Інформація про програму</strong> &mdash; перегляд інформації, версії
+    та часу збірки використовуваної програми</p>
+
+<h3 class="western"><a name="__RefHeading___Toc844_3406917643"></a>Панель кнопок швидкого доступу</h3>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Друк</strong> &mdash; аналогічно до пункту меню &ldquo;Друк&rdquo;</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    - <strong>Експорт до <span lang="en-US">xls </span>файлу</strong>
+    &mdash; аналогічно до пункту меню &ldquo;Експорт до <span lang="en-US">xls
+</span>файлу&rdquo;</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <span style="text-decoration: none">- </span><span
+        style="text-decoration: none"><strong>Оновити дані таблиць</strong></span><span style="text-decoration: none"> &mdash;
+оновлює дані з сервера щодо змін інформації про замовлення</span></p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">- <span
+        style="text-decoration: none"><strong>CPV</strong></span> &mdash; <span style="text-decoration: none">відображає
+діалог пошуку CPV кодів за кодом та описом українською і англійською мовами</span></p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <span style="text-decoration: none">- </span><span style="text-decoration: none"><strong>Калькулятор</strong></span><span
+        style="text-decoration: none"> &mdash; відображає простий калькулятор</span></p>
+
+<h3 class="western"><a name="__RefHeading___Toc846_3406917643"></a>Основна панель</h3>
+<p style="line-height: 115%">Основна панель складається субпанелей:</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <em><strong>Верхня субпанель містить:</strong></em></p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent; page-break-before: auto">
+    кнопки:</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Створити замовлення</strong> &mdash; відкриває субпанель створення нового замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Редагувати замовлення </strong>&mdash; відкриває субпанель редагування обраного замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Створити копію замовлення</strong> &mdash; відкриває субпанель з
+    копією обраного замовлення. Обране замовлення залишається незмінним,
+    створюється нове замовлення до якого копіюються параметри обраного
+    замовлення, які можливо буде редагувати у відкритій субпанелі
+    редагування замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Видалити замовлення</strong> &mdash; видаляє обране замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Змінити статус замовлення </strong>&mdash; відкриває вікно перегляду
+    історії статусів замовлення та дозволяє встановити новий статус
+    замовлення</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent; page-break-before: auto">
+    списки:</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Тема</strong> &mdash; дозволяє обрати фінансову тему, з якої будуть
+    використовуватися кошти для оплати замовлення. Вибір нової теми
+    призводить до завантаження замовлень цієї теми. Вибір теми без назви
+    (порожньої теми) призводить до завантаження всіх замовлень, що були
+    зроблені у обраному підрозділі (нижня субпанель-список Підрозділ).
+    Замовлення відображаються лише відповідно до обраної у сусідньому
+    списку категорії. При виборі непорожньої теми на нижній субпанелі
+    відображається інформація у щодо залишку коштів за обраною темою
+    (поле &ldquo;Залишок за темою&rdquo;) та кількості використаних
+    коштів (поле &ldquo;Загальна вартість&rdquo;)</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Категорія</strong> &mdash; завантажує до таблиці замовлення
+    відповідно до обраної категорії</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent"><span style="text-decoration: none">
+    - <em><strong>Нижня субпанель містить списки:</strong></em></span></p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Відділ</strong> &mdash; відображає відділ користувача, дозволяє
+    сортувати замовлення за відділом</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Підрозділ</strong> &mdash; відображає підрозділ користувача, дозволяє
+    сортувати замовлення за підрозділом</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent; page-break-before: auto">
+    інформаційні поля:</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Залишок за темою </strong>&mdash; відображає залишок коштів за
+    обраною темою (список Тема) відповідно до категорії (список
+    Категорія)</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Загальна вартість</strong> &mdash; відображає загальну кількість
+    використаних коштів за обраною темою (список Тема) відповідно до
+    категорії (список Категорія)</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent">
+    - <em><strong>Центральна субпанель</strong></em> є таблицею, яка містить колонки:</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Опис замовлення</strong> &mdash; короткий опис замовлення та його
+    параметрів</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Кількість</strong> &mdash; кількість одиниць у замовленні</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Ціна</strong> <strong>одиниці</strong> &mdash; ціна одиниці замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Загалом</strong> &mdash; загальна вартість замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Користувач</strong> &mdash; користувач, який останнім вносив зміни до
+    замовлення</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Дата</strong> <strong>редагування</strong> &mdash; дата, коли останній раз
+    замовлення було відредаговане</p>
+<p style="text-indent: 2cm; line-height: 115%; background: transparent">
+    - <strong>Статус</strong> &mdash; актуальний статус замовлення (можливо змінити
+    кнопкою &ldquo;Змінити статус&rdquo; на верхній субпанелі)</p>
+
+<h3 class="western"><a name="__RefHeading___Toc848_3406917643"></a>Нижня панель</h3>
+<p style="margin-bottom: 0; line-height: 115%">Ліва частина
+    відображає ПІБ користувача.</p>
+<p style="margin-bottom: 0; line-height: 115%">Центральна частина
+    відображає назву поточної бази даних.</p>
+<p style="margin-bottom: 0; line-height: 115%">Права частина
+    відображає останню подію, яка відбулася у програмі.</p>
+<p style="margin-bottom: 0; line-height: 115%">Лог програми
+    відслідковує лише ті події, які вносять зміни до бази даних. Також в
+    лог записуються помилки в роботі програми.</p>
+<p style="margin-bottom: 0; line-height: 115%">Лівий клік по нижній
+    панелі відкриває вікно розширеного логу роботи програми, де
+    зберігаються всі події, які відбулися за поточного запуску програми.</p>
+<p style="margin-bottom: 0; line-height: 115%">Лог роботи програми
+    можливо зберегти натиснувши кнопку &ldquo;Зберегти лог&rdquo;. Лог
+    буде збережено в теці ProMaSy з ім&rsquo;ям
+    log_дата_час_збереження.<span lang="en-US">txt</span></p>
+
+<h3 class="western"><a name="__RefHeading___Toc1505_515692897">
+</a>Бічна панель створення нового/редагування обраного замовлення</h3>
+<p style="line-height: 115%">Випливає на основній панелі з лівого
+    боку в режимах створення/створення копії/редагування замовлення.</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent; page-break-before: auto">
+    Панель містить поля:</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Відділ</strong> &mdash; відділ, до якого відноситься замовлення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Підрозділ</strong> &mdash; підрозділ, до якого відноситься
+    замовлення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Тема</strong> &mdash; джерело фінансування, з якого будуть
+    використовуватися кошти для оплати замовлення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Категорія</strong> &mdash; категорія до якої відноситься замовлення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Виробник</strong> &mdash; <span style="font-weight: normal">можливий
+    виробник замовлення (не є обов&rsquo;язковим). У випадку
+    відсутності у списку потрібного виробника, його можливо додати
+    натиснувши на розташовану поряд
+    кнопку &ldquo;+&rdquo; (Додати виробника).</span></p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Номер з каталогу</strong> &mdash; номер з каталогу виробника
+    (активується, лише якщо встановлений конкретний виробник).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <span lang="en-US"><strong>CPV </strong><strong>код</strong>
+</span>- <span lang="en-US">CPV код </span>до
+    якого можливо віднести замовлення. CPV код
+    можливо одразу внести в поле у форматі XXXXXXXX-X (де Х -
+    будь-яке число) або скористатися пошуком (кнопка із зображенням
+    збільшувального скла). Мінімальний рівень коду, який можливо обрати
+    для створення замовлення &mdash; 4-й знак справа &mdash; тобто
+    XXXX0000-X (коди більш високого порядку не будуть доступні для
+    вибору).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Опис замовлення</strong> &mdash; детальний опис замовлення. Тут варто
+    вказувати всі параметри та характеристики, яка потрібні бути
+    враховані в при розміщенні замовлення на електронному майданчиику.
+    <strong>УВАГА!</strong> В цьому полі заборонено вказувати конкретного виробника, номер
+    з каталогу та постачальника замовлення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Постачальник &mdash; </strong><span style="font-weight: normal">можливий
+постачальник замовлення (не є обов&rsquo;язковим). У випадку
+відсутності у списку потрібного постачальника, його можливо додати
+натиснувши на розташовану поряд кнопку &ldquo;+&rdquo; (Додати
+постачальника).</span></p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Причина вибору постачальника</strong> &mdash; причина вибору обраного
+    постачальника. Активується лише якщо був встановлений конкретний
+    постачальник. Якщо необхідної причини вибору у списку немає, її
+    можливо додати натиснувши на розташовану поряд кнопку &ldquo;+&rdquo;
+    (Додати причину вибору постачальника).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Пакування</strong> &mdash; тип пакування або одиниць замовлення.
+    Необхдіний тип пакування можливо додати натиснувши
+    на розташовану поряд кнопку &ldquo;+&rdquo; (Додати пакування).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Кількість</strong> &mdash; кількість одиниць замовлення (лише цілі
+    числа).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Ціна одиниці</strong> &mdash; ціна одиниці замовлення (припустимі
+    формати введення ціни: &ldquo;999&rdquo;, &ldquo;999,99&rdquo;,
+    &ldquo;999.99&rdquo;, &ldquo;1 000,99&rdquo;).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Загалом</strong> &mdash; загальна вартість замовлення (розраховується
+    автоматично).</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Код КЕКВ</strong> &mdash; код економічної класифікації видатків
+    бюджету (не обов&rsquo;язкове поле). Заповнюється лише за
+    необхідності змінити стандартне значення.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Орієнтовна дата початку закупівлі</strong> &mdash; дата, коли
+    планується почати закупівлю замовлення (не обов&rsquo;язкове поле).
+    Заповнюється лише, якщо необхідно вказати конкретну дату.</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent; page-break-before: auto">
+    кнопки:</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Створити/редагувати</strong> &mdash; зберігає внесені до замовлення
+    дані та закриває субпанель.</p>
+<p style="text-indent: 1.5cm; line-height: 115%; background: transparent">
+    - <strong>Відмінити</strong> &mdash; закриває субпанель, не зберігає введені
+    данні.</p>
+
+<h3 class="western"><a name="__RefHeading___Toc1507_515692897"></a>Вікно
+    &ldquo;Пошук CPV коду&rdquo;</h3>
+<p style="margin-bottom: 0; line-height: 115%">Вікно &ldquo;Пошук
+    CPV коду&rdquo; містить дві панелі:</p>
+<p style="margin-bottom: 0; line-height: 115%">Верхня панель &mdash;
+    панель кнопок навігації та рядка пошуку.</p>
+<p style="margin-bottom: 0; line-height: 115%">Нижня панель &mdash;
+    таблиця зі знайденими кодами.</p>
+<p style="margin-bottom: 0; line-height: 115%">Верхня панель
+    містить кнопки:</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Додому</strong> &mdash; повертає список основних категорій</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>На категорію вище</strong> &mdash; повертає список кодів, що на
+    категорію вище обраної (наприклад, якщо обрано код 03113000-6, то
+    натискання на кнопку поверне список з кодами типу 0311Х000-Х (де Х &mdash;
+    будь-яка цифра)</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Пошук</strong> &mdash; шукає коди відповідно до введеного запиту у
+    рядку пошуку</p>
+<p style="text-indent: 1cm; line-height: 115%; background: transparent; page-break-before: auto">
+    - <strong>Вибрати код</strong> &mdash; передати обраний код до діалогу
+    створення замовлення</p>
+<p style="line-height: 115%; background: transparent">Клік лівою
+    клавішею миші в таблиці обирає відповідний код, який відображається в
+    рядку пошуку, та завантажує підкатегорії даного коду (якщо вони
+    існують).</p>
+
+<h2 class="western"><a name="__RefHeading___Toc850_3406917643"></a>Створення
+    замовлення</h2>
+<p style="margin-bottom: 0; line-height: 115%">Після входу до
+    програми відділ та підрозділ для якого буде сформовано замовлення
+    будуть обрані автоматично відповідно до даних вашого акаунту.</p>
+<p style="margin-bottom: 0; line-height: 115%">Для створення
+    замовлення виконайте наступні дії:</p>
+<p style="margin-bottom: 0; line-height: 115%">1. Визначіть до якої
+    категорії можливо віднести замовлення (матеріали, обладнання чи
+    послуги). Виберіть на верхній субпанелі центральної панелі відповідну
+    категорію з випадаючого списку (пункт &ldquo;Категорія&rdquo;).</p>
+<p style="margin-bottom: 0; line-height: 115%">2. Оберіть з
+    сусіднього списку (пункт &ldquo;Тема&rdquo;) фінансову тему, з якої
+    планується використовувати кошти для оплати замовлення. При виборі
+    відповідної теми на нижній субпанелі з&rsquo;явиться інформація щодо
+    залишку вільних коштів на рахунку даної теми. Перевірте наявність
+    достатньої кількості коштів для створення замовлення.</p>
+<p style="margin-bottom: 0; line-height: 115%">3. На верхній
+    субпанелі натисність кнопку &ldquo;+&rdquo; (&ldquo;Створити
+    замовлення&rdquo;). З&rsquo;явиться бічна панель створення нового
+    замовлення. На ній будуть обрані відповідні відділ, підрозділ,
+    фінансова тема та категорія замовлення.</p>
+<p style="margin-bottom: 0; line-height: 115%">4. Обов&rsquo;язковими
+    полями для заповнення є &ldquo;<span lang="en-US">CPV </span>код&rdquo;,
+    &ldquo;Опис замовлення&rdquo;, &ldquo;Пакування&rdquo;, &ldquo;Кількість&rdquo;
+    та &ldquo;Ціна одиниці&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">5. Всі інші поля
+    заповнюються лише за необхідності.</p>
+<p style="margin-bottom: 0; line-height: 115%">6. Для створення
+    замовлення натисніть кнопку &ldquo;Створити&rdquo;.</p>
+<h2 class="western"><a name="__RefHeading___Toc1509_515692897"></a>Додавання,
+    редагування або видалення пункту з випадаючого списку</h2>
+<p style="margin-bottom: 0; line-height: 115%">Якщо необхідних
+    пунктів немає у випадаючих списках, їх можливо додати натиснувши на
+    кнопку &ldquo;+&rdquo; навпроти відповідного списку або знайти
+    відповідну команду у меню &ldquo;Редагувати&rdquo;.</p>
+<p style="margin-bottom: 0; line-height: 115%">1. При натисканні
+    кнопки &ldquo;+&rdquo; або вибору відповідного пункту у меню
+    &ldquo;Редагувати&rdquo; з&rsquo;явиться вікно
+    додавання/редагування/видалення пунктів списку.</p>
+<p style="margin-bottom: 0; line-height: 115%">2а. <em>Створення</em>.
+    У порожньому полі введіть назву нового пункту (вікно створення нового
+    пункту списку, може містити інші поля, які також потрібно буде
+    заповнити) та натисніть кнопку &ldquo;+&rdquo;. Це призведе до
+    додавання нового пункту до списку. Окрім кнопки &ldquo;+&rdquo;
+    можливо також натиснути на кнопку &ldquo;Встановити&rdquo;. Це
+    призведе не лише до додавання нового пункту до списку, але й до
+    встановлення створеного пункту у панелі створеня/редагування
+    замовлення.</p>
+<p style="margin-bottom: 0; line-height: 115%">2б. <em>Редагування</em>.
+    Оберіть пункт списку для редагування та в полі назви внесіть
+    необхідні виправлення. Для збереження змін натисніть кнопку з
+    зображенням ручки. У діалоговому вікні підтвердіть зміни. Окрім
+    кнопки з зображенням ручки можливо також натиснути на кнопку
+    &ldquo;Встановити&rdquo;. Це призведе не лише до редагування обраного
+    пункту списку, але й до встановлення редагованого пункту у панелі
+    створеня/редагування замовлення.</p>
+<p style="margin-bottom: 0; line-height: 115%">2в. <em>Видалення</em>.
+    Оберріть пункт списку, який необхідно видалити. Натисність на кнопку
+    з зображенням сміттєвого кошика. Підтвердіть видалення в діалоговому
+    вікні.</p>
+<h2 class="western"><a name="__RefHeading___Toc1511_515692897"></a>Пошук
+    <span lang="en-US">CPV коду</span></h2>
+<p style="margin-bottom: 0; line-height: 115%"><span lang="uk-UA">При
+</span>створенні замовлення необхідно обрати відповідний до
+    замовлення CPV код. Щоб перейти до пошуку необхідного коду необхідно
+    натиснути на кнопку із зображенням збільшувальної лупи на панелі
+    створення/редагування замовлення або на кнопку &ldquo;CPV&rdquo; на
+    панелі кнопок швидкого доступу.
+</p>
+<p style="margin-bottom: 0; line-height: 115%">Для пошуку коду
+    можливо використовувати як числові значення так і словесні. Щоб
+    розпочати пошук за введеними символами, необхідно натиснути на кнопку
+    із зображенням збільшувального скла або клавішу <span lang="en-US">Enter
+на </span>клавіатурі.</p>
+<p style="margin-bottom: 0; line-height: 115%">При введені числових
+    значень, система буде намагатися знайти код, що максимально
+    відповідає введеній числовій комбінації.</p>
+<p style="margin-bottom: 0; line-height: 115%">Наприклад:
+</p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід &ldquo;<strong>03113000-6</strong>&rdquo;
+    повертає лише 1 код - <strong>03113000-6</strong></p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід &ldquo;<strong>03113</strong>&rdquo;
+    повертає 3 коди: <strong>03113</strong>000-6, <strong>03113</strong>100-7, <strong>03113</strong>200-8,
+    тобто основний код, та підкатегорії даного коду</p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід &ldquo;<strong>03113</strong><strong>3</strong><strong>00</strong>&rdquo;
+    (неіснуючий код) повертає порожню таблицю</p>
+<p style="margin-bottom: 0; line-height: 115%">При введенні
+    словесних значень система буде намагатися знайти відповідні описи у
+    кодах, що будуть максимально відповідати введеним словам.</p>
+<p style="margin-bottom: 0; line-height: 115%">Наприклад:</p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід &ldquo;<strong>фермент</strong>&rdquo;
+    повертає 4 коди, де зустрічається слово &ldquo;фермент&rdquo;
+    (&ldquo;Йогурти та інші <strong>фермент</strong>овані молочні продукти&rdquo;,
+    &ldquo;<strong>Фермент</strong>овані напої недистильовані&rdquo;, &ldquo;<strong>Фермент</strong>и&rdquo;
+    та &ldquo;Будівництво басейнів для <strong>фермент</strong>ації стічних вод&rdquo;</p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід
+    &ldquo;<span lang="en-US"><strong>networks</strong></span> повертає
+    3 коди, де зустрічається слово &ldquo;<span lang="en-US">networks</span>&rdquo;
+    (&ldquo;<span lang="en-US">Capacitor <strong>networks</strong>&rdquo;, &ldquo;<strong>Networks</strong>&rdquo;,
+&ldquo;Multimedia <strong>networks</strong>&rdquo;</span>).</p>
+<p style="margin-bottom: 0; line-height: 115%">- ввід слова, яке
+    відсутнє у описі кодів англійською або українською повертає порожню
+    таблицю.</p>
+<p style="margin-bottom: 0; line-height: 115%">Якщо ви обрали код,
+    але кнопка &ldquo;<strong>Вибрати код</strong>&rdquo; не активна, необхідно
+    обрати код з підкатегорії обраного коду. Тобто клікнути лівою
+    клавішею миші на обраний код, а потім обрати код з отриманого списку
+    також лівим кліком миші. Це пов&rsquo;язано з законодавчими вимогами
+    розміщення замовлень на електронних майданчиках, які вимагають вибір
+    коду не нижче 4-го знаку, тобто у обраному коді повинно бути не
+    більше чотирьох &ldquo;0&rdquo; з правої сторони (XXXX0000).</p>
+
+<h2 class="western"><a name="__RefHeading___Toc1600_3922876930"></a>Параметри запуску з командного рядку</h2>
+<p style="margin-bottom: 0; line-height: 115%">ProMaSy, як і будь-який Java аплет,
+    може бути запущений з командного рядку. При цьому до командного рядку
+    будуть виведені всі логи роботи програми та розгорнута інформація про
+    виявлені помилки в роботі.</p>
+<p style="margin-bottom: 0; line-height: 115%">Для цього в командному рядку введіть:</p>
+<p style="margin-bottom: 0; line-height: 115%">&ldquo;<span
+        lang="en-US"><em>java -jar ProMaSy-ххх.jar</em>&rdquo;</span>
+    (де ххх &mdash; версія ProMaSy)</p>
+<p lang="uk-UA" style="margin-bottom: 0; line-height: 115%">Окрім того ProMaSy також
+    може бути запущена з додатковими аргументами командного рядку.
+    Доступні наступні аргументи:</p>
+<p lang="uk-UA" style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <em>-c</em> або <em>--config</em>
+    &mdash; запускає вікно налаштувань доступу до бази даних одразу після
+    запуску програми</p>
+<p lang="uk-UA" style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <em>-g</em> або <em>--generate</em>
+    &mdash; програма запускається в режимі створення та модифікації
+    таблиць. Варто використовувати з командою <em>--config</em>, де необхідно
+    задавати логін і пароль
+    адміністратора БД</p>
+<p lang="uk-UA" style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <em>-s</em> або <em>--statistics</em>
+    &mdash; після завершення сеансу роботи програми відображає статистику
+    звернення програми до БД. Знижує
+    швидкість роботи програми!</p>
+<p lang="uk-UA" style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    <em>-l</em> або <em>--log</em>
+    &mdash; після завершення сеансу роботи програми зберігає лог роботи у
+    окремий текстовий файл в теці з програмою</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    Приклад використання додаткових аргументів:
+</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    Запуск програми з відображенням вікна конфігурування доступу до БД та
+    збереженням логу програми до текстового файлу:
+</p>
+<p style="text-indent: 1cm; margin-bottom: 0; line-height: 115%; background: transparent">
+    &ldquo;<span lang="en-US"><em>java -jar ProMaSy-ххх.jar --config --log</em>&rdquo;</span></p>
+</body>
+</html>

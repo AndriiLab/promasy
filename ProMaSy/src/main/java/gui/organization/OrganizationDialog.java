@@ -20,26 +20,26 @@ import java.util.List;
 
 public class OrganizationDialog extends JDialog implements ActionListener {
 
-    private JButton closeButton;
-    private JButton createInstButton;
-    private JButton editInstButton;
-    private JButton deleteInstButton;
+    private final JButton closeButton;
+    private final JButton createInstButton;
+    private final JButton editInstButton;
+    private final JButton deleteInstButton;
     private JButton createDepButton;
-    private JButton editDepButton;
-    private JButton deleteDepButton;
+    private final JButton editDepButton;
+    private final JButton deleteDepButton;
     private JButton createSubdepButton;
-    private JButton editSubdepButton;
-    private JButton deleteSubdepButton;
-    private PJComboBox<InstituteModel> instituteBox;
-    private PJComboBox<DepartmentModel> departmentBox;
-    private PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private final JButton editSubdepButton;
+    private final JButton deleteSubdepButton;
+    private final PJComboBox<InstituteModel> instituteBox;
+    private final PJComboBox<DepartmentModel> departmentBox;
+    private final PJComboBox<SubdepartmentModel> subdepartmentBox;
     private OrganizationDialogListener orgListener;
     private String newDepName;
     private String newSubdepName;
     private InstituteModel privateInstModel;
     private DepartmentModel privateDepModel;
     private SubdepartmentModel privateSubdepModel;
-    private CreateOrganizationDialog createOrganizationDialog;
+    private final CreateOrganizationDialog createOrganizationDialog;
 
     public OrganizationDialog(MainFrame parent) {
         super(parent, Labels.getProperty("addEditOrganizationAndDepartments"), true);

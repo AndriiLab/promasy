@@ -16,12 +16,11 @@ import java.util.List;
 public class EditEmployeeDialog extends JDialog {
 
     private EditEmployeeDialogListener listener;
-    private JButton createEmployeeButton;
-    private JButton editEmployeeButton;
-    private JButton deleteEmployeeButton;
+    private final JButton editEmployeeButton;
+    private final JButton deleteEmployeeButton;
 
-    private JTable table;
-    private EmployeeTableModel tableModel;
+    private final JTable table;
+    private final EmployeeTableModel tableModel;
     private EmployeeModel selectedModel;
 
     public EditEmployeeDialog(MainFrame parent) {
@@ -31,7 +30,7 @@ public class EditEmployeeDialog extends JDialog {
         setLocationRelativeTo(parent);
 
         CEDButtons ced = new CEDButtons(Labels.getProperty("user_ced"));
-        createEmployeeButton = ced.getCreateButton();
+        JButton createEmployeeButton = ced.getCreateButton();
         createEmployeeButton.setIcon(Icons.NEW_USER_GREEN);
         editEmployeeButton = ced.getEditButton();
         deleteEmployeeButton = ced.getDeleteButton();

@@ -22,17 +22,17 @@ import java.util.Map;
  */
 public class ReportParametersDialog extends JDialog {
 
-    private PJComboBox<Role> roleBox;
-    private PJComboBox<EmployeeModel> headBox;
-    private PJComboBox<EmployeeModel> departmentHeadBox;
-    private PJComboBox<EmployeeModel> personallyLiableEmpBox;
-    private PJComboBox<EmployeeModel> accountantBox;
-    private PJComboBox<EmployeeModel> economistBox;
-    private PJComboBox<EmployeeModel> headTenderBox;
-    private JButton okButton;
-    private JButton cancelButton;
+    private final PJComboBox<Role> roleBox;
+    private final PJComboBox<EmployeeModel> headBox;
+    private final PJComboBox<EmployeeModel> departmentHeadBox;
+    private final PJComboBox<EmployeeModel> personallyLiableEmpBox;
+    private final PJComboBox<EmployeeModel> accountantBox;
+    private final PJComboBox<EmployeeModel> economistBox;
+    private final PJComboBox<EmployeeModel> headTenderBox;
+    private final JButton okButton;
+    private final JButton cancelButton;
     private ReportParametersDialogListener listener;
-    private Map<String, Object> parameters;
+    private final Map<String, Object> parameters;
 
     public ReportParametersDialog(MainFrame parent) {
         super(parent, Labels.getProperty("reportParameters"), true);

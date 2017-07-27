@@ -24,7 +24,7 @@ import java.time.format.DateTimeFormatter;
 class LoggerDialog extends JDialog {
 
     private final MainFrame parent;
-    private JTextPane logPane;
+    private final JTextPane logPane;
 
     LoggerDialog(MainFrame parent) {
         super(parent, Labels.getProperty("log"), true);

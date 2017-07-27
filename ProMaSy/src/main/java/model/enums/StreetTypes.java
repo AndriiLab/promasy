@@ -27,8 +27,8 @@ public enum StreetTypes {
     MICRODISTRICT(Labels.getProperty("streetTypes.microdistrict"), Labels.getProperty("streetTypes.microdistrictShort"));
 
 
-    private String name;
-    private String shortName;
+    private final String name;
+    private final String shortName;
 
     StreetTypes(String name, String shortName) {
         this.name = name;

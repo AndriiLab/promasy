@@ -20,8 +20,8 @@ import java.awt.event.ActionEvent;
 public class SupplierDialog extends AbstractCEDDialog<SupplierModel, SupplierDialogListener> {
     private String newSuplTel;
     private String newSuplComment;
-    private JTextField telField;
-    private JTextPane commentsPane;
+    private final JTextField telField;
+    private final JTextPane commentsPane;
 
     public SupplierDialog(MainFrame parent) {
         super(SupplierModel.class, parent, new Dimension(335, 235), Labels.getProperty("suplDialogSuper"), Labels.getProperty("supplier_ced"), parent.getCreateBidPanel().getSupplierBox());

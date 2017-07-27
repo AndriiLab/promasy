@@ -18,7 +18,7 @@ class FinanceTableModel extends AbstractTableModel {
 
     private List<FinanceModel> db = new LinkedList<>();
 
-    private String[] colNames = {
+    private final String[] colNames = {
             Labels.getProperty("financeName"),
             Labels.getProperty("materialsAmount"),
             Labels.getProperty("materialsLeft"),

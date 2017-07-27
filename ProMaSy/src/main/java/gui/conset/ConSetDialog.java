@@ -10,14 +10,14 @@ import java.awt.*;
 
 public class ConSetDialog extends JDialog {
 
-    private JButton okButton;
-    private JButton cancelButton;
-    private JSpinner portSpinner;
-    private JTextField serverField;
-    private JTextField schemaField;
-    private JTextField dbField;
-    private JTextField userField;
-    private JPasswordField passField;
+    private final JButton okButton;
+    private final JButton cancelButton;
+    private final JSpinner portSpinner;
+    private final JTextField serverField;
+    private final JTextField schemaField;
+    private final JTextField dbField;
+    private final JTextField userField;
+    private final JPasswordField passField;
     private ConSetListener listener;
 
     public ConSetDialog(MainFrame parent) {

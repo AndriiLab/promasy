@@ -5,7 +5,7 @@ import model.models.FinanceDepartmentModel;
 /**
  * Listener for {@link CreateDepartmentFinancePanel}
  */
-public interface CreateDepartmentFinancePanelListener {
+interface CreateDepartmentFinancePanelListener {
     void persistModelEventOccurred(FinanceDepartmentModel model);
 
     void loadDepartments();

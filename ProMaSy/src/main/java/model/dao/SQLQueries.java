@@ -20,7 +20,7 @@ abstract class SQLQueries<T extends Model> implements Query<T> {
     private List<T> list = new LinkedList<>();
     private EntityManager entityManager;
 
-    protected SQLQueries(Class<T> entityClass) {
+    SQLQueries(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 

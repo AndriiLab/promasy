@@ -10,8 +10,8 @@ class EmployeeTableModel extends AbstractTableModel{
 
 	private List<EmployeeModel> db;
 
-	private String[] colNames = {Labels.getProperty("shortName"),
-								    Labels.getProperty("institute"),
+    private final String[] colNames = {Labels.getProperty("shortName"),
+            Labels.getProperty("institute"),
                                     Labels.getProperty("department"),
                                     Labels.getProperty("subdepartment"),
                                     Labels.getProperty("role"),

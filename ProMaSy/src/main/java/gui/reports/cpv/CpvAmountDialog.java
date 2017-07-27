@@ -33,13 +33,13 @@ import java.util.stream.Collectors;
  * Panel for {@link model.models.CpvAmountModel}
  */
 public class CpvAmountDialog extends JDialog {
-    private CpvAmountTableModel tableModel;
+    private final CpvAmountTableModel tableModel;
     private JTable table;
-    private CpvAmountDetailDialog dialog;
+    private final CpvAmountDetailDialog dialog;
     private CpvAmountDialogListener listener;
-    private MainFrame parent;
-    private JTextField resolutionField;
-    private DatePicker resolutionDatePicker;
+    private final MainFrame parent;
+    private final JTextField resolutionField;
+    private final DatePicker resolutionDatePicker;
 
     public CpvAmountDialog(MainFrame parent) {
         super(parent, Labels.getProperty("cpvAmounts"), true);

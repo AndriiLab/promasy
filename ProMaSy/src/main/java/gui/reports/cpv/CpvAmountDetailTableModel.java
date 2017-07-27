@@ -10,11 +10,11 @@ import java.math.BigDecimal;
 /**
  * Table for detailed view of bids from {@link model.models.CpvAmountModel}
  */
-public class CpvAmountDetailTableModel extends AbstractTableModel {
+class CpvAmountDetailTableModel extends AbstractTableModel {
 
     private CpvAmountModel model;
 
-    private String[] colNames = {Labels.getProperty("department"),
+    private final String[] colNames = {Labels.getProperty("department"),
             Labels.getProperty("subdepartment"),
             Labels.getProperty("description"),
             Labels.getProperty("oneUnitPrice"),

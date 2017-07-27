@@ -5,6 +5,6 @@ import model.models.FinanceModel;
 /**
  * Listener for {@link CreateFinancePanel}
  */
-public interface CreateFinancePanelListener {
+interface CreateFinancePanelListener {
     void persistModelEventOccurred(FinanceModel model);
 }

@@ -10,8 +10,8 @@ public enum BidType {
     EQUIPMENT(Labels.getProperty("bidType.equipment"), Labels.getInt("default.bidType.equipmentKEKV")),
     SERVICES(Labels.getProperty("bidType.services"), Labels.getInt("default.bidType.servicesKEKV"));
 
-    private String bidTypeName;
-    private Integer kekv;
+    private final String bidTypeName;
+    private final Integer kekv;
 
     BidType(String bidTypeName, Integer kekv) {
         this.bidTypeName = bidTypeName;

@@ -1,6 +1,8 @@
 package gui.commons;
 
 import javax.swing.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 /**
@@ -53,6 +55,9 @@ public class Labels {
         return VERSION.getString("buildDate");
     }
 
+    public static int getBuildYear() {
+        return LocalDateTime.parse(getBuildDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).getYear();
+    }
 }
 
 

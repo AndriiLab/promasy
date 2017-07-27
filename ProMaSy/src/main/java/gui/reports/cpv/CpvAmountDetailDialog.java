@@ -10,9 +10,9 @@ import java.awt.*;
 /**
  * Dialog for detailed view of bids from {@link model.models.CpvAmountModel}
  */
-public class CpvAmountDetailDialog extends JDialog {
-    private CpvAmountDetailTableModel tableModel;
-    private JTable table;
+class CpvAmountDetailDialog extends JDialog {
+    private final CpvAmountDetailTableModel tableModel;
+    private final JTable table;
 
     public CpvAmountDetailDialog(MainFrame parent) {
         super(parent, Labels.getProperty("cpvAmounts"), true);

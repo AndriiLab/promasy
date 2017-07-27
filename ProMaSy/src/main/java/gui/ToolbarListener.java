@@ -1,6 +1,6 @@
 package gui;
 
-public interface ToolbarListener {
+interface ToolbarListener {
 
 	void printEventOccurred();
 

@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public abstract class AbstractModel implements Model {
 
     @Column(name = "active")
-    protected boolean active;
+    private boolean active;
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_seq_gen")
     @GenericGenerator(
@@ -51,8 +51,8 @@ public abstract class AbstractModel implements Model {
         this.active = true;
     }
 
-    protected AbstractModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate,
-                            boolean active) {
+    AbstractModel(long modelId, EmployeeModel createdEmployee, Timestamp createdDate, EmployeeModel modifiedEmployee, Timestamp modifiedDate,
+                  boolean active) {
         this.modelId = modelId;
         this.createdEmployee = createdEmployee;
         this.createdDate = createdDate;

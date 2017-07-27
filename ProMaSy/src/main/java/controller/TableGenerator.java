@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * Generates XLS files with {@link model.models.BidModel} data
  */
 public class TableGenerator {
-    private MainFrame parent;
+    private final MainFrame parent;
 
     public TableGenerator(MainFrame parent) {
         this.parent = parent;

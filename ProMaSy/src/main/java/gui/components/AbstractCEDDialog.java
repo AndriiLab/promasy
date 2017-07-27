@@ -16,21 +16,21 @@ import java.awt.event.ActionListener;
  */
 public abstract class AbstractCEDDialog<T extends Model, U extends AbstractCEDDialogListener<T>> extends JDialog implements ActionListener {
     protected final T emptyModel;
-    protected JButton createButton;
-    protected JButton editButton;
-    protected JButton deleteButton;
-    protected PJComboBox<T> comboBox;
+    protected final JButton createButton;
+    protected final JButton editButton;
+    protected final JButton deleteButton;
+    protected final PJComboBox<T> comboBox;
     protected T privateModel;
     protected String newName;
-    protected JButton applyButton;
-    protected JButton closeButton;
-    protected MainFrame parent;
+    protected final JButton applyButton;
+    protected final JButton closeButton;
+    protected final MainFrame parent;
     protected String oldName;
     protected U listener;
-    private CEDButtons ced;
-    private Class<T> clazz;
+    private final CEDButtons ced;
+    private final Class<T> clazz;
 
-    public AbstractCEDDialog(Class<T> clazz, MainFrame parent, Dimension windowDimension, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, Dimension windowDimension, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
         super(parent, windowLabel, true);
         this.clazz = clazz;
         this.parent = parent;
@@ -88,7 +88,7 @@ public abstract class AbstractCEDDialog<T extends Model, U extends AbstractCEDDi
         });
     }
 
-    public AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
         this(clazz, parent, new Dimension(271, 128), windowLabel, nameCED, parentComboBox);
         layoutControls();
     }

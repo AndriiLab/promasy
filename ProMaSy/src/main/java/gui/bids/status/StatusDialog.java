@@ -13,12 +13,12 @@ import java.awt.*;
  * Dialog displays bid status change history and controls for setting new status for the bid
  */
 public class StatusDialog extends JDialog {
-    private JButton setStatusButton;
-    private JButton closeButton;
-    private JComboBox<Status> statusJComboBox;
-    private DefaultComboBoxModel defaultComboBoxModel;
-    private StatusTableModel statusTableModel;
-    private JTable statusTable;
+    private final JButton setStatusButton;
+    private final JButton closeButton;
+    private final JComboBox<Status> statusJComboBox;
+    private final DefaultComboBoxModel defaultComboBoxModel;
+    private final StatusTableModel statusTableModel;
+    private final JTable statusTable;
     private StatusDialogListener listener;
     private BidModel selectedBidModel;
 

@@ -144,14 +144,14 @@ public class Utils {
         BigDecimal targetBigDecimal = parseBigDecimal(parent, jTextField, fieldName);
         if (targetBigDecimal == null) {
             return null;
-        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getTotalAmount(bidType)) == 1) {
+        } else if (targetBigDecimal.compareTo(selectedFinanceModel.getTotalAmount(bidType)) > 0) {
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("depFinanceAmountGreaterThanFinanceAmount"),
                     Labels.getProperty("fieldErr"),
                     JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.requestFocusInWindow();
             return null;
-        } else if (isCreateMode && targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) == 1) {
+        } else if (isCreateMode && targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) > 0) {
             BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
             JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.setText(unassignedAmount.toString());

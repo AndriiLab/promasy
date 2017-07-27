@@ -6,5 +6,4 @@ public interface CpvSearchListener extends EventListener {
 
     void cpvSelectionEventOccurred(CpvRequestContainer ev);
 
-    void getTopCodes();
 }

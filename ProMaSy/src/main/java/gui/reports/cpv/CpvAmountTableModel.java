@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * Table model for {@link model.models.CpvAmountModel}
  */
-public class CpvAmountTableModel extends AbstractTableModel {
+class CpvAmountTableModel extends AbstractTableModel {
 
     private List<CpvAmountReportModel> db;
 
-    private String[] colNames = {Labels.getProperty("cpv"),
+    private final String[] colNames = {Labels.getProperty("cpv"),
             Labels.getProperty("bidType"),
             Labels.getProperty("totalPrice2"),
             Labels.getProperty("cpvAmountReport.col4Title").toLowerCase(),

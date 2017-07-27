@@ -74,7 +74,7 @@ public class FinanceDepartmentModel extends AbstractModel {
         this.finances = finances;
     }
 
-    public List<BidModel> getBids() {
+    private List<BidModel> getBids() {
         return bids;
     }
 

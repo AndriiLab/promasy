@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat
 
-version '0.8.1'
+version '0.8.1.1'
 
 apply plugin: 'java'
 
@@ -100,7 +100,14 @@ jar {
         copy {
             from "reports/Bids_Report.jrxml"
             from "reports/CPV_Amount_Report.jrxml"
-            into "build/libs/reports"
+            into "$buildDir/libs/reports"
+        }
+        copy{
+            from "src/main/resources/AUTHORS.txt"
+            from "src/main/resources/LICENSE.txt"
+            from "src/main/resources/PACKAGES.txt"
+            from "src/main/resources/README.html"
+            into "$buildDir/libs"
         }
     }
 }
@@ -116,13 +123,17 @@ task createVersionProperties(dependsOn: processResources) {
         }
         copy {
             from "src/main/resources/PromasyVersion.properties"
+            from "src/main/resources/AUTHORS.txt"
+            from "src/main/resources/LICENSE.txt"
+            from "src/main/resources/PACKAGES.txt"
+            from "src/main/resources/README.html"
             into "$buildDir/resources/main"
         }
     }
 }
 
-task setConsoleCyrillicSupport(dependsOn: processResources){
-    doLast{
+task setConsoleCyrillicSupport(dependsOn: processResources) {
+    doLast {
         Properties props = new Properties()
         File propsFile = new File("$buildDir/resources/main/log4j.properties")
         props.load(propsFile.newDataInputStream())
@@ -131,7 +142,19 @@ task setConsoleCyrillicSupport(dependsOn: processResources){
     }
 }
 
+task writePackages(dependsOn: processResources) {
+    File pkgsFile = new File("src/main/resources/PACKAGES.txt")
+    pkgsFile.write("Packages used in ProMaSy " + project.version + " build:\n\n")
+    configurations.compile.each {
+        String fileName = it.name
+        String pkgName = fileName.find("^.+?(?=-\\d)")
+        String pkgVersion = fileName.substring(pkgName.length() + 1, fileName.length() - 4)
+        pkgsFile.append("Package \'" + pkgName + "\' version: " + pkgVersion + "\n")
+    }
+}
+
 classes {
+    dependsOn writePackages
     dependsOn createVersionProperties
     dependsOn setConsoleCyrillicSupport
 }

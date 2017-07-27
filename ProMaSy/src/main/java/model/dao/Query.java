@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Interface for queries
  */
-public interface Query<T extends Model> {
+interface Query<T extends Model> {
     void createOrUpdate(T object) throws SQLException;
 
     void refresh(T object);

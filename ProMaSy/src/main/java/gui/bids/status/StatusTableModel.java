@@ -11,11 +11,11 @@ import java.sql.Timestamp;
 /**
  * TableModel for holding {@link Status} data
  */
-public class StatusTableModel extends AbstractTableModel {
+class StatusTableModel extends AbstractTableModel {
 
     private BidModel bidModel;
 
-    private String[] colNames = {Labels.getProperty("dateModified"),
+    private final String[] colNames = {Labels.getProperty("dateModified"),
             Labels.getProperty("status"),
             Labels.getProperty("role.user")};
 

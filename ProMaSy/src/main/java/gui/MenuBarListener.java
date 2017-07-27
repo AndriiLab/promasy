@@ -3,7 +3,7 @@ package gui;
 /**
  * Listener for {@link MenuBar}
  */
-public interface MenuBarListener {
+interface MenuBarListener {
 
     void setCurrentVersionAsMinimum();
 
@@ -32,4 +32,6 @@ public interface MenuBarListener {
     void showInfoDialog();
 
     void changeRegistrationsNumber();
+
+    void showManual();
 }

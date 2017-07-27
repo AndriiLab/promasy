@@ -18,7 +18,7 @@ class BidsTableModel extends AbstractTableModel {
 
     private List<BidModel> db = new LinkedList<>();
 
-    private String[] colNames = {Labels.getProperty("description"),
+    private final String[] colNames = {Labels.getProperty("description"),
             Labels.getProperty("amount"),
             Labels.getProperty("oneUnitPrice"),
             Labels.getProperty("totalPrice"),

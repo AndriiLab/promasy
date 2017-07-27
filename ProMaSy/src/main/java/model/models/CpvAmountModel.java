@@ -16,9 +16,9 @@ public class CpvAmountModel {
     private CPVModel cpv;
     private BidType type;
     private BigDecimal totalAmount;
-    private List<BidModel> bids = new LinkedList<>();
+    private final List<BidModel> bids = new LinkedList<>();
 
-    public CpvAmountModel(CPVModel cpv, BidType type, BigDecimal totalAmount) {
+    private CpvAmountModel(CPVModel cpv, BidType type, BigDecimal totalAmount) {
         this.cpv = cpv;
         this.type = type;
         this.totalAmount = totalAmount;

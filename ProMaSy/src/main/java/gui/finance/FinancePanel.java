@@ -26,24 +26,24 @@ import java.util.List;
 public class FinancePanel extends JPanel {
 
     private final List<FinanceDepartmentModel> emptyDepartmentFinancesList = new LinkedList<>();
-    private MainFrame parent;
-    private JButton createOrderButton;
-    private JButton editOrderButton;
-    private JButton deleteOrderButton;
-    private JTable financeTable;
-    private FinanceTableModel financeTableModel;
+    private final MainFrame parent;
+    private final JButton createOrderButton;
+    private final JButton editOrderButton;
+    private final JButton deleteOrderButton;
+    private final JTable financeTable;
+    private final FinanceTableModel financeTableModel;
     private JButton createDepOrderButton;
     private JButton editDepOrderButton;
     private JButton deleteDepOrderButton;
     private JButton showBidsButton;
-    private JTable depFinanceTable;
-    private DepartmentFinanceTableModel departmentFinanceTableModel;
+    private final JTable depFinanceTable;
+    private final DepartmentFinanceTableModel departmentFinanceTableModel;
     private FinancePanelListener listener;
 
     private FinanceModel selectedFinanceModel;
     private FinanceDepartmentModel selectedDepFinModel;
-    private CreateFinancePanel createFinancePanel;
-    private CreateDepartmentFinancePanel createDepartmentFinancePanel;
+    private final CreateFinancePanel createFinancePanel;
+    private final CreateDepartmentFinancePanel createDepartmentFinancePanel;
     private JSplitPane financeSplitPane;
     private JSplitPane departmentFinanceSplitPane;
     private boolean useUserDepartment;
@@ -321,10 +321,6 @@ public class FinancePanel extends JPanel {
         add(splitPane, BorderLayout.CENTER);
     }
 
-    public FinanceModel getSelectedFinances() {
-        return selectedFinanceModel;
-    }
-
     public void refresh() {
         for (int row = 0; row < financeTableModel.getRowCount(); row++) {
             ((FinanceModel) financeTableModel.getValueAt(row, 9)).calculateLeftAmount();
@@ -382,8 +378,8 @@ public class FinancePanel extends JPanel {
     }
 
     public class FinanceReport {
-        private String name;
-        private List<BidModel> list;
+        private final String name;
+        private final List<BidModel> list;
 
         FinanceReport(String name, List<BidModel> list) {
             this.name = name;

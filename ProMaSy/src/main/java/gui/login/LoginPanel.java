@@ -14,10 +14,10 @@ import java.awt.*;
 
 public class LoginPanel extends JPanel {
 
-    private JTextField userField;
-    private JPasswordField passwordField;
+    private final JTextField userField;
+    private final JPasswordField passwordField;
     private LoginListener loginListener;
-    private MainFrame parent;
+    private final MainFrame parent;
 
     public LoginPanel(MainFrame parent) {
         parent.setTitle(Labels.getProperty("loginDialogSuper"));

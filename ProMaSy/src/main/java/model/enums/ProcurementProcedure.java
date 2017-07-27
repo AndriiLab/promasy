@@ -17,7 +17,7 @@ public enum ProcurementProcedure {
     COMPETITIVE_DIALOGUE(Labels.getProperty("procProc.competitiveDialogue")),
     COMPETITIVE_DIALOGUE_ENG(Labels.getProperty("procProc.competitiveDialogueWEng"));
 
-    private String description;
+    private final String description;
 
     ProcurementProcedure(String description) {
         this.description = description;

@@ -158,7 +158,7 @@ public class FinanceModel extends AbstractModel {
         return leftAmount.get(bidType);
     }
 
-    public void calculateLeftAmount(BidType bidType) {
+    private void calculateLeftAmount(BidType bidType) {
         if (leftAmount == null) {
             leftAmount = new HashMap<>();
         }

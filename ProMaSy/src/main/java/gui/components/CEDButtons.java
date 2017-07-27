@@ -12,10 +12,10 @@ import java.awt.*;
  */
 public class CEDButtons {
 
-    private JButton createButton;
-    private JButton editButton;
-    private JButton deleteButton;
-    private String propertyName;
+    private final JButton createButton;
+    private final JButton editButton;
+    private final JButton deleteButton;
+    private final String propertyName;
 
     public CEDButtons(String propertyName) {
         this.propertyName = propertyName;

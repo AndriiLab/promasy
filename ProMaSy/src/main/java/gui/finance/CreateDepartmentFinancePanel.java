@@ -28,18 +28,18 @@ public class CreateDepartmentFinancePanel extends JPanel {
     private BigDecimal depServicesAmount;
     private CreateDepartmentFinancePanelListener listener;
 
-    private JFrame parent;
-    private PJComboBox<DepartmentModel> departmentBox;
+    private final JFrame parent;
+    private final PJComboBox<DepartmentModel> departmentBox;
     private PJComboBox<SubdepartmentModel> subdepartmentBox;
-    private JTextField depMaterialsAmountField;
-    private JTextField depEquipmentAmountField;
-    private JTextField depServicesAmountField;
-    private JLabel materialsLeft;
-    private JLabel equpmetLeft;
-    private JLabel servicesLeft;
-    private JButton okButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JTextField depMaterialsAmountField;
+    private final JTextField depEquipmentAmountField;
+    private final JTextField depServicesAmountField;
+    private final JLabel materialsLeft;
+    private final JLabel equpmetLeft;
+    private final JLabel servicesLeft;
+    private final JButton okButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
     private boolean isCreateMode;
 
     public CreateDepartmentFinancePanel(JFrame parent) {

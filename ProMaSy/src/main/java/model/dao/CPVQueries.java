@@ -126,8 +126,8 @@ public class CPVQueries {
     }
 
     private class CPVRequestObject {
-        private String cpvRequest;
-        private int lvl;
+        private final String cpvRequest;
+        private final int lvl;
 
         CPVRequestObject(String cpvRequest, int lvl) {
             this.cpvRequest = cpvRequest + "%";

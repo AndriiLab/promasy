@@ -21,25 +21,25 @@ import java.util.List;
 
 public class CreateEmployeeDialog extends JDialog {
 
-    private JButton okButton;
-    private JButton cancelButton;
-    private JButton addOrganizationButton;
-    private JFrame parent;
+    private final JButton okButton;
+    private final JButton cancelButton;
+    private final JButton addOrganizationButton;
+    private final JFrame parent;
     private CreateEmployeeDialogListener listener;
     private CreateEmployeeFromLoginListener loginListener;
-    private JTextField nameField;
-    private JTextField middleNameField;
-    private JTextField lastNameField;
-    private JTextField emailField;
-    private JTextField phoneMainField;
-    private JTextField phoneReserveField;
-    private PJComboBox<InstituteModel> instituteBox;
-    private PJComboBox<DepartmentModel> departmentBox;
-    private PJComboBox<SubdepartmentModel> subdepartmentBox;
-    private PJComboBox<Role> roleBox;
-    private JTextField loginField;
-    private JPasswordField passwordField;
-    private JPasswordField repeatPasswordField;
+    private final JTextField nameField;
+    private final JTextField middleNameField;
+    private final JTextField lastNameField;
+    private final JTextField emailField;
+    private final JTextField phoneMainField;
+    private final JTextField phoneReserveField;
+    private final PJComboBox<InstituteModel> instituteBox;
+    private final PJComboBox<DepartmentModel> departmentBox;
+    private final PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private final PJComboBox<Role> roleBox;
+    private final JTextField loginField;
+    private final JPasswordField passwordField;
+    private final JPasswordField repeatPasswordField;
     private EmployeeModel currentEmployeeModel;
 
     public CreateEmployeeDialog(MainFrame parent) {

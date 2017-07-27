@@ -24,7 +24,7 @@ import java.util.Locale;
 /**
  * Dialog for creation and updating of {@link FinanceModel}
  */
-public class CreateFinancePanel extends JPanel {
+class CreateFinancePanel extends JPanel {
 
     private final LocalDate defaultStartDate = LocalDate.of(Year.now().getValue(), Month.JANUARY, 1);
     private final LocalDate defaultEndDate = LocalDate.of(Year.now().getValue(), Month.DECEMBER, 31);
@@ -37,19 +37,19 @@ public class CreateFinancePanel extends JPanel {
     private BigDecimal equipmentAmount;
     private BigDecimal servicesAmount;
     private FinanceModel currentFinanceModel;
-    private JFrame parent;
-    private JTextField orderNumberField;
-    private JTextField orderNameField;
-    private JTextField kpkvkField;
-    private PJComboBox<Fund> fundBox;
-    private DatePicker startDatePicker;
-    private DatePicker endDatePicker;
-    private JTextField materialsAmountField;
-    private JTextField equipmentAmountField;
-    private JTextField servicesAmountField;
-    private JButton okButton;
-    private JButton cancelButton;
-    private JButton closeButton;
+    private final JFrame parent;
+    private final JTextField orderNumberField;
+    private final JTextField orderNameField;
+    private final JTextField kpkvkField;
+    private final PJComboBox<Fund> fundBox;
+    private final DatePicker startDatePicker;
+    private final DatePicker endDatePicker;
+    private final JTextField materialsAmountField;
+    private final JTextField equipmentAmountField;
+    private final JTextField servicesAmountField;
+    private final JButton okButton;
+    private final JButton cancelButton;
+    private final JButton closeButton;
     private CreateFinancePanelListener listener;
 
     CreateFinancePanel(JFrame parent) {

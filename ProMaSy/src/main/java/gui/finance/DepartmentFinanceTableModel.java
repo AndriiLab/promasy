@@ -16,7 +16,7 @@ import java.util.List;
 class DepartmentFinanceTableModel extends AbstractTableModel {
 
     private List<FinanceDepartmentModel> db = new LinkedList<>();
-    private String[] colNames = {
+    private final String[] colNames = {
             Labels.getProperty("department"),
             Labels.getProperty("subdepartment"),
             Labels.getProperty("materialsAmount"),

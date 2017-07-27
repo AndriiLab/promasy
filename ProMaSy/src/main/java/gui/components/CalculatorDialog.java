@@ -23,10 +23,10 @@ import java.util.Map;
  */
 public class CalculatorDialog extends JDialog implements ActionListener {
 
-    private Map<String, JButton> buttons;
-    private JTextPane logPane;
+    private final Map<String, JButton> buttons;
+    private final JTextPane logPane;
     private JPanel buttonPanel;
-    private StringBuilder sb;
+    private final StringBuilder sb;
     private BigDecimal number1;
     private BigDecimal number2;
     private BigDecimal result = BigDecimal.ZERO;

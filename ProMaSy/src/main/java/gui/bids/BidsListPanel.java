@@ -28,27 +28,30 @@ import java.util.List;
  */
 public class BidsListPanel extends JPanel {
 
-    private JButton createBidButton, copyBidButton, editBidButton, deleteBidButton;
-    private JButton changeStatusButton;
-    private PJComboBox<DepartmentModel> departmentBox;
-    private PJComboBox<SubdepartmentModel> subdepartmentBox;
-    private PJComboBox<FinanceDepartmentModel> financeDepartmentBox;
-    private PJComboBox<BidType> bidTypeBox;
-    private BidsTableModel bidsTableModel;
-    private JTable bidsTable;
+    private final JButton createBidButton;
+    private final JButton copyBidButton;
+    private final JButton editBidButton;
+    private final JButton deleteBidButton;
+    private final JButton changeStatusButton;
+    private final PJComboBox<DepartmentModel> departmentBox;
+    private final PJComboBox<SubdepartmentModel> subdepartmentBox;
+    private final PJComboBox<FinanceDepartmentModel> financeDepartmentBox;
+    private final PJComboBox<BidType> bidTypeBox;
+    private final BidsTableModel bidsTableModel;
+    private final JTable bidsTable;
     private BidsListPanelListener listener;
-    private StatusDialog statusDialog;
+    private final StatusDialog statusDialog;
     private BidModel selectedBidModel;
-    private List<BidModel> selectedBidModels;
-    private JLabel sumLabel;
-    private JLabel financeLeftLabel;
+    private final List<BidModel> selectedBidModels;
+    private final JLabel sumLabel;
+    private final JLabel financeLeftLabel;
     private FinanceDepartmentModel selectedFinanceDepartmentModel;
     private DepartmentModel selectedDepartmentModel;
     private SubdepartmentModel selectedSubdepartmentModel;
-    private MainFrame parent;
+    private final MainFrame parent;
     private boolean useUserDepartment;
     private BidType selectedBidType;
-    private CreateBidPanel createBidPanel;
+    private final CreateBidPanel createBidPanel;
     private JSplitPane splitPane;
     private Thread bidRequestThread;
 

@@ -1,8 +1,8 @@
 package gui.cpv;
 
 public class CpvRequestContainer {
-    private String cpvRequest;
-    private int depth; // 0 - exact lvl, -1 - upper level, 1 - lower level
+    private final String cpvRequest;
+    private final int depth; // 0 - exact lvl, -1 - upper level, 1 - lower level
 
     public CpvRequestContainer(String cpvRequest, int depth) {
         this.cpvRequest = cpvRequest;

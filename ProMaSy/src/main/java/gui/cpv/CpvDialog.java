@@ -14,14 +14,14 @@ import java.util.List;
 
 public class CpvDialog extends JDialog {
 
-    private JTextField searchField;
-    private JButton upButton;
-    private JButton selectButton;
-    private CpvTableModel cpvTableModel;
-    private JTable table;
+    private final JTextField searchField;
+    private final JButton upButton;
+    private final JButton selectButton;
+    private final CpvTableModel cpvTableModel;
+    private final JTable table;
     private CpvSearchListener cpvListener;
     private CPVModel selectedCpvModel;
-    private MainFrame parent;
+    private final MainFrame parent;
 
     public CpvDialog(MainFrame parent) {
         super(parent, Labels.getProperty("cpvPanelTab"), true);
@@ -167,7 +167,7 @@ public class CpvDialog extends JDialog {
 
     }
 
-    public void makeCpvQuery(String cpvRequest, int depth) {
+    private void makeCpvQuery(String cpvRequest, int depth) {
 
         CpvRequestContainer ev = new CpvRequestContainer(cpvRequest, depth);
 

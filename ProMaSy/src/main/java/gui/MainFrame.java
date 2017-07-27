@@ -55,32 +55,36 @@ import java.util.Map;
 public class MainFrame extends JFrame {
 
     private LoginPanel loginPanel;
-    private Toolbar toolbar;
+    private final Toolbar toolbar;
     private MenuBar menuBar;
-    private ConSetDialog conSettDialog;
-    private OrganizationDialog editOrgDialog;
-    private EditEmployeeDialog editEmpDialog;
-    private CreateEmployeeDialog createEmployeeDialog;
-    private InfoDialog infoDialog;
-    private CpvDialog cpvDialog;
-    private StatusPanel statusPanel;
-    private AmUnitsDialog amUnitsDialog;
-    private ProducerDialog producerDialog;
-    private SupplierDialog supplierDialog;
-    private ReasonsDialog reasonsDialog;
-    private FinancePanel financePanel;
-    private BidsListPanel bidsListPanel;
-    private CpvAmountDialog cpvAmountDialog;
-    private LoggerDialog loggerDialog;
-    private ReportParametersDialog reportParametersDialog;
+    private final ConSetDialog conSettDialog;
+    private final OrganizationDialog editOrgDialog;
+    private final EditEmployeeDialog editEmpDialog;
+    private final CreateEmployeeDialog createEmployeeDialog;
+    private final InfoDialog infoDialog;
+    private final CpvDialog cpvDialog;
+    private final StatusPanel statusPanel;
+    private final AmUnitsDialog amUnitsDialog;
+    private final ProducerDialog producerDialog;
+    private final SupplierDialog supplierDialog;
+    private final ReasonsDialog reasonsDialog;
+    private final FinancePanel financePanel;
+    private final BidsListPanel bidsListPanel;
+    private final CpvAmountDialog cpvAmountDialog;
+    private final LoggerDialog loggerDialog;
+    private final ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
-    private CalculatorDialog calculatorDialog;
+    private final CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
-    private DrawSplashScreen splashScreen;
-    private TableGenerator tg;
+    private final DrawSplashScreen splashScreen;
+    private final TableGenerator tg;
+    private final HTMLViewer manualViewer;
 
     public MainFrame() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        System.out.println("ProMasy - Procurement Management System version " + Labels.getVersion() + "\n" +
+                "Copyright (C) 2016-" + Labels.getBuildYear() + " Andrii Labyntsev et al.");
 
         splashScreen = new DrawSplashScreen();
         splashScreen.start();
@@ -109,6 +113,7 @@ public class MainFrame extends JFrame {
         createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
         tg = new TableGenerator(this);
+        manualViewer = new HTMLViewer(this, Labels.getProperty("manual"), "/README.html", false);
 
         setLayout(new BorderLayout());
     }
@@ -294,6 +299,11 @@ public class MainFrame extends JFrame {
             }
 
             @Override
+            public void showManual() {
+                manualViewer.setVisible(true);
+            }
+
+            @Override
             public void exitAction() {
                 if (listener != null) {
                     listener.exitEventOccurred();
@@ -463,6 +473,7 @@ public class MainFrame extends JFrame {
     public void writeStatusPanelCurrentDb(String dbName) {
         statusPanel.setCurrentDb(dbName);
     }
+
     public void writeStatusPanelCurrentUser(String userName) {
         statusPanel.setCurrentUserLabel(userName);
     }
@@ -631,7 +642,7 @@ public class MainFrame extends JFrame {
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
-            setTitle(Labels.getProperty("mainFrameSuper"));
+            setTitle(Labels.withSpaceAfter("mainFrameSuper") + Labels.getVersion());
             setSize(1000, 700);
             setResizable(true);
             positionOnScreenCenter();
