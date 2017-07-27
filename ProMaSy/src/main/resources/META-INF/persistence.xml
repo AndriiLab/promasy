@@ -5,22 +5,22 @@
 
     <persistence-unit name="postgres-connect" transaction-type="RESOURCE_LOCAL">
 
-        <class>model.models.Address</class>
-        <class>model.models.AmountUnitsModel</class>
-        <class>model.models.BidModel</class>
-        <class>model.models.BidStatusModel</class>
-        <class>model.models.CPVModel</class>
-        <class>model.models.DepartmentModel</class>
-        <class>model.models.EmployeeModel</class>
-        <class>model.models.FinanceDepartmentModel</class>
-        <class>model.models.FinanceModel</class>
-        <class>model.models.InstituteModel</class>
-        <class>model.models.ProducerModel</class>
-        <class>model.models.ReasonForSupplierChoiceModel</class>
-        <class>model.models.RegistrationTicketModel</class>
-        <class>model.models.SubdepartmentModel</class>
-        <class>model.models.SupplierModel</class>
-        <class>model.models.Version</class>
+        <class>com.github.andriilab.promasy.model.models.Address</class>
+        <class>com.github.andriilab.promasy.model.models.AmountUnitsModel</class>
+        <class>com.github.andriilab.promasy.model.models.BidModel</class>
+        <class>com.github.andriilab.promasy.model.models.BidStatusModel</class>
+        <class>com.github.andriilab.promasy.model.models.CPVModel</class>
+        <class>com.github.andriilab.promasy.model.models.DepartmentModel</class>
+        <class>com.github.andriilab.promasy.model.models.EmployeeModel</class>
+        <class>com.github.andriilab.promasy.model.models.FinanceDepartmentModel</class>
+        <class>com.github.andriilab.promasy.model.models.FinanceModel</class>
+        <class>com.github.andriilab.promasy.model.models.InstituteModel</class>
+        <class>com.github.andriilab.promasy.model.models.ProducerModel</class>
+        <class>com.github.andriilab.promasy.model.models.ReasonForSupplierChoiceModel</class>
+        <class>com.github.andriilab.promasy.model.models.RegistrationTicketModel</class>
+        <class>com.github.andriilab.promasy.model.models.SubdepartmentModel</class>
+        <class>com.github.andriilab.promasy.model.models.SupplierModel</class>
+        <class>com.github.andriilab.promasy.model.models.Version</class>
 
         <properties>
             <!-- Database connection settings -->

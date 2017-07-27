@@ -3,10 +3,9 @@ import java.text.SimpleDateFormat
 version '0.8.1.1'
 
 apply plugin: 'java'
+apply plugin: 'com.github.ben-manes.versions'
 
 sourceCompatibility = 1.8
-
-apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     repositories {
@@ -77,19 +76,11 @@ jar {
         attributes 'SplashScreen-Image': 'splash.png',
                 'Implementation-Title': 'ProMaSy',
                 'Implementation-Version': version,
-                'Main-Class': 'App',
+                'Main-Class': 'com.github.andriilab.promasy.App',
                 'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
     }
 
     doFirst {
-        //copy dependencies in single jar file
-//        from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {
-//            exclude 'META-INF/MANIFEST.MF'
-//            exclude 'META-INF/*.SF'
-//            exclude 'META-INF/*.DSA'
-//            exclude 'META-INF/*.RSA'
-//        }
-        //copy dependencies in folder
         copy {
             from configurations.runtime
             into "$buildDir/libs/lib"
