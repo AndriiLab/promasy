@@ -1,0 +1,10 @@
+/.gradle/
+/.idea/
+/.settings/
+/bin/
+/build/
+/gradle/
+/manual/
+/out/
+/reports/Bids_Report.jasper
+/reports/CPV_Amount_Report.jasper
