@@ -113,7 +113,7 @@ public class MainFrame extends JFrame {
         createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
         tg = new TableGenerator(this);
-        manualViewer = new HTMLViewer(this, Labels.getProperty("manual"), "/README.html", false);
+        manualViewer = new HTMLViewer(this, Labels.getProperty("manual"), "/MANUAL.html", false);
 
         setLayout(new BorderLayout());
     }
