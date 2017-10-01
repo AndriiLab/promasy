@@ -57,6 +57,11 @@ public class BidStatusModel extends AbstractModel {
         return "statusWasSet";
     }
 
+    @Override
+    public String toString() {
+        return status.getStatusDesc();
+    }
+
     public Status getStatus() {
         return status;
     }
