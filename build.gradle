@@ -1,21 +1,13 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.15.0'
+}
+
 import java.text.SimpleDateFormat
 
-version '0.9.0'
-
 apply plugin: 'java'
-apply plugin: 'com.github.ben-manes.versions'
 
+version '0.9.0'
 sourceCompatibility = 1.8
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-    }
-}
 
 repositories {
     mavenLocal()
@@ -53,7 +45,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.11.Final'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
-    compile 'org.hibernate:hibernate-jpamodelgen:5.2.11.Final'
+    compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.11.Final'
 
     // https://mvnrepository.com/artifact/com.mchange/c3p0
     compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
