@@ -9,7 +9,6 @@ import com.github.andriilab.promasy.model.models.ConnectionSettingsModel;
 import com.github.andriilab.promasy.model.models.FinanceModel;
 
 import javax.swing.*;
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -47,7 +46,11 @@ public class Utils {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(new String(pass).getBytes(StandardCharsets.UTF_8));
             md.update(ByteBuffer.allocate(Long.BYTES).putLong(salt).array());
-            return DatatypeConverter.printHexBinary(md.digest());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : md.digest()) {
+                sb.append(String.format("%02X", b));
+            }
+            return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             Logger.warnEvent(e);
             return null;

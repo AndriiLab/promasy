@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat
 
-version '0.8.1.2'
+version '0.9.0'
 
 apply plugin: 'java'
 apply plugin: 'com.github.ben-manes.versions'
