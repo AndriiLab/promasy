@@ -1,15 +1,15 @@
-Packages used in ProMaSy 0.9.0 build:
+Packages used in ProMaSy 0.8.1 build:
 
 Package 'postgresql' version: 42.1.4
-Package 'jasperreports' version: 6.4.1
+Package 'jasperreports' version: 6.4.3
 Package 'swingx-all' version: 1.6.5-1
 Package 'commons-lang3' version: 3.6
 Package 'plexus-utils' version: 3.1.0
 Package 'jiconfont-swing' version: 1.0.1
 Package 'jiconfont-font_awesome' version: 4.7.0.0
-Package 'hibernate-c3p0' version: 5.2.11.Final
-Package 'hibernate-core' version: 5.2.11.Final
-Package 'hibernate-jpamodelgen' version: 5.2.11.Final
+Package 'hibernate-c3p0' version: 5.2.12.Final
+Package 'hibernate-core' version: 5.2.12.Final
+Package 'hibernate-jpamodelgen' version: 5.2.12.Final
 Package 'c3p0' version: 0.9.5.2
 Package 'log4j' version: 1.2.17
 Package 'LGoodDatePicker' version: 10.3.1
@@ -23,7 +23,7 @@ Package 'commons-logging' version: 1.2
 Package 'itext' version: 2.1.7.js6
 Package 'jfreechart' version: 1.0.19
 Package 'jcommon' version: 1.0.23
-Package 'ecj' version: 4.3.1
+Package 'ecj' version: 4.4.2
 Package 'jackson-databind' version: 2.1.4
 Package 'jackson-core' version: 2.1.4
 Package 'jackson-annotations' version: 2.1.4

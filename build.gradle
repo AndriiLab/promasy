@@ -1,12 +1,12 @@
 plugins {
-    id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
 import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version '0.9.0'
+version '0.8.1.2'
 sourceCompatibility = 1.8
 
 repositories {
@@ -21,7 +21,7 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.1'
+    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.3'
 
     // https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-all
     compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'
@@ -39,13 +39,13 @@ dependencies {
     compile group: 'com.github.jiconfont', name: 'jiconfont-font_awesome', version: '4.7.0.0'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.11.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.12.Final'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0
-    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.11.Final'
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.2.12.Final'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
-    compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.11.Final'
+    compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.12.Final'
 
     // https://mvnrepository.com/artifact/com.mchange/c3p0
     compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.2'
