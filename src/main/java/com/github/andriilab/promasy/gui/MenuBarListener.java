@@ -34,4 +34,6 @@ interface MenuBarListener {
     void changeRegistrationsNumber();
 
     void showManual();
+
+    void visitUpdatesSite();
 }

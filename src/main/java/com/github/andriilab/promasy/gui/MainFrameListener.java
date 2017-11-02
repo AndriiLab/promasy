@@ -25,4 +25,6 @@ public interface MainFrameListener {
     CPVModel validateCpv(String cpvCode);
 
     void setNumberOfRegistrations(int regNumber);
+
+    void visitUpdatesSite();
 }

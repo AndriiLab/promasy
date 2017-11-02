@@ -304,6 +304,13 @@ public class MainFrame extends JFrame {
             }
 
             @Override
+            public void visitUpdatesSite() {
+                if (listener != null) {
+                    listener.visitUpdatesSite();
+                }
+            }
+
+            @Override
             public void exitAction() {
                 if (listener != null) {
                     listener.exitEventOccurred();

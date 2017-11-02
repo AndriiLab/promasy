@@ -22,10 +22,8 @@ class MenuBar {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
-        JMenuItem printItem = new JMenuItem(Labels.withThreeDots("print"));
-        printItem.setIcon(Icons.PRINT);
-        JMenuItem exportToTableItem = new JMenuItem(Labels.getProperty("exportToTableFile"));
-        exportToTableItem.setIcon(Icons.EXCEL_FILE);
+        JMenuItem printItem = new JMenuItem(Labels.withThreeDots("print"), Icons.PRINT);
+        JMenuItem exportToTableItem = new JMenuItem(Labels.getProperty("exportToTableFile"), Icons.EXCEL_FILE);
         JMenuItem exitItem = new JMenuItem(Labels.getProperty("exit"));
         fileMenu.add(printItem);
         fileMenu.add(exportToTableItem);
@@ -33,14 +31,10 @@ class MenuBar {
         fileMenu.add(exitItem);
 
         JMenu editMenu = new JMenu(Labels.getProperty("edit"));
-        JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"));
-        editAmUnitsItem.setIcon(Icons.UNITS);
-        JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"));
-        editProdItem.setIcon(Icons.PRODUCER);
-        JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"));
-        editSuplItem.setIcon(Icons.SUPPLIER);
-        JMenuItem editCurrentUserItem = new JMenuItem(Labels.withThreeDots("editCurrentUser"));
-        editCurrentUserItem.setIcon(Icons.USER);
+        JMenuItem editAmUnitsItem = new JMenuItem(Labels.withThreeDots("amUnitsDialogSuper"), Icons.UNITS);
+        JMenuItem editProdItem = new JMenuItem(Labels.withThreeDots("prodDialogSuper"), Icons.PRODUCER);
+        JMenuItem editSuplItem = new JMenuItem(Labels.withThreeDots("suplDialogSuper"), Icons.SUPPLIER);
+        JMenuItem editCurrentUserItem = new JMenuItem(Labels.withThreeDots("editCurrentUser"), Icons.USER);
         editMenu.add(editAmUnitsItem);
         editMenu.add(editProdItem);
         editMenu.add(editSuplItem);
@@ -48,11 +42,12 @@ class MenuBar {
         editMenu.add(editCurrentUserItem);
 
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
-        JMenuItem manualItem = new JMenuItem(Labels.getProperty("manual"));
-        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware"));
-        manualItem.setIcon(Icons.MANUAL);
-        infoItem.setIcon(Icons.ABOUT);
+        JMenuItem manualItem = new JMenuItem(Labels.getProperty("manual"), Icons.MANUAL);
+        JMenuItem siteWithUpdatesItem = new JMenuItem(Labels.getProperty("updatesPage"), Icons.UPDATE);
+        JMenuItem infoItem = new JMenuItem(Labels.getProperty("aboutSoftware"), Icons.ABOUT);
         helpMenu.add(manualItem);
+        helpMenu.addSeparator();
+        helpMenu.add(siteWithUpdatesItem);
         helpMenu.add(infoItem);
 
         menuBar.add(fileMenu);
@@ -60,18 +55,15 @@ class MenuBar {
 
         // advanced menu for non users
         if (role.equals(Role.ADMIN)) {
-            JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"));
-            editOrgItem.setIcon(Icons.ORGANIZATION);
+            JMenuItem editOrgItem = new JMenuItem(Labels.withThreeDots("editOrganizationsDepartments"), Icons.ORGANIZATION);
 
             editMenu.add(editOrgItem);
 
             JMenu settingsMenu = new JMenu(Labels.getProperty("settings"));
-            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("connectionWithDBSettings"));
-            conSettItem.setIcon(Icons.CONNECTION_SETTINGS);
+            JMenuItem conSettItem = new JMenuItem(Labels.withThreeDots("connectionWithDBSettings"), Icons.CONNECTION_SETTINGS);
             settingsMenu.add(conSettItem);
 
-            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"));
-            editEmpItem.setIcon(Icons.USERS);
+            JMenuItem editEmpItem = new JMenuItem(Labels.withThreeDots("editEmployees"), Icons.USERS);
             editMenu.add(editEmpItem);
             editEmpItem.addActionListener(e -> listener.showEmpEditDialog());
 
@@ -113,6 +105,7 @@ class MenuBar {
         editSuplItem.addActionListener(e -> listener.showSupplierDialog());
         editCurrentUserItem.addActionListener(e -> listener.editCurrentUserAction());
         manualItem.addActionListener(e -> listener.showManual());
+        siteWithUpdatesItem.addActionListener(e -> listener.visitUpdatesSite());
         infoItem.addActionListener(e -> listener.showInfoDialog());
 
 

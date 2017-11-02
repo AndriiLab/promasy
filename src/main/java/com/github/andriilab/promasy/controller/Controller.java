@@ -31,10 +31,15 @@ import com.github.andriilab.promasy.model.enums.Role;
 import com.github.andriilab.promasy.model.models.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -189,6 +194,11 @@ public class Controller {
             @Override
             public void setNumberOfRegistrations(int regNumber) {
                 setRegistrationsNumber(regNumber);
+            }
+
+            @Override
+            public void visitUpdatesSite() {
+                visitUpdatesPage();
             }
         });
 
@@ -405,19 +415,57 @@ public class Controller {
     }
 
     private void checkVersion() {
+        Object[] options = {Labels.getProperty("okBtn"), Labels.getProperty("downloadFromSite")};
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
         Logger.infoEvent(mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
         if (currentVersion.compareTo(dbVersion) < 0) {
-            JOptionPane.showMessageDialog(mainFrame,
-                    Labels.getProperty("youCantUseThisVersion") + "\n" +
+            int selectedOption = JOptionPane.showOptionDialog(mainFrame,
+                    Labels.withDot("oldVersionOfApp") + "\n" +
                             Labels.withColon("yourVersion") + currentVersion.get() + "\n" +
-                            Labels.withColon("newVersion") + dbVersion.get() + "\n" +
-                            Labels.getProperty("askAdminAboutUpdate"),
-                    Labels.getProperty("oldVersionOfApp"),
-                    JOptionPane.ERROR_MESSAGE, Icons.ERROR);
+                            Labels.withColon("minVersion") + dbVersion.get() + "\n" +
+                            Labels.withColon("askAdminAboutUpdate") + "\n" +
+                            Labels.getProperty("updateUrl"),
+                    Labels.getProperty("youCantUseThisVersion"),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    Icons.ERROR,
+                    options,
+                    null);
+            if (selectedOption == 1) {
+                visitUpdatesPage();
+            }
             close();
         }
+    }
+
+    private void visitUpdatesPage() {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(URI.create(Labels.getProperty("updateUrl")));
+                return;
+            } catch (IOException e) {
+                Logger.warnEvent(e);
+            }
+        }
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(Labels.getProperty("updateUrl")), null);
+        JOptionPane optPane = new JOptionPane(Labels.getProperty("urlCopiedToClipboard"),
+                JOptionPane.INFORMATION_MESSAGE,
+                JOptionPane.DEFAULT_OPTION,
+                Icons.INFO);
+        JDialog dialog = optPane.createDialog(Labels.getProperty("dataCopiedToClipboard"));
+
+        // autoclosable functionality in case user forgot to close notification window
+        dialog.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                super.componentShown(e);
+                new Timer(5000, e1 -> {
+                    if (dialog.isVisible()) dialog.setVisible(false);
+                }).start();
+            }
+        });
+        dialog.setVisible(true);
     }
 
     private void checkFirstRun() {
