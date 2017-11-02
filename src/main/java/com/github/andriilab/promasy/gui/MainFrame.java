@@ -5,6 +5,7 @@
 
 package com.github.andriilab.promasy.gui;
 
+import com.github.andriilab.promasy.controller.Logger;
 import com.github.andriilab.promasy.controller.TableGenerator;
 import com.github.andriilab.promasy.gui.amunits.AmUnitsDialog;
 import com.github.andriilab.promasy.gui.amunits.AmUnitsDialogListener;
@@ -49,6 +50,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -223,7 +225,13 @@ public class MainFrame extends JFrame {
 
             @Override
             public void showCalculator() {
-                calculatorDialog.setVisible(true);
+                //trying to execute system calculator
+                try {
+                    Runtime.getRuntime().exec("calc");
+                } catch (IOException e) {
+                    Logger.warnEvent(e);
+                    calculatorDialog.setVisible(true);
+                }
             }
 
             @Override
