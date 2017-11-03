@@ -374,8 +374,10 @@ public class MainFrame extends JFrame {
                 name = "bids";
             } else if (tabPane.getSelectedComponent().equals(financePanel)) {
                 FinancePanel.FinanceReport report = financePanel.getReportsList();
-                reportList = report.getList();
-                name = report.getName();
+                if (report != null) {
+                    reportList = report.getList();
+                    name = report.getName();
+                }
             }
         } else {
             reportList = bidsListPanel.getSelectedBids();
