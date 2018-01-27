@@ -4,8 +4,8 @@ package com.github.andriilab.promasy;
  * for launching applications based on Swing interface. 
  */
 
-import com.github.andriilab.promasy.controller.Controller;
-import com.github.andriilab.promasy.gui.MainFrame;
+import com.github.andriilab.promasy.data.controller.Controller;
+import com.github.andriilab.promasy.presentation.MainFrame;
 
 import javax.swing.*;
 

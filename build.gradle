@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version '0.8.1.2'
+version '0.8.2.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -18,16 +18,16 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.1'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.3'
+    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.5.1'
 
     // https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-all
     compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
     // https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-utils
     compile group: 'org.codehaus.plexus', name: 'plexus-utils', version: '3.1.0'

@@ -5,28 +5,28 @@
 
     <persistence-unit name="postgres-connect" transaction-type="RESOURCE_LOCAL">
 
-        <class>com.github.andriilab.promasy.model.models.Address</class>
-        <class>com.github.andriilab.promasy.model.models.AmountUnitsModel</class>
-        <class>com.github.andriilab.promasy.model.models.BidModel</class>
-        <class>com.github.andriilab.promasy.model.models.BidStatusModel</class>
-        <class>com.github.andriilab.promasy.model.models.CPVModel</class>
-        <class>com.github.andriilab.promasy.model.models.DepartmentModel</class>
-        <class>com.github.andriilab.promasy.model.models.EmployeeModel</class>
-        <class>com.github.andriilab.promasy.model.models.FinanceDepartmentModel</class>
-        <class>com.github.andriilab.promasy.model.models.FinanceModel</class>
-        <class>com.github.andriilab.promasy.model.models.InstituteModel</class>
-        <class>com.github.andriilab.promasy.model.models.ProducerModel</class>
-        <class>com.github.andriilab.promasy.model.models.ReasonForSupplierChoiceModel</class>
-        <class>com.github.andriilab.promasy.model.models.RegistrationTicketModel</class>
-        <class>com.github.andriilab.promasy.model.models.SubdepartmentModel</class>
-        <class>com.github.andriilab.promasy.model.models.SupplierModel</class>
-        <class>com.github.andriilab.promasy.model.models.Version</class>
+        <class>com.github.andriilab.promasy.domain.organization.entities.Address</class>
+        <class>com.github.andriilab.promasy.domain.bid.entities.AmountUnit</class>
+        <class>com.github.andriilab.promasy.domain.bid.entities.Bid</class>
+        <class>com.github.andriilab.promasy.domain.bid.entities.BidStatus</class>
+        <class>com.github.andriilab.promasy.domain.cpv.entities.Cpv</class>
+        <class>com.github.andriilab.promasy.domain.organization.entities.Department</class>
+        <class>com.github.andriilab.promasy.domain.organization.entities.Employee</class>
+        <class>com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment</class>
+        <class>com.github.andriilab.promasy.domain.finance.entities.Finance</class>
+        <class>com.github.andriilab.promasy.domain.organization.entities.Institute</class>
+        <class>com.github.andriilab.promasy.domain.item.entities.Producer</class>
+        <class>com.github.andriilab.promasy.domain.bid.entities.ReasonForSupplierChoice</class>
+        <class>com.github.andriilab.promasy.domain.registration.entities.RegistrationTicket</class>
+        <class>com.github.andriilab.promasy.domain.organization.entities.Subdepartment</class>
+        <class>com.github.andriilab.promasy.domain.item.entities.Supplier</class>
+        <class>com.github.andriilab.promasy.domain.versioning.entities.Version</class>
 
         <properties>
             <!-- Database connection settings -->
             <!-- C3P0 pooling -->
             <property name="hibernate.connection.provider_class"
-                      value="org.hibernate.connection.C3P0ConnectionProvider"/>
+                      value="org.hibernate.c3p0.internal.C3P0ConnectionProvider"/>
             <property name="hibernate.c3p0.min_size" value="0"/>
             <property name="hibernate.c3p0.max_size" value="10"/>
             <property name="hibernate.c3p0.timeout" value="300"/>
