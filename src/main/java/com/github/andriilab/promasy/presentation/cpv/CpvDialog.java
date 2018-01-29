@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.cpv;
 
+import com.github.andriilab.promasy.data.queries.cpv.CpvRequestQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.presentation.MainFrame;
@@ -169,7 +170,7 @@ public class CpvDialog extends JDialog {
 
     private void makeCpvQuery(String cpvRequest, int depth) {
 
-        CpvRequestContainer ev = new CpvRequestContainer(cpvRequest, depth);
+        CpvRequestQuery ev = new CpvRequestQuery(cpvRequest, depth);
 
         if (cpvListener != null) {
             cpvListener.cpvSelectionEventOccurred(ev);
@@ -189,7 +190,7 @@ public class CpvDialog extends JDialog {
         selectedCpvModel = EmptyModel.CPV;
         if (visible) {
             makeCpvQuery(EmptyModel.STRING, 0);
-        } else if (!visible) {
+        } else {
             searchField.setText(EmptyModel.STRING);
             selectButton.setVisible(true);
         }

@@ -1,10 +1,8 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,16 +35,6 @@ public class ReasonForSupplierChoice extends AbstractEntity {
     @Override
     public void setDescription(String reason) {
         this.reason = reason;
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.REASONS.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.REASONS.refresh(this);
     }
 
     @Override

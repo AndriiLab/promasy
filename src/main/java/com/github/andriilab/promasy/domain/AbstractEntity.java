@@ -1,7 +1,7 @@
 package com.github.andriilab.promasy.domain;
 
 import com.github.andriilab.promasy.data.controller.LoginData;
-import com.github.andriilab.promasy.data.queries.ServerQueries;
+import com.github.andriilab.promasy.data.repositories.ServerRepository;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -157,13 +157,13 @@ public abstract class AbstractEntity implements IEntity {
     @Override
     public void setCreated() {
         this.setCreatedEmployee(LoginData.getInstance());
-        this.setCreatedDate(ServerQueries.getServerTimestamp());
+        this.setCreatedDate(ServerRepository.getServerTimestamp());
     }
 
     @Override
     public void setUpdated() {
         this.setModifiedEmployee(LoginData.getInstance());
-        this.setModifiedDate(ServerQueries.getServerTimestamp());
+        this.setModifiedDate(ServerRepository.getServerTimestamp());
     }
 
     @Override

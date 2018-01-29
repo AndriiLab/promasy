@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.organization;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
@@ -132,7 +133,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         deleteInstButton.addActionListener(e -> {
             if (!privateInstModel.equals(EmptyModel.INSTITUTE) && cedInst.deleteEntry(parent, privateInstModel.getInstName()) && orgListener != null) {
                 privateInstModel.setDeleted();
-                orgListener.persistModelEventOccurred(privateInstModel);
+                orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateInstModel));
             }
             privateInstModel = EmptyModel.INSTITUTE;
         });
@@ -148,7 +149,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateInstModel.addDepartment(departmentModel);
                 Institute instituteModel = privateInstModel;
                 if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(departmentModel);
+                    orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(departmentModel));
                     instituteBox.setSelectedModel(instituteModel);
                 }
             }
@@ -163,7 +164,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateInstModel.addDepartment(privateDepModel);
                 Institute instituteModel = privateInstModel;
                 if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(privateDepModel);
+                    orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateDepModel));
                     instituteBox.setSelectedModel(instituteModel);
                 }
             }
@@ -176,7 +177,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateDepModel.setDeleted();
                 privateInstModel.addDepartment(privateDepModel);
                 Institute instituteModel = privateInstModel;
-                orgListener.persistModelEventOccurred(privateDepModel);
+                orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateDepModel));
                 instituteBox.setSelectedModel(instituteModel);
             }
             newDepName = null;
@@ -190,7 +191,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateDepModel.addSubdepartment(model);
                 Department departmentModel = privateDepModel;
                 if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(model);
+                    orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
                     departmentBox.setSelectedModel(departmentModel);
                 }
             }
@@ -205,7 +206,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateDepModel.addSubdepartment(privateSubdepModel);
                 Department departmentModel = privateDepModel;
                 if (orgListener != null) {
-                    orgListener.persistModelEventOccurred(privateSubdepModel);
+                    orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateSubdepModel));
                     departmentBox.setSelectedModel(departmentModel);
                 }
             }
@@ -218,7 +219,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 privateSubdepModel.setDeleted();
                 privateDepModel.addSubdepartment(privateSubdepModel);
                 Department departmentModel = privateDepModel;
-                orgListener.persistModelEventOccurred(privateSubdepModel);
+                orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateSubdepModel));
                 departmentBox.setSelectedModel(departmentModel);
             }
             newSubdepName = null;
@@ -227,7 +228,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         createOrganizationDialog.setListener(model -> {
             if (orgListener != null) {
-                orgListener.persistModelEventOccurred(model);
+                orgListener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
             }
         });
 

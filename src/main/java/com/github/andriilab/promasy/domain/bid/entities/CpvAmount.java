@@ -1,9 +1,9 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
+import com.github.andriilab.promasy.data.models.CpvAmountReportModel;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.bid.enums.ProcurementProcedure;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
-import com.github.andriilab.promasy.domain.cpv.reports.CpvAmountReportModel;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
 import java.math.BigDecimal;

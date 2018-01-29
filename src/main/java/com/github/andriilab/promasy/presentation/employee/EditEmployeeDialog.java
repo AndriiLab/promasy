@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.employee;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.MainFrame;
@@ -73,7 +74,7 @@ public class EditEmployeeDialog extends JDialog {
         deleteEmployeeButton.addActionListener(e -> {
             if (!selectedModel.equals(EmptyModel.EMPLOYEE) && ced.deleteEntry(parent, selectedModel.toString())) {
                 selectedModel.setDeleted();
-                listener.persistModelEventOccurred(selectedModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedModel));
             }
         });
 

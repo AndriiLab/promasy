@@ -1,10 +1,8 @@
 package com.github.andriilab.promasy.domain.item.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import org.hibernate.JDBCException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,16 +49,6 @@ public class Supplier extends AbstractEntity {
     @Override
     public void setDescription(String supplierName) {
         this.supplierName = supplierName;
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.SUPPLIERS.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.SUPPLIERS.refresh(this);
     }
 
     @Override

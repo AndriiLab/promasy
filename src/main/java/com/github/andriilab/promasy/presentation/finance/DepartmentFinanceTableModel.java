@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.finance;
 
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -14,6 +15,7 @@ import java.util.List;
  * TableModel for Department Finance table
  */
 class DepartmentFinanceTableModel extends AbstractTableModel {
+    private DepartmentFinanceTableModelListener listener;
 
     private List<FinanceDepartment> db = new LinkedList<>();
     private final String[] colNames = {
@@ -30,6 +32,10 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
 
     public DepartmentFinanceTableModel() {
 
+    }
+
+    public void setListener(DepartmentFinanceTableModelListener listener) {
+        this.listener = listener;
     }
 
     public String getColumnName(int column) {
@@ -66,7 +72,7 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
                     return materialsAmount.setScale(2, RoundingMode.CEILING);
                 }
             case 3:
-                BigDecimal materialsLeft = model.getLeftAmount(BidType.MATERIALS);
+                BigDecimal materialsLeft = listener.getLeftAmount(new GetFinanceDepartmentLeftAmountQuery(model, BidType.MATERIALS));
                 if (materialsLeft == null) {
                     return BigDecimal.ZERO;
                 } else {
@@ -80,7 +86,7 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
                     return equipmentAmount.setScale(2, RoundingMode.CEILING);
                 }
             case 5:
-                BigDecimal equipmentLeft = model.getLeftAmount(BidType.EQUIPMENT);
+                BigDecimal equipmentLeft = listener.getLeftAmount(new GetFinanceDepartmentLeftAmountQuery(model, BidType.EQUIPMENT));
                 if (equipmentLeft == null) {
                     return BigDecimal.ZERO;
                 } else {
@@ -94,7 +100,7 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
                     return servicesAmount.setScale(2, RoundingMode.CEILING);
                 }
             case 7:
-                BigDecimal servicesLeft = model.getLeftAmount(BidType.SERVICES);
+                BigDecimal servicesLeft = listener.getLeftAmount(new GetFinanceDepartmentLeftAmountQuery(model, BidType.SERVICES));
                 if (servicesLeft == null) {
                     return BigDecimal.ZERO;
                 } else {

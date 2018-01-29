@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.domain.finance.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
@@ -8,12 +7,14 @@ import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IEntity for data of related to department finances
@@ -163,39 +164,6 @@ public class FinanceDepartment extends AbstractEntity {
         }
     }
 
-    public BigDecimal getUsedAmount(BidType bidType) {
-        return Database.BIDS.getTotalAmount(this, bidType);
-    }
-
-    public BigDecimal getLeftAmount(BidType bidType) {
-        if (leftAmount == null || !leftAmount.containsKey(bidType)) {
-            calculateLeftAmount(bidType);
-        }
-        return leftAmount.get(bidType);
-    }
-
-    public BigDecimal getUpdatedLeftAmount(BidType bidType) {
-        calculateLeftAmount(bidType);
-        return leftAmount.get(bidType);
-    }
-
-    private void calculateLeftAmount(BidType bidType) {
-        if (leftAmount == null) {
-            leftAmount = new HashMap<>();
-        }
-        BigDecimal financesLeft = getTotalAmount(bidType).subtract(getUsedAmount(bidType));
-        leftAmount.put(bidType, financesLeft);
-    }
-
-    public void calculateLeftAmount() {
-        if (leftAmount == null) {
-            leftAmount = new HashMap<>();
-        }
-        for (BidType type : BidType.values()) {
-            calculateLeftAmount(type);
-        }
-    }
-
     @Override
     public String toString() {
         if (finances == null) {
@@ -208,16 +176,6 @@ public class FinanceDepartment extends AbstractEntity {
     public void setDeleted() {
         bids.forEach(IEntity::setDeleted);
         super.setDeleted();
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.DEPARTMENT_FINANCES.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.DEPARTMENT_FINANCES.refresh(this);
     }
 
     @Override

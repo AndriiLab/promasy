@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.supplier;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.presentation.MainFrame;
@@ -101,14 +102,14 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
                 privateModel.setSupplierComments(newSuplComment);
                 privateModel.setUpdated();
                 returnModel = privateModel;
-                listener.persistModelEventOccurred(privateModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateModel));
             } else if (choice == JOptionPane.NO_OPTION) {
                 //if edit is not confirmed or com.github.andriilab.promasy.domain.model does not exist - creating new com.github.andriilab.promasy.domain.model with specified name
                 Supplier model = new Supplier(newName, newSuplTel, newSuplComment);
                 model.setDescription(newName);
                 model.setCreated();
                 returnModel = model;
-                listener.persistModelEventOccurred(model);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
             }
             // if cancel pressed - do nothing
         }

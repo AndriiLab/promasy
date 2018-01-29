@@ -1,27 +1,35 @@
 package com.github.andriilab.promasy.presentation.bids;
 
-import com.github.andriilab.promasy.domain.bid.entities.Bid;
-import com.github.andriilab.promasy.domain.bid.entities.BidStatus;
-import com.github.andriilab.promasy.domain.bid.enums.BidType;
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
+import com.github.andriilab.promasy.data.commands.RefreshCommand;
+import com.github.andriilab.promasy.data.queries.bids.GetBidsQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
+import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
-import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Listener for {@link BidsListPanel}
  */
 public interface BidsListPanelListener {
-    void persistModelEventOccurred(Bid model);
+    <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command);
 
-    void persistModelEventOccurred(BidStatus model);
+    <T extends IEntity> void refreshModelEventOccurred(RefreshCommand<T> command);
 
-    void selectAllBidsEventOccurred(BidType type);
-
-    void getBidsByDepartment(BidType type, Department selectedDepartmentModel);
-
-    void getBidsBySubdepartment(BidType selectedBidType, Subdepartment selectedSubdepartmentModel);
-
-    void getBidsByFinanceDepartment(BidType selectedBidType, FinanceDepartment selectedFinanceDepartmentModel);
+    void getBids(GetBidsQuery query);
 
     void getAllData();
+
+    List<Subdepartment> getSubdepartments(long departmentId);
+
+    List<FinanceDepartment> getFinanceDepartments(GetFinanceDepartmentsQuery query);
+
+    BigDecimal getLeftAmountEvent(GetFinanceDepartmentLeftAmountQuery getFinanceDepartmentLeftAmountQuery);
+
+    BigDecimal getSpentAmountEvent(GetFinanceDepartmentSpentAmountQuery getFinanceDepartmentSpentAmountQuery);
 }

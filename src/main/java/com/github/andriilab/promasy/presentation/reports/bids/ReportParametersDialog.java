@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.presentation.reports.bids;
 
 import com.github.andriilab.promasy.data.controller.LoginData;
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
@@ -33,9 +34,11 @@ public class ReportParametersDialog extends JDialog {
     private final JButton cancelButton;
     private ReportParametersDialogListener listener;
     private final Map<String, Object> parameters;
+    private MainFrame mainFrame;
 
     public ReportParametersDialog(MainFrame parent) {
         super(parent, Labels.getProperty("reportParameters"), true);
+        this.mainFrame = parent;
         setSize(330, 390);
         setResizable(false);
         setLocationRelativeTo(parent);
@@ -80,8 +83,7 @@ public class ReportParametersDialog extends JDialog {
 
         roleBox.addActionListener(e -> {
             if (listener != null) {
-                Role role = (Role) roleBox.getSelectedItem();
-                listener.roleSelectionOccurred(role);
+                listener.roleSelectionOccurred((Role) roleBox.getSelectedItem());
             }
         });
 
@@ -111,27 +113,27 @@ public class ReportParametersDialog extends JDialog {
         parameters.put("generatedDate", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
-    public void setHeadBoxData(List<Employee> db) {
+    private void setHeadBoxData(List<Employee> db) {
         headBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
-    public void setDepartmentHeadBoxData(List<Employee> db) {
+    private void setDepartmentHeadBoxData(List<Employee> db) {
         departmentHeadBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
-    public void setPersonallyLiableEmpBoxData(List<Employee> db) {
+    private void setPersonallyLiableEmpBoxData(List<Employee> db) {
         personallyLiableEmpBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
-    public void setAccountantBoxData(List<Employee> db) {
+    private void setAccountantBoxData(List<Employee> db) {
         accountantBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
-    public void setEconomistBoxData(List<Employee> db) {
+    private void setEconomistBoxData(List<Employee> db) {
         economistBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
-    public void setHeadTenderBoxData(List<Employee> db) {
+    private void setHeadTenderBoxData(List<Employee> db) {
         headTenderBox.setBoxData(db, EmptyModel.EMPLOYEE, false);
     }
 
@@ -176,5 +178,38 @@ public class ReportParametersDialog extends JDialog {
         setLayout(new BorderLayout());
         add(selectionPanel, BorderLayout.CENTER);
         add(buttonsPanel, BorderLayout.SOUTH);
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        GetEmployeesQuery query;
+        // search for heads of department in department
+        query = new GetEmployeesQuery(Role.HEAD_OF_DEPARTMENT,
+                mainFrame.getBidsListPanel().getSelectedDepartment().getModelId());
+        setDepartmentHeadBoxData(listener.getEmployees(query));
+
+        // search for personally liable employee in department
+        query = new GetEmployeesQuery(Role.PERSONALLY_LIABLE_EMPLOYEE,
+                mainFrame.getBidsListPanel().getSelectedDepartment().getModelId());
+        setPersonallyLiableEmpBoxData(listener.getEmployees(query));
+
+        // search for chief accountant
+        query = new GetEmployeesQuery(Role.ACCOUNTANT);
+        setAccountantBoxData(listener.getEmployees(query));
+
+        // search for chief economist
+        query = new GetEmployeesQuery(Role.ECONOMIST);
+        setEconomistBoxData(listener.getEmployees(query));
+
+        // search for SECRETARY OF TENDER COMMITTEE
+        query = new GetEmployeesQuery(Role.SECRETARY_OF_TENDER_COMMITTEE);
+        setHeadTenderBoxData(listener.getEmployees(query));
+
+        // search for director
+        query = new GetEmployeesQuery(Role.DIRECTOR);
+        setHeadBoxData(listener.getEmployees(query));
+
+        // show dialog with selectors for director, head of department, PLE, accountant, economist, SECRETARY OF TENDER COMMITTEE
+        super.setVisible(b);
     }
 }

@@ -1,9 +1,7 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,22 +27,11 @@ public class AmountUnit extends AbstractEntity {
     }
 
     public AmountUnit() {
-
     }
 
     @Override
     public void setDescription(String description) {
         this.amUnitDesc = description;
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.AMOUNTUNITS.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.AMOUNTUNITS.refresh(this);
     }
 
     @Override

@@ -2,10 +2,11 @@ package com.github.andriilab.promasy.presentation.reports.cpv;
 
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.controller.ReportsGenerator;
+import com.github.andriilab.promasy.data.models.CpvAmountReportModel;
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
 import com.github.andriilab.promasy.domain.bid.enums.ProcurementProcedure;
-import com.github.andriilab.promasy.domain.cpv.reports.CpvAmountReportModel;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.MainFrame;
@@ -140,8 +141,8 @@ public class CpvAmountDialog extends JDialog {
         parameters.put("year", Year.now().getValue());
         parameters.put("organization", institute.getInstName());
         parameters.put("edrpou", institute.getEDRPOU());
-        parameters.put("headTender", listener.getEmployeeName(Role.HEAD_OF_TENDER_COMMITTEE));
-        parameters.put("secretaryTender", listener.getEmployeeName(Role.SECRETARY_OF_TENDER_COMMITTEE));
+        parameters.put("headTender", listener.getEmployee(new GetEmployeesQuery(Role.HEAD_OF_TENDER_COMMITTEE)));
+        parameters.put("secretaryTender", listener.getEmployee(new GetEmployeesQuery(Role.SECRETARY_OF_TENDER_COMMITTEE)));
         parameters.put("resolutionDate", resolutionDate);
         parameters.put("resolutionNum", resolutionNum);
 
@@ -176,7 +177,7 @@ public class CpvAmountDialog extends JDialog {
             resolutionField.setText(EmptyModel.STRING);
             resolutionDatePicker.clear();
             if (listener != null) {
-                listener.getData();
+                listener.getData(parent.getReportYear());
             }
         }
         super.setVisible(visible);

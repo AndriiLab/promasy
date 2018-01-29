@@ -1,9 +1,9 @@
 package com.github.andriilab.promasy.presentation;
 
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
-import com.github.andriilab.promasy.domain.organization.enums.Role;
 
 import java.util.List;
 
@@ -12,9 +12,7 @@ import java.util.List;
  */
 public interface MainFrameListener {
 
-    List<Employee> searchForPerson(Role role, long selectedDepartmentId);
-
-    List<Employee> searchForPerson(Role role);
+    List<Employee> searchForPerson(GetEmployeesQuery query);
 
     void exitEventOccurred();
 

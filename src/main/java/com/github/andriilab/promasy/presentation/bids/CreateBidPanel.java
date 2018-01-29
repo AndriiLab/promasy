@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.presentation.bids;
 
 import com.github.andriilab.promasy.data.controller.Logger;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.AmountUnit;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
@@ -504,9 +505,9 @@ public class CreateBidPanel extends JPanel {
         BigDecimal financeLeft;
         if (isEditMode && !financeChanged) {
             BigDecimal previousSum = createdBidModel.getTotalPrice();
-            financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(currentBidType).add(previousSum);
+            financeLeft = listener.getLeftAmount(new GetFinanceDepartmentLeftAmountQuery(selectedFinanceDepartmentModel, currentBidType)).add(previousSum);
         } else {
-            financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(currentBidType);
+            financeLeft = listener.getLeftAmount(new GetFinanceDepartmentLeftAmountQuery(selectedFinanceDepartmentModel, currentBidType));
         }
         BigDecimal totalPrice = calculateTotalPrice();
         if (totalPrice == null) {

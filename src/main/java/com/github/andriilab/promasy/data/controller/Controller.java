@@ -3,11 +3,27 @@
  */
 package com.github.andriilab.promasy.data.controller;
 
+import com.github.andriilab.promasy.data.commands.CommandsHandler;
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
+import com.github.andriilab.promasy.data.commands.RefreshCommand;
+import com.github.andriilab.promasy.data.queries.bids.GetBidsQuery;
+import com.github.andriilab.promasy.data.queries.cpv.CpvRequestQuery;
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
+import com.github.andriilab.promasy.data.queries.finance.GetFinanceLeftAmountQuery;
+import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;
+import com.github.andriilab.promasy.data.queries.finance.GetFinancesQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
 import com.github.andriilab.promasy.data.storage.ConnectionSettings;
-import com.github.andriilab.promasy.data.storage.Database;
+import com.github.andriilab.promasy.data.storage.DBConnector;
+import com.github.andriilab.promasy.data.storage.Storage;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
-import com.github.andriilab.promasy.domain.bid.entities.*;
+import com.github.andriilab.promasy.domain.bid.entities.AmountUnit;
+import com.github.andriilab.promasy.domain.bid.entities.Bid;
+import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
+import com.github.andriilab.promasy.domain.bid.entities.ReasonForSupplierChoice;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
@@ -29,7 +45,6 @@ import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
-import com.github.andriilab.promasy.presentation.cpv.CpvRequestContainer;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeDialogListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeFromLoginListener;
 import com.github.andriilab.promasy.presentation.employee.EditEmployeeDialogListener;
@@ -44,6 +59,7 @@ import com.github.andriilab.promasy.presentation.supplier.SupplierDialogListener
 import org.hibernate.JDBCException;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentAdapter;
@@ -51,19 +67,21 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 
 public class Controller {
 
     private final MainFrame mainFrame;
+    private Storage storage;
     private List<String> parameters;
+    private CommandsHandler commandsHandler;
 
     public Controller(String[] args, MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -74,15 +92,15 @@ public class Controller {
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
-        Database.CONNECTOR.loadConnectionSettings(parameters.contains("tableUpdater"));
-        mainFrame.setDefaultConnectionSettings(Database.CONNECTOR.getConnectionSettings());
+        DBConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+        mainFrame.setDefaultConnectionSettings(DBConnector.INSTANCE.getConnectionSettings());
 
         //show ConSettDialog if it was defined in command line arguments
         if (parameters.contains("connectionSettings")) {
             mainFrame.showConSettDialog();
         }
         if (parameters.contains("connectionStatistics")) {
-            Database.CONNECTOR.showConnectionStats(mainFrame);
+            DBConnector.INSTANCE.showConnectionStats(mainFrame);
         }
 
         connect();
@@ -124,8 +142,8 @@ public class Controller {
                 }
 
                 // trying to connect with new settings
-                Database.CONNECTOR.loadConnectionSettings(parameters.contains("tableUpdater"));
-                mainFrame.setDefaultConnectionSettings(Database.CONNECTOR.getConnectionSettings());
+                DBConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+                mainFrame.setDefaultConnectionSettings(DBConnector.INSTANCE.getConnectionSettings());
                 connect();
             }
 
@@ -138,7 +156,7 @@ public class Controller {
         // init LoginListener here, because loginDialog appears before the MainFrame
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
-                String pass = Utils.makePass(password, getSalt(user));
+                String pass = Utils.makePass(password, retrieveUserSalt(user));
                 if (pass == null) {
                     PJOptionPane.criticalError(mainFrame);
                     close();
@@ -146,9 +164,8 @@ public class Controller {
                 if (validateLogin(user, pass)) {
                     // if login was successful init MainFrame and make it visible
                     initMainFrame();
+                    mainFrame.writeStatusPanelCurrentDb(DBConnector.INSTANCE.getConnectionSettings().getDatabase());
                     mainFrame.setVisible(true);
-                    mainFrame.writeStatusPanelCurrentDb(Database.CONNECTOR.getConnectionSettings().getDatabase());
-                    mainFrame.writeStatusPanelCurrentUser(LoginData.getInstance().getShortName());
                 } else {
                     // if login wasn't successful showing error dialog
                     JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("wrongCredentialsPlsCheck"),
@@ -166,7 +183,7 @@ public class Controller {
                 int registrationNumber = registrationsLeft();
                 Logger.infoEvent(mainFrame, "Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
-                    LoginData.getInstance(Database.EMPLOYEES.getUserWithId(1L));
+                    LoginData.getInstance(storage.EMPLOYEES.getUserWithId(1L));
                     initMainFrame();
                     return true;
                 } else return false;
@@ -211,13 +228,8 @@ public class Controller {
         // setting listener to MainFrame
         mainFrame.setMainFrameListener(new MainFrameListener() {
             @Override
-            public List<Employee> searchForPerson(Role role, long depId) {
-                return getEmployees(role, depId);
-            }
-
-            @Override
-            public List<Employee> searchForPerson(Role role) {
-                return getEmployees(role);
+            public List<Employee> searchForPerson(GetEmployeesQuery query) {
+                return retrieveEmployees(query);
             }
 
             @Override
@@ -232,12 +244,12 @@ public class Controller {
 
             @Override
             public void getAllDepartments(Institute inst) {
-                mainFrame.setDepartmentModelList(getDepartments(inst.getModelId()));
+                mainFrame.setDepartmentModelList(retrieveDepartments(inst.getModelId()));
             }
 
             @Override
             public Cpv validateCpv(String cpvCode) {
-                return Database.CPV.validateCode(cpvCode);
+                return storage.CPV.validateCode(cpvCode);
             }
 
             @Override
@@ -251,26 +263,26 @@ public class Controller {
             }
         });
 
-        mainFrame.setCpvListener(ev -> mainFrame.setCpvModelList(getCpvRequest(ev)));
+        mainFrame.setCpvListener(ev -> mainFrame.setCpvModelList(retrieveCpv(ev)));
 
         mainFrame.setEmployeeDialogListener(new EditEmployeeDialogListener() {
             @Override
-            public void persistModelEventOccurred(Employee model) {
-                createOrUpdate(model);
-                mainFrame.setEmployeeModelList(getEmployees());
+            public <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command) {
+                createOrUpdate(command);
+                mainFrame.setEmployeeModelList(retrieveEmployees(new GetEmployeesQuery()));
             }
 
             @Override
             public void getAllEmployees() {
-                mainFrame.setEmployeeModelList(getEmployees());
+                mainFrame.setEmployeeModelList(retrieveEmployees(new GetEmployeesQuery()));
             }
         });
 
         mainFrame.setCreateEmployeeDialogListener(new CreateEmployeeDialogListener() {
             @Override
-            public void persistModelEventOccurred(Employee model) {
-                createOrUpdate(model);
-                mainFrame.setEmployeeModelList(getEmployees());
+            public <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command) {
+                createOrUpdate(command);
+                mainFrame.setEmployeeModelList(retrieveEmployees(new GetEmployeesQuery()));
             }
 
             @Override
@@ -280,165 +292,184 @@ public class Controller {
 
             @Override
             public void loadInstitutes() {
-                mainFrame.setInstituteModelList(getInstRequest());
+                mainFrame.setInstituteModelList(retrieveInstitutes());
             }
         });
 
         mainFrame.setOrganizationDialogListener(new OrganizationDialogListener() {
             @Override
-            public void persistModelEventOccurred(Institute model) {
-                createOrUpdate(model);
-                mainFrame.setInstituteModelList(getInstRequest());
-            }
-
-            @Override
-            public void persistModelEventOccurred(Department model) {
-                createOrUpdate(model);
-                mainFrame.setDepartmentModelList(getDepartments(model.getInstitute().getModelId()));
-            }
-
-            @Override
-            public void persistModelEventOccurred(Subdepartment model) {
-                createOrUpdate(model);
-                mainFrame.setSubdepartmentModelList(getSubdepRequest(model.getDepartment().getModelId()));
+            public <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command) {
+                createOrUpdate(command);
+                if (command.getObject() instanceof Institute)
+                    mainFrame.setInstituteModelList(retrieveInstitutes());
+                else if (command.getObject() instanceof Department)
+                    mainFrame.setDepartmentModelList(
+                            retrieveDepartments(((Department) command.getObject()).getInstitute().getModelId()));
+                else if (command.getObject() instanceof Subdepartment)
+                    mainFrame.setSubdepartmentModelList(
+                            retrieveSubdepartments(((Subdepartment) command.getObject()).getDepartment().getModelId()));
             }
 
             @Override
             public void getAllInstitutes() {
-                mainFrame.setInstituteModelList(getInstRequest());
+                mainFrame.setInstituteModelList(retrieveInstitutes());
             }
         });
 
         mainFrame.setAmUnitsDialogListener(new AmUnitsDialogListener() {
             @Override
-            public void persistModelEventOccurred(AmountUnit model) {
-                createOrUpdate(model);
-                mainFrame.setAmountUnitsModelList(getAmUnits());
+            public void persistModelEventOccurred(CreateOrUpdateCommand<AmountUnit> command) {
+                createOrUpdate(command);
+                mainFrame.setAmountUnitsModelList(retrieveAmountUnits());
             }
 
             @Override
             public void getAllEntries() {
-                mainFrame.setAmountUnitsModelList(getAmUnits());
+                mainFrame.setAmountUnitsModelList(retrieveAmountUnits());
             }
         });
 
         mainFrame.setProducerDialogListener(new ProducerDialogListener() {
             @Override
-            public void persistModelEventOccurred(Producer model) {
-                createOrUpdate(model);
-                mainFrame.setProducerModelList(getProd());
+            public void persistModelEventOccurred(CreateOrUpdateCommand<Producer> command) {
+                createOrUpdate(command);
+                mainFrame.setProducerModelList(retrieveProducers());
             }
 
             @Override
             public void getAllEntries() {
-                mainFrame.setProducerModelList(getProd());
+                mainFrame.setProducerModelList(retrieveProducers());
             }
         });
 
         mainFrame.setSupplierDialogListener(new SupplierDialogListener() {
             @Override
-            public void persistModelEventOccurred(Supplier model) {
-                createOrUpdate(model);
-                mainFrame.setSupplierModelList(getSupl());
+            public void persistModelEventOccurred(CreateOrUpdateCommand<Supplier> command) {
+                createOrUpdate(command);
+                mainFrame.setSupplierModelList(retrieveSuppliers());
             }
 
             @Override
             public void getAllEntries() {
-                mainFrame.setSupplierModelList(getSupl());
+                mainFrame.setSupplierModelList(retrieveSuppliers());
             }
         });
 
         mainFrame.setReasonsDialogListener(new ReasonsDialogListener() {
             @Override
-            public void persistModelEventOccurred(ReasonForSupplierChoice model) {
-                createOrUpdate(model);
-                mainFrame.setReasonsModelList(getReasons());
+            public void persistModelEventOccurred(CreateOrUpdateCommand<ReasonForSupplierChoice> command) {
+                createOrUpdate(command);
+                mainFrame.setReasonsModelList(retrieveReasons());
             }
 
             @Override
             public void getAllEntries() {
-                mainFrame.setReasonsModelList(getReasons());
+                mainFrame.setReasonsModelList(retrieveReasons());
             }
         });
 
         mainFrame.setFinancePanelListener(new FinancePanelListener() {
             @Override
-            public void persistModelEventOccurred(Finance model) {
-                createOrUpdate(model);
-                mainFrame.setFinanceModelList(getFinances());
-            }
+            public <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command) {
+                createOrUpdate(command);
 
-            @Override
-            public void persistModelEventOccurred(FinanceDepartment model) {
-                createOrUpdate(model);
-                mainFrame.setFinanceDepartmentModelList(getDepartmentFinancesByOrder(model.getModelId()));
+                if (command.getObject() instanceof Finance)
+                    mainFrame.setFinanceModelList(retrieveFinances(new GetFinancesQuery(mainFrame.getReportYear())));
+                else if (command.getObject() instanceof FinanceDepartment)
+                    mainFrame.setFinanceDepartmentModelList(retrieveDepartmentFinances(
+                            new GetFinanceDepartmentsQuery(mainFrame.getReportYear(),
+                                    ((FinanceDepartment) command.getObject()).getSubdepartment())));
             }
 
             @Override
             public void loadDepartments() {
-                mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance()
+                mainFrame.setDepartmentModelList(retrieveDepartments(LoginData.getInstance()
                         .getSubdepartment().getDepartment().getInstitute().getModelId()));
             }
 
             @Override
-            public void getFinancesByDepartment(Department department) {
-                mainFrame.setFinanceModelList(getFinanceByDepartment(department));
+            public void getFinancesByDepartment(GetFinancesQuery query) {
+                mainFrame.setFinanceModelList(retrieveFinances(query));
             }
 
             @Override
             public void getAllData() {
-                mainFrame.setFinanceModelList(getFinances());
+                mainFrame.setFinanceModelList(retrieveFinances(new GetFinancesQuery(mainFrame.getReportYear())));
+            }
+
+            @Override
+            public BigDecimal getUnassignedAmountEvent(GetFinanceUnassignedAmountQuery query) {
+                return retrieveUnassignedAmount(query);
+            }
+
+            @Override
+            public BigDecimal getLeftAmountEvent(GetFinanceLeftAmountQuery query) {
+                return retrieveLeftAmount(query);
+            }
+
+            @Override
+            public BigDecimal getLeftAmountEvent(GetFinanceDepartmentLeftAmountQuery query) {
+                return retrieveLeftAmount(query);
             }
         });
 
         mainFrame.setBidsListPanelListener(new BidsListPanelListener() {
             @Override
-            public void persistModelEventOccurred(Bid model) {
-                createOrUpdate(model);
-                mainFrame.setFinanceModelList(getFinances());
+            public <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command) {
+                createOrUpdate(command);
+                mainFrame.setFinanceModelList(retrieveFinances(new GetFinancesQuery(mainFrame.getReportYear())));
             }
 
             @Override
-            public void persistModelEventOccurred(BidStatus model) {
-                createOrUpdate(model);
-                mainFrame.setFinanceModelList(getFinances());
+            public <T extends IEntity> void refreshModelEventOccurred(RefreshCommand<T> command) {
+                refresh(command);
             }
 
             @Override
-            public void selectAllBidsEventOccurred(BidType type) {
-                mainFrame.setBidModelList(getBids(type));
-            }
-
-            @Override
-            public void getBidsByDepartment(BidType type, Department selectedDepartmentModel) {
-                mainFrame.setBidModelList(getBids(type, selectedDepartmentModel));
-            }
-
-            @Override
-            public void getBidsBySubdepartment(BidType type, Subdepartment selectedSubdepartmentModel) {
-                mainFrame.setBidModelList(getBids(type, selectedSubdepartmentModel));
-            }
-
-            @Override
-            public void getBidsByFinanceDepartment(BidType type, FinanceDepartment selectedFinanceDepartmentModel) {
-                mainFrame.setBidModelList(getBids(type, selectedFinanceDepartmentModel));
+            public void getBids(GetBidsQuery query) {
+                mainFrame.setBidModelList(retrieveBids(query));
             }
 
             @Override
             public void getAllData() {
-                mainFrame.setDepartmentModelList(getDepartments(LoginData.getInstance().getSubdepartment()
+                mainFrame.setDepartmentModelList(retrieveDepartments(LoginData.getInstance().getSubdepartment()
                         .getDepartment().getInstitute().getModelId()));
-                mainFrame.setAmountUnitsModelList(getAmUnits());
-                mainFrame.setProducerModelList(getProd());
-                mainFrame.setSupplierModelList(getSupl());
-                mainFrame.setReasonsModelList(getReasons());
+                mainFrame.setAmountUnitsModelList(retrieveAmountUnits());
+                mainFrame.setProducerModelList(retrieveProducers());
+                mainFrame.setSupplierModelList(retrieveSuppliers());
+                mainFrame.setReasonsModelList(retrieveReasons());
+            }
+
+            @Override
+            public List<Subdepartment> getSubdepartments(long departmentId) {
+                return retrieveSubdepartments(departmentId);
+            }
+
+            @Override
+            public List<FinanceDepartment> getFinanceDepartments(GetFinanceDepartmentsQuery query) {
+                return retrieveDepartmentFinances(query);
+            }
+
+            @Override
+            public BigDecimal getLeftAmountEvent(GetFinanceDepartmentLeftAmountQuery query) {
+                return retrieveLeftAmount(query);
+            }
+
+            @Override
+            public BigDecimal getSpentAmountEvent(GetFinanceDepartmentSpentAmountQuery query) {
+                return retrieveSpentAmount(query);
             }
         });
 
         mainFrame.setReportParametersDialogListener(new ReportParametersDialogListener() {
             @Override
             public void roleSelectionOccurred(Role role) {
-                mainFrame.setEmployeeModelList(getEmployees(role));
+                mainFrame.setEmployeeModelList(retrieveEmployees(new GetEmployeesQuery(role)));
+            }
+
+            @Override
+            public List<Employee> getEmployees(GetEmployeesQuery query) {
+                return retrieveEmployees(query);
             }
 
             @Override
@@ -449,13 +480,13 @@ public class Controller {
 
         mainFrame.setCpvAmountDialogListener(new CpvAmountDialogListener() {
             @Override
-            public void getData() {
-                mainFrame.setCpvAmountDialogList(getCpvAmount());
+            public void getData(int year) {
+                mainFrame.setCpvAmountDialogList(retrieveCpvAmount(year));
             }
 
             @Override
-            public String getEmployeeName(Role role) {
-                List<Employee> models = getEmployees(role);
+            public String getEmployee(GetEmployeesQuery query) {
+                List<Employee> models = retrieveEmployees(query);
                 if (models == null || models.isEmpty()) {
                     return EmptyModel.STRING;
                 } else {
@@ -528,7 +559,7 @@ public class Controller {
                 close();
             }
         });
-        List<Employee> employees = getEmployees();
+        List<Employee> employees = retrieveEmployees(new GetEmployeesQuery());
         Employee firstUser;
         if (employees == null || employees.isEmpty()) {
             firstUser = new Employee(Role.ADMIN);
@@ -536,7 +567,7 @@ public class Controller {
             firstUser = employees.get(0);
         }
         firstUser.setCreated();
-        createOrUpdate(firstUser);
+        createOrUpdate(new CreateOrUpdateCommand<>(firstUser));
         LoginData.getInstance(firstUser);
         initMainFrame();
         mainFrame.getCreateEmployeeDialog().createCustomUser(LoginData.getInstance());
@@ -544,9 +575,9 @@ public class Controller {
 
     // connecting to DB
     private void connect() {
-        Database.CONNECTOR.disconnect();
+        DBConnector.INSTANCE.disconnect();
         try {
-            Database.CONNECTOR.connect();
+            DBConnector.INSTANCE.connect();
             Logger.infoEvent(mainFrame, Labels.getProperty("connectedToDB"));
             closeSplashScreen();
         } catch (SQLException e) {
@@ -557,11 +588,14 @@ public class Controller {
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
         }
+        storage = new Storage(DBConnector.INSTANCE.getEntityManager());
+        commandsHandler = new CommandsHandler(storage);
     }
 
+    // methods requesting the DB
     private Version getDBVersion() {
         try {
-            return new Version(Database.VERSIONS.retrieve());
+            return new Version(storage.VERSIONS.retrieve());
         } catch (JDBCException e) {
             // this error occurs with old settings, have to reset it to defaults
             try {
@@ -575,20 +609,9 @@ public class Controller {
         return null;
     }
 
-    // methods requesting the DB
-    // GETTERS
-    private List<Cpv> getCpvRequest(CpvRequestContainer cpvRequest) {
-        try {
-            return Database.CPV.retrieve(cpvRequest);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("cpvRequest") + cpvRequest, e);
-            return null;
-        }
-    }
-
     private boolean isFirstRun() {
         try {
-            return Database.EMPLOYEES.isFirstRun();
+            return storage.EMPLOYEES.isFirstRun();
         } catch (JDBCException e) {
             Logger.errorEvent(mainFrame, e);
             return false;
@@ -597,7 +620,7 @@ public class Controller {
 
     private void setCurrentVersionAsMinimum() {
         try {
-            Database.VERSIONS.updateVersion();
+            storage.VERSIONS.updateVersion();
             Logger.infoEvent(mainFrame, Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
         } catch (JDBCException e) {
             Logger.errorEvent(mainFrame, Labels.withColon("error") +
@@ -605,158 +628,10 @@ public class Controller {
         }
     }
 
-    private List<Employee> getEmployees() {
-        try {
-            return Database.EMPLOYEES.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("role.user"), e);
-            return null;
-        }
-    }
-
-    private List<Employee> getEmployees(Role role) {
-        try {
-            return Database.EMPLOYEES.retrieve(role);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("role.user") + " role: " + role, e);
-            return null;
-        }
-    }
-
-    private long getSalt(String login) {
-        try {
-            return Database.EMPLOYEES.getSalt(login);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, "Salt retrieval error with login: " + login, e);
-            return 0;
-        }
-    }
-
-    private List<Employee> getEmployees(Role role, long depId) {
-        try {
-            return Database.EMPLOYEES.retrieve(role, depId);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("role.user") + " role: " + role + " dep id: " + depId, e);
-            return null;
-        }
-    }
-
-    private List<Institute> getInstRequest() {
-        try {
-            return Database.INSTITUTES.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("institute"), e);
-            return null;
-        }
-    }
-
-    private List<Department> getDepartments(long instId) {
-        try {
-            return Database.DEPARTMENTS.retrieve(instId);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("department") + " inst id: " + instId, e);
-            return null;
-        }
-    }
-
-    private List<Subdepartment> getSubdepRequest(long depId) {
-        try {
-            return Database.SUBDEPARTMENS.retrieve(depId);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("subdepartment") + " dep id: " + depId, e);
-            return null;
-        }
-    }
-
-    private List<AmountUnit> getAmUnits() {
-        try {
-            return Database.AMOUNTUNITS.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("amount"), e);
-            return null;
-        }
-    }
-
-    private List<Producer> getProd() {
-        try {
-            return Database.PRODUCERS.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("producer"), e);
-            return null;
-        }
-    }
-
-    private List<Supplier> getSupl() {
-        try {
-            return Database.SUPPLIERS.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("suplBorder"), e);
-            return null;
-        }
-    }
-
-    private List<ReasonForSupplierChoice> getReasons() {
-        try {
-            return Database.REASONS.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("reasonForSupplierChoice"), e);
-            return null;
-        }
-    }
-
-    private List<Finance> getFinances() {
-        try {
-            return Database.FINANCES.getResults();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("finances"), e);
-            return null;
-        }
-    }
-
-    private List<Finance> getFinanceByDepartment(Department departmentModel) {
-        try {
-            return Database.FINANCES.retrieveByDepartmentId(departmentModel.getModelId());
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("finances"), e);
-            return null;
-        }
-    }
-
-    private List<FinanceDepartment> getDepartmentFinancesByOrder(long orderId) {
-        try {
-            return Database.DEPARTMENT_FINANCES.retrieveByFinanceId(orderId);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("departmentFinances") + " order Id: " + orderId, e);
-            return null;
-        }
-    }
-
-    private boolean isLoginUnique(String username) {
-        try {
-            return Database.EMPLOYEES.checkLogin(username);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, e);
-            return false;
-        }
-    }
-
     // check user login and pass
     private boolean validateLogin(String username, String password) {
         try {
-            return Database.EMPLOYEES.checkLogin(username, password);
+            return storage.EMPLOYEES.checkLogin(username, password);
         } catch (JDBCException e) {
             Logger.errorEvent(mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("role.user") + " :" + username, e);
@@ -764,78 +639,37 @@ public class Controller {
         }
     }
 
-    private List<Bid> getBids(BidType type) {
+    private boolean isLoginUnique(String username) {
         try {
-            return Database.BIDS.getResults(type);
+            return storage.EMPLOYEES.checkLogin(username);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("bids"), e);
-            return null;
+            Logger.errorEvent(mainFrame, e);
+            return false;
         }
     }
 
-    private List<Bid> getBids(BidType type, Department department) {
+    private long retrieveUserSalt(String login) {
         try {
-            return Database.BIDS.retrieve(type, department);
+            return storage.EMPLOYEES.getSalt(login);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("bids"), e);
-            return null;
-        }
-    }
-
-    private List<Bid> getBids(BidType type, FinanceDepartment financeDepartmentModel) {
-        try {
-            return Database.BIDS.retrieve(type, financeDepartmentModel);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("bids"), e);
-            return null;
-        }
-    }
-
-    private List<Bid> getBids(BidType type, Subdepartment model) {
-        try {
-            return Database.BIDS.retrieve(type, model);
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("bids"), e);
-            return new LinkedList<>();
-        }
-    }
-
-    private List<CpvAmount> getCpvAmount() {
-        try {
-            return Database.BIDS.getCpvAmount();
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
-                    Labels.withSpaceBefore("cpvAmounts"), e);
-            return new LinkedList<>();
+            Logger.errorEvent(mainFrame, "Salt retrieval error with login: " + login, e);
+            return 0;
         }
     }
 
     private int registrationsLeft() {
         try {
-            return Database.REGISTRATION.useRegistration();
+            return storage.REGISTRATION.useRegistration();
         } catch (JDBCException e) {
             Logger.errorEvent(mainFrame, e);
             return 0;
         }
     }
 
-    private <T extends IEntity> void createOrUpdate(T model) {
-        try {
-            model.createOrUpdate();
-            Logger.infoEvent(mainFrame, Labels.withColon(model.getMessage()) + model.toString());
-        } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon(model.getMessage()) + model.toString(), e);
-        }
-    }
-
     private void setNumberOfRegistrations(int registrationsNumber) {
-        Database.REGISTRATION.changeNumberOfRegistrationTickets(registrationsNumber);
+        storage.REGISTRATION.changeNumberOfRegistrationTickets(registrationsNumber);
         String message = Labels.withColon("numberOfRegistrionsAvailable") +
-                Database.REGISTRATION.getRegistrationsLeft();
+                storage.REGISTRATION.getRegistrationsLeft();
         Logger.infoEvent(mainFrame, message);
         JOptionPane.showConfirmDialog(mainFrame,
                 message,
@@ -845,9 +679,222 @@ public class Controller {
                 Icons.INFO);
     }
 
+    // GETTERS
+    private List<Cpv> retrieveCpv(CpvRequestQuery query) {
+        try {
+            return storage.CPV.get(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("cpvRequest") + query, e);
+            return null;
+        }
+    }
+
+    private List<Employee> retrieveEmployees(GetEmployeesQuery query) {
+        try {
+            return storage.EMPLOYEES.retrieve(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("role.user"), e);
+            return null;
+        }
+    }
+
+    private List<Institute> retrieveInstitutes() {
+        try {
+            return storage.INSTITUTES.getResults();
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("institute"), e);
+            return null;
+        }
+    }
+
+    private List<Department> retrieveDepartments(long instId) {
+        try {
+            return storage.DEPARTMENTS.get(instId);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("department") + " inst id: " + instId, e);
+            return null;
+        }
+    }
+
+    private List<Subdepartment> retrieveSubdepartments(long depId) {
+        try {
+            return storage.SUBDEPARTMENS.get(depId);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("subdepartment") + " dep id: " + depId, e);
+            return null;
+        }
+    }
+
+    private List<AmountUnit> retrieveAmountUnits() {
+        try {
+            return storage.AMOUNTUNITS.getResults();
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("amount"), e);
+            return null;
+        }
+    }
+
+    private List<Producer> retrieveProducers() {
+        try {
+            return storage.PRODUCERS.getResults();
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("producer"), e);
+            return null;
+        }
+    }
+
+    private List<Supplier> retrieveSuppliers() {
+        try {
+            return storage.SUPPLIERS.getResults();
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("suplBorder"), e);
+            return null;
+        }
+    }
+
+    private List<ReasonForSupplierChoice> retrieveReasons() {
+        try {
+            return storage.REASONS.getResults();
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("reasonForSupplierChoice"), e);
+            return null;
+        }
+    }
+
+    private List<Finance> retrieveFinances(GetFinancesQuery query) {
+        try {
+            return storage.FINANCES.get(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("finances"), e);
+            return null;
+        }
+    }
+
+    private BigDecimal retrieveUnassignedAmount(GetFinanceUnassignedAmountQuery query) {
+        try {
+            return storage.FINANCES.retrieveUnassignedAmount(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("finances"), e);
+            return null;
+        }
+    }
+
+
+    private BigDecimal retrieveLeftAmount(GetFinanceLeftAmountQuery query) {
+        try {
+            return storage.FINANCES.retrieveLeftAmount(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("finances"), e);
+            return null;
+        }
+    }
+
+    private List<FinanceDepartment> retrieveDepartmentFinances(GetFinanceDepartmentsQuery query) {
+        try {
+            return storage.DEPARTMENT_FINANCES.get(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("departmentFinances"), e);
+            return null;
+        }
+    }
+
+    private BigDecimal retrieveLeftAmount(GetFinanceDepartmentLeftAmountQuery query) {
+        try {
+            return storage.DEPARTMENT_FINANCES.retrieveLeftAmount(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("finances"), e);
+            return null;
+        }
+    }
+
+    private BigDecimal retrieveSpentAmount(GetFinanceDepartmentSpentAmountQuery query) {
+        try {
+            return storage.DEPARTMENT_FINANCES.retrieveSpentAmount(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("finances"), e);
+            return null;
+        }
+    }
+
+    private List<Bid> retrieveBids(GetBidsQuery query) {
+        try {
+            return storage.BIDS.retrieve(query);
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("bids"), e);
+            return null;
+        }
+    }
+
+    private List<CpvAmount> retrieveCpvAmount(int year) {
+        try {
+            List<Bid> bidModels = storage.BIDS.retrieve(new GetBidsQuery(year));
+            Map<String, CpvAmount> map = new HashMap<>();
+
+            for (Bid bidModel : bidModels) {
+                String cpv = bidModel.getCpv().getCpvId().substring(0, 4);
+                BidType type = bidModel.getType();
+                BigDecimal bidAmount = bidModel.getTotalPrice();
+
+                String key = cpv + "0000 " + type.toString();
+                if (map.containsKey(key)) {
+                    CpvAmount cpvAmount = map.get(key);
+                    cpvAmount.addBidModel(bidModel);
+                    cpvAmount.addToTotalAmount(bidAmount);
+                    map.put(key, cpvAmount);
+                } else {
+                    Cpv fourDigitCpv = storage.CPV.get(new CpvRequestQuery(key, 0)).get(0);
+                    map.put(key, new CpvAmount(fourDigitCpv, type, bidAmount, bidModel));
+                }
+            }
+
+            return Collections.unmodifiableList(map.values().stream()
+                    .sorted(Comparator.comparing(CpvAmount::getType)
+                            .thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())))
+                    .collect(Collectors.toList()));
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+                    Labels.withSpaceBefore("cpvAmounts"), e);
+            return new LinkedList<>();
+        }
+    }
+
+    // Create/update
+    private <T extends IEntity> void createOrUpdate(CreateOrUpdateCommand<T> command) {
+        try {
+            commandsHandler.Handle(command);
+            Logger.infoEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
+        }
+    }
+
+    private <T extends IEntity> void refresh(RefreshCommand<T> command) {
+        try {
+            commandsHandler.Handle(command);
+            Logger.infoEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
+        } catch (JDBCException e) {
+            Logger.errorEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
+        }
+    }
+
     // default close method
     private void close() {
-        Database.CONNECTOR.disconnect();
+        DBConnector.INSTANCE.disconnect();
         Logger.infoEvent(mainFrame, "Disconnected successfully");
         if (parameters.contains("logSave")) {
             mainFrame.saveLog();

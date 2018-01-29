@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.finance;
 
+import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
@@ -146,16 +147,20 @@ public class CreateDepartmentFinancePanel extends JPanel {
             return false;
         }
 
-        depMaterialAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depMaterialsAmountField, Labels.getProperty("materialsAmount"), BidType.MATERIALS);
+        BigDecimal unassignedAmount = listener.getUnassignedAmountEvent(new GetFinanceUnassignedAmountQuery(currentFinanceModel, BidType.MATERIALS));
+        depMaterialAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, unassignedAmount, depMaterialsAmountField, Labels.getProperty("materialsAmount"), BidType.MATERIALS);
         if (depMaterialAmount == null) {
             return false;
         }
-        depEquipmentAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depEquipmentAmountField, Labels.getProperty("equipmentAmount"), BidType.EQUIPMENT);
+
+        unassignedAmount = listener.getUnassignedAmountEvent(new GetFinanceUnassignedAmountQuery(currentFinanceModel, BidType.EQUIPMENT));
+        depEquipmentAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, unassignedAmount, depEquipmentAmountField, Labels.getProperty("equipmentAmount"), BidType.EQUIPMENT);
         if (depEquipmentAmount == null) {
             return false;
         }
 
-        depServicesAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, depServicesAmountField, Labels.getProperty("servicesAmount"), BidType.SERVICES);
+        unassignedAmount = listener.getUnassignedAmountEvent(new GetFinanceUnassignedAmountQuery(currentFinanceModel, BidType.SERVICES));
+        depServicesAmount = Utils.parseSubdepartmentBigDecimal(isCreateMode, parent, currentFinanceModel, unassignedAmount, depServicesAmountField, Labels.getProperty("servicesAmount"), BidType.SERVICES);
         return depServicesAmount != null;
     }
 
@@ -200,7 +205,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
     }
 
     private String getUnassignedAmount(BidType type) {
-        BigDecimal unassignedAmount = currentFinanceModel.getUnassignedAmount(type);
+        BigDecimal unassignedAmount = listener.getUnassignedAmountEvent(new GetFinanceUnassignedAmountQuery(currentFinanceModel, type));
         if (currentFinanceDepartmentModel.getTotalAmount(type) != null) {
             unassignedAmount = unassignedAmount.add(currentFinanceDepartmentModel.getTotalAmount(type));
         }

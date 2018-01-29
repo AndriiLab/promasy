@@ -57,6 +57,9 @@ import com.github.andriilab.promasy.presentation.reports.cpv.CpvAmountDialog;
 import com.github.andriilab.promasy.presentation.reports.cpv.CpvAmountDialogListener;
 import com.github.andriilab.promasy.presentation.supplier.SupplierDialog;
 import com.github.andriilab.promasy.presentation.supplier.SupplierDialogListener;
+import com.github.andriilab.promasy.presentation.toolbars.ButtonsToolbar;
+import com.github.andriilab.promasy.presentation.toolbars.ButtonsToolbarListener;
+import com.github.andriilab.promasy.presentation.toolbars.ControlsToolbar;
 import jiconfont.icons.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 
@@ -71,7 +74,8 @@ import java.util.Map;
 public class MainFrame extends JFrame {
 
     private LoginPanel loginPanel;
-    private final Toolbar toolbar;
+    private final ButtonsToolbar buttonsToolbar;
+    private final ControlsToolbar controlsToolbar;
     private MenuBar menuBar;
     private final ConSetDialog conSettDialog;
     private final OrganizationDialog editOrgDialog;
@@ -108,8 +112,9 @@ public class MainFrame extends JFrame {
         // registering font for icons
         IconFontSwing.register(FontAwesome.getIconFont());
 
-        //initializing toolbar, login and connection settings windows and other common windows
-        toolbar = new Toolbar();
+        //initializing buttonsToolbar, login and connection settings windows and other common windows
+        buttonsToolbar = new ButtonsToolbar();
+        controlsToolbar = new ControlsToolbar();
         loginPanel = new LoginPanel(this);
         conSettDialog = new ConSetDialog(this);
         loggerDialog = new LoggerDialog(this);
@@ -141,8 +146,12 @@ public class MainFrame extends JFrame {
         //marking login panel for gc
         loginPanel = null;
 
+        JPanel toolbarsPanel = new JPanel(new BorderLayout());
+        toolbarsPanel.add(buttonsToolbar, BorderLayout.CENTER);
+        toolbarsPanel.add(controlsToolbar, BorderLayout.LINE_END);
+
         //adding components of main window
-        add(toolbar, BorderLayout.PAGE_START);
+        add(toolbarsPanel, BorderLayout.PAGE_START);
         add(statusPanel, BorderLayout.SOUTH);
 
         Role role = LoginData.getInstance().getRole();
@@ -207,7 +216,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        toolbar.setToolbarListener(new ToolbarListener() {
+        buttonsToolbar.setButtonsToolbarListener(new ButtonsToolbarListener() {
             @Override
             public void printEventOccurred() {
                 onPrintClick();
@@ -239,6 +248,8 @@ public class MainFrame extends JFrame {
                 onRefreshClick();
             }
         });
+
+        controlsToolbar.setControlsToolbarListener(this::updateVisibleComponent);
 
         menuBar.setMenuBarListener(new MenuBarListener() {
             @Override
@@ -335,6 +346,14 @@ public class MainFrame extends JFrame {
         });
     }
 
+    private void updateVisibleComponent() {
+        if (tabPane != null && tabPane.getSelectedComponent().equals(financePanel)) {
+            financePanel.refreshFinances();
+            return;
+        }
+        bidsListPanel.refresh();
+    }
+
     private void changeNumberOfRegistrations() {
         String regNumberStr = (String) JOptionPane.showInputDialog(
                 this,
@@ -360,7 +379,6 @@ public class MainFrame extends JFrame {
                     Icons.ERROR);
             changeNumberOfRegistrations();
         }
-
     }
 
     private void onExportToTableClick() {
@@ -456,30 +474,8 @@ public class MainFrame extends JFrame {
     }
 
     private void showReportParametersDialog() {
-        if (bidsListPanel.isReadyForPrint() && listener != null) {
-            // search for heads of department in department
-            reportParametersDialog.setDepartmentHeadBoxData(
-                    listener.searchForPerson(Role.HEAD_OF_DEPARTMENT,
-                            bidsListPanel.getSelectedDepartment().getModelId()));
-            // search for personally liable employee in department
-            reportParametersDialog.setPersonallyLiableEmpBoxData(
-                    listener.searchForPerson(Role.PERSONALLY_LIABLE_EMPLOYEE,
-                            bidsListPanel.getSelectedDepartment().getModelId()));
-            // search for chief accountant
-            reportParametersDialog.setAccountantBoxData(
-                    listener.searchForPerson(Role.ACCOUNTANT));
-            // search for chief economist
-            reportParametersDialog.setEconomistBoxData(
-                    listener.searchForPerson(Role.ECONOMIST));
-            // search for SECRETARY OF TENDER COMMITTEE
-            reportParametersDialog.setHeadTenderBoxData(
-                    listener.searchForPerson(Role.SECRETARY_OF_TENDER_COMMITTEE));
-            // search for director
-            reportParametersDialog.setHeadBoxData(
-                    listener.searchForPerson(Role.DIRECTOR));
-            // show dialog with selectors for director, head of department, PLE, accountant, economist, SECRETARY OF TENDER COMMITTEE
+        if (bidsListPanel.isReadyForPrint())
             reportParametersDialog.setVisible(true);
-        }
     }
 
     public void bidListPrint(Map<String, Object> parameters) {
@@ -489,10 +485,6 @@ public class MainFrame extends JFrame {
     // Status panel writers
     public void writeStatusPanelCurrentDb(String dbName) {
         statusPanel.setCurrentDb(dbName);
-    }
-
-    public void writeStatusPanelCurrentUser(String userName) {
-        statusPanel.setCurrentUserLabel(userName);
     }
 
     public void logEvent(String message, Color color) {
@@ -652,14 +644,26 @@ public class MainFrame extends JFrame {
         return splashScreen;
     }
 
+    public BidsListPanel getBidsListPanel() {
+        return bidsListPanel;
+    }
+
     public void saveLog() {
         loggerDialog.saveLog();
+    }
+
+    public int getReportYear() {
+        return controlsToolbar.getSelectedYear();
     }
 
     @Override
     public void setVisible(boolean visible) {
         if (listener != null && visible) {
-            setTitle(Labels.withSpaceAfter("mainFrameSuper") + Labels.getVersion());
+            String user = LoginData.getInstance().getShortName() + " (" + LoginData.getInstance().getRole().getRoleName()
+                    + ")";
+            Logger.infoEvent(this, Labels.withColon("role.user") + user);
+            setTitle(user + " - " + Labels.withSpaceAfter("mainFrameSuper") + Labels.getVersion());
+            setMinimumSize(new Dimension(1000, 700));
             setSize(1000, 700);
             setResizable(true);
             positionOnScreenCenter();

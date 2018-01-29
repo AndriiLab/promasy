@@ -12,7 +12,6 @@ import java.awt.*;
 
 class StatusPanel extends JPanel {
 
-    private final JLabel currentUserLabel;
     private final JLabel currentDbLabel;
     private final JLabel status;
     private final MainFrame parent;
@@ -23,10 +22,6 @@ class StatusPanel extends JPanel {
         setPreferredSize(new Dimension(parent.getWidth(), 20));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        currentUserLabel = new JLabel(EmptyModel.STRING);
-        currentUserLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        currentUserLabel.setIcon(Icons.USER);
-
         currentDbLabel = new JLabel(EmptyModel.STRING);
         currentDbLabel.setHorizontalAlignment(SwingConstants.LEFT);
         currentDbLabel.setIcon(Icons.CONNECTION_SETTINGS);
@@ -34,20 +29,12 @@ class StatusPanel extends JPanel {
         status = new JLabel(EmptyModel.STRING);
         status.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        add(currentUserLabel);
-        add(Box.createHorizontalStrut(5));
-        add(new JSeparator(SwingConstants.VERTICAL));
         add(currentDbLabel);
         add(Box.createHorizontalStrut(5));
         add(new JSeparator(SwingConstants.VERTICAL));
         add(Box.createHorizontalStrut(5));
         add(status);
 
-    }
-
-    void setCurrentUserLabel(String user) {
-        currentUserLabel.setText(user);
-        Logger.infoEvent(parent, Labels.withColon("role.user") + " " + user);
     }
 
     void setCurrentDb(String dbName) {

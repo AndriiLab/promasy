@@ -1,19 +1,20 @@
 package com.github.andriilab.promasy.domain.finance.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * IEntity for financial data
@@ -155,39 +156,6 @@ public class Finance extends AbstractEntity {
         }
     }
 
-    public BigDecimal getLeftAmount(BidType bidType) {
-        if (leftAmount == null || !leftAmount.containsKey(bidType)) {
-            calculateLeftAmount(bidType);
-        }
-        return leftAmount.get(bidType);
-    }
-
-    private void calculateLeftAmount(BidType bidType) {
-        if (leftAmount == null) {
-            leftAmount = new HashMap<>();
-        }
-        BigDecimal financesLeft = getTotalAmount(bidType);
-        for (FinanceDepartment model : financeDepartmentModels) {
-            if (model.isActive()) {
-                financesLeft = financesLeft.subtract(model.getUsedAmount(bidType));
-            }
-            leftAmount.put(bidType, financesLeft);
-        }
-    }
-
-    public void calculateLeftAmount() {
-        if (leftAmount == null) {
-            leftAmount = new HashMap<>();
-        }
-        for (BidType type : BidType.values()) {
-            calculateLeftAmount(type);
-        }
-    }
-
-    public BigDecimal getUnassignedAmount(BidType type) {
-        return getTotalAmount(type).subtract(Database.DEPARTMENT_FINANCES.getTotalAmount(this, type));
-    }
-
     public Date getStartDate() {
         return startDate;
     }
@@ -243,16 +211,6 @@ public class Finance extends AbstractEntity {
     public void setDeleted() {
         financeDepartmentModels.forEach(IEntity::setDeleted);
         super.setDeleted();
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.FINANCES.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.FINANCES.refresh(this);
     }
 
     @Override

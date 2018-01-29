@@ -1,12 +1,12 @@
 package com.github.andriilab.promasy.presentation.reports.cpv;
 
-import com.github.andriilab.promasy.domain.organization.enums.Role;
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
 
 /**
  * Listener for {@link CpvAmountDialog}
  */
 public interface CpvAmountDialogListener {
-    void getData();
+    void getData(int year);
 
-    String getEmployeeName(Role role);
+    String getEmployee(GetEmployeesQuery query);
 }

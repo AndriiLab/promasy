@@ -149,16 +149,6 @@ public class Address extends AbstractEntity {
     }
 
     @Override
-    public void createOrUpdate() {
-        //won't need here
-    }
-
-    @Override
-    public void refresh() {
-        //won't need here
-    }
-
-    @Override
     public String getMessage() {
         return null;
     }

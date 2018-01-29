@@ -1,16 +1,11 @@
 package com.github.andriilab.promasy.presentation.organization;
 
-import com.github.andriilab.promasy.domain.organization.entities.Department;
-import com.github.andriilab.promasy.domain.organization.entities.Institute;
-import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
+import com.github.andriilab.promasy.domain.IEntity;
 
 public interface OrganizationDialogListener {
 
-    void persistModelEventOccurred(Institute model);
-
-    void persistModelEventOccurred(Department model);
-
-    void persistModelEventOccurred(Subdepartment model);
+    <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command);
 
     void getAllInstitutes();
 }

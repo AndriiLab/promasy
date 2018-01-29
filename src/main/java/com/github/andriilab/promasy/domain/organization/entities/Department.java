@@ -1,10 +1,8 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -88,16 +86,6 @@ public class Department extends AbstractEntity {
     public void setDeleted() {
         subdepartments.forEach(IEntity::setDeleted);
         super.setDeleted();
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.DEPARTMENTS.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.DEPARTMENTS.refresh(this);
     }
 
     @Override

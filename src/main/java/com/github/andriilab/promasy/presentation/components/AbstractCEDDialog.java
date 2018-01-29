@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.components;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.presentation.MainFrame;
@@ -71,7 +72,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
         deleteButton.addActionListener(e -> {
             if (!privateModel.equals(emptyModel) && ced.deleteEntry(parent, privateModel.toString()) && listener != null) {
                 privateModel.setDeleted();
-                listener.persistModelEventOccurred(privateModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateModel));
             }
             clearDialog();
         });
@@ -144,14 +145,14 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
                 privateModel.setDescription(newName);
                 privateModel.setUpdated();
                 returnModel = privateModel;
-                listener.persistModelEventOccurred(privateModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(privateModel));
             } else if (choice == JOptionPane.NO_OPTION) {
                 //if edit is not confirmed or com.github.andriilab.promasy.domain.model does not exist - creating new com.github.andriilab.promasy.domain.model with specified name
                 T model = createNewInstance();
                 model.setDescription(newName);
                 model.setCreated();
                 returnModel = model;
-                listener.persistModelEventOccurred(model);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
             }
             // if cancel pressed - do nothing
         }

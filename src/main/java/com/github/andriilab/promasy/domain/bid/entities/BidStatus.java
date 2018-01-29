@@ -1,10 +1,8 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.bid.enums.Status;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -42,16 +40,6 @@ public class BidStatus extends AbstractEntity {
     @Override
     public void setDescription(String description) {
 
-    }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.BID_STATUSES.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.BID_STATUSES.refresh(this);
     }
 
     @Override

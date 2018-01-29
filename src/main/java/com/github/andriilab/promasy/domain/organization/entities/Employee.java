@@ -1,10 +1,8 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -89,17 +87,6 @@ public class Employee extends AbstractEntity {
     public void setDescription(String lastName) {
         this.empLName = lastName;
     }
-
-    @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.EMPLOYEES.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.EMPLOYEES.refresh(this);
-    }
-
 
     @Override
     public String getMessage() {

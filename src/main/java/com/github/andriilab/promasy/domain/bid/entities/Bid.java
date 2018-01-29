@@ -1,23 +1,18 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
-import com.github.andriilab.promasy.data.storage.Database;
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
-import com.github.andriilab.promasy.domain.bid.reports.BidsReportModel;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.item.entities.Producer;
 import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -287,38 +282,7 @@ public class Bid extends AbstractEntity {
     }
 
     @Override
-    public void createOrUpdate() throws JDBCException {
-        Database.BIDS.createOrUpdate(this);
-    }
-
-    @Override
-    public void refresh() {
-        Database.BIDS.refresh(this);
-    }
-
-    @Override
     public String getMessage() {
         return "createOrUpdateUserBid";
-    }
-
-    public BidsReportModel generateReportModel() {
-        return new BidsReportModel(
-                finances.getSubdepartment().getDepartment().getDepName(),
-                finances.getSubdepartment().getSubdepName(),
-                finances.getFinances().getFinanceNumber(),
-                finances.getFinances().getFinanceName(),
-                type.getBidTypeName(),
-                cpv.getCpvId(),
-                cpv.getCpvUkr(),
-                bidDesc,
-                getLastEditDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd\nHH:mm")),
-                (producer != null ? producer.getBrandName() : EmptyModel.STRING),
-                (catNum != null ? catNum : EmptyModel.STRING),
-                (supplier != null ? supplier.getSupplierName() : EmptyModel.STRING),
-                (reasonForSupplierChoice != null ? reasonForSupplierChoice.getReason() : EmptyModel.STRING),
-                amountUnit.getAmUnitDesc(),
-                onePrice,
-                amount
-        );
     }
 }

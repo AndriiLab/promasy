@@ -1,8 +1,14 @@
 package com.github.andriilab.promasy.presentation.finance;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.LoginData;
+import com.github.andriilab.promasy.data.queries.finance.GetFinanceLeftAmountQuery;
+import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;
+import com.github.andriilab.promasy.data.queries.finance.GetFinancesQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
+import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
@@ -17,6 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,6 +76,8 @@ public class FinancePanel extends JPanel {
         deleteOrderButton.setEnabled(false);
 
         financeTableModel = new FinanceTableModel();
+        financeTableModel.setListener(query -> listener.getLeftAmountEvent(query));
+
         financeTable = new JTable(financeTableModel);
         financeTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -104,6 +113,7 @@ public class FinancePanel extends JPanel {
         showBidsButton.setEnabled(false);
 
         departmentFinanceTableModel = new DepartmentFinanceTableModel();
+        departmentFinanceTableModel.setListener(query -> listener.getLeftAmountEvent(query));
         depFinanceTable = new JTable(departmentFinanceTableModel);
         depFinanceTable.getColumnModel().getColumn(0).setMinWidth(150);
         depFinanceTable.getColumnModel().getColumn(1).setMinWidth(100);
@@ -149,7 +159,7 @@ public class FinancePanel extends JPanel {
         deleteOrderButton.addActionListener(e -> {
             if (!selectedFinanceModel.equals(EmptyModel.FINANCE) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
                 selectedFinanceModel.setDeleted();
-                listener.persistModelEventOccurred(selectedFinanceModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedFinanceModel));
                 setDepartmentFinanceTableData(emptyDepartmentFinancesList);
                 selectedFinanceModel = EmptyModel.FINANCE;
             }
@@ -157,7 +167,7 @@ public class FinancePanel extends JPanel {
 
         createFinancePanel.setFinanceDialogListener(model -> {
             if (listener != null) {
-                listener.persistModelEventOccurred(model);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
             }
         });
 
@@ -166,7 +176,7 @@ public class FinancePanel extends JPanel {
             public void persistModelEventOccurred(FinanceDepartment model) {
                 int selectedFinanceRow = Utils.getRowWithObject(financeTable, 0, selectedFinanceModel);
                 if (listener != null) {
-                    listener.persistModelEventOccurred(model);
+                    listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
                 }
                 financeTable.getSelectionModel().setSelectionInterval(selectedFinanceRow, selectedFinanceRow);
                 try {
@@ -184,6 +194,11 @@ public class FinancePanel extends JPanel {
                 if (listener != null) {
                     listener.loadDepartments();
                 }
+            }
+
+            @Override
+            public BigDecimal getUnassignedAmountEvent(GetFinanceUnassignedAmountQuery query) {
+                return listener.getUnassignedAmountEvent(query);
             }
         });
 
@@ -212,7 +227,7 @@ public class FinancePanel extends JPanel {
             if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName()) && listener != null) {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
-                listener.persistModelEventOccurred(selectedDepFinModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedDepFinModel));
                 setDepartmentFinanceTableData(selectedFinanceModel.getFinanceDepartmentModelsSorted());
                 selectedDepFinModel = EmptyModel.FINANCE_DEPARTMENT;
             }
@@ -272,7 +287,7 @@ public class FinancePanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         if (listener != null) {
-            listener.getFinancesByDepartment(LoginData.getInstance().getSubdepartment().getDepartment());
+            listener.getFinancesByDepartment(new GetFinancesQuery(parent.getReportYear(), LoginData.getInstance().getSubdepartment().getDepartment()));
         }
     }
 
@@ -321,16 +336,26 @@ public class FinancePanel extends JPanel {
         add(splitPane, BorderLayout.CENTER);
     }
 
-    public void refresh() {
+    public void refreshFinances() {
         for (int row = 0; row < financeTableModel.getRowCount(); row++) {
-            ((Finance) financeTableModel.getValueAt(row, 9)).calculateLeftAmount();
+            Finance model = ((Finance) financeTableModel.getValueAt(row, 9));
+            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.MATERIALS)), row, 3);
+            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.EQUIPMENT)), row, 5);
+            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.SERVICES)), row, 7);
         }
         financeTableModel.fireTableDataChanged();
 
         for (int row = 0; row < departmentFinanceTableModel.getRowCount(); row++) {
-            ((FinanceDepartment) departmentFinanceTableModel.getValueAt(row, 8)).calculateLeftAmount();
+            FinanceDepartment model = ((FinanceDepartment) departmentFinanceTableModel.getValueAt(row, 8));
+            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.MATERIALS)), row, 4);
+            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.EQUIPMENT)), row, 6);
+            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.SERVICES)), row, 8);
         }
         departmentFinanceTableModel.fireTableDataChanged();
+    }
+
+    public void refresh() {
+        listener.getAllData();
     }
 
     @Override

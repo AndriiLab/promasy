@@ -1,12 +1,17 @@
 package com.github.andriilab.promasy.presentation.bids;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.controller.ReportsGenerator;
+import com.github.andriilab.promasy.data.models.BidsReportModel;
+import com.github.andriilab.promasy.data.queries.bids.GetBidsQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
+import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
-import com.github.andriilab.promasy.domain.bid.reports.BidsReportModel;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
@@ -168,7 +173,7 @@ public class BidsListPanel extends JPanel {
                 if (ced.deleteEntry(parent, selectedBidModel.getBidDesc())) {
                     selectedBidModel.setDeleted();
                     selectedFinanceDepartmentModel.addBid(selectedBidModel);
-                    listener.persistModelEventOccurred(selectedBidModel);
+                    listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedBidModel));
                     getBids();
                 }
                 activateButtons(false);
@@ -183,8 +188,9 @@ public class BidsListPanel extends JPanel {
             selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
-            setSubdepartmentBoxData(selectedDepartmentModel.getSubdepartments());
             if (listener != null) {
+                if (!isSelectedDepartmentModelEmpty())
+                    setSubdepartmentBoxData(listener.getSubdepartments(selectedDepartmentModel.getModelId()));
                 getBids();
             }
             clearSelectedBidModels();
@@ -196,11 +202,14 @@ public class BidsListPanel extends JPanel {
             financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentBox.getSelectedItem() != null) {
                 selectedSubdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
-                if (isSelectedSubepartmentModelEmpty() && listener != null) {
-                    getBids();
-                } else {
-                    setFinanceDepartmentBoxData(selectedSubdepartmentModel.getFinanceDepartments());
+                if (listener != null) {
+                    if (isSelectedSubdepartmentModelEmpty()) {
+                        getBids();
+                    } else {
+                        setFinanceDepartmentBoxData(listener.getFinanceDepartments(new GetFinanceDepartmentsQuery(parent.getReportYear(), selectedSubdepartmentModel)));
+                    }
                 }
+
                 clearSelectedBidModels();
             }
         });
@@ -259,7 +268,7 @@ public class BidsListPanel extends JPanel {
 
         statusDialog.setStatusDialogListener(model -> {
             if (listener != null) {
-                listener.persistModelEventOccurred(model);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
                 getBids();
             }
         });
@@ -268,7 +277,7 @@ public class BidsListPanel extends JPanel {
             @Override
             public void persistModelEventOccurred(Bid model) {
                 if (listener != null) {
-                    listener.persistModelEventOccurred(model);
+                    listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
                     getBids();
                 }
             }
@@ -282,6 +291,11 @@ public class BidsListPanel extends JPanel {
                 if (!selectedModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
                     financeDepartmentBox.setSelectedItem(selectedModel);
                 }
+            }
+
+            @Override
+            public BigDecimal getLeftAmount(GetFinanceDepartmentLeftAmountQuery query) {
+                return listener.getLeftAmountEvent(query);
             }
         });
     }
@@ -303,15 +317,19 @@ public class BidsListPanel extends JPanel {
             bidRequestThread = new Thread(() -> {
                 try {
                     Thread.sleep(250);
+                    GetBidsQuery query;
                     if (isSelectedDepartmentModelEmpty()) {
-                        listener.selectAllBidsEventOccurred(selectedBidType);
-                    } else if (isSelectedSubepartmentModelEmpty()) {
-                        listener.getBidsByDepartment(selectedBidType, selectedDepartmentModel);
+                        query = new GetBidsQuery(selectedBidType, parent.getReportYear());
+                    } else if (isSelectedSubdepartmentModelEmpty()) {
+                        query = new GetBidsQuery(selectedBidType, parent.getReportYear(), selectedDepartmentModel);
                     } else if (isSelectedFinanceDepartmentModelEmpty()) {
-                        listener.getBidsBySubdepartment(selectedBidType, selectedSubdepartmentModel);
+                        query = new GetBidsQuery(selectedBidType, parent.getReportYear(), selectedSubdepartmentModel);
                     } else if (!isSelectedFinanceDepartmentModelEmpty()) {
-                        listener.getBidsByFinanceDepartment(selectedBidType, selectedFinanceDepartmentModel);
+                        query = new GetBidsQuery(selectedBidType, parent.getReportYear(), selectedFinanceDepartmentModel);
+                    } else {
+                        return;
                     }
+                    listener.getBids(query);
                 } catch (InterruptedException e) {
                     Logger.warnEvent(e);
                 }
@@ -326,7 +344,7 @@ public class BidsListPanel extends JPanel {
         if (!isSelectedDepartmentModelEmpty()) {
             createBidPanel.setCurrentDepartment(selectedDepartmentModel);
         }
-        if (!isSelectedSubepartmentModelEmpty()) {
+        if (!isSelectedSubdepartmentModelEmpty()) {
             createBidPanel.setCurrentSubdepartment(selectedSubdepartmentModel);
         }
         if (!isSelectedFinanceDepartmentModelEmpty()) {
@@ -338,18 +356,18 @@ public class BidsListPanel extends JPanel {
         return selectedDepartmentModel.equals(EmptyModel.DEPARTMENT);
     }
 
-    private boolean isSelectedSubepartmentModelEmpty() {
+    private boolean isSelectedSubdepartmentModelEmpty() {
         return isSelectedDepartmentModelEmpty() || selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT);
     }
 
     private boolean isSelectedFinanceDepartmentModelEmpty() {
-        return isSelectedSubepartmentModelEmpty() || selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT);
+        return isSelectedSubdepartmentModelEmpty() || selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT);
     }
 
     private void setFinanceLabels() {
         if (selectedFinanceDepartmentModel.getTotalAmount(selectedBidType) != null) {
-            BigDecimal sum = selectedFinanceDepartmentModel.getTotalAmount(selectedBidType).subtract(selectedFinanceDepartmentModel.getUpdatedLeftAmount(selectedBidType));
-            BigDecimal financeLeft = selectedFinanceDepartmentModel.getUpdatedLeftAmount(selectedBidType);
+            BigDecimal sum = listener.getSpentAmountEvent(new GetFinanceDepartmentSpentAmountQuery(selectedFinanceDepartmentModel, selectedBidType)); //todo compare with foreach for bids
+            BigDecimal financeLeft = listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(selectedFinanceDepartmentModel, selectedBidType));
             sumLabel.setText(Labels.withColon("totalPrice2") + " " + sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
             financeLeftLabel.setText(Labels.withColon("financeLeftByTema") + " " + financeLeft.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
         } else {
@@ -500,7 +518,7 @@ public class BidsListPanel extends JPanel {
 
     public void printBidList(Map<String, Object> parameters) {
         List<BidsReportModel> list = new LinkedList<>();
-        getSelectedBids().forEach(bid -> list.add(bid.generateReportModel()));
+        getSelectedBids().forEach(bid -> list.add(new BidsReportModel(bid)));
         new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
     }
 
@@ -525,17 +543,8 @@ public class BidsListPanel extends JPanel {
         return list;
     }
 
-
     public void refresh() {
-        //if subdepartment selected - refreshing, else - retrieving all bids
-        if (!isSelectedSubepartmentModelEmpty()) {
-            FinanceDepartment selected = (FinanceDepartment) financeDepartmentBox.getSelectedItem();
-            selectedSubdepartmentModel.refresh();
-            financeDepartmentBox.setBoxData(selectedSubdepartmentModel.getFinanceDepartments(), EmptyModel.FINANCE_DEPARTMENT, true);
-            financeDepartmentBox.setSelectedModel(selected);
-        } else {
-            getBids();
-        }
+        getBids();
     }
 
     @Override

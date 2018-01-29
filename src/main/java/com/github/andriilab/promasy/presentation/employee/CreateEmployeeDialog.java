@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.employee;
 
+import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
@@ -138,7 +139,7 @@ public class CreateEmployeeDialog extends JDialog {
                 } else {
                     currentEmployeeModel.setUpdated();
                 }
-                listener.persistModelEventOccurred(currentEmployeeModel);
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(currentEmployeeModel));
                 clearDialog();
                 if (loginListener != null) {
                     loginListener.newUserCreatedEvent();

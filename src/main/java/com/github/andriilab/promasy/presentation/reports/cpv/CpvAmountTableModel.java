@@ -1,7 +1,7 @@
 package com.github.andriilab.promasy.presentation.reports.cpv;
 
+import com.github.andriilab.promasy.data.models.CpvAmountReportModel;
 import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
-import com.github.andriilab.promasy.domain.cpv.reports.CpvAmountReportModel;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
 import javax.swing.table.AbstractTableModel;

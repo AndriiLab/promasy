@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain;
 
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import org.hibernate.JDBCException;
 
 import java.sql.Timestamp;
 
@@ -41,10 +40,6 @@ public interface IEntity {
     void setUpdated();
 
     void setDeleted();
-
-    void createOrUpdate() throws JDBCException;
-
-    void refresh();
 
     String getMessage();
 }

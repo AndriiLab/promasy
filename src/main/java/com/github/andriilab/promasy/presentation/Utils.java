@@ -143,7 +143,7 @@ public class Utils {
         return targetBigDecimal;
     }
 
-    public static BigDecimal parseSubdepartmentBigDecimal(boolean isCreateMode, JFrame parent, Finance selectedFinanceModel, JTextField jTextField, String fieldName, BidType bidType) {
+    public static BigDecimal parseSubdepartmentBigDecimal(boolean isCreateMode, JFrame parent, Finance selectedFinanceModel, BigDecimal unassignedAmount, JTextField jTextField, String fieldName, BidType bidType) {
         BigDecimal targetBigDecimal = parseBigDecimal(parent, jTextField, fieldName);
         if (targetBigDecimal == null) {
             return null;
@@ -154,8 +154,7 @@ public class Utils {
                     JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.requestFocusInWindow();
             return null;
-        } else if (isCreateMode && targetBigDecimal.compareTo(selectedFinanceModel.getUnassignedAmount(bidType)) > 0) {
-            BigDecimal unassignedAmount = selectedFinanceModel.getUnassignedAmount(bidType);
+        } else if (isCreateMode && targetBigDecimal.compareTo(unassignedAmount) > 0) {
             JOptionPane.showMessageDialog(parent, Labels.getProperty("depFinanceAmountGreaterThanAvailableFinanceAmount") + ".\n" + Labels.withColon("unassignedFinanceAmount") + " " + unassignedAmount + Labels.withSpaceBefore("uah"), Labels.getProperty("fieldErr"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             jTextField.setText(unassignedAmount.toString());
             jTextField.requestFocusInWindow();
