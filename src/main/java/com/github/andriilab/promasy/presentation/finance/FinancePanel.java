@@ -2,13 +2,10 @@ package com.github.andriilab.promasy.presentation.finance;
 
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.LoginData;
-import com.github.andriilab.promasy.data.queries.finance.GetFinanceLeftAmountQuery;
 import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;
 import com.github.andriilab.promasy.data.queries.finance.GetFinancesQuery;
-import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
-import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
@@ -334,24 +331,6 @@ public class FinancePanel extends JPanel {
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, financeSplitPane, departmentFinanceSplitPane);
         splitPane.setEnabled(false);
         add(splitPane, BorderLayout.CENTER);
-    }
-
-    public void refreshFinances() {
-        for (int row = 0; row < financeTableModel.getRowCount(); row++) {
-            Finance model = ((Finance) financeTableModel.getValueAt(row, 9));
-            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.MATERIALS)), row, 3);
-            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.EQUIPMENT)), row, 5);
-            financeTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceLeftAmountQuery(model, BidType.SERVICES)), row, 7);
-        }
-        financeTableModel.fireTableDataChanged();
-
-        for (int row = 0; row < departmentFinanceTableModel.getRowCount(); row++) {
-            FinanceDepartment model = ((FinanceDepartment) departmentFinanceTableModel.getValueAt(row, 8));
-            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.MATERIALS)), row, 4);
-            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.EQUIPMENT)), row, 6);
-            departmentFinanceTableModel.setValueAt(listener.getLeftAmountEvent(new GetFinanceDepartmentLeftAmountQuery(model, BidType.SERVICES)), row, 8);
-        }
-        departmentFinanceTableModel.fireTableDataChanged();
     }
 
     public void refresh() {

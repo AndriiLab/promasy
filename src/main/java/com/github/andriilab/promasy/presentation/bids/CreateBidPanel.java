@@ -486,7 +486,6 @@ public class CreateBidPanel extends JPanel {
 
         BigDecimal onePrice;
         try {
-            System.out.println(onePriceString);
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);

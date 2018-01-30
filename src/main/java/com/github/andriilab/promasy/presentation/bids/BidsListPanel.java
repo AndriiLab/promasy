@@ -543,6 +543,12 @@ public class BidsListPanel extends JPanel {
         return list;
     }
 
+    public void refreshYear() {
+        if (!isSelectedSubdepartmentModelEmpty())
+            setFinanceDepartmentBoxData(listener.getFinanceDepartments(new GetFinanceDepartmentsQuery(parent.getReportYear(), selectedSubdepartmentModel)));
+        getBids();
+    }
+
     public void refresh() {
         getBids();
     }

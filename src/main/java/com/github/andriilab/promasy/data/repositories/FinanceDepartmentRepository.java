@@ -3,7 +3,9 @@ package com.github.andriilab.promasy.data.repositories;
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentLeftAmountQuery;
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
+import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
+import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -22,18 +24,18 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     public List<FinanceDepartment> get(GetFinanceDepartmentsQuery query) {
-        if (query.getDepartmentId() != 0)
-            return retrieveByDepartmentId(query.getDepartmentId(), query.getYear());
-        else if (query.getFinanceId() != 0)
-            return retrieveByFinanceId(query.getFinanceId(), query.getYear());
+        if (query.getSubdepartment().getModelId() != 0)
+            return retrieveBySubdepartment(query.getSubdepartment(), query.getYear());
+        else if (query.getFinance().getModelId() != 0)
+            return retrieveByFinance(query.getFinance(), query.getYear());
         return null;
     }
 
-    private List<FinanceDepartment> retrieveByFinanceId(long financeId, int year) {
+    private List<FinanceDepartment> retrieveByFinance(Finance finance, int year) {
         entityManager.getTransaction().begin();
-        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.finances where fdm.finances.modelId = :financeId and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
+        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.finances where fdm.finances = :finance and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
                 FinanceDepartment.class);
-        query.setParameter("financeId", financeId);
+        query.setParameter("finance", finance);
         query.setParameter("year", year);
         List<FinanceDepartment> list = query.getResultList();
         entityManager.getTransaction().commit();
@@ -41,11 +43,11 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
         return Collections.unmodifiableList(list);
     }
 
-    private List<FinanceDepartment> retrieveByDepartmentId(long departmentId, int year) {
+    private List<FinanceDepartment> retrieveBySubdepartment(Subdepartment subdepartment, int year) {
         entityManager.getTransaction().begin();
-        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.subdepartment.department.modelId = :departmentId and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.finances.financeNumber, fdm.subdepartment.subdepName",
+        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.subdepartment = :subdepartment and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.finances.financeNumber, fdm.subdepartment.subdepName",
                 FinanceDepartment.class);
-        query.setParameter("departmentId", departmentId);
+        query.setParameter("subdepartment", subdepartment);
         query.setParameter("year", year);
         List<FinanceDepartment> list = query.getResultList();
         entityManager.getTransaction().commit();

@@ -174,6 +174,7 @@ public class CpvAmountDialog extends JDialog {
     @Override
     public void setVisible(boolean visible) {
         if (visible) {
+            this.setTitle(Labels.getProperty("cpvAmounts") + " - " + parent.getReportYear());
             resolutionField.setText(EmptyModel.STRING);
             resolutionDatePicker.clear();
             if (listener != null) {

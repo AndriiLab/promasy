@@ -29,7 +29,7 @@ public class BidsRepository extends Repository<Bid> {
         else if (query.getSubdepartmentId() != 0)
             return retrieveBySubdepartment(query.getType(), query.getYear(), query.getSubdepartmentId());
         else if (query.getDepartmentId() != 0)
-            return retrieveByDepartment(query.getType(), query.getYear(), query.getSubdepartmentId());
+            return retrieveByDepartment(query.getType(), query.getYear(), query.getDepartmentId());
         else if (query.getType() != null)
             return retrieveByType(query.getType(), query.getYear());
         else
@@ -38,7 +38,7 @@ public class BidsRepository extends Repository<Bid> {
 
     private List<Bid> retrieveByFinanceDepartment(BidType type, int year, long financeDepartmentId) throws JDBCException {
         entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm where EXTRACT(YEAR from bm.createdDate) = :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.id = :financeDepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.id = :financeDepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
                 Bid.class)
                 .setParameter("requestedYear", year)
                 .setParameter("bidType", type)
@@ -53,7 +53,7 @@ public class BidsRepository extends Repository<Bid> {
 
     private List<Bid> retrieveBySubdepartment(BidType type, int year, long subdepartmentId) throws JDBCException {
         entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm where EXTRACT(YEAR from bm.createdDate) = :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.subdepartment.id = :subdepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.id = :subdepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
                 Bid.class)
                 .setParameter("requestedYear", year)
                 .setParameter("bidType", type)
@@ -68,7 +68,7 @@ public class BidsRepository extends Repository<Bid> {
 
     private List<Bid> retrieveByDepartment(BidType type, int year, long departmentId) throws JDBCException {
         entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm where EXTRACT(YEAR from bm.createdDate) = :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.subdepartment.department.id = :departmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.department.id = :departmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
                 Bid.class)
                 .setParameter("requestedYear", year)
                 .setParameter("bidType", type)
@@ -83,7 +83,7 @@ public class BidsRepository extends Repository<Bid> {
 
     private List<Bid> retrieveByType(BidType type, int year) throws JDBCException {
         entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm where EXTRACT(YEAR from bm.createdDate) = :requestedYear and bm.active = true and bm.type = :bidType order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType order by coalesce(bm.modifiedDate, bm.createdDate) desc",
                 Bid.class)
                 .setParameter("requestedYear", year)
                 .setParameter("bidType", type);
@@ -97,7 +97,7 @@ public class BidsRepository extends Repository<Bid> {
 
     private List<Bid> retrieveByYear(int year) throws JDBCException {
         entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm where EXTRACT(YEAR from bm.createdDate) = :requestedYear and bm.active = true order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true order by coalesce(bm.modifiedDate, bm.createdDate) desc",
                 Bid.class)
                 .setParameter("requestedYear", year);
         List<Bid> list = query.getResultList();

@@ -249,7 +249,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        controlsToolbar.setControlsToolbarListener(this::updateVisibleComponent);
+        controlsToolbar.setControlsToolbarListener(this::updateYearInVisibleComponent);
 
         menuBar.setMenuBarListener(new MenuBarListener() {
             @Override
@@ -346,12 +346,12 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void updateVisibleComponent() {
+    private void updateYearInVisibleComponent() {
         if (tabPane != null && tabPane.getSelectedComponent().equals(financePanel)) {
-            financePanel.refreshFinances();
+            financePanel.refresh();
             return;
         }
-        bidsListPanel.refresh();
+        bidsListPanel.refreshYear();
     }
 
     private void changeNumberOfRegistrations() {
