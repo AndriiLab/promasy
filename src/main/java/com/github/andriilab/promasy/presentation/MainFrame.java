@@ -172,19 +172,19 @@ public class MainFrame extends JFrame {
             case HEAD_OF_TENDER_COMMITTEE:
             case SECRETARY_OF_TENDER_COMMITTEE:
                 createTabPane();
-                financePanel.hideCed();
+                financePanel.setVisibleCed(false);
                 break;
             case HEAD_OF_DEPARTMENT:
             case PERSONALLY_LIABLE_EMPLOYEE:
                 useUserDepartment();
                 createTabPane();
-                financePanel.hideCed();
+                financePanel.setVisibleCed(false);
                 break;
             case USER:
             default:
                 useUserDepartment();
                 add(bidsListPanel, BorderLayout.CENTER);
-                financePanel.hideCed();
+                financePanel.setVisibleCed(false);
                 break;
         }
 
@@ -348,7 +348,7 @@ public class MainFrame extends JFrame {
 
     private void updateYearInVisibleComponent() {
         if (tabPane != null && tabPane.getSelectedComponent().equals(financePanel)) {
-            financePanel.refresh();
+            financePanel.refreshYear();
             return;
         }
         bidsListPanel.refreshYear();

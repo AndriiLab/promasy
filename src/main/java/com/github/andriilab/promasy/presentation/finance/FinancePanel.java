@@ -271,14 +271,23 @@ public class FinancePanel extends JPanel {
         this.listener = listener;
     }
 
-    public void hideCed() {
-        createOrderButton.setVisible(false);
-        editOrderButton.setVisible(false);
-        deleteOrderButton.setVisible(false);
-        createDepOrderButton.setVisible(false);
-        editDepOrderButton.setVisible(false);
-        deleteDepOrderButton.setVisible(false);
-        showBidsButton.setVisible(false);
+    private void setActiveCed(boolean isActive) {
+        editOrderButton.setEnabled(isActive);
+        deleteOrderButton.setEnabled(isActive);
+        createDepOrderButton.setEnabled(isActive);
+        editDepOrderButton.setEnabled(isActive);
+        deleteDepOrderButton.setEnabled(isActive);
+        showBidsButton.setEnabled(isActive);
+    }
+
+    public void setVisibleCed(boolean isVisible) {
+        createOrderButton.setVisible(isVisible);
+        editOrderButton.setVisible(isVisible);
+        deleteOrderButton.setVisible(isVisible);
+        createDepOrderButton.setVisible(isVisible);
+        editDepOrderButton.setVisible(isVisible);
+        deleteDepOrderButton.setVisible(isVisible);
+        showBidsButton.setVisible(isVisible);
     }
 
     public void setUseUserDepartment() {
@@ -334,6 +343,13 @@ public class FinancePanel extends JPanel {
     }
 
     public void refresh() {
+        listener.getAllData();
+    }
+
+    public void refreshYear() {
+        departmentFinanceTableModel.setData(new LinkedList<>());
+        departmentFinanceTableModel.fireTableDataChanged();
+        setActiveCed(false);
         listener.getAllData();
     }
 

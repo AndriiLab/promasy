@@ -546,6 +546,7 @@ public class BidsListPanel extends JPanel {
     public void refreshYear() {
         if (!isSelectedSubdepartmentModelEmpty())
             setFinanceDepartmentBoxData(listener.getFinanceDepartments(new GetFinanceDepartmentsQuery(parent.getReportYear(), selectedSubdepartmentModel)));
+        setButtonsActive(false);
         getBids();
     }
 
@@ -559,5 +560,12 @@ public class BidsListPanel extends JPanel {
             refresh();
         }
         super.setVisible(visible);
+    }
+
+    private void setButtonsActive(boolean isActive) {
+        copyBidButton.setEnabled(isActive);
+        editBidButton.setEnabled(isActive);
+        deleteBidButton.setEnabled(isActive);
+        changeStatusButton.setEnabled(isActive);
     }
 }
