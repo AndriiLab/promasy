@@ -12,9 +12,9 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * IEntity for data of related to department finances
@@ -90,19 +90,11 @@ public class FinanceDepartment extends AbstractEntity {
     }
 
     public List<Bid> getActiveBids() {
-        List<Bid> bidModels = new LinkedList<>();
-        bids.forEach(bidModel -> {
-            if (bidModel.isActive()) bidModels.add(bidModel);
-        });
-        return bidModels;
+        return bids.stream().filter(Bid::isActive).collect(Collectors.toList());
     }
 
     public List<Bid> getBids(BidType bidType) {
-        List<Bid> bidsByType = new LinkedList<>();
-        bids.forEach(bidModel -> {
-            if (bidModel.getType().equals(bidType)) bidsByType.add(bidModel);
-        });
-        return bidsByType;
+        return bids.stream().filter(b -> b.getType().equals(bidType)).collect(Collectors.toList());
     }
 
     public Subdepartment getSubdepartment() {

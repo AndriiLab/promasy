@@ -347,10 +347,9 @@ public class MainFrame extends JFrame {
     }
 
     private void updateYearInVisibleComponent() {
-        if (tabPane != null && tabPane.getSelectedComponent().equals(financePanel)) {
+        if (tabPane != null)
             financePanel.refreshYear();
-            return;
-        }
+
         bidsListPanel.refreshYear();
     }
 

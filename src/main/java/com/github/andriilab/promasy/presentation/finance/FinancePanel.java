@@ -4,6 +4,7 @@ import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;
 import com.github.andriilab.promasy.data.queries.finance.GetFinancesQuery;
+import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
@@ -23,6 +24,7 @@ import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Panel displays data about current finances and its relation to departments.
@@ -73,7 +75,7 @@ public class FinancePanel extends JPanel {
         deleteOrderButton.setEnabled(false);
 
         financeTableModel = new FinanceTableModel();
-        financeTableModel.setListener(query -> listener.getLeftAmountEvent(query));
+        financeTableModel.setListener(query -> listener.getLeftAmountEvent(query)); //todo optimize query
 
         financeTable = new JTable(financeTableModel);
         financeTable.addMouseListener(new MouseAdapter() {
@@ -234,19 +236,14 @@ public class FinancePanel extends JPanel {
     }
 
     private static List<Bid> getBidsList(Finance financeModel) {
-        List<Bid> bids = new LinkedList<>();
-        financeModel.getFinanceDepartmentModels().forEach(model -> bids.addAll(model.getActiveBids()));
-        return bids;
+        return financeModel.getFinanceDepartmentModels().stream().flatMap(fd -> fd.getActiveBids().stream()).collect(Collectors.toList());
     }
 
     public void setFinanceTableData(List<Finance> db) {
         //removing all inactive items from list
-        List<Finance> activeList = new LinkedList<>();
-        for (Finance model : db) {
-            if (model.isActive()) {
-                activeList.add(model);
-            }
-        }
+        List<Finance> activeList = db.stream().filter(AbstractEntity::isActive).collect(Collectors.toList());
+        List<Long> financeIds = db.stream().map(AbstractEntity::getModelId).collect(Collectors.toList()); //todo obtain unassigned amount
+
         financeTableModel.setData(activeList);
         financeTable.setAutoCreateRowSorter(true);
         financeTableModel.fireTableDataChanged();
@@ -383,16 +380,14 @@ public class FinancePanel extends JPanel {
         } else if (reportType.startsWith(Labels.getProperty("selectedFinance"))) {
             return new FinanceReport(selectedFinanceModel.toString(), getBidsList(selectedFinanceModel));
         } else if (reportType.equals(Labels.getProperty("fund.commonFund"))) {
-            List<Bid> bidModels = new LinkedList<>();
-            financeTableModel.getData().forEach(financeModel -> {
-                if (financeModel.getFundType().equals(Fund.COMMON_FUND)) bidModels.addAll(getBidsList(financeModel));
-            });
+            List<Bid> bidModels = financeTableModel.getData().stream()
+                    .filter(f -> f.getFundType().equals(Fund.COMMON_FUND))
+                    .flatMap(f -> getBidsList(f).stream()).collect(Collectors.toList());
             return new FinanceReport(reportType, bidModels);
         } else {
-            List<Bid> bidModels = new LinkedList<>();
-            financeTableModel.getData().forEach(financeModel -> {
-                if (financeModel.getFundType().equals(Fund.SPECIAL_FUND)) bidModels.addAll(getBidsList(financeModel));
-            });
+            List<Bid> bidModels = financeTableModel.getData().stream()
+                    .filter(f -> f.getFundType().equals(Fund.SPECIAL_FUND))
+                    .flatMap(f -> getBidsList(f).stream()).collect(Collectors.toList());
             return new FinanceReport(reportType, bidModels);
         }
     }

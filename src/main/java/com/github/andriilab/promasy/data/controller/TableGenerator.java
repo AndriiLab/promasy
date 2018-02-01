@@ -183,6 +183,7 @@ public class TableGenerator {
             workbook.write(out);
             out.close();
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("exportedTo") + fileName, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
+            //todo show more detailed info and give ability to open folder with file
         } catch (IOException e) {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError") + fileName, Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             Logger.errorEvent(parent, e);

@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This panel view table of Bids and can Create, Modify, and Delete this entries in DB
@@ -517,8 +518,7 @@ public class BidsListPanel extends JPanel {
     }
 
     public void printBidList(Map<String, Object> parameters) {
-        List<BidsReportModel> list = new LinkedList<>();
-        getSelectedBids().forEach(bid -> list.add(new BidsReportModel(bid)));
+        List<BidsReportModel> list = getSelectedBids().stream().map(BidsReportModel::new).collect(Collectors.toList());
         new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
     }
 
