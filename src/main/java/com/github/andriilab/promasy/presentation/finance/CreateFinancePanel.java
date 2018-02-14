@@ -7,8 +7,8 @@ import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
@@ -175,11 +175,11 @@ class CreateFinancePanel extends JPanel {
     private boolean checkInput() {
         String orderNumTxt = orderNumberField.getText();
         if (orderNumTxt.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("financeNumber"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("financeNumber"));
             orderNumberField.requestFocusInWindow();
             return false;
         } else if (orderNumTxt.length() > 30) {
-            PJOptionPane.longField(parent, Labels.getProperty("financeNumber"), 30);
+            ErrorOptionPane.longField(parent, Labels.getProperty("financeNumber"), 30);
             orderNumberField.requestFocusInWindow();
             return false;
         }
@@ -188,7 +188,7 @@ class CreateFinancePanel extends JPanel {
         startDate = Date.valueOf(startDatePicker.getDate());
         endDate = Date.valueOf(endDatePicker.getDate());
         if (orderName.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("financeName"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("financeName"));
             orderNameField.requestFocusInWindow();
             return false;
         } else if (startDate.after(endDate)) {

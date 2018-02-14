@@ -2,16 +2,13 @@ package com.github.andriilab.promasy.presentation;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.HtmlViewerPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
 class InfoDialog extends JDialog {
 
@@ -27,9 +24,9 @@ class InfoDialog extends JDialog {
 
         JTabbedPane tabPane = new JTabbedPane();
         tabPane.addTab(Labels.getProperty("info"), createLabel());
-        tabPane.addTab(Labels.getProperty("authors"), new JScrollPane(createTextArea("/AUTHORS.txt")));
-        tabPane.addTab(Labels.getProperty("license"), new JScrollPane(createTextArea("/LICENSE.txt")));
-        tabPane.addTab(Labels.getProperty("libraries"), new JScrollPane(createTextArea("/PACKAGES.txt")));
+        tabPane.addTab(Labels.getProperty("authors"), new JScrollPane(new HtmlViewerPane("/AUTHORS.html")));
+        tabPane.addTab(Labels.getProperty("license"), new JScrollPane(new HtmlViewerPane("/LICENSE.html")));
+        tabPane.addTab(Labels.getProperty("libraries"), new JScrollPane(new HtmlViewerPane("/PACKAGES.html")));
 
         setLayout(new BorderLayout());
         add(tabPane, BorderLayout.CENTER);
@@ -47,18 +44,5 @@ class InfoDialog extends JDialog {
             Logger.errorEvent(parent, e);
             return new JLabel();
         }
-    }
-
-    private JTextArea createTextArea(String textFile) {
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
-        try {
-            InputStream in = getClass().getResourceAsStream(textFile);
-            BufferedReader input = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            textArea.read(input, textFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return textArea;
     }
 }

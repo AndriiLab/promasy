@@ -6,9 +6,11 @@ import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -35,6 +37,19 @@ public class Utils {
             }
         }
         return -1;
+    }
+
+    public static void copyToClipboard(String string) {
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+                new StringSelection(string), null);
+    }
+
+    public static void showInExplorer(String path) {
+        try {
+            Runtime.getRuntime().exec("explorer.exe /select, " + path);
+        } catch (IOException e) {
+            Logger.errorEvent(null, e);
+        }
     }
 
     public static long makeSalt() {
@@ -91,7 +106,7 @@ public class Utils {
     public static Integer parseInteger(JFrame parent, JTextField jTextField, String fieldName) {
         String targetIntegerText = jTextField.getText();
         if (targetIntegerText.isEmpty()) {
-            PJOptionPane.emptyField(parent, fieldName);
+            ErrorOptionPane.emptyField(parent, fieldName);
             jTextField.requestFocusInWindow();
             return null;
         }
@@ -100,7 +115,7 @@ public class Utils {
             targetIntegerText = formatFinanceString(targetIntegerText);
             integer = Integer.parseInt(targetIntegerText);
         } catch (NumberFormatException ex) {
-            PJOptionPane.wrongFormat(parent, fieldName, Labels.getProperty("wrongIntegerFormat"));
+            ErrorOptionPane.wrongFormat(parent, fieldName, Labels.getProperty("wrongIntegerFormat"));
             jTextField.requestFocusInWindow();
             return null;
         }
@@ -111,7 +126,7 @@ public class Utils {
         String targetBigDecimalText = jTextField.getText();
 
         if (targetBigDecimalText.isEmpty()) {
-            PJOptionPane.emptyField(parent, fieldName);
+            ErrorOptionPane.emptyField(parent, fieldName);
             jTextField.requestFocusInWindow();
             return null;
         }

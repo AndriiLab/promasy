@@ -13,7 +13,7 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 
 import javax.swing.*;
@@ -125,14 +125,14 @@ public class CpvAmountDialog extends JDialog {
         }
 
         if (resolutionDatePicker.getDate() == null) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("resolutionDate"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("resolutionDate"));
             return;
         }
 
         String resolutionDate = resolutionDatePicker.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         String resolutionNum = resolutionField.getText();
         if (resolutionNum.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("resolutionNum"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("resolutionNum"));
             return;
         }
 

@@ -46,4 +46,5 @@ public class Icons {
     public static final Icon ARROW_RIGHT = IconFontSwing.buildIcon(FontAwesome.ARROW_RIGHT, 15, Colors.BLUE);
     public static final Icon MANUAL = IconFontSwing.buildIcon(FontAwesome.BOOK, 18);
     public static final Icon UPDATE = IconFontSwing.buildIcon(FontAwesome.GITHUB, 18);
+    public static final Icon OPEN_FOLDER = IconFontSwing.buildIcon(FontAwesome.FOLDER_OPEN, 18);
 }

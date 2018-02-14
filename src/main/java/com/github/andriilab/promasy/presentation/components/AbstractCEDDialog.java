@@ -83,7 +83,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
                 parentComboBox.setSelectedModel(model);
                 setVisible(false);
             } else {
-                PJOptionPane.emptyModelSelected(parent, nameCED);
+                ErrorOptionPane.emptyModelSelected(parent, nameCED);
             }
 
         });
@@ -138,7 +138,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
             int choice = JOptionPane.NO_OPTION;
             //if not a new com.github.andriilab.promasy.domain.model was selected - show dialog to confirm edit
             if (!privateModel.equals(emptyModel)) {
-                choice = PJOptionPane.renameEntry(parent, oldName, newName);
+                choice = ErrorOptionPane.renameEntry(parent, oldName, newName);
             }
             //it edit confirmed - updating com.github.andriilab.promasy.domain.model
             if (choice == JOptionPane.YES_OPTION) {

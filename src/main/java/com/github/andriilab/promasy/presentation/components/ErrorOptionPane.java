@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 /**
  * Dialogs with various errors
  */
-public class PJOptionPane {
+public class ErrorOptionPane {
 
     public static void emptyField(JFrame parent, String fieldName) {
         String field = fieldName == null ? EmptyModel.STRING : " \"" + fieldName + "\"";

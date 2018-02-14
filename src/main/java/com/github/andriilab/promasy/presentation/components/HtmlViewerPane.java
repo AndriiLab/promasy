@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 
@@ -8,29 +8,25 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-class HTMLViewer extends JDialog {
-    HTMLViewer(MainFrame parent, String label, String url, boolean isModal) {
-        super(parent, label, isModal);
-        setSize(600, 500);
-        setLocationRelativeTo(parent);
-
-        JEditorPane jep = new JEditorPane();
-        jep.setEditable(false);
+public class HtmlViewerPane extends JEditorPane {
+    public HtmlViewerPane(String url) {
+        this.setContentType("text/html;charset=UTF-8");
+        this.setEditable(false);
         try {
-            jep.setPage(getClass().getResource(url));
+            this.setPage(getClass().getResource(url));
         } catch (IOException e) {
-            jep.setContentType("text/html");
-            jep.setText("<html>Could not load document</html>");
+            this.setContentType("text/html");
+            this.setText("<html>Could not load document</html>");
             Logger.warnEvent(e);
         }
 
-        jep.addHyperlinkListener(e -> {
+        this.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 String desc = e.getDescription();
                 if (desc == null) return;
                 if (desc.startsWith("#")) {
                     desc = desc.substring(1);
-                    jep.scrollToReference(desc);
+                    this.scrollToReference(desc);
                 } else if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(e.getURL().toURI());
@@ -40,7 +36,5 @@ class HTMLViewer extends JDialog {
                 }
             }
         });
-
-        add(new JScrollPane(jep));
     }
 }

@@ -59,6 +59,6 @@ public class CEDButtons {
     }
 
     public boolean deleteEntry(JFrame parent, String entryName) {
-        return PJOptionPane.deleteEntry(parent, propertyName, entryName);
+        return ErrorOptionPane.deleteEntry(parent, propertyName, entryName);
     }
 }

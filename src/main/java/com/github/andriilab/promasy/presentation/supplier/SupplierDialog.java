@@ -7,8 +7,8 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.AbstractCEDDialog;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -67,13 +67,13 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
 
     private boolean isSuplDataValid() {
         if (newName.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("name"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("name"));
             comboBox.requestFocusInWindow();
             return false;
         }
         newSuplTel = telField.getText();
         if (newSuplTel.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("phone"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("phone"));
             telField.requestFocusInWindow();
             return false;
         } else if (newSuplTel.length() > 20) {
@@ -93,7 +93,7 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
             int choice = JOptionPane.NO_OPTION;
             //if not a new com.github.andriilab.promasy.domain.model was selected - show dialog to confirm edit
             if (!privateModel.equals(emptyModel)) {
-                choice = PJOptionPane.renameEntry(parent, oldName, newName);
+                choice = ErrorOptionPane.renameEntry(parent, oldName, newName);
             }
             //it edit confirmed - updating com.github.andriilab.promasy.domain.model
             if (choice == JOptionPane.YES_OPTION) {

@@ -43,7 +43,7 @@ import com.github.andriilab.promasy.presentation.amunits.AmUnitsDialogListener;
 import com.github.andriilab.promasy.presentation.bids.BidsListPanelListener;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeDialogListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeFromLoginListener;
@@ -61,7 +61,6 @@ import org.hibernate.JDBCException;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -158,7 +157,7 @@ public class Controller {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = Utils.makePass(password, retrieveUserSalt(user));
                 if (pass == null) {
-                    PJOptionPane.criticalError(mainFrame);
+                    ErrorOptionPane.criticalError(mainFrame);
                     close();
                 }
                 if (validateLogin(user, pass)) {
@@ -505,8 +504,7 @@ public class Controller {
                 Logger.warnEvent(e);
             }
         }
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-                new StringSelection(Labels.getProperty("updateUrl")), null);
+        Utils.copyToClipboard(Labels.getProperty("updateUrl"));
         JOptionPane optPane = new JOptionPane(Labels.getProperty("urlCopiedToClipboard"),
                 JOptionPane.INFORMATION_MESSAGE,
                 JOptionPane.DEFAULT_OPTION,

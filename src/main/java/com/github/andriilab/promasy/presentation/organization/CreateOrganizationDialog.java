@@ -7,8 +7,8 @@ import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
 import com.github.andriilab.promasy.domain.organization.enums.StreetTypes;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,19 +128,19 @@ class CreateOrganizationDialog extends JDialog {
     private boolean checkFields() {
         String institute = instituteNameField.getText();
         if (institute.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("name"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("name"));
             return false;
         }
 
         String email = mailField.getText();
         if (email.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("email"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("email"));
             return false;
         }
 
         String phone = phoneField.getText();
         if (phone.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("phone"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("phone"));
             return false;
         }
 
@@ -148,7 +148,7 @@ class CreateOrganizationDialog extends JDialog {
 
         String edrpouStr = edrpouField.getText();
         if (edrpouStr.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("edrpou"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("edrpou"));
             return false;
         }
 
@@ -156,36 +156,36 @@ class CreateOrganizationDialog extends JDialog {
         try {
             edrpou = Integer.parseInt(edrpouStr);
         } catch (NumberFormatException ex) {
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("edrpou"), Labels.getProperty("wrongIntegerFormat"));
+            ErrorOptionPane.wrongFormat(parent, Labels.getProperty("edrpou"), Labels.getProperty("wrongIntegerFormat"));
             return false;
         }
 
         String country = countryField.getText();
         if (country.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("country"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("country"));
             return false;
         }
         String region = regionField.getText();
         if (region.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("region"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("region"));
             return false;
         }
 
         String city = cityField.getText();
         if (city.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("cityTypes.city"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("cityTypes.city"));
             return false;
         }
 
         String street = streetField.getText();
         if (street.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("streetTypes.street"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("streetTypes.street"));
             return false;
         }
 
         String buildNumStr = buildingNumberField.getText();
         if (buildNumStr.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("buildingNum"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("buildingNum"));
             return false;
         }
 
@@ -193,7 +193,7 @@ class CreateOrganizationDialog extends JDialog {
 
         String postalCode = postalCodeField.getText();
         if (postalCode.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("postalCode"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("postalCode"));
             return false;
         }
         CityTypes cityType = (CityTypes) cityTypeBox.getSelectedItem();

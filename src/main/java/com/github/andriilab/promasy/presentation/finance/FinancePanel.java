@@ -15,7 +15,7 @@ import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.CEDButtons;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -205,7 +205,7 @@ public class FinancePanel extends JPanel {
 
         createDepOrderButton.addActionListener(e -> {
             if (selectedFinanceModel.equals(EmptyModel.FINANCE)) {
-                PJOptionPane.emptyField(parent, Labels.getProperty("finance"));
+                ErrorOptionPane.emptyField(parent, Labels.getProperty("finance"));
             } else {
                 createDepartmentFinancePanel.clear();
                 createDepartmentFinancePanel.setVisible(selectedFinanceModel, true);

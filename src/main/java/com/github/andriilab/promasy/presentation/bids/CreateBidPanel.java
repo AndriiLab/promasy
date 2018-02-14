@@ -21,8 +21,8 @@ import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
@@ -393,20 +393,20 @@ public class CreateBidPanel extends JPanel {
     private boolean checkFields() {
         Department selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
         if (selectedDepartmentModel.equals(EmptyModel.DEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         Subdepartment selectedSubdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
         if (selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
         FinanceDepartment selectedFinanceDepartmentModel = (FinanceDepartment) financeDepartmentBox.getSelectedItem();
         if (selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("finance"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("finance"));
             financeDepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -420,7 +420,7 @@ public class CreateBidPanel extends JPanel {
         String selectedCatNum = catNumberField.getText().isEmpty() ? null : catNumberField.getText();
         String cpvCode = cpvField.getText();
         if (cpvCode.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("cpv"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("cpv"));
             searchCPVButton.requestFocusInWindow();
             return false;
         }
@@ -430,14 +430,14 @@ public class CreateBidPanel extends JPanel {
         }
 
         if (selectedCPV.equals(EmptyModel.CPV)) {
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
+            ErrorOptionPane.wrongFormat(parent, Labels.getProperty("cpv"), Labels.getProperty("wrongFormatCPV"));
             searchCPVButton.requestFocusInWindow();
             return false;
         }
 
         String selectedDescription = descriptionPane.getText();
         if (selectedDescription.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("description"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("description"));
             descriptionPane.requestFocusInWindow();
             return false;
         }
@@ -447,7 +447,7 @@ public class CreateBidPanel extends JPanel {
         }
         ReasonForSupplierChoice selectedReasonModel = (ReasonForSupplierChoice) reasonForSupplierChoiceBox.getSelectedItem();
         if (selectedSupplierModel != null && !selectedSupplierModel.equals(EmptyModel.SUPPLIER) && selectedReasonModel.equals(EmptyModel.REASON_FOR_SUPPLIER_CHOICE)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("reasonForSupplierChoice"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("reasonForSupplierChoice"));
             supplierBox.requestFocusInWindow();
             return false;
         } else if (selectedSupplierModel == null) {
@@ -456,13 +456,13 @@ public class CreateBidPanel extends JPanel {
 
         AmountUnit selectedAmountUnitsModel = (AmountUnit) amUnitsBox.getSelectedItem();
         if (selectedAmountUnitsModel.equals(EmptyModel.AMOUNT_UNITS)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("packing"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("packing"));
             amUnitsBox.requestFocusInWindow();
             return false;
         }
         String amountString = amountField.getText();
         if (amountString.isEmpty()) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("amount"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("amount"));
             amountField.requestFocusInWindow();
             return false;
         }
@@ -472,14 +472,14 @@ public class CreateBidPanel extends JPanel {
             amount = Integer.parseInt(amountString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
+            ErrorOptionPane.wrongFormat(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
             amountField.requestFocusInWindow();
             return false;
         }
 
         String onePriceString = oneUnitPriceField.getText();
         if (onePriceString.equals(EmptyModel.STRING)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("oneUnitPrice"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("oneUnitPrice"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
         }
@@ -489,7 +489,7 @@ public class CreateBidPanel extends JPanel {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(ex);
-            PJOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongIntegerFormat"));
+            ErrorOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongIntegerFormat"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
         }
@@ -510,12 +510,12 @@ public class CreateBidPanel extends JPanel {
         }
         BigDecimal totalPrice = calculateTotalPrice();
         if (totalPrice == null) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("totalPrice2"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("totalPrice2"));
             return false;
         }
 
         if (financeLeft.compareTo(totalPrice) < 0) {
-            PJOptionPane.insufficientFunds(parent, financeLeft, currentBidType);
+            ErrorOptionPane.insufficientFunds(parent, financeLeft, currentBidType);
             amountField.requestFocusInWindow();
             return false;
         }

@@ -2,6 +2,7 @@ package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.domain.EmptyModel;
+import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -12,7 +13,6 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -157,7 +157,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
     }
 
     private void copyToClipboard() {
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(result.toPlainString()), null);
+        Utils.copyToClipboard(result.toPlainString());
     }
 
     private void printOperator(String btnText) {

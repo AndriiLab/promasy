@@ -1,5 +1,6 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'org.kordamp.markdown.convert' version '1.1.0'
 }
 
 import java.text.SimpleDateFormat
@@ -28,9 +29,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-
-    // https://mvnrepository.com/artifact/org.codehaus.plexus/plexus-utils
-    compile group: 'org.codehaus.plexus', name: 'plexus-utils', version: '3.1.0'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-swing
     compile group: 'com.github.jiconfont', name: 'jiconfont-swing', version: '1.0.1'
@@ -126,18 +124,28 @@ task setConsoleCyrillicSupport(dependsOn: processResources) {
 }
 
 task writePackages(dependsOn: processResources) {
-    File pkgsFile = new File("src/main/resources/PACKAGES.txt")
-    pkgsFile.write("Packages used in ProMaSy " + project.version + " build:\n\n")
-    configurations.compile.each {
+    File pkgsFile = new File("src/markdown/PACKAGES.md")
+    pkgsFile.write("#Packages used in ProMaSy " + project.version + " build\n\n")
+    pkgsFile.append("Package name|Version\n")
+    pkgsFile.append("---|---\n")
+    configurations.compile.sort().each {
         String fileName = it.name
         String pkgName = fileName.find("^.+?(?=-\\d)")
         String pkgVersion = fileName.substring(pkgName.length() + 1, fileName.length() - 4)
-        pkgsFile.append("Package \'" + pkgName + "\' version: " + pkgVersion + "\n")
+        pkgsFile.append(pkgName + "|" + pkgVersion + "\n")
     }
+}
+
+task convertMarkdown(dependsOn: processResources){
+    markdownToHtml.tables = true
+    markdownToHtml.sourceDir = project.file("src/markdown")
+    markdownToHtml.outputDir  = project.file("src/main/resources")
+    markdownToHtml.execute()
 }
 
 classes {
     dependsOn writePackages
+    dependsOn convertMarkdown
     dependsOn createVersionProperties
     dependsOn setConsoleCyrillicSupport
 }

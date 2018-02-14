@@ -12,8 +12,8 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -188,32 +188,32 @@ public class CreateEmployeeDialog extends JDialog {
     private boolean isValidFields() {
         String lastName = lastNameField.getText();
         if (lastName.length() < 2) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("lastName"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("lastName"));
             lastNameField.requestFocusInWindow();
             return false;
         }
         String firstName = nameField.getText();
         if (firstName.length() < 2) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("firstName"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("firstName"));
             nameField.requestFocusInWindow();
             return false;
         }
         String middleName = middleNameField.getText();
         if (middleName.length() < 2) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("middleName"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("middleName"));
             middleNameField.requestFocusInWindow();
             return false;
         }
         //TODO email validator
         String email = emailField.getText();
         if (email.length() < 2) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("email"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("email"));
             emailField.requestFocusInWindow();
             return false;
         }
         String phoneMain = phoneMainField.getText();
         if (phoneMain.length() < 2) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("phoneMain"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("phoneMain"));
             phoneMainField.requestFocusInWindow();
             return false;
         }
@@ -221,26 +221,26 @@ public class CreateEmployeeDialog extends JDialog {
         String login = loginField.getText();
         if (login.length() == 0) {
             loginField.setDisabledTextColor(Color.RED);
-            PJOptionPane.emptyField(parent, Labels.getProperty("userName"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("userName"));
             phoneReserveField.requestFocusInWindow();
             return false;
         }
         Institute instituteModel = (Institute) instituteBox.getSelectedItem();
         if (instituteModel.equals(EmptyModel.INSTITUTE)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("institute"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("institute"));
             instituteBox.requestFocusInWindow();
             return false;
         }
         Department departmentModel = (Department) departmentBox.getSelectedItem();
         if (departmentModel.equals(EmptyModel.DEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
         departmentModel.setInstitute(instituteModel);
         Subdepartment subdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
         if (subdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
@@ -259,7 +259,7 @@ public class CreateEmployeeDialog extends JDialog {
             long salt = Utils.makeSalt();
             String pass = Utils.makePass(password, salt);
             if (pass == null) {
-                PJOptionPane.criticalError(parent);
+                ErrorOptionPane.criticalError(parent);
                 if (loginListener != null) {
                     loginListener.cancelEvent();
                 }

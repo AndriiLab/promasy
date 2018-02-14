@@ -33,6 +33,7 @@ import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.CalculatorDialog;
+import com.github.andriilab.promasy.presentation.components.FileSavedDialog;
 import com.github.andriilab.promasy.presentation.conset.ConSetDialog;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
 import com.github.andriilab.promasy.presentation.cpv.CpvDialog;
@@ -74,31 +75,32 @@ import java.util.Map;
 public class MainFrame extends JFrame {
 
     private LoginPanel loginPanel;
-    private final ButtonsToolbar buttonsToolbar;
-    private final ControlsToolbar controlsToolbar;
+    private ButtonsToolbar buttonsToolbar;
+    private ControlsToolbar controlsToolbar;
     private MenuBar menuBar;
-    private final ConSetDialog conSettDialog;
-    private final OrganizationDialog editOrgDialog;
-    private final EditEmployeeDialog editEmpDialog;
-    private final CreateEmployeeDialog createEmployeeDialog;
-    private final InfoDialog infoDialog;
-    private final CpvDialog cpvDialog;
-    private final StatusPanel statusPanel;
-    private final AmUnitsDialog amUnitsDialog;
-    private final ProducerDialog producerDialog;
-    private final SupplierDialog supplierDialog;
-    private final ReasonsDialog reasonsDialog;
-    private final FinancePanel financePanel;
-    private final BidsListPanel bidsListPanel;
-    private final CpvAmountDialog cpvAmountDialog;
-    private final LoggerDialog loggerDialog;
-    private final ReportParametersDialog reportParametersDialog;
+    private ConSetDialog conSettDialog;
+    private OrganizationDialog editOrgDialog;
+    private EditEmployeeDialog editEmpDialog;
+    private CreateEmployeeDialog createEmployeeDialog;
+    private InfoDialog infoDialog;
+    private CpvDialog cpvDialog;
+    private StatusPanel statusPanel;
+    private AmUnitsDialog amUnitsDialog;
+    private ProducerDialog producerDialog;
+    private SupplierDialog supplierDialog;
+    private ReasonsDialog reasonsDialog;
+    private FinancePanel financePanel;
+    private BidsListPanel bidsListPanel;
+    private CpvAmountDialog cpvAmountDialog;
+    private LoggerDialog loggerDialog;
+    private ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
-    private final CalculatorDialog calculatorDialog;
+    private CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
-    private final DrawSplashScreen splashScreen;
-    private final TableGenerator tg;
-    private final HTMLViewer manualViewer;
+    private DrawSplashScreen splashScreen;
+    private TableGenerator tg;
+    private HtmlViewerDialog manualViewer;
+    private FileSavedDialog fileSavedDialog;
 
     public MainFrame() {
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -134,7 +136,8 @@ public class MainFrame extends JFrame {
         createEmployeeDialog = new CreateEmployeeDialog(this);
         reportParametersDialog = new ReportParametersDialog(this);
         tg = new TableGenerator(this);
-        manualViewer = new HTMLViewer(this, Labels.getProperty("manual"), "/MANUAL.html", false);
+        manualViewer = new HtmlViewerDialog(this, Labels.getProperty("manual"), "/MANUAL.html", false);
+        fileSavedDialog = new FileSavedDialog(this, true);
 
         setLayout(new BorderLayout());
     }
@@ -475,6 +478,10 @@ public class MainFrame extends JFrame {
     private void showReportParametersDialog() {
         if (bidsListPanel.isReadyForPrint())
             reportParametersDialog.setVisible(true);
+    }
+
+    public void showFileSavedDialog(String file) {
+        fileSavedDialog.setVisible(file);
     }
 
     public void bidListPrint(Map<String, Object> parameters) {

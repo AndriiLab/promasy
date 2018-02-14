@@ -142,12 +142,16 @@ public class TableGenerator {
                 groupSize = 0;
                 row = spreadsheet.createRow(rowNum);
                 for (int col = 0; col < 5; col++) {
-                    if (col == 0) {
-                        createCell(row, col, subHeaderStyle, bid.getKEKV());
-                    } else if (col == 2) {
-                        createCell(row, col, subHeaderStyle, Labels.getProperty("uah"));
-                    } else {
-                        createCell(row, col, subHeaderStyle, EmptyModel.STRING);
+                    switch (col) {
+                        case 0:
+                            createCell(row, col, subHeaderStyle, bid.getKEKV());
+                            break;
+                        case 2:
+                            createCell(row, col, subHeaderStyle, Labels.getProperty("uah"));
+                            break;
+                        default:
+                            createCell(row, col, subHeaderStyle, EmptyModel.STRING);
+                            break;
                     }
                 }
             }
@@ -182,8 +186,7 @@ public class TableGenerator {
             FileOutputStream out = new FileOutputStream(new File(fileName));
             workbook.write(out);
             out.close();
-            JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("exportedTo") + fileName, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
-            //todo show more detailed info and give ability to open folder with file
+            parent.showFileSavedDialog(fileName);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError") + fileName, Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             Logger.errorEvent(parent, e);

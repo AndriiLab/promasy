@@ -11,8 +11,8 @@ import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.components.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
-import com.github.andriilab.promasy.presentation.components.PJOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -135,14 +135,14 @@ public class CreateDepartmentFinancePanel extends JPanel {
     private boolean checkInput() {
         Department selectedDepartment = (Department) departmentBox.getSelectedItem();
         if (selectedDepartment.equals(EmptyModel.DEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("department"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("department"));
             departmentBox.requestFocusInWindow();
             return false;
         }
 
         selectedSubdepartment = (Subdepartment) subdepartmentBox.getSelectedItem();
         if (selectedSubdepartment.equals(EmptyModel.SUBDEPARTMENT)) {
-            PJOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
+            ErrorOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
             subdepartmentBox.requestFocusInWindow();
             return false;
         }
