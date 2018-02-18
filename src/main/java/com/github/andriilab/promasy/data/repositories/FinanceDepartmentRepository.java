@@ -75,7 +75,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
-        return assignedAmount;
+        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
     }
 
     public BigDecimal retrieveLeftAmount(GetFinanceDepartmentLeftAmountQuery query) {

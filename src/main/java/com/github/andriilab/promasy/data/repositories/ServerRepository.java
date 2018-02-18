@@ -4,6 +4,7 @@ import com.github.andriilab.promasy.data.storage.DBConnector;
 
 import javax.persistence.EntityManager;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 /**
  * Various queries to the server
@@ -16,6 +17,6 @@ public class ServerRepository {
         Timestamp serverTime = (Timestamp) em.createNativeQuery("SELECT current_timestamp").getSingleResult();
         em.getTransaction().commit();
 
-        return serverTime;
+        return serverTime != null ? serverTime : Timestamp.from(Instant.now());
     }
 }

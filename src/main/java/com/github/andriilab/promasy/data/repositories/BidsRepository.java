@@ -124,6 +124,6 @@ public class BidsRepository extends Repository<Bid> {
         BigDecimal totalAmount = (BigDecimal) query.getSingleResult();
         entityManager.getTransaction().commit();
 
-        return totalAmount;
+        return totalAmount != null ? totalAmount : BigDecimal.ZERO;
     }
 }

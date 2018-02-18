@@ -80,7 +80,7 @@ public class FinanceRepository extends Repository<Finance> {
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
-        return assignedAmount;
+        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
     }
 
     public BigDecimal retrieveUnassignedAmount(GetFinanceUnassignedAmountQuery query) {
@@ -99,7 +99,7 @@ public class FinanceRepository extends Repository<Finance> {
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
-        return assignedAmount;
+        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
     }
 
     public BigDecimal retrieveLeftAmount(GetFinanceLeftAmountQuery query) {
