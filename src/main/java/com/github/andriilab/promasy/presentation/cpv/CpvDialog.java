@@ -20,7 +20,7 @@ public class CpvDialog extends JDialog {
     private final JButton selectButton;
     private final CpvTableModel cpvTableModel;
     private final JTable table;
-    private CpvSearchListener cpvListener;
+    private CpvSearchListener listener;
     private Cpv selectedCpvModel;
     private final MainFrame parent;
 
@@ -32,6 +32,7 @@ public class CpvDialog extends JDialog {
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
+        listener = new EmptyCpvSearchListener();
         selectedCpvModel = EmptyModel.CPV;
         cpvTableModel = new CpvTableModel();
         table = new JTable(cpvTableModel);
@@ -163,19 +164,16 @@ public class CpvDialog extends JDialog {
         cpvTableModel.setData(db);
     }
 
-    public void setCpvListener(CpvSearchListener cpvListener) {
-        this.cpvListener = cpvListener;
+    public void setListener(CpvSearchListener listener) {
+        this.listener = listener;
 
     }
 
     private void makeCpvQuery(String cpvRequest, int depth) {
-
         CpvRequestQuery ev = new CpvRequestQuery(cpvRequest, depth);
 
-        if (cpvListener != null) {
-            cpvListener.cpvSelectionEventOccurred(ev);
-            cpvTableModel.fireTableDataChanged();
-        }
+        listener.cpvSelectionEventOccurred(ev);
+        cpvTableModel.fireTableDataChanged();
     }
 
     public void showWithCode(String code) {

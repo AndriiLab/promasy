@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class ButtonsToolbar extends JToolBar {
 
-    private ButtonsToolbarListener buttonsToolbarListener;
+    private ButtonsToolbarListener buttonsToolbarListener = new EmptyButtonsToolbarListener();
 
     public ButtonsToolbar() {
         setFloatable(false);
@@ -43,35 +43,15 @@ public class ButtonsToolbar extends JToolBar {
         add(calcButton);
         addSeparator();
 
-        printBtn.addActionListener(e -> {
-            if (buttonsToolbarListener != null) {
-                buttonsToolbarListener.printEventOccurred();
-            }
-        });
+        printBtn.addActionListener(e -> buttonsToolbarListener.printEventOccurred());
 
-        exportToTableFileButton.addActionListener(e -> {
-            if (buttonsToolbarListener != null) {
-                buttonsToolbarListener.exportToTableEventOccurred();
-            }
-        });
+        exportToTableFileButton.addActionListener(e -> buttonsToolbarListener.exportToTableEventOccurred());
 
-        refreshButton.addActionListener(e -> {
-            if (buttonsToolbarListener != null) {
-                buttonsToolbarListener.refreshTable();
-            }
-        });
+        refreshButton.addActionListener(e -> buttonsToolbarListener.refreshTable());
 
-        cpvBtn.addActionListener(e -> {
-            if (buttonsToolbarListener != null) {
-                buttonsToolbarListener.showCpvSearchDialog();
-            }
-        });
+        cpvBtn.addActionListener(e -> buttonsToolbarListener.showCpvSearchDialog());
 
-        calcButton.addActionListener(e -> {
-            if (buttonsToolbarListener != null) {
-                buttonsToolbarListener.showCalculator();
-            }
-        });
+        calcButton.addActionListener(e -> buttonsToolbarListener.showCalculator());
     }
 
     public void setButtonsToolbarListener(ButtonsToolbarListener listener) {

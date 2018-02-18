@@ -23,6 +23,7 @@ public class ConSetDialog extends JDialog {
     public ConSetDialog(MainFrame parent) {
         super(parent, Labels.getProperty("connectionWithDBSettings"), true);
 
+        listener = new EmptyConSetListener();
         okButton = new JButton(Labels.getProperty("okBtn"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(5432, 0, 9999, 1);
@@ -47,14 +48,12 @@ public class ConSetDialog extends JDialog {
             ConnectionSettings model = new ConnectionSettings(server, database, schema, portNumber, user,
                     String.valueOf(password));
 
-            if (listener != null) {
                 listener.preferencesSetEventOccurred(model);
-            }
         });
 
         cancelButton.addActionListener(e -> {
             setVisible(false);
-            if (!parent.isVisible() && listener != null) {
+            if (!parent.isVisible()) {
                 listener.forceCloseEventOccurred();
             }
         });

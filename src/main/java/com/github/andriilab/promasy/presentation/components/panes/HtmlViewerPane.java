@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.panes;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 
@@ -17,7 +17,7 @@ public class HtmlViewerPane extends JEditorPane {
         } catch (IOException e) {
             this.setContentType("text/html");
             this.setText("<html>Could not load document</html>");
-            Logger.warnEvent(e);
+            Logger.warnEvent(this.getClass(), e);
         }
 
         this.addHyperlinkListener(e -> {
@@ -31,7 +31,7 @@ public class HtmlViewerPane extends JEditorPane {
                     try {
                         Desktop.getDesktop().browse(e.getURL().toURI());
                     } catch (IOException | URISyntaxException ex) {
-                        Logger.warnEvent(ex);
+                        Logger.warnEvent(this.getClass(), ex);
                     }
                 }
             }

@@ -7,8 +7,8 @@ import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
 import com.github.andriilab.promasy.domain.organization.enums.StreetTypes;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +46,7 @@ class CreateOrganizationDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
+        listener = new EmptyCreateOrganizationDialogListener();
         instituteNameField = new JTextField(37);
         mailField = new JTextField(10);
         phoneField = new JTextField(10);
@@ -234,7 +235,7 @@ class CreateOrganizationDialog extends JDialog {
     }
 
     private void onCreateAction() {
-        if (listener != null && checkFields()) {
+        if (checkFields()) {
             listener.persistModelEventOccured(model);
             clear();
             setVisible(false);

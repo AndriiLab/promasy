@@ -11,17 +11,18 @@ import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ public class FinancePanel extends JPanel {
 
     public FinancePanel(MainFrame parent) {
         this.parent = parent;
+        listener = new EmptyFinancePanelListener();
         createFinancePanel = new CreateFinancePanel(parent);
         createFinancePanel.setVisible(false);
 
@@ -156,7 +158,7 @@ public class FinancePanel extends JPanel {
         });
 
         deleteOrderButton.addActionListener(e -> {
-            if (!selectedFinanceModel.equals(EmptyModel.FINANCE) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName()) && listener != null) {
+            if (!selectedFinanceModel.equals(EmptyModel.FINANCE) && cedFinance.deleteEntry(parent, selectedFinanceModel.getFinanceName())) {
                 selectedFinanceModel.setDeleted();
                 listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedFinanceModel));
                 setDepartmentFinanceTableData(emptyDepartmentFinancesList);
@@ -164,19 +166,13 @@ public class FinancePanel extends JPanel {
             }
         });
 
-        createFinancePanel.setFinanceDialogListener(model -> {
-            if (listener != null) {
-                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
-            }
-        });
+        createFinancePanel.setFinanceDialogListener(model -> listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model)));
 
         createDepartmentFinancePanel.setListener(new CreateDepartmentFinancePanelListener() {
             @Override
             public void persistModelEventOccurred(FinanceDepartment model) {
                 int selectedFinanceRow = Utils.getRowWithObject(financeTable, 0, selectedFinanceModel);
-                if (listener != null) {
-                    listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
-                }
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
                 financeTable.getSelectionModel().setSelectionInterval(selectedFinanceRow, selectedFinanceRow);
                 try {
                     selectedFinanceModel = (Finance) financeTable.getValueAt(selectedFinanceRow, 0);
@@ -190,9 +186,7 @@ public class FinancePanel extends JPanel {
 
             @Override
             public void loadDepartments() {
-                if (listener != null) {
-                    listener.loadDepartments();
-                }
+                listener.loadDepartments();
             }
 
             @Override
@@ -223,7 +217,7 @@ public class FinancePanel extends JPanel {
         });
 
         deleteDepOrderButton.addActionListener(e -> {
-            if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName()) && listener != null) {
+            if (!selectedDepFinModel.equals(EmptyModel.FINANCE_DEPARTMENT) && cedDepartmentFinances.deleteEntry(parent, selectedDepFinModel.getFinances().getFinanceName() + "' " + Labels.getProperty("for_department") + " '" + selectedDepFinModel.getSubdepartment().getDepartment().getDepName())) {
                 selectedDepFinModel.setDeleted();
                 selectedFinanceModel.addFinanceDepartmentModel(selectedDepFinModel);
                 listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedDepFinModel));
@@ -242,7 +236,7 @@ public class FinancePanel extends JPanel {
     public void setFinanceTableData(List<Finance> db) {
         //removing all inactive items from list
         List<Finance> activeList = db.stream().filter(AbstractEntity::isActive).collect(Collectors.toList());
-        List<Long> financeIds = db.stream().map(AbstractEntity::getModelId).collect(Collectors.toList()); //todo obtain unassigned amount
+//        List<Long> financeIds = db.stream().map(AbstractEntity::getModelId).collect(Collectors.toList()); //todo obtain unassigned amount
 
         financeTableModel.setData(activeList);
         financeTable.setAutoCreateRowSorter(true);
@@ -289,9 +283,7 @@ public class FinancePanel extends JPanel {
 
     public void setUseUserDepartment() {
         useUserDepartment = true;
-        if (listener != null) {
-            listener.getFinancesByDepartment(new GetFinancesQuery(parent.getReportYear(), LoginData.getInstance().getSubdepartment().getDepartment()));
-        }
+        listener.getFinancesByDepartment(new GetFinancesQuery(parent.getReportYear(), LoginData.getInstance().getSubdepartment().getDepartment()));
     }
 
     public CreateDepartmentFinancePanel getCreateDepartmentFinancePanel() {
@@ -352,7 +344,7 @@ public class FinancePanel extends JPanel {
 
     @Override
     public void setVisible(boolean visible) {
-        if (visible && listener != null) {
+        if (visible) {
             listener.getAllData();
         }
         super.setVisible(visible);
@@ -376,7 +368,7 @@ public class FinancePanel extends JPanel {
                 options,
                 options[0]);
         if (reportType == null) {
-            return null;
+            return new FinanceReport(EmptyModel.STRING, Collections.emptyList());
         } else if (reportType.startsWith(Labels.getProperty("selectedFinance"))) {
             return new FinanceReport(selectedFinanceModel.toString(), getBidsList(selectedFinanceModel));
         } else if (reportType.equals(Labels.getProperty("fund.commonFund"))) {

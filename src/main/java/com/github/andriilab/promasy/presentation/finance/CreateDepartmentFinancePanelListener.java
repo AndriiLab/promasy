@@ -10,8 +10,6 @@ import java.math.BigDecimal;
  */
 interface CreateDepartmentFinancePanelListener {
     void persistModelEventOccurred(FinanceDepartment model);
-
     void loadDepartments();
-
     BigDecimal getUnassignedAmountEvent(GetFinanceUnassignedAmountQuery getFinanceUnassignedAmountQuery);
 }

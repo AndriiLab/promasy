@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
@@ -22,7 +22,7 @@ public class DrawSplashScreen extends Thread {
         g.drawString(Labels.withColon("build") + Labels.getBuildDate(), 100, 340);
     }
 
-    static void drawFullInfo(Graphics2D g) {
+    public static void drawFullInfo(Graphics2D g) {
         g.setComposite(AlphaComposite.Clear);
         g.setPaintMode();
         g.setColor(Color.WHITE);

@@ -2,8 +2,8 @@ package com.github.andriilab.promasy.data.storage;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
@@ -33,15 +33,15 @@ public enum DBConnector {
         ConnectionSettings model = null;
         try {
             model = Utils.loadConnectionSettings();
-            Logger.infoEvent(null, "Connection Settings loaded from settings file");
+            Logger.infoEvent(this.getClass(), null, "Connection Settings loaded from settings file");
         } catch (FileNotFoundException e) {
-            Logger.infoEvent(null, "Connection Settings used from defaults");
+            Logger.infoEvent(this.getClass(), null, "Connection Settings used from defaults");
             model = new ConnectionSettings(Labels.getProperty("connectionSettings.server"),
                     Labels.getProperty("connectionSettings.database"), Labels.getProperty("connectionSettings.schema"),
                     Labels.getInt("connectionSettings.port"), Labels.getProperty("connectionSettings.user"),
                     Labels.getProperty("connectionSettings.password"));
         } catch (IOException | ClassNotFoundException e) {
-            Logger.errorEvent(mainFrame, e);
+            Logger.errorEvent(this.getClass(), mainFrame, e);
         }
 
         if (tableUpdateMode) {
@@ -83,7 +83,7 @@ public enum DBConnector {
             entityManagerFactory.close();
             entityManagerFactory = null;
             if (mainFrame != null && stat != null) {
-                Logger.infoEvent(mainFrame, stat.toString().replace(",", ",\n\t\t\t\t"));
+                Logger.infoEvent(this.getClass(), mainFrame, stat.toString().replace(",", ",\n\t\t\t\t"));
             }
         }
     }

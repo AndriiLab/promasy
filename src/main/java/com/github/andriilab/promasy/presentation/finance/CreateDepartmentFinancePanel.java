@@ -7,12 +7,12 @@ import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
+import com.github.andriilab.promasy.presentation.validator.Validator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,6 +51,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
 
         this.parent = parent;
 
+        listener = new EmptyCreateDepartmentFinancePanelListener();
         currentFinanceDepartmentModel = new FinanceDepartment();
         isCreateMode = true;
 
@@ -88,7 +89,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
         layoutControls();
 
         okButton.addActionListener(e -> {
-            if (checkInput() && listener != null) {
+            if (checkInput()) {
                 currentFinanceDepartmentModel.setFinances(currentFinanceModel);
                 currentFinanceDepartmentModel.setSubdepartment(selectedSubdepartment);
                 currentFinanceDepartmentModel.setTotalMaterialsAmount(depMaterialAmount);
@@ -134,16 +135,12 @@ public class CreateDepartmentFinancePanel extends JPanel {
 
     private boolean checkInput() {
         Department selectedDepartment = (Department) departmentBox.getSelectedItem();
-        if (selectedDepartment.equals(EmptyModel.DEPARTMENT)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("department"));
-            departmentBox.requestFocusInWindow();
+        if (Validator.isEmptyComboBox(parent, departmentBox, Labels.getProperty("department"))) {
             return false;
         }
 
         selectedSubdepartment = (Subdepartment) subdepartmentBox.getSelectedItem();
-        if (selectedSubdepartment.equals(EmptyModel.SUBDEPARTMENT)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
-            subdepartmentBox.requestFocusInWindow();
+        if (Validator.isEmptyComboBox(parent, subdepartmentBox, Labels.getProperty("subdepartment"))) {
             return false;
         }
 
@@ -167,7 +164,6 @@ public class CreateDepartmentFinancePanel extends JPanel {
     public void setListener(CreateDepartmentFinancePanelListener listener) {
         this.listener = listener;
     }
-
 
     public void setDepartmentBoxData(java.util.List<Department> db) {
         departmentBox.setBoxData(db, EmptyModel.DEPARTMENT, true);

@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -9,17 +9,11 @@ import javax.swing.*;
 /**
  * Generates menu bar
  */
-class MenuBar {
+public class MainFrameMenuBar extends JMenuBar {
 
-    private final Role role;
     private MenuBarListener listener;
 
-    MenuBar(Role role) {
-        this.role = role;
-    }
-
-    JMenuBar getMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
+    public MainFrameMenuBar(Role role) {
 
         JMenu fileMenu = new JMenu(Labels.getProperty("file"));
         JMenuItem printItem = new JMenuItem(Labels.withThreeDots("print"), Icons.PRINT);
@@ -50,8 +44,8 @@ class MenuBar {
         helpMenu.add(siteWithUpdatesItem);
         helpMenu.add(infoItem);
 
-        menuBar.add(fileMenu);
-        menuBar.add(editMenu);
+        add(fileMenu);
+        add(editMenu);
 
         // advanced menu for non users
         if (role.equals(Role.ADMIN)) {
@@ -76,7 +70,7 @@ class MenuBar {
             settingsMenu.add(changeRegistrationsNumber);
             changeRegistrationsNumber.addActionListener(e -> listener.changeRegistrationsNumber());
 
-            menuBar.add(settingsMenu);
+            add(settingsMenu);
 
             editOrgItem.addActionListener(e -> listener.showEditOrgDialog());
 
@@ -94,7 +88,7 @@ class MenuBar {
             JMenuItem procByCpv = new JMenuItem(Labels.withThreeDots("cpvAmounts"));
             reports.add(procByCpv);
 
-            menuBar.add(reports);
+            add(reports);
 
             procByCpv.addActionListener(e -> listener.showCpvAmountDialog());
 
@@ -108,13 +102,10 @@ class MenuBar {
         siteWithUpdatesItem.addActionListener(e -> listener.visitUpdatesSite());
         infoItem.addActionListener(e -> listener.showInfoDialog());
 
-
-        menuBar.add(helpMenu);
-
-        return menuBar;
+        add(helpMenu);
     }
 
-    void setMenuBarListener(MenuBarListener listener) {
+    public void setMenuBarListener(MenuBarListener listener) {
         this.listener = listener;
     }
 }

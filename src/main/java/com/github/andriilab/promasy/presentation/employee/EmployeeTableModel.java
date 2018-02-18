@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.employee;
 
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
@@ -63,7 +64,7 @@ class EmployeeTableModel extends AbstractTableModel{
 			return model.isActive();
 		}
 
-		return null;
+        return EmptyModel.OBJECT;
 	}
 
 	public Class<?> getColumnClass(int columnIndex) {
@@ -82,7 +83,7 @@ class EmployeeTableModel extends AbstractTableModel{
 		case 5:
 			return Boolean.class;
 		default:
-			return null;
+            return Object.class;
 		}
 	}
 }

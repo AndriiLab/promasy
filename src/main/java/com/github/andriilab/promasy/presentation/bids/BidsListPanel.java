@@ -20,8 +20,8 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.bids.status.StatusDialog;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,10 +67,10 @@ public class BidsListPanel extends JPanel {
 
     public BidsListPanel(MainFrame parent) {
         this.parent = parent;
-
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboDim = new Dimension(200, 20);
 
+        listener = new EmptyBidsListPanelListener();
         useUserDepartment = false;
         createBidPanel = new CreateBidPanel(parent);
         createBidPanel.setVisible(false);
@@ -135,7 +135,7 @@ public class BidsListPanel extends JPanel {
 
         createLayout();
 
-        int dividerLocation = 350;
+        int dividerLocation = 380;
 
         createBidButton.addActionListener(e -> {
             setDataToCreateBidDialog();
@@ -170,7 +170,7 @@ public class BidsListPanel extends JPanel {
         });
 
         deleteBidButton.addActionListener(e -> {
-            if (!selectedBidModel.equals(EmptyModel.BID) && listener != null) {
+            if (!selectedBidModel.equals(EmptyModel.BID)) {
                 if (ced.deleteEntry(parent, selectedBidModel.getBidDesc())) {
                     selectedBidModel.setDeleted();
                     selectedFinanceDepartmentModel.addBid(selectedBidModel);
@@ -189,11 +189,9 @@ public class BidsListPanel extends JPanel {
             selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
-            if (listener != null) {
-                if (!isSelectedDepartmentModelEmpty())
-                    setSubdepartmentBoxData(listener.getSubdepartments(selectedDepartmentModel.getModelId()));
-                getBids();
-            }
+            if (!isSelectedDepartmentModelEmpty())
+                setSubdepartmentBoxData(listener.getSubdepartments(selectedDepartmentModel.getModelId()));
+            getBids();
             clearSelectedBidModels();
         });
 
@@ -203,12 +201,10 @@ public class BidsListPanel extends JPanel {
             financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
             if (subdepartmentBox.getSelectedItem() != null) {
                 selectedSubdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
-                if (listener != null) {
-                    if (isSelectedSubdepartmentModelEmpty()) {
-                        getBids();
-                    } else {
-                        setFinanceDepartmentBoxData(listener.getFinanceDepartments(new GetFinanceDepartmentsQuery(parent.getReportYear(), selectedSubdepartmentModel)));
-                    }
+                if (isSelectedSubdepartmentModelEmpty()) {
+                    getBids();
+                } else {
+                    setFinanceDepartmentBoxData(listener.getFinanceDepartments(new GetFinanceDepartmentsQuery(parent.getReportYear(), selectedSubdepartmentModel)));
                 }
 
                 clearSelectedBidModels();
@@ -220,7 +216,7 @@ public class BidsListPanel extends JPanel {
             if (financeDepartmentBox.getSelectedItem() != null) {
                 selectedFinanceDepartmentModel = (FinanceDepartment) financeDepartmentBox.getSelectedItem();
                 List<Bid> bids = selectedFinanceDepartmentModel.getBids(selectedBidType);
-                if (isSelectedFinanceDepartmentModelEmpty() && listener != null) {
+                if (isSelectedFinanceDepartmentModelEmpty()) {
                     getBids();
                 } else {
                     setBidsTableData(bids);
@@ -231,9 +227,7 @@ public class BidsListPanel extends JPanel {
 
         bidTypeBox.addActionListener(e -> {
             selectedBidType = (BidType) bidTypeBox.getSelectedItem();
-            if (listener != null) {
-                getBids();
-            }
+            getBids();
             clearSelectedBidModels();
         });
 
@@ -268,27 +262,21 @@ public class BidsListPanel extends JPanel {
         });
 
         statusDialog.setStatusDialogListener(model -> {
-            if (listener != null) {
-                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
-                getBids();
-            }
+            listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
+            getBids();
         });
 
         createBidPanel.setCreateBidDialogListener(new CreateBidPanelListener() {
             @Override
             public void persistModelEventOccurred(Bid model) {
-                if (listener != null) {
-                    listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
-                    getBids();
-                }
+                listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(model));
+                getBids();
             }
 
             @Override
             public void getAllData() {
                 FinanceDepartment selectedModel = selectedFinanceDepartmentModel;
-                if (listener != null) {
-                    listener.getAllData();
-                }
+                listener.getAllData();
                 if (!selectedModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
                     financeDepartmentBox.setSelectedItem(selectedModel);
                 }
@@ -332,7 +320,7 @@ public class BidsListPanel extends JPanel {
                     }
                     listener.getBids(query);
                 } catch (InterruptedException e) {
-                    Logger.warnEvent(e);
+                    Logger.warnEvent(this.getClass(), e);
                 }
             });
             bidRequestThread.start();
@@ -556,9 +544,7 @@ public class BidsListPanel extends JPanel {
 
     @Override
     public void setVisible(boolean visible) {
-        if (visible && listener != null) {
-            refresh();
-        }
+        refresh();
         super.setVisible(visible);
     }
 

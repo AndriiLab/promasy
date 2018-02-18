@@ -1,9 +1,9 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.domain.EmptyModel;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 
 import javax.swing.*;
 import javax.swing.border.Border;

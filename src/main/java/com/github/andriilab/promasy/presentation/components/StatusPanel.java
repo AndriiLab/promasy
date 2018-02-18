@@ -1,7 +1,8 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.domain.EmptyModel;
+import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -10,13 +11,13 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 
-class StatusPanel extends JPanel {
+public class StatusPanel extends JPanel {
 
     private final JLabel currentDbLabel;
     private final JLabel status;
     private final MainFrame parent;
 
-    StatusPanel(MainFrame parent) {
+    public StatusPanel(MainFrame parent) {
         this.parent = parent;
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         setPreferredSize(new Dimension(parent.getWidth(), 20));
@@ -37,7 +38,7 @@ class StatusPanel extends JPanel {
 
     }
 
-    void setCurrentDb(String dbName) {
+    public void setCurrentDb(String dbName) {
         String message = Labels.withColon("dbName") + " " + dbName;
 
         if (dbName.contains("test")) {
@@ -48,11 +49,11 @@ class StatusPanel extends JPanel {
         }
 
         currentDbLabel.setText(dbName);
-        Logger.infoEvent(parent, message);
+        Logger.infoEvent(this.getClass(), parent, message);
     }
 
 
-    void setStatus(String statusInfo, Color color) {
+    public void setStatus(String statusInfo, Color color) {
         status.setForeground(color);
         status.setText(statusInfo);
     }

@@ -13,6 +13,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
+import com.github.andriilab.promasy.domain.versioning.entities.Version;
 
 /**
  * Instances of empty models
@@ -31,6 +32,24 @@ public class EmptyModel {
     public static final ReasonForSupplierChoice REASON_FOR_SUPPLIER_CHOICE = new ReasonForSupplierChoice();
     public static final Subdepartment SUBDEPARTMENT = new Subdepartment();
     public static final Supplier SUPPLIER = new Supplier();
+    public static final Version VERSION = new Version();
+    public static final Object OBJECT = new Object();
 
     public static final String STRING = "";
+
+    private static IEntity[] entities = new IEntity[]{
+            AMOUNT_UNITS, BID, BID_STATUS,
+            DEPARTMENT, EMPLOYEE, FINANCE_DEPARTMENT, FINANCE,
+            INSTITUTE, PRODUCER, REASON_FOR_SUPPLIER_CHOICE,
+            SUBDEPARTMENT, SUPPLIER};
+
+    public static <E extends IEntity> E getByClass(Class<E> entityClass) {
+        for (IEntity entity : entities) {
+            if (entity.getClass().equals(entityClass)) {
+                return (E) entity;
+            }
+        }
+
+        throw new IllegalArgumentException("No entity class found for name " + entityClass.getName());
+    }
 }

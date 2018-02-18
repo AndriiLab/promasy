@@ -1,8 +1,9 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import java.awt.*;

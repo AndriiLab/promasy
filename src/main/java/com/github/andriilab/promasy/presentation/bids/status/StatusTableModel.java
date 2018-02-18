@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.bids.status;
 
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.entities.BidStatus;
 import com.github.andriilab.promasy.domain.bid.enums.Status;
@@ -53,7 +54,7 @@ class StatusTableModel extends AbstractTableModel {
             case 2:
                 return model.getLastEditPersonName();
         }
-        return null;
+        return EmptyModel.OBJECT;
     }
 
     @Override
@@ -66,7 +67,7 @@ class StatusTableModel extends AbstractTableModel {
             case 2:
                 return String.class;
             default:
-                return null;
+                return Object.class;
         }
     }
 }

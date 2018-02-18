@@ -1,12 +1,11 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.commons;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.data.storage.ConnectionSettings;
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
-import com.github.andriilab.promasy.presentation.commons.Icons;
-import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +47,7 @@ public class Utils {
         try {
             Runtime.getRuntime().exec("explorer.exe /select, " + path);
         } catch (IOException e) {
-            Logger.errorEvent(null, e);
+            Logger.errorEvent(Utils.class, null, e);
         }
     }
 
@@ -67,8 +66,8 @@ public class Utils {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            Logger.warnEvent(e);
-            return null;
+            Logger.warnEvent(Utils.class, e);
+            return EmptyModel.STRING;
         }
     }
 
@@ -138,7 +137,7 @@ public class Utils {
 
             targetBigDecimal = new BigDecimal(targetBigDecimalText);
         } catch (NumberFormatException ex) {
-            Logger.warnEvent(ex);
+            Logger.warnEvent(Utils.class, ex);
             JOptionPane.showMessageDialog(parent,
                     Labels.getProperty("financeNumberFormatException"),
                     Labels.getProperty("fieldErr"),

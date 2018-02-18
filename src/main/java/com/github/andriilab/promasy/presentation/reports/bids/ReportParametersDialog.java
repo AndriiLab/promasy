@@ -45,7 +45,7 @@ public class ReportParametersDialog extends JDialog {
 
         Dimension preferredFieldDim = new Dimension(235, 15);
         parameters = new HashMap<>();
-
+        listener = new EmptyReportParametersDialogListener();
         roleBox = new PJComboBox<>();
         roleBox.setSize(preferredFieldDim);
         roleBox.addItem(Role.DIRECTOR);
@@ -81,18 +81,12 @@ public class ReportParametersDialog extends JDialog {
 
         createLayout();
 
-        roleBox.addActionListener(e -> {
-            if (listener != null) {
-                listener.roleSelectionOccurred((Role) roleBox.getSelectedItem());
-            }
-        });
+        roleBox.addActionListener(e -> listener.roleSelectionOccurred((Role) roleBox.getSelectedItem()));
 
         okButton.addActionListener(e -> {
-            if (listener != null) {
-                getPrintData();
-                listener.reportParametersSelectionOccurred(parameters);
-                setVisible(false);
-            }
+            getPrintData();
+            listener.reportParametersSelectionOccurred(parameters);
+            setVisible(false);
         });
 
         cancelButton.addActionListener(e -> setVisible(false));

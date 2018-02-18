@@ -80,10 +80,6 @@ public class FinanceRepository extends Repository<Finance> {
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
-        if (assignedAmount == null) {
-            assignedAmount = BigDecimal.ZERO;
-        }
-
         return assignedAmount;
     }
 
@@ -102,10 +98,6 @@ public class FinanceRepository extends Repository<Finance> {
                 .setParameter("bidType", query.getType());
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
-
-        if (assignedAmount == null) {
-            assignedAmount = BigDecimal.ZERO;
-        }
 
         return assignedAmount;
     }

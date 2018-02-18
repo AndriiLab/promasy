@@ -5,6 +5,5 @@ import com.github.andriilab.promasy.domain.IEntity;
 
 public interface EditEmployeeDialogListener {
     <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command);
-
     void getAllEmployees();
 }

@@ -9,28 +9,31 @@ import org.apache.log4j.LogManager;
  * Implementation of log4j with internal logger in com.github.andriilab.promasy.presentation
  */
 public class Logger {
-    private static final org.apache.log4j.Logger LOGGER = LogManager.getLogger(Controller.class);
 
-    public static void infoEvent(MainFrame mainFrame, String message) {
-        LOGGER.info(message);
+    public static <T> void infoEvent(Class<T> callerClass, MainFrame mainFrame, String message) {
+        LogManager.getLogger(callerClass).info(message);
         if (mainFrame != null) {
             mainFrame.logEvent(message, Colors.GREEN);
         }
     }
 
-    public static void warnEvent(Throwable throwable) {
-        LOGGER.warn(throwable);
+    public static <T> void warnEvent(Class<T> callerClass, Throwable throwable) {
+        LogManager.getLogger(callerClass).warn(throwable);
     }
 
-    public static void errorEvent(MainFrame mainFrame, String message, Exception exception) {
+    public static <T> void warnEvent(Class<T> callerClass, String message) {
+        LogManager.getLogger(callerClass).warn(message);
+    }
+
+    public static <T> void errorEvent(Class<T> callerClass, MainFrame mainFrame, String message, Exception exception) {
         message = Labels.withColon("error") + message;
-        LOGGER.error(message, exception);
+        LogManager.getLogger(callerClass).error(message, exception);
         if (mainFrame != null) {
             mainFrame.logError(exception, message);
         }
     }
 
-    public static void errorEvent(MainFrame mainFrame, Exception exception) {
-        errorEvent(mainFrame, exception.getMessage(), exception);
+    public static <T> void errorEvent(Class<T> callerClass, MainFrame mainFrame, Exception exception) {
+        errorEvent(callerClass, mainFrame, exception.getMessage(), exception);
     }
 }

@@ -189,7 +189,7 @@ public class TableGenerator {
             parent.showFileSavedDialog(fileName);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError") + fileName, Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
-            Logger.errorEvent(parent, e);
+            Logger.errorEvent(this.getClass(), parent, e);
         }
     }
 }

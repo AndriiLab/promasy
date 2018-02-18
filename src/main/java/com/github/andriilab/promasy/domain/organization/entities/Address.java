@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
 import com.github.andriilab.promasy.domain.organization.enums.StreetTypes;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -150,7 +151,7 @@ public class Address extends AbstractEntity {
 
     @Override
     public String getMessage() {
-        return null;
+        return EmptyModel.STRING;
     }
 
     @Override

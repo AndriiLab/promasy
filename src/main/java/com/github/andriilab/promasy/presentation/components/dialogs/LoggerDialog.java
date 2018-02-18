@@ -1,7 +1,8 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.domain.EmptyModel;
+import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
@@ -21,12 +22,12 @@ import java.time.format.DateTimeFormatter;
 /**
  * Dialog displays program log
  */
-class LoggerDialog extends JDialog {
+public class LoggerDialog extends JDialog {
 
     private final MainFrame parent;
     private final JTextPane logPane;
 
-    LoggerDialog(MainFrame parent) {
+    public LoggerDialog(MainFrame parent) {
         super(parent, Labels.getProperty("log"), true);
         this.parent = parent;
         setSize(500, 300);
@@ -64,7 +65,7 @@ class LoggerDialog extends JDialog {
 
     }
 
-    void saveLog() {
+    public void saveLog() {
         String fileName = "log_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
         try {
             FileWriter fw = new FileWriter(fileName);
@@ -76,18 +77,18 @@ class LoggerDialog extends JDialog {
             this.setVisible(false);
         } catch (IOException e1) {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
-            Logger.errorEvent(parent, e1);
+            Logger.errorEvent(this.getClass(), parent, e1);
         }
     }
 
-    void addToLog(String status, Color color) {
+    public void addToLog(String status, Color color) {
         StyledDocument doc = logPane.getStyledDocument();
         Style style = logPane.addStyle("CurrentStyle", null);
         StyleConstants.setForeground(style, color);
         try {
             doc.insertString(doc.getLength(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ":\t" + status + "\n", style);
         } catch (BadLocationException e) {
-            Logger.errorEvent(null, e);
+            Logger.errorEvent(this.getClass(), null, e);
         }
     }
 

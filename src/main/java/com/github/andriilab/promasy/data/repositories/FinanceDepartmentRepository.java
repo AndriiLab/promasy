@@ -28,7 +28,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
             return retrieveBySubdepartment(query.getSubdepartment(), query.getYear());
         else if (query.getFinance().getModelId() != 0)
             return retrieveByFinance(query.getFinance(), query.getYear());
-        return null;
+        return Collections.emptyList();
     }
 
     private List<FinanceDepartment> retrieveByFinance(Finance finance, int year) {
@@ -74,10 +74,6 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
                 .setParameter("bidType", query.getType());
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
-
-        if (assignedAmount == null) {
-            assignedAmount = BigDecimal.ZERO;
-        }
 
         return assignedAmount;
     }

@@ -6,9 +6,9 @@ import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.AbstractCEDDialog;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.dialogs.AbstractCEDDialog;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import javax.swing.border.Border;

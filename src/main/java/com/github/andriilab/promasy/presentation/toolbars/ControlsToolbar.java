@@ -9,14 +9,14 @@ import java.util.stream.IntStream;
 
 public class ControlsToolbar extends JToolBar {
 
-    private ControlsToolbarListener controlsToolbarListener;
+    private ControlsToolbarListener listener;
     private JComboBox<Integer> yearPicker;
     private int selectedYear;
 
     public ControlsToolbar() {
         setFloatable(false);
         selectedYear = Year.now().getValue();
-
+        listener = new EmptyControlsToolbarListener();
         yearPicker = new JComboBox<>(generateYearSpan(selectedYear));
         yearPicker.setSelectedIndex(10);
         yearPicker.setEditable(true);
@@ -28,8 +28,8 @@ public class ControlsToolbar extends JToolBar {
         add(yearPicker);
 
         yearPicker.addActionListener(e -> {
-            if (controlsToolbarListener != null && parseSelectedYear()) {
-                controlsToolbarListener.reportYearChanged();
+            if (parseSelectedYear()) {
+                listener.reportYearChanged();
             }
         });
     }
@@ -60,7 +60,7 @@ public class ControlsToolbar extends JToolBar {
         return selectedYear;
     }
 
-    public void setControlsToolbarListener(ControlsToolbarListener controlsToolbarListener) {
-        this.controlsToolbarListener = controlsToolbarListener;
+    public void setListener(ControlsToolbarListener listener) {
+        this.listener = listener;
     }
 }

@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.panes;
 
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;

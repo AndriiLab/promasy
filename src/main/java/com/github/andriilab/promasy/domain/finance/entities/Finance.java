@@ -152,7 +152,7 @@ public class Finance extends AbstractEntity {
             case SERVICES:
                 return totalServices;
             default:
-                return null;
+                return BigDecimal.ZERO;
         }
     }
 

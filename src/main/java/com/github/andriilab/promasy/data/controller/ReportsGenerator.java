@@ -41,12 +41,12 @@ public class ReportsGenerator {
             });
         } catch (JRException e) {
             if (e.getMessage().startsWith("java.io.FileNotFoundException")) {
-                Logger.warnEvent(e);
+                Logger.warnEvent(this.getClass(), e);
                 //Compile report (.jrxml) to .jasper if it is not compiled
                 compileReport(reportPath, parent);
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupComplete"), Labels.getProperty("printInfo"), JOptionPane.INFORMATION_MESSAGE);
             } else {
-                Logger.errorEvent(parent, Labels.getProperty("printError"), e);
+                Logger.errorEvent(this.getClass(), parent, Labels.getProperty("printError"), e);
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("printSetupError"), Labels.getProperty("printError"), JOptionPane.ERROR_MESSAGE);
             }
 
@@ -58,17 +58,17 @@ public class ReportsGenerator {
             ReportsGenerator.compileReportFileIfNew(ReportsGenerator.BIDS_REPORT, mainFrame);
             ReportsGenerator.compileReportFileIfNew(ReportsGenerator.CPV_AMOUNT_REPORT, mainFrame);
         } catch (IOException e) {
-            Logger.errorEvent(mainFrame, e);
+            Logger.errorEvent(ReportsGenerator.class, mainFrame, e);
         }
     }
 
     private static void compileReport(String reportPath, MainFrame parent) {
-        Logger.infoEvent(parent, "Compiling new report file for " + reportPath);
+        Logger.infoEvent(ReportsGenerator.class, parent, "Compiling new report file for " + reportPath);
         File jrxmlFile = new File(reportPath + ".jrxml");
         try {
             JasperCompileManager.compileReportToFile(jrxmlFile.getAbsolutePath());
         } catch (JRException e) {
-            Logger.warnEvent(e);
+            Logger.warnEvent(ReportsGenerator.class, e);
         }
     }
 
@@ -79,13 +79,13 @@ public class ReportsGenerator {
             Path jrxmlFile = FileSystems.getDefault().getPath(reportPath + ".jrxml");
             BasicFileAttributes jrxmlAttr = Files.readAttributes(jrxmlFile, BasicFileAttributes.class);
             if (jasperAttr.lastModifiedTime().compareTo(jrxmlAttr.lastModifiedTime()) < 0) {
-                Logger.infoEvent(parent, "Outdated report file: " + reportPath + ".jrxml");
+                Logger.infoEvent(ReportsGenerator.class, parent, "Outdated report file: " + reportPath + ".jrxml");
                 compileReport(reportPath, parent);
             } else {
-                Logger.infoEvent(parent, "Report " + reportPath + ".jrxml does not need to be updated");
+                Logger.infoEvent(ReportsGenerator.class, parent, "Report " + reportPath + ".jrxml does not need to be updated");
             }
         } catch (NoSuchFileException ex) {
-            Logger.infoEvent(parent, "Report file doesn't exist " + reportPath);
+            Logger.infoEvent(ReportsGenerator.class, parent, "Report file doesn't exist " + reportPath);
             compileReport(reportPath, parent);
         }
     }

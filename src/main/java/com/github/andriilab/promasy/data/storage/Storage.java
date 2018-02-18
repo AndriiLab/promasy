@@ -50,7 +50,7 @@ public class Storage {
         };
     }
 
-    public <E extends IEntity> IRepository<E> getByType(Class<E> entityClass) {
+    public <E extends IEntity> IRepository<E> getByClass(Class<E> entityClass) {
         for (IRepository<?> repository : repositories) {
             if (repository.getEntityClass().equals(entityClass)) {
                 return (IRepository<E>) repository;

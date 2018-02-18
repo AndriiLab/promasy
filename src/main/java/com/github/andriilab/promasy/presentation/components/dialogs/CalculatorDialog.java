@@ -1,11 +1,11 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.domain.EmptyModel;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -215,7 +215,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         try {
             doc.remove(offset, charsRemove);
         } catch (BadLocationException e) {
-            Logger.errorEvent(null, e);
+            Logger.errorEvent(this.getClass(), null, e);
         }
 
     }
@@ -229,7 +229,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         try {
             doc.insertString(doc.getLength(), text, style);
         } catch (BadLocationException e) {
-            Logger.errorEvent(null, e);
+            Logger.errorEvent(this.getClass(), null, e);
         }
 
     }

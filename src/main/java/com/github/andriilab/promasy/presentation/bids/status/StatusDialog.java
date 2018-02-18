@@ -29,6 +29,7 @@ public class StatusDialog extends JDialog {
 
         Dimension comboBoxDim = new Dimension(150, 25);
 
+        listener = new EmptyStatusDialogListener();
         statusTableModel = new StatusTableModel();
         statusTable = new JTable(statusTableModel);
 
@@ -46,15 +47,13 @@ public class StatusDialog extends JDialog {
         layoutControls();
 
         setStatusButton.addActionListener(e -> {
-            if (listener != null) {
-                Status selectedStatus = (Status) statusJComboBox.getSelectedItem();
-                BidStatus statusModel = new BidStatus(selectedStatus, selectedBidModel);
-                statusModel.setCreated();
-                selectedBidModel.addStatus(statusModel);
-                selectedBidModel.setUpdated();
-                listener.persistModelEventOccurred(statusModel);
-                this.setTableData(selectedBidModel);
-            }
+            Status selectedStatus = (Status) statusJComboBox.getSelectedItem();
+            BidStatus statusModel = new BidStatus(selectedStatus, selectedBidModel);
+            statusModel.setCreated();
+            selectedBidModel.addStatus(statusModel);
+            selectedBidModel.setUpdated();
+            listener.persistModelEventOccurred(statusModel);
+            this.setTableData(selectedBidModel);
         });
 
         closeButton.addActionListener(e -> setVisible(false));

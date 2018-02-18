@@ -3,12 +3,12 @@ package com.github.andriilab.promasy.presentation.finance;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
@@ -56,7 +56,7 @@ class CreateFinancePanel extends JPanel {
         this.parent = parent;
 
         currentFinanceModel = new Finance();
-
+        listener = new EmptyCreateFinancePanelListener();
         orderNumberField = new JTextField(12);
         orderNameField = new JTextField(12);
         materialsAmountField = new JTextField(12);
@@ -90,7 +90,7 @@ class CreateFinancePanel extends JPanel {
         layoutControls();
 
         okButton.addActionListener(e -> {
-            if (checkInput() && listener != null) {
+            if (checkInput()) {
                 currentFinanceModel.setFinanceNumber(orderNumber);
                 currentFinanceModel.setFinanceName(orderName);
                 currentFinanceModel.setStartDate(startDate);

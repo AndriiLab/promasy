@@ -10,6 +10,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @javax.persistence.Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -126,7 +127,7 @@ public abstract class AbstractEntity implements IEntity {
         } else if (createdEmployee != null && !createdEmployee.getShortName().isEmpty()) {
             return createdEmployee.getShortName();
         }
-        return null;
+        return EmptyModel.STRING;
     }
 
     @Override
@@ -136,7 +137,7 @@ public abstract class AbstractEntity implements IEntity {
         } else if (createdDate != null) {
             return createdDate;
         }
-        return null;
+        return Timestamp.from(Instant.now());
     }
 
     @Override

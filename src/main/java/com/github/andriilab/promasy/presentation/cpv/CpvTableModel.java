@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.cpv;
 
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 
@@ -43,7 +44,7 @@ class CpvTableModel extends AbstractTableModel {
 		case 2:
 			return cpv.getCpvEng();
 		}
-		return null;
+        return EmptyModel.OBJECT;
 	}
 
 }

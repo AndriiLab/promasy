@@ -16,13 +16,14 @@ import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.validator.Validator;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
@@ -66,6 +67,10 @@ public class CreateBidPanel extends JPanel {
     private final JTextField amountField;
     private final JTextField oneUnitPriceField;
     private final JTextField kekvField;
+    private final JCheckBox taxCheckBox;
+    private JLabel oneUnitPriceLabel;
+    private JLabel totalPriceDescLabel;
+    private boolean isWithTax;
     private final JTextPane descriptionPane;
     private final JScrollPane descriptionScrollPane;
     private final DatePicker procurementStartDatePicker;
@@ -79,6 +84,7 @@ public class CreateBidPanel extends JPanel {
     CreateBidPanel(MainFrame parent) {
         this.parent = parent;
 
+        listener = new EmptyCreateBidPanelListener();
         totalPriceLabel = new JLabel("0" + Labels.withSpaceBefore("uah"));
         totalPriceLabel.setForeground(Color.RED);
 
@@ -162,6 +168,13 @@ public class CreateBidPanel extends JPanel {
         amountField.setPreferredSize(preferredFieldDim);
         oneUnitPriceField = new JTextField();
         oneUnitPriceField.setPreferredSize(preferredFieldDim);
+
+        oneUnitPriceLabel = new JLabel(Labels.withColon("oneUnitPrice"));
+        totalPriceDescLabel = new JLabel(Labels.withColon("totalPrice"));
+
+        isWithTax = false;
+        taxCheckBox = new JCheckBox(Labels.getProperty("tax"));
+        taxCheckBox.setSelected(isWithTax);
 
         kekvField = new JTextField();
         kekvField.setPreferredSize(preferredFieldDim);
@@ -267,8 +280,14 @@ public class CreateBidPanel extends JPanel {
             }
         });
 
+        taxCheckBox.addActionListener(e -> {
+            isWithTax = taxCheckBox.isSelected();
+            calculateTotalPrice();
+            setTaxLabels();
+        });
+
         okButton.addActionListener(e -> {
-                    if (checkFields() && listener != null) {
+            if (checkFields()) {
                         if (createdBidModel.getModelId() != 0L) {
                             createdBidModel.setUpdated();
                         } else createdBidModel.setCreated();
@@ -290,6 +309,11 @@ public class CreateBidPanel extends JPanel {
             clear();
             setVisible(false);
         });
+    }
+
+    void setTaxLabels() {
+        oneUnitPriceLabel.setText(isWithTax ? Labels.withColon("oneUnitPrice") : Labels.withSpaceAfter("oneUnitPrice") + Labels.withColon("withoutTax"));
+        totalPriceDescLabel.setText(isWithTax ? Labels.withColon("totalPrice") : Labels.withSpaceAfter("totalPrice") + Labels.withColon("withTax"));
     }
 
     void setCurrentDepartment(Department currentDepartment) {
@@ -324,9 +348,7 @@ public class CreateBidPanel extends JPanel {
             supplierBox.setSelectedIndex(0);
             amUnitsBox.setSelectedIndex(0);
         } catch (IllegalArgumentException ex) {
-            if (listener != null) {
-                listener.getAllData();
-            }
+            listener.getAllData();
         }
         cpvField.setText(EmptyModel.STRING);
         catNumberField.setText(EmptyModel.STRING);
@@ -351,12 +373,16 @@ public class CreateBidPanel extends JPanel {
                 onePriceString = Utils.formatFinanceString(onePriceString);
                 BigDecimal onePrice = new BigDecimal(onePriceString);
                 BigDecimal amount = new BigDecimal(amountString);
+
+                if (!isWithTax) {
+                    onePrice = onePrice.multiply(BigDecimal.valueOf(1.2));
+                }
                 totalPrice = onePrice.multiply(amount);
 
                 totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
                 oneUnitPriceField.setText(onePriceString);
             } catch (NumberFormatException ex) {
-                Logger.warnEvent(ex);
+                Logger.warnEvent(this.getClass(), ex);
                 totalPriceLabel.setText(Labels.getProperty("wrongFormat"));
             }
         } else {
@@ -391,25 +417,19 @@ public class CreateBidPanel extends JPanel {
     }
 
     private boolean checkFields() {
-        Department selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
-        if (selectedDepartmentModel.equals(EmptyModel.DEPARTMENT)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("department"));
-            departmentBox.requestFocusInWindow();
+        if (Validator.isEmptyComboBox(parent, departmentBox, Labels.getProperty("department"))) {
+            return false;
+        }
+        if (Validator.isEmptyComboBox(parent, subdepartmentBox, Labels.getProperty("subdepartment"))) {
+            return false;
+        }
+        if (Validator.isEmptyComboBox(parent, financeDepartmentBox, Labels.getProperty("finance"))) {
             return false;
         }
 
+        Department selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
         Subdepartment selectedSubdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
-        if (selectedSubdepartmentModel.equals(EmptyModel.SUBDEPARTMENT)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("subdepartment"));
-            subdepartmentBox.requestFocusInWindow();
-            return false;
-        }
         FinanceDepartment selectedFinanceDepartmentModel = (FinanceDepartment) financeDepartmentBox.getSelectedItem();
-        if (selectedFinanceDepartmentModel.equals(EmptyModel.FINANCE_DEPARTMENT)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("finance"));
-            financeDepartmentBox.requestFocusInWindow();
-            return false;
-        }
 
         boolean financeChanged = !selectedFinanceDepartmentModel.equals(createdBidModel.getFinances());
 
@@ -455,11 +475,10 @@ public class CreateBidPanel extends JPanel {
         }
 
         AmountUnit selectedAmountUnitsModel = (AmountUnit) amUnitsBox.getSelectedItem();
-        if (selectedAmountUnitsModel.equals(EmptyModel.AMOUNT_UNITS)) {
-            ErrorOptionPane.emptyField(parent, Labels.getProperty("packing"));
-            amUnitsBox.requestFocusInWindow();
+        if (Validator.isEmptyComboBox(parent, amUnitsBox, Labels.getProperty("packing"))) {
             return false;
         }
+
         String amountString = amountField.getText();
         if (amountString.isEmpty()) {
             ErrorOptionPane.emptyField(parent, Labels.getProperty("amount"));
@@ -471,7 +490,7 @@ public class CreateBidPanel extends JPanel {
         try {
             amount = Integer.parseInt(amountString);
         } catch (NumberFormatException ex) {
-            Logger.warnEvent(ex);
+            Logger.warnEvent(this.getClass(), ex);
             ErrorOptionPane.wrongFormat(parent, Labels.getProperty("amount"), Labels.getProperty("integersOnly"));
             amountField.requestFocusInWindow();
             return false;
@@ -488,7 +507,7 @@ public class CreateBidPanel extends JPanel {
         try {
             onePrice = new BigDecimal(onePriceString);
         } catch (NumberFormatException ex) {
-            Logger.warnEvent(ex);
+            Logger.warnEvent(this.getClass(), ex);
             ErrorOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongIntegerFormat"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
@@ -570,9 +589,7 @@ public class CreateBidPanel extends JPanel {
 
     void loadToDialog(Bid model, boolean isEditMode) {
         this.isEditMode = isEditMode;
-        if (listener != null) {
-            listener.getAllData();
-        }
+        listener.getAllData();
         setCurrentBidType(model.getType());
         departmentBox.setSelectedModel(model.getFinances().getSubdepartment().getDepartment());
         subdepartmentBox.setSelectedModel(model.getFinances().getSubdepartment());
@@ -613,8 +630,9 @@ public class CreateBidPanel extends JPanel {
 
     @Override
     public void setVisible(boolean visible) {
-        if (visible && listener != null) {
+        if (visible) {
             listener.getAllData();
+            setTaxLabels();
         }
         kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
         createdBidModel = new Bid();
@@ -832,12 +850,17 @@ public class CreateBidPanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("oneUnitPrice")), gc);
+        createBidPanel.add(oneUnitPriceLabel, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = smallPadding;
         createBidPanel.add(oneUnitPriceField, gc);
+
+        gc.gridx++;
+        gc.anchor = GridBagConstraints.WEST;
+        gc.insets = smallPadding;
+        createBidPanel.add(taxCheckBox, gc);
 
         /// Next row///
         gc.gridy++;
@@ -845,7 +868,7 @@ public class CreateBidPanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.EAST;
         gc.insets = smallPadding;
-        createBidPanel.add(new JLabel(Labels.withColon("totalPrice")), gc);
+        createBidPanel.add(totalPriceDescLabel, gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

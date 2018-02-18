@@ -32,8 +32,11 @@ import com.github.andriilab.promasy.presentation.bids.CreateBidPanel;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CalculatorDialog;
-import com.github.andriilab.promasy.presentation.components.FileSavedDialog;
+import com.github.andriilab.promasy.presentation.components.DrawSplashScreen;
+import com.github.andriilab.promasy.presentation.components.MainFrameMenuBar;
+import com.github.andriilab.promasy.presentation.components.MenuBarListener;
+import com.github.andriilab.promasy.presentation.components.StatusPanel;
+import com.github.andriilab.promasy.presentation.components.dialogs.*;
 import com.github.andriilab.promasy.presentation.conset.ConSetDialog;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
 import com.github.andriilab.promasy.presentation.cpv.CpvDialog;
@@ -77,7 +80,7 @@ public class MainFrame extends JFrame {
     private LoginPanel loginPanel;
     private ButtonsToolbar buttonsToolbar;
     private ControlsToolbar controlsToolbar;
-    private MenuBar menuBar;
+    private MainFrameMenuBar menuBar;
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
@@ -115,6 +118,7 @@ public class MainFrame extends JFrame {
         IconFontSwing.register(FontAwesome.getIconFont());
 
         //initializing buttonsToolbar, login and connection settings windows and other common windows
+        listener = new EmptyMainFrameListener();
         buttonsToolbar = new ButtonsToolbar();
         controlsToolbar = new ControlsToolbar();
         loginPanel = new LoginPanel(this);
@@ -160,8 +164,8 @@ public class MainFrame extends JFrame {
         Role role = LoginData.getInstance().getRole();
 
         //creating and setting menu bar
-        menuBar = new MenuBar(role);
-        setJMenuBar(menuBar.getMenuBar());
+        menuBar = new MainFrameMenuBar(role);
+        setJMenuBar(menuBar);
 
         // init main pane and menu bar according to user roles
         switch (role) {
@@ -236,7 +240,7 @@ public class MainFrame extends JFrame {
                 try {
                     Runtime.getRuntime().exec("calc");
                 } catch (IOException e) {
-                    Logger.warnEvent(e);
+                    Logger.warnEvent(this.getClass(), e);
                     calculatorDialog.setVisible(true);
                 }
             }
@@ -252,7 +256,7 @@ public class MainFrame extends JFrame {
             }
         });
 
-        controlsToolbar.setControlsToolbarListener(this::updateYearInVisibleComponent);
+        controlsToolbar.setListener(this::updateYearInVisibleComponent);
 
         menuBar.setMenuBarListener(new MenuBarListener() {
             @Override
@@ -322,16 +326,12 @@ public class MainFrame extends JFrame {
 
             @Override
             public void visitUpdatesSite() {
-                if (listener != null) {
-                    listener.visitUpdatesSite();
-                }
+                listener.visitUpdatesSite();
             }
 
             @Override
             public void exitAction() {
-                if (listener != null) {
-                    listener.exitEventOccurred();
-                }
+                listener.exitEventOccurred();
             }
 
             @Override
@@ -341,7 +341,7 @@ public class MainFrame extends JFrame {
                             Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?",
                             Labels.getProperty("confirmAction"),
                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
-                    if (action == JOptionPane.OK_OPTION && listener != null) {
+                    if (action == JOptionPane.OK_OPTION) {
                         listener.setMinimumVersionEventOccurred();
                     }
                 }
@@ -369,9 +369,7 @@ public class MainFrame extends JFrame {
         try {
             int regNumber = Integer.parseInt(regNumberStr);
             regNumber = regNumber >= 0 ? regNumber : 0;
-            if (listener != null) {
-                listener.setNumberOfRegistrations(regNumber);
-            }
+            listener.setNumberOfRegistrations(regNumber);
         } catch (NumberFormatException ex) {
             JOptionPane.showConfirmDialog(this,
                     Labels.getProperty("wrongIntegerFormat"),
@@ -510,7 +508,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setLoginListener(LoginListener loginListener) {
-        loginPanel.setLoginListener(loginListener);
+        loginPanel.setListener(loginListener);
     }
 
     public void setConSetListener(ConSetListener listener) {
@@ -518,7 +516,7 @@ public class MainFrame extends JFrame {
     }
 
     public void setCpvListener(CpvSearchListener listener) {
-        cpvDialog.setCpvListener(listener);
+        cpvDialog.setListener(listener);
     }
 
     public void setEmployeeDialogListener(EditEmployeeDialogListener listener) {
@@ -664,10 +662,10 @@ public class MainFrame extends JFrame {
 
     @Override
     public void setVisible(boolean visible) {
-        if (listener != null && visible) {
+        if (visible) {
             String user = LoginData.getInstance().getShortName() + " (" + LoginData.getInstance().getRole().getRoleName()
                     + ")";
-            Logger.infoEvent(this, Labels.withColon("role.user") + user);
+            Logger.infoEvent(this.getClass(), this, Labels.withColon("role.user") + user);
             setTitle(user + " - " + Labels.withSpaceAfter("mainFrameSuper") + Labels.getVersion());
             setMinimumSize(new Dimension(1000, 700));
             setSize(1000, 700);
@@ -680,9 +678,6 @@ public class MainFrame extends JFrame {
     }
 
     public Cpv validateCpv(String cpvCode) {
-        if (listener != null) {
-            return listener.validateCpv(cpvCode);
-        }
-        return EmptyModel.CPV;
+        return listener.validateCpv(cpvCode);
     }
 }

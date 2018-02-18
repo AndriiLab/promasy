@@ -9,11 +9,11 @@ import com.github.andriilab.promasy.domain.organization.entities.Institute;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -57,6 +57,8 @@ public class CreateEmployeeDialog extends JDialog {
 
         Dimension comboBoxDim = new Dimension(400, 25);
 
+        listener = new EmptyCreateEmployeeDialogListener();
+        loginListener = new EmptyCreateEmployeeFromLoginListener();
         nameField = new JTextField(10);
         middleNameField = new JTextField(10);
         lastNameField = new JTextField(10);
@@ -133,7 +135,7 @@ public class CreateEmployeeDialog extends JDialog {
 
         addOrganizationButton.addActionListener(e -> parent.setEditOrgDialogVisible());
         okButton.addActionListener(e -> {
-            if (isValidFields() && listener != null) {
+            if (isValidFields()) {
                 if (currentEmployeeModel.getModelId() == 0) {
                     currentEmployeeModel.setCreated();
                 } else {
@@ -141,26 +143,20 @@ public class CreateEmployeeDialog extends JDialog {
                 }
                 listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(currentEmployeeModel));
                 clearDialog();
-                if (loginListener != null) {
-                    loginListener.newUserCreatedEvent();
-                }
+                loginListener.newUserCreatedEvent();
             }
         });
 
         cancelButton.addActionListener(e -> {
             clearDialog();
-            if (loginListener != null) {
-                loginListener.cancelEvent();
-            }
+            loginListener.cancelEvent();
         });
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 clearDialog();
-                if (loginListener != null) {
-                    loginListener.cancelEvent();
-                }
+                loginListener.cancelEvent();
             }
         });
     }
@@ -260,9 +256,7 @@ public class CreateEmployeeDialog extends JDialog {
             String pass = Utils.makePass(password, salt);
             if (pass == null) {
                 ErrorOptionPane.criticalError(parent);
-                if (loginListener != null) {
-                    loginListener.cancelEvent();
-                }
+                loginListener.cancelEvent();
                 return false;
             }
             // if com.github.andriilab.promasy.domain.model empty createOrUpdate new user
@@ -304,7 +298,7 @@ public class CreateEmployeeDialog extends JDialog {
         loginField.setText(currentEmployeeModel.getLogin());
         setTitle(Labels.getProperty("editEmployee"));
         okButton.setText(Labels.getProperty("edit"));
-        if (listener != null) listener.loadInstitutes();
+        listener.loadInstitutes();
         roleBox.setSelectedItem(currentEmployeeModel.getRole());
         instituteBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment().getInstitute());
         departmentBox.setSelectedModel(currentEmployeeModel.getSubdepartment().getDepartment());
@@ -551,15 +545,13 @@ public class CreateEmployeeDialog extends JDialog {
     public void createCustomUser(Employee model) {
         currentEmployeeModel = model;
         setRoleBox(model.getRole());
-        if (listener != null) {
-            listener.loadInstitutes();
-        }
+        listener.loadInstitutes();
         super.setVisible(true);
     }
 
     @Override
     public void setVisible(boolean visible) {
-        if (listener != null && visible) {
+        if (visible) {
             listener.loadInstitutes();
         }
         currentEmployeeModel = new Employee();

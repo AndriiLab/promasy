@@ -1,7 +1,7 @@
 package com.github.andriilab.promasy.presentation.amunits;
 
 import com.github.andriilab.promasy.domain.bid.entities.AmountUnit;
-import com.github.andriilab.promasy.presentation.components.AbstractCEDDialogListener;
+import com.github.andriilab.promasy.presentation.components.dialogs.AbstractCEDDialogListener;
 
 /**
  * Listener for {@link AmUnitsDialog}

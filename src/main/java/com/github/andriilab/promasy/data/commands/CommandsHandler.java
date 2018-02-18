@@ -13,10 +13,10 @@ public class CommandsHandler {
     }
 
     public <T extends IEntity> void Handle(CreateOrUpdateCommand<T> command) {
-        ((IRepository<T>) storage.getByType(command.getObject().getClass())).createOrUpdate(command.getObject());
+        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).createOrUpdate(command.getObject());
     }
 
     public <T extends IEntity> void Handle(RefreshCommand<T> command) {
-        ((IRepository<T>) storage.getByType(command.getObject().getClass())).refresh(command.getObject());
+        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).refresh(command.getObject());
     }
 }

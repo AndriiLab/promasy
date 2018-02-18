@@ -6,7 +6,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.CEDButtons;
+import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +30,7 @@ public class EditEmployeeDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
+        listener = new EmptyEditEmployeeDialogListener();
         CEDButtons ced = new CEDButtons(Labels.getProperty("user_ced"));
         JButton createEmployeeButton = ced.getCreateButton();
         createEmployeeButton.setIcon(Icons.NEW_USER_GREEN);
@@ -108,7 +109,7 @@ public class EditEmployeeDialog extends JDialog {
 
     @Override
     public void setVisible(boolean visible) {
-        if (visible && listener != null) {
+        if (visible) {
             listener.getAllEmployees();
         }
         super.setVisible(visible);

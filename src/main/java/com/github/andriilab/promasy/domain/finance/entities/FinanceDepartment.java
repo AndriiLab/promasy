@@ -152,7 +152,7 @@ public class FinanceDepartment extends AbstractEntity {
             case EQUIPMENT:
                 return totalEquipmentAmount;
             default:
-                return null;
+                return BigDecimal.ZERO;
         }
     }
 

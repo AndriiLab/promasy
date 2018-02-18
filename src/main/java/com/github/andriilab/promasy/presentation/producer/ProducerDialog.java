@@ -3,7 +3,7 @@ package com.github.andriilab.promasy.presentation.producer;
 import com.github.andriilab.promasy.domain.item.entities.Producer;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.AbstractCEDDialog;
+import com.github.andriilab.promasy.presentation.components.dialogs.AbstractCEDDialog;
 
 /**
  * Class for CRUD of item Producers

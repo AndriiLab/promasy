@@ -1,0 +1,28 @@
+package com.github.andriilab.promasy.presentation.reports.bids;
+
+import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
+import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import com.github.andriilab.promasy.domain.organization.enums.Role;
+import com.github.andriilab.promasy.presentation.components.AbstractEmptyListener;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+public class EmptyReportParametersDialogListener extends AbstractEmptyListener implements ReportParametersDialogListener {
+    @Override
+    public void roleSelectionOccurred(Role role) {
+        logEmptyListener(ReportParametersDialogListener.class);
+    }
+
+    @Override
+    public List<Employee> getEmployees(GetEmployeesQuery query) {
+        logEmptyListener(ReportParametersDialogListener.class);
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void reportParametersSelectionOccurred(Map<String, Object> parameters) {
+        logEmptyListener(ReportParametersDialogListener.class);
+    }
+}

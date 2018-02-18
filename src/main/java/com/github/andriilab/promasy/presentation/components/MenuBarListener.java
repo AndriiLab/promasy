@@ -1,9 +1,9 @@
-package com.github.andriilab.promasy.presentation;
+package com.github.andriilab.promasy.presentation.components;
 
 /**
- * Listener for {@link MenuBar}
+ * Listener for {@link MainFrameMenuBar}
  */
-interface MenuBarListener {
+public interface MenuBarListener {
 
     void setCurrentVersionAsMinimum();
 

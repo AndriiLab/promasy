@@ -16,7 +16,7 @@ public class LoginPanel extends JPanel {
 
     private final JTextField userField;
     private final JPasswordField passwordField;
-    private LoginListener loginListener;
+    private LoginListener listener;
     private final MainFrame parent;
 
     public LoginPanel(MainFrame parent) {
@@ -24,6 +24,7 @@ public class LoginPanel extends JPanel {
         parent.setSize(280, 150);
         parent.setResizable(false);
         this.parent = parent;
+        listener = new EmptyLoginListener();
 
         userField = new JTextField(13);
         PromptSupport.setPrompt(Labels.getProperty("role.user"), userField);
@@ -102,16 +103,12 @@ public class LoginPanel extends JPanel {
         okButton.addActionListener(e -> {
             String username = userField.getText();
             char[] password = passwordField.getPassword();
-            if (username.length() > 0 && password.length > 0 && loginListener != null) {
-                loginListener.loginAttemptOccurred(username, password);
+            if (username.length() > 0 && password.length > 0) {
+                listener.loginAttemptOccurred(username, password);
             } else showLoginError();
         });
 
-        cancelButton.addActionListener(ev -> {
-            if (loginListener != null) {
-                loginListener.loginCancelled();
-            }
-        });
+        cancelButton.addActionListener(ev -> listener.loginCancelled());
 
         registerButton.addActionListener(e -> {
             parent.getCreateEmployeeDialog().setLoginListener(new CreateEmployeeFromLoginListener() {
@@ -119,38 +116,30 @@ public class LoginPanel extends JPanel {
                 public void newUserCreatedEvent() {
                     JOptionPane.showMessageDialog(parent, Labels.getProperty("youCanLoginAfterRestart"),
                             Labels.getProperty("accountCreated"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
-                    if (loginListener != null) {
-                        loginListener.loginCancelled();
-                    }
+                    listener.loginCancelled();
                 }
 
                 @Override
                 public void cancelEvent() {
-                    if (loginListener != null) {
-                        loginListener.loginCancelled();
-                    }
+                    listener.loginCancelled();
                 }
             });
-            if (loginListener != null) {
-                userField.setText(EmptyModel.STRING);
-                passwordField.setText(EmptyModel.STRING);
-                if (loginListener.isAbleToRegister()) {
-                    parent.getCreateEmployeeDialog().setRoleBox(Role.USER);
-                    parent.getCreateEmployeeDialog().setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(parent, Labels.getProperty("registrationClosed"),
-                            Labels.getProperty("cannotCreateNewUser"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
-                }
-
+            userField.setText(EmptyModel.STRING);
+            passwordField.setText(EmptyModel.STRING);
+            if (listener.isAbleToRegister()) {
+                parent.getCreateEmployeeDialog().setRoleBox(Role.USER);
+                parent.getCreateEmployeeDialog().setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(parent, Labels.getProperty("registrationClosed"),
+                        Labels.getProperty("cannotCreateNewUser"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             }
         });
 
         SwingUtilities.getRootPane(parent).setDefaultButton(okButton);
-
     }
 
-    public void setLoginListener(LoginListener loginListener) {
-        this.loginListener = loginListener;
+    public void setListener(LoginListener listener) {
+        this.listener = listener;
     }
 
     private void showLoginError() {

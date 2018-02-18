@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.presentation.bids;
 
+import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.enums.Status;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -73,7 +74,7 @@ class BidsTableModel extends AbstractTableModel {
                 return model.getLastBidStatusModel().getStatus();
         }
 
-        return null;
+        return EmptyModel.OBJECT;
     }
 
     @Override
@@ -94,7 +95,7 @@ class BidsTableModel extends AbstractTableModel {
             case 6:
                 return Status.class;
             default:
-                return null;
+                return Object.class;
         }
     }
 }

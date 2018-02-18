@@ -1,10 +1,13 @@
-package com.github.andriilab.promasy.presentation.components;
+package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
+import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -119,7 +122,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
         try {
             return clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            Logger.errorEvent(clazz, parent, e);
             return null;
         }
     }

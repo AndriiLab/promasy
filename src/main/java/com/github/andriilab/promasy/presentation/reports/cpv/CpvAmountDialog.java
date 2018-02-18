@@ -13,7 +13,7 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 
 import javax.swing.*;
@@ -49,6 +49,7 @@ public class CpvAmountDialog extends JDialog {
         setResizable(false);
         setLocationRelativeTo(parent);
 
+        listener = new EmptyCpvAmountDialogListener();
         JButton printButton = new JButton(Icons.PRINT);
         printButton.setPreferredSize(new Dimension(25, 25));
         printButton.setToolTipText(Labels.getProperty("print"));
@@ -177,9 +178,7 @@ public class CpvAmountDialog extends JDialog {
             this.setTitle(Labels.getProperty("cpvAmounts") + " - " + parent.getReportYear());
             resolutionField.setText(EmptyModel.STRING);
             resolutionDatePicker.clear();
-            if (listener != null) {
-                listener.getData(parent.getReportYear());
-            }
+            listener.getData(parent.getReportYear());
         }
         super.setVisible(visible);
     }

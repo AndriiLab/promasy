@@ -38,12 +38,12 @@ import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.domain.versioning.entities.Version;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.MainFrameListener;
-import com.github.andriilab.promasy.presentation.Utils;
 import com.github.andriilab.promasy.presentation.amunits.AmUnitsDialogListener;
 import com.github.andriilab.promasy.presentation.bids.BidsListPanelListener;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.ErrorOptionPane;
+import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeDialogListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeFromLoginListener;
@@ -137,7 +137,7 @@ public class Controller {
                 try {
                     Utils.saveConnectionSettings(model);
                 } catch (IOException e) {
-                    Logger.errorEvent(mainFrame, e);
+                    Logger.errorEvent(this.getClass(), mainFrame, e);
                 }
 
                 // trying to connect with new settings
@@ -156,7 +156,7 @@ public class Controller {
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = Utils.makePass(password, retrieveUserSalt(user));
-                if (pass == null) {
+                if (pass.equals(EmptyModel.STRING)) {
                     ErrorOptionPane.criticalError(mainFrame);
                     close();
                 }
@@ -180,7 +180,7 @@ public class Controller {
             // creating new user
             public boolean isAbleToRegister() {
                 int registrationNumber = registrationsLeft();
-                Logger.infoEvent(mainFrame, "Ticket number: " + registrationNumber);
+                Logger.infoEvent(this.getClass(), mainFrame, "Ticket number: " + registrationNumber);
                 if (registrationNumber > 0) {
                     LoginData.getInstance(storage.EMPLOYEES.getUserWithId(1L));
                     initMainFrame();
@@ -194,7 +194,7 @@ public class Controller {
         Object[] options = {Labels.getProperty("okBtn"), Labels.getProperty("downloadFromSite")};
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
-        Logger.infoEvent(mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
+        Logger.infoEvent(this.getClass(), mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
         if (currentVersion.compareTo(dbVersion) < 0) {
             int selectedOption = JOptionPane.showOptionDialog(mainFrame,
                     Labels.withDot("oldVersionOfApp") + "\n" +
@@ -486,7 +486,7 @@ public class Controller {
             @Override
             public String getEmployee(GetEmployeesQuery query) {
                 List<Employee> models = retrieveEmployees(query);
-                if (models == null || models.isEmpty()) {
+                if (models.isEmpty()) {
                     return EmptyModel.STRING;
                 } else {
                     return models.get(0).getShortName();
@@ -501,7 +501,7 @@ public class Controller {
                 Desktop.getDesktop().browse(URI.create(Labels.getProperty("updateUrl")));
                 return;
             } catch (IOException e) {
-                Logger.warnEvent(e);
+                Logger.warnEvent(this.getClass(), e);
             }
         }
         Utils.copyToClipboard(Labels.getProperty("updateUrl"));
@@ -559,7 +559,7 @@ public class Controller {
         });
         List<Employee> employees = retrieveEmployees(new GetEmployeesQuery());
         Employee firstUser;
-        if (employees == null || employees.isEmpty()) {
+        if (employees.isEmpty()) {
             firstUser = new Employee(Role.ADMIN);
         } else {
             firstUser = employees.get(0);
@@ -576,10 +576,10 @@ public class Controller {
         DBConnector.INSTANCE.disconnect();
         try {
             DBConnector.INSTANCE.connect();
-            Logger.infoEvent(mainFrame, Labels.getProperty("connectedToDB"));
+            Logger.infoEvent(this.getClass(), mainFrame, Labels.getProperty("connectedToDB"));
             closeSplashScreen();
         } catch (SQLException e) {
-            Logger.errorEvent(mainFrame, Labels.getProperty("noConnectionToDB"), e);
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.getProperty("noConnectionToDB"), e);
             JOptionPane.showMessageDialog(mainFrame, Labels.getProperty("noConnectionToDB"),
                     Labels.getProperty("databaseConnectionError"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             closeSplashScreen();
@@ -600,18 +600,18 @@ public class Controller {
                 Preferences.userRoot().node("db_con").clear();
                 connect();
             } catch (BackingStoreException e1) {
-                Logger.errorEvent(mainFrame, e);
+                Logger.errorEvent(this.getClass(), mainFrame, e);
             }
-            Logger.errorEvent(mainFrame, Labels.withColon("versionRequest"), e);
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("versionRequest"), e);
         }
-        return null;
+        return EmptyModel.VERSION;
     }
 
     private boolean isFirstRun() {
         try {
             return storage.EMPLOYEES.isFirstRun();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, e);
+            Logger.errorEvent(this.getClass(), mainFrame, e);
             return false;
         }
     }
@@ -619,9 +619,9 @@ public class Controller {
     private void setCurrentVersionAsMinimum() {
         try {
             storage.VERSIONS.updateVersion();
-            Logger.infoEvent(mainFrame, Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
+            Logger.infoEvent(this.getClass(), mainFrame, Labels.withColon("minimumVersionWasSet") + Labels.getVersion());
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("error") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("error") +
                     Labels.withColon("minimumVersionWasSet") + Labels.getVersion(), e);
         }
     }
@@ -631,7 +631,7 @@ public class Controller {
         try {
             return storage.EMPLOYEES.checkLogin(username, password);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("role.user") + " :" + username, e);
             return false;
         }
@@ -641,7 +641,7 @@ public class Controller {
         try {
             return storage.EMPLOYEES.checkLogin(username);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, e);
+            Logger.errorEvent(this.getClass(), mainFrame, e);
             return false;
         }
     }
@@ -650,7 +650,7 @@ public class Controller {
         try {
             return storage.EMPLOYEES.getSalt(login);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, "Salt retrieval error with login: " + login, e);
+            Logger.errorEvent(this.getClass(), mainFrame, "Salt retrieval error with login: " + login, e);
             return 0;
         }
     }
@@ -659,7 +659,7 @@ public class Controller {
         try {
             return storage.REGISTRATION.useRegistration();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, e);
+            Logger.errorEvent(this.getClass(), mainFrame, e);
             return 0;
         }
     }
@@ -668,7 +668,7 @@ public class Controller {
         storage.REGISTRATION.changeNumberOfRegistrationTickets(registrationsNumber);
         String message = Labels.withColon("numberOfRegistrionsAvailable") +
                 storage.REGISTRATION.getRegistrationsLeft();
-        Logger.infoEvent(mainFrame, message);
+        Logger.infoEvent(this.getClass(), mainFrame, message);
         JOptionPane.showConfirmDialog(mainFrame,
                 message,
                 Labels.getProperty("notification"),
@@ -682,8 +682,8 @@ public class Controller {
         try {
             return storage.CPV.get(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("cpvRequest") + query, e);
-            return null;
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("cpvRequest") + query, e);
+            return Collections.emptyList();
         }
     }
 
@@ -691,9 +691,9 @@ public class Controller {
         try {
             return storage.EMPLOYEES.retrieve(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("role.user"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -701,9 +701,9 @@ public class Controller {
         try {
             return storage.INSTITUTES.getResults();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("institute"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -711,9 +711,9 @@ public class Controller {
         try {
             return storage.DEPARTMENTS.get(instId);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("department") + " inst id: " + instId, e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -721,9 +721,9 @@ public class Controller {
         try {
             return storage.SUBDEPARTMENS.get(depId);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("subdepartment") + " dep id: " + depId, e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -731,9 +731,9 @@ public class Controller {
         try {
             return storage.AMOUNTUNITS.getResults();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("amount"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -741,9 +741,9 @@ public class Controller {
         try {
             return storage.PRODUCERS.getResults();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("producer"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -751,9 +751,9 @@ public class Controller {
         try {
             return storage.SUPPLIERS.getResults();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("suplBorder"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -761,9 +761,9 @@ public class Controller {
         try {
             return storage.REASONS.getResults();
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("reasonForSupplierChoice"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -771,9 +771,9 @@ public class Controller {
         try {
             return storage.FINANCES.get(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("finances"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -781,9 +781,9 @@ public class Controller {
         try {
             return storage.FINANCES.retrieveUnassignedAmount(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("finances"), e);
-            return null;
+            return BigDecimal.ZERO;
         }
     }
 
@@ -792,9 +792,9 @@ public class Controller {
         try {
             return storage.FINANCES.retrieveLeftAmount(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("finances"), e);
-            return null;
+            return BigDecimal.ZERO;
         }
     }
 
@@ -802,9 +802,9 @@ public class Controller {
         try {
             return storage.DEPARTMENT_FINANCES.get(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("departmentFinances"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -812,9 +812,9 @@ public class Controller {
         try {
             return storage.DEPARTMENT_FINANCES.retrieveLeftAmount(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("finances"), e);
-            return null;
+            return BigDecimal.ZERO;
         }
     }
 
@@ -822,9 +822,9 @@ public class Controller {
         try {
             return storage.DEPARTMENT_FINANCES.retrieveSpentAmount(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("finances"), e);
-            return null;
+            return BigDecimal.ZERO;
         }
     }
 
@@ -832,9 +832,9 @@ public class Controller {
         try {
             return storage.BIDS.retrieve(query);
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("bids"), e);
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -865,9 +865,9 @@ public class Controller {
                             .thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())))
                     .collect(Collectors.toList()));
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon("request") +
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("cpvAmounts"), e);
-            return new LinkedList<>();
+            return Collections.emptyList();
         }
     }
 
@@ -875,25 +875,25 @@ public class Controller {
     private <T extends IEntity> void createOrUpdate(CreateOrUpdateCommand<T> command) {
         try {
             commandsHandler.Handle(command);
-            Logger.infoEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
+            Logger.infoEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
         }
     }
 
     private <T extends IEntity> void refresh(RefreshCommand<T> command) {
         try {
             commandsHandler.Handle(command);
-            Logger.infoEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
+            Logger.infoEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
         } catch (JDBCException e) {
-            Logger.errorEvent(mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
+            Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
         }
     }
 
     // default close method
     private void close() {
         DBConnector.INSTANCE.disconnect();
-        Logger.infoEvent(mainFrame, "Disconnected successfully");
+        Logger.infoEvent(this.getClass(), mainFrame, "Disconnected successfully");
         if (parameters.contains("logSave")) {
             mainFrame.saveLog();
         }
