@@ -3,7 +3,7 @@ package com.github.andriilab.promasy.presentation.components.dialogs;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.commons.SystemCommands;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -35,11 +35,11 @@ public class FileSavedDialog extends JDialog {
         JButton copyPathButton = new JButton(Icons.COPY);
         copyPathButton.setPreferredSize(buttonDim);
         copyPathButton.setToolTipText(Labels.getProperty("copyPathToClipboard"));
-        copyPathButton.addActionListener(e -> Utils.copyToClipboard(pathField.getText()));
+        copyPathButton.addActionListener(e -> SystemCommands.copyToClipboard(pathField.getText()));
 
         JButton openInExplorerButton = new JButton(Icons.OPEN_FOLDER);
         openInExplorerButton.setPreferredSize(buttonDim);
-        openInExplorerButton.addActionListener(e -> Utils.showInExplorer(pathField.getText()));
+        openInExplorerButton.addActionListener(e -> SystemCommands.showInExplorer(pathField.getText()));
 
         JPanel pathPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel infoPanel = new JPanel(new BorderLayout());

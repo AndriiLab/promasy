@@ -5,7 +5,7 @@ import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.commons.Parsers;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
@@ -199,22 +199,22 @@ class CreateFinancePanel extends JPanel {
             endDatePicker.requestFocusInWindow();
             return false;
         }
-        materialAmount = Utils.parseBigDecimal(parent, materialsAmountField, Labels.getProperty("materialsAmount"));
+        materialAmount = Parsers.parseBigDecimal(parent, materialsAmountField, Labels.getProperty("materialsAmount"));
         if (materialAmount == null) {
             return false;
         }
 
-        equipmentAmount = Utils.parseBigDecimal(parent, equipmentAmountField, Labels.getProperty("equipmentAmount"));
+        equipmentAmount = Parsers.parseBigDecimal(parent, equipmentAmountField, Labels.getProperty("equipmentAmount"));
         if (equipmentAmount == null) {
             return false;
         }
 
-        kpkvk = Utils.parseInteger(parent, kpkvkField, Labels.getProperty("kpkvk"));
+        kpkvk = Parsers.parseInteger(parent, kpkvkField, Labels.getProperty("kpkvk"));
         if (kpkvk == null) {
             return false;
         }
 
-        servicesAmount = Utils.parseBigDecimal(parent, servicesAmountField, Labels.getProperty("servicesAmount"));
+        servicesAmount = Parsers.parseBigDecimal(parent, servicesAmountField, Labels.getProperty("servicesAmount"));
 
         return servicesAmount != null;
     }

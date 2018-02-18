@@ -16,14 +16,10 @@ import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.commons.Colors;
-import com.github.andriilab.promasy.presentation.commons.Icons;
-import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.commons.*;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
-import com.github.andriilab.promasy.presentation.validator.Validator;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
@@ -34,6 +30,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -311,7 +308,7 @@ public class CreateBidPanel extends JPanel {
         });
     }
 
-    void setTaxLabels() {
+    private void setTaxLabels() {
         oneUnitPriceLabel.setText(isWithTax ? Labels.withColon("oneUnitPrice") : Labels.withSpaceAfter("oneUnitPrice") + Labels.withColon("withoutTax"));
         totalPriceDescLabel.setText(isWithTax ? Labels.withColon("totalPrice") : Labels.withSpaceAfter("totalPrice") + Labels.withColon("withTax"));
     }
@@ -370,7 +367,7 @@ public class CreateBidPanel extends JPanel {
         String amountString = amountField.getText();
         if (!onePriceString.isEmpty() && !amountString.isEmpty()) {
             try {
-                onePriceString = Utils.formatFinanceString(onePriceString);
+                onePriceString = Formatters.formatFinanceString(onePriceString);
                 BigDecimal onePrice = new BigDecimal(onePriceString);
                 BigDecimal amount = new BigDecimal(amountString);
 
@@ -379,7 +376,7 @@ public class CreateBidPanel extends JPanel {
                 }
                 totalPrice = onePrice.multiply(amount);
 
-                totalPriceLabel.setText(totalPrice + Labels.withSpaceBefore("uah"));
+                totalPriceLabel.setText(totalPrice.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
                 oneUnitPriceField.setText(onePriceString);
             } catch (NumberFormatException ex) {
                 Logger.warnEvent(this.getClass(), ex);
@@ -515,7 +512,7 @@ public class CreateBidPanel extends JPanel {
 
         BidType currentBidType = (BidType) bidTypeBox.getSelectedItem();
 
-        Integer kekv = Utils.parseInteger(parent, kekvField, Labels.getProperty("kekv"));
+        Integer kekv = Parsers.parseInteger(parent, kekvField, Labels.getProperty("kekv"));
         if (kekv == null) {
             return false;
         }

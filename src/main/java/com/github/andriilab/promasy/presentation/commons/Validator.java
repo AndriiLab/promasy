@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation.validator;
+package com.github.andriilab.promasy.presentation.commons;
 
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;

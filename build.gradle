@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version '0.8.2.0'
+version '0.8.2.1'
 sourceCompatibility = 1.8
 
 repositories {

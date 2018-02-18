@@ -6,6 +6,7 @@ package com.github.andriilab.promasy.data.controller;
 import com.github.andriilab.promasy.data.commands.CommandsHandler;
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.commands.RefreshCommand;
+import com.github.andriilab.promasy.data.helpers.PasswordUtils;
 import com.github.andriilab.promasy.data.queries.bids.GetBidsQuery;
 import com.github.andriilab.promasy.data.queries.cpv.CpvRequestQuery;
 import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
@@ -16,7 +17,8 @@ import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepar
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
 import com.github.andriilab.promasy.data.storage.ConnectionSettings;
-import com.github.andriilab.promasy.data.storage.DBConnector;
+import com.github.andriilab.promasy.data.storage.DbConnector;
+import com.github.andriilab.promasy.data.storage.LocalStorage;
 import com.github.andriilab.promasy.data.storage.Storage;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
@@ -42,7 +44,7 @@ import com.github.andriilab.promasy.presentation.amunits.AmUnitsDialogListener;
 import com.github.andriilab.promasy.presentation.bids.BidsListPanelListener;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.commons.SystemCommands;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import com.github.andriilab.promasy.presentation.conset.ConSetListener;
 import com.github.andriilab.promasy.presentation.employee.CreateEmployeeDialogListener;
@@ -91,15 +93,15 @@ public class Controller {
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
-        DBConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
-        mainFrame.setDefaultConnectionSettings(DBConnector.INSTANCE.getConnectionSettings());
+        DbConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+        mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
 
         //show ConSettDialog if it was defined in command line arguments
         if (parameters.contains("connectionSettings")) {
             mainFrame.showConSettDialog();
         }
         if (parameters.contains("connectionStatistics")) {
-            DBConnector.INSTANCE.showConnectionStats(mainFrame);
+            DbConnector.INSTANCE.showConnectionStats(mainFrame);
         }
 
         connect();
@@ -135,14 +137,14 @@ public class Controller {
             @Override
             public void preferencesSetEventOccurred(ConnectionSettings model) {
                 try {
-                    Utils.saveConnectionSettings(model);
+                    LocalStorage.saveConnectionSettings(model);
                 } catch (IOException e) {
                     Logger.errorEvent(this.getClass(), mainFrame, e);
                 }
 
                 // trying to connect with new settings
-                DBConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
-                mainFrame.setDefaultConnectionSettings(DBConnector.INSTANCE.getConnectionSettings());
+                DbConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+                mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
                 connect();
             }
 
@@ -155,7 +157,7 @@ public class Controller {
         // init LoginListener here, because loginDialog appears before the MainFrame
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
-                String pass = Utils.makePass(password, retrieveUserSalt(user));
+                String pass = PasswordUtils.makePass(password, retrieveUserSalt(user));
                 if (pass.equals(EmptyModel.STRING)) {
                     ErrorOptionPane.criticalError(mainFrame);
                     close();
@@ -163,7 +165,7 @@ public class Controller {
                 if (validateLogin(user, pass)) {
                     // if login was successful init MainFrame and make it visible
                     initMainFrame();
-                    mainFrame.writeStatusPanelCurrentDb(DBConnector.INSTANCE.getConnectionSettings().getDatabase());
+                    mainFrame.writeStatusPanelCurrentDb(DbConnector.INSTANCE.getConnectionSettings().getDatabase());
                     mainFrame.setVisible(true);
                 } else {
                     // if login wasn't successful showing error dialog
@@ -504,7 +506,7 @@ public class Controller {
                 Logger.warnEvent(this.getClass(), e);
             }
         }
-        Utils.copyToClipboard(Labels.getProperty("updateUrl"));
+        SystemCommands.copyToClipboard(Labels.getProperty("updateUrl"));
         JOptionPane optPane = new JOptionPane(Labels.getProperty("urlCopiedToClipboard"),
                 JOptionPane.INFORMATION_MESSAGE,
                 JOptionPane.DEFAULT_OPTION,
@@ -573,9 +575,9 @@ public class Controller {
 
     // connecting to DB
     private void connect() {
-        DBConnector.INSTANCE.disconnect();
+        DbConnector.INSTANCE.disconnect();
         try {
-            DBConnector.INSTANCE.connect();
+            DbConnector.INSTANCE.connect();
             Logger.infoEvent(this.getClass(), mainFrame, Labels.getProperty("connectedToDB"));
             closeSplashScreen();
         } catch (SQLException e) {
@@ -586,7 +588,7 @@ public class Controller {
             // if can't connect - call ConnectionSettingsDialog
             mainFrame.showConSettDialog();
         }
-        storage = new Storage(DBConnector.INSTANCE.getEntityManager());
+        storage = new Storage(DbConnector.INSTANCE.getEntityManager());
         commandsHandler = new CommandsHandler(storage);
     }
 
@@ -892,7 +894,7 @@ public class Controller {
 
     // default close method
     private void close() {
-        DBConnector.INSTANCE.disconnect();
+        DbConnector.INSTANCE.disconnect();
         Logger.infoEvent(this.getClass(), mainFrame, "Disconnected successfully");
         if (parameters.contains("logSave")) {
             mainFrame.saveLog();

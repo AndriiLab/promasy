@@ -2,6 +2,7 @@ package com.github.andriilab.promasy.presentation.employee;
 
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.LoginData;
+import com.github.andriilab.promasy.data.helpers.PasswordUtils;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
@@ -11,7 +12,6 @@ import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import org.jdesktop.swingx.prompt.PromptSupport;
@@ -252,8 +252,8 @@ public class CreateEmployeeDialog extends JDialog {
                 return false;
             }
             boolean isUniqueUser = listener.checkUniqueLogin(login);
-            long salt = Utils.makeSalt();
-            String pass = Utils.makePass(password, salt);
+            long salt = PasswordUtils.makeSalt();
+            String pass = PasswordUtils.makePass(password, salt);
             if (pass == null) {
                 ErrorOptionPane.criticalError(parent);
                 loginListener.cancelEvent();

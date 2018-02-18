@@ -5,7 +5,7 @@ import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
+import com.github.andriilab.promasy.presentation.commons.SystemCommands;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -157,7 +157,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
     }
 
     private void copyToClipboard() {
-        Utils.copyToClipboard(result.toPlainString());
+        SystemCommands.copyToClipboard(result.toPlainString());
     }
 
     private void printOperator(String btnText) {

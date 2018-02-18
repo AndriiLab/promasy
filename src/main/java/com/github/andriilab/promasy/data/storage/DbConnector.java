@@ -3,7 +3,6 @@ package com.github.andriilab.promasy.data.storage;
 import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.commons.Utils;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 
@@ -15,7 +14,7 @@ import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public enum DBConnector {
+public enum DbConnector {
     INSTANCE;
 
     private EntityManagerFactory entityManagerFactory;
@@ -32,7 +31,7 @@ public enum DBConnector {
     public void loadConnectionSettings(boolean tableUpdateMode) {
         ConnectionSettings model = null;
         try {
-            model = Utils.loadConnectionSettings();
+            model = LocalStorage.loadConnectionSettings();
             Logger.infoEvent(this.getClass(), null, "Connection Settings loaded from settings file");
         } catch (FileNotFoundException e) {
             Logger.infoEvent(this.getClass(), null, "Connection Settings used from defaults");

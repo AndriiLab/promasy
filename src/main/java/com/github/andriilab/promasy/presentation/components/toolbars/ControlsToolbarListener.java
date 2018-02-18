@@ -1,4 +1,4 @@
-package com.github.andriilab.promasy.presentation.toolbars;
+package com.github.andriilab.promasy.presentation.components.toolbars;
 
 public interface ControlsToolbarListener {
     void reportYearChanged();
