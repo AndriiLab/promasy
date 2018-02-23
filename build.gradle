@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version '0.8.2.1'
+version '0.8.2.2'
 sourceCompatibility = 1.8
 
 repositories {
@@ -23,6 +23,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
     compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.5.1'
+
+    // google roboto font (https://github.com/google/roboto/releases) package for jasper reports
+    // howto: https://community.jaspersoft.com/wiki/custom-font-font-extension
+    compile files('libs/google-roboto-2.138.jar')
 
     // https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-all
     compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-03-31T12:19:44 -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
@@ -59,14 +58,14 @@
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                     </reportElement>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$R{cpvAmountReport.footerReamrk}]]></textFieldExpression>
                 </textField>
                 <textField>
                     <reportElement x="480" y="0" width="322" height="20" uuid="58bcf19b-4d70-4523-a72d-cd398fd6d752"/>
                     <textElement textAlignment="Right" verticalAlignment="Middle">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression>
                         <![CDATA[$R{cpvAmountReport.total}+" "+$V{totalPriceAll}+" "+$R{uah}]]></textFieldExpression>
@@ -76,7 +75,7 @@
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                     </reportElement>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression>
                         <![CDATA[$R{cpvAmountReport.footerReamrk2} + " "+$P{resolutionDate}+" № "+$P{resolutionNum}]]></textFieldExpression>
@@ -86,7 +85,7 @@
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                     </reportElement>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$R{role.headOfTenderCommittee}]]></textFieldExpression>
                 </textField>
@@ -95,14 +94,14 @@
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                     </reportElement>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
                 </textField>
                 <textField>
                     <reportElement x="420" y="60" width="160" height="20" uuid="f8fceb99-88bc-4cbd-a562-53930bb60c2a"/>
                     <textElement textAlignment="Right">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$P{headTender}]]></textFieldExpression>
                 </textField>
@@ -111,14 +110,14 @@
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                     </reportElement>
                     <textElement textAlignment="Right">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$P{secretaryTender}]]></textFieldExpression>
                 </textField>
                 <textField>
                     <reportElement x="628" y="60" width="103" height="40" uuid="db8ec7f7-398c-42f1-887e-793b08ddffcb"/>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression>
                         <![CDATA["____________\n("+$R{cpvAmountReport.signature}+")   "+$R{cpvAmountReport.stamp}]]></textFieldExpression>
@@ -126,7 +125,7 @@
                 <textField>
                     <reportElement x="628" y="100" width="103" height="39" uuid="ed2caf8d-2281-4d3a-b265-b70236b7df81"/>
                     <textElement>
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <textFieldExpression>
                         <![CDATA["____________\n("+$R{cpvAmountReport.signature}+")"]]></textFieldExpression>
@@ -148,7 +147,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Middle">
-                        <font size="12" isBold="true"/>
+                        <font fontName="Roboto" size="12" isBold="true"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$F{bidType}.toUpperCase()]]></textFieldExpression>
                 </textField>
@@ -166,7 +165,7 @@
                         <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
                     </box>
                     <textElement textAlignment="Left" verticalAlignment="Top">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <text><![CDATA[]]></text>
                 </staticText>
@@ -180,7 +179,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Top">
-                        <font size="12" isBold="true"/>
+                        <font fontName="Roboto" size="12" isBold="true"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$R{cpvAmountReport.total}]]></textFieldExpression>
                 </textField>
@@ -194,7 +193,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Top">
-                        <font size="12" isBold="true"/>
+                        <font fontName="Roboto" size="12" isBold="true"/>
                     </textElement>
                     <textFieldExpression><![CDATA[$V{totalOnBidType}+" "+$R{uah}]]></textFieldExpression>
                 </textField>
@@ -208,7 +207,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Top">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <text><![CDATA[]]></text>
                 </staticText>
@@ -222,7 +221,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Top">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <text><![CDATA[]]></text>
                 </staticText>
@@ -236,7 +235,7 @@
                         <rightPen lineWidth="1.0"/>
                     </box>
                     <textElement textAlignment="Center" verticalAlignment="Top">
-                        <font size="12"/>
+                        <font fontName="Roboto" size="12"/>
                     </textElement>
                     <text><![CDATA[]]></text>
                 </staticText>
@@ -251,21 +250,21 @@
             <textField>
                 <reportElement x="580" y="0" width="200" height="39" uuid="045cf011-7500-471d-8e86-238eba6e1d94"/>
                 <textElement textAlignment="Right">
-                    <font size="10"/>
+                    <font fontName="Roboto" size="10"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.nakaz}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="580" y="40" width="200" height="19" uuid="07f78dd3-3e01-4578-87e6-5a0ae09201c6"/>
                 <textElement textAlignment="Right">
-                    <font isUnderline="true"/>
+                    <font fontName="Roboto" isUnderline="true"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.nakazDate}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="0" y="70" width="799" height="20" uuid="e34587df-bed3-440c-9853-7d23bbe5f5b5"/>
                 <textElement textAlignment="Center">
-                    <font size="14" isBold="true"/>
+                    <font fontName="Roboto" size="14" isBold="true"/>
                 </textElement>
                 <textFieldExpression>
                     <![CDATA[$R{cpvAmountReport.title}+" "+$P{year}+" "+$R{cpvAmountReport.title2}]]></textFieldExpression>
@@ -273,14 +272,16 @@
             <textField>
                 <reportElement x="1" y="92" width="798" height="20" uuid="3d0afc38-94bf-485e-bb04-c0f5867dc9d7"/>
                 <textElement textAlignment="Center">
-                    <font size="14" isBold="true"/>
+                    <font fontName="Roboto" size="14" isBold="true"/>
                 </textElement>
                 <textFieldExpression>
                     <![CDATA[$P{organization}.toUpperCase()+", "+$R{cpvAmountReport.codeEDRPOU}+" "+$P{edrpou}]]></textFieldExpression>
             </textField>
             <textField>
                 <reportElement x="171" y="112" width="420" height="18" uuid="6ad9749f-6331-4740-83ed-802ca13d037f"/>
-                <textElement textAlignment="Center"/>
+                <textElement textAlignment="Center">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.subTitle}]]></textFieldExpression>
             </textField>
             <textField>
@@ -292,7 +293,9 @@
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col1Title}]]></textFieldExpression>
             </textField>
             <textField>
@@ -305,6 +308,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
                     <paragraph lineSpacing="Single"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col2Title}]]></textFieldExpression>
@@ -318,7 +322,9 @@
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col3Title}]]></textFieldExpression>
             </textField>
             <textField>
@@ -330,7 +336,9 @@
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col4Title}]]></textFieldExpression>
             </textField>
             <textField>
@@ -342,7 +350,9 @@
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col5Title}]]></textFieldExpression>
             </textField>
             <textField>
@@ -354,7 +364,9 @@
                     <bottomPen lineWidth="1.0"/>
                     <rightPen lineWidth="1.0"/>
                 </box>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[$R{cpvAmountReport.col6Title}]]></textFieldExpression>
             </textField>
         </band>
@@ -373,7 +385,7 @@
                     <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
                 <textElement textAlignment="Left" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpvName}]]></textFieldExpression>
             </textField>
@@ -387,7 +399,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA["2281/3210\n"+$F{kpkvk}]]></textFieldExpression>
             </textField>
@@ -401,7 +413,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Right" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                     <paragraph lineSpacing="Single"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
@@ -416,7 +428,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{procurementProcedure}]]></textFieldExpression>
             </textField>
@@ -430,7 +442,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
             </textField>
@@ -447,7 +459,7 @@
                     <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font size="12" isBold="true"/>
+                    <font fontName="Roboto" size="12" isBold="true"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpvNumber}]]></textFieldExpression>
             </textField>
@@ -461,7 +473,7 @@
                     <rightPen lineWidth="1.0"/>
                 </box>
                 <textElement textAlignment="Center" verticalAlignment="Top">
-                    <font size="12"/>
+                    <font fontName="Roboto" size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{notation}]]></textFieldExpression>
             </textField>
@@ -477,7 +489,7 @@
                     <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
                 </reportElement>
                 <textElement textAlignment="Right">
-                    <font size="10"/>
+                    <font fontName="Roboto" size="10"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
@@ -485,6 +497,9 @@
                 <reportElement x="761" y="0" width="41" height="20" uuid="51bcbc4e-f7f7-4945-8b6c-a606a79db1d9">
                     <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
                 </reportElement>
+                <textElement>
+                    <font fontName="Roboto"/>
+                </textElement>
                 <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
         </band>

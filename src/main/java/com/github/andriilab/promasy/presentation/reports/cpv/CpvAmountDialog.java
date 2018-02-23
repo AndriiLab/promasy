@@ -24,7 +24,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
@@ -139,7 +138,7 @@ public class CpvAmountDialog extends JDialog {
 
         Institute institute = LoginData.getInstance().getSubdepartment().getDepartment().getInstitute();
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("year", Year.now().getValue());
+        parameters.put("year", parent.getReportYear());
         parameters.put("organization", institute.getInstName());
         parameters.put("edrpou", institute.getEDRPOU());
         parameters.put("headTender", listener.getEmployee(new GetEmployeesQuery(Role.HEAD_OF_TENDER_COMMITTEE)));

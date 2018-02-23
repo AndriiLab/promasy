@@ -149,10 +149,8 @@ public class CreateBidPanel extends JPanel {
         searchCPVButton.setPreferredSize(buttonDim);
         searchCPVButton.setEnabled(true);
 
-        okButton = new JButton(Labels.getProperty("create"));
-        okButton.setIcon(Icons.OK);
-        cancelButton = new JButton(Labels.getProperty("cancel"));
-        cancelButton.setIcon(Icons.CANCEL);
+        okButton = new JButton(Labels.getProperty("create"), Icons.OK);
+        cancelButton = new JButton(Labels.getProperty("cancel"), Icons.CANCEL);
 
         closeButton = CEDButtons.getCloseButton();
 
@@ -169,7 +167,7 @@ public class CreateBidPanel extends JPanel {
         oneUnitPriceLabel = new JLabel(Labels.withColon("oneUnitPrice"));
         totalPriceDescLabel = new JLabel(Labels.withColon("totalPrice"));
 
-        isWithTax = false;
+        isWithTax = true;
         taxCheckBox = new JCheckBox(Labels.getProperty("tax"));
         taxCheckBox.setSelected(isWithTax);
 
@@ -309,8 +307,12 @@ public class CreateBidPanel extends JPanel {
     }
 
     private void setTaxLabels() {
-        oneUnitPriceLabel.setText(isWithTax ? Labels.withColon("oneUnitPrice") : Labels.withSpaceAfter("oneUnitPrice") + Labels.withColon("withoutTax"));
-        totalPriceDescLabel.setText(isWithTax ? Labels.withColon("totalPrice") : Labels.withSpaceAfter("totalPrice") + Labels.withColon("withTax"));
+        oneUnitPriceLabel.setText(isWithTax
+                ? Labels.withColon("oneUnitPrice")
+                : Labels.withSpaceAfter("oneUnitPrice") + Labels.withColon("withoutTax"));
+        totalPriceDescLabel.setText(isWithTax
+                ? Labels.withColon("totalPrice")
+                : Labels.withSpaceAfter("totalPrice") + Labels.withColon("withTax"));
     }
 
     void setCurrentDepartment(Department currentDepartment) {
@@ -347,6 +349,8 @@ public class CreateBidPanel extends JPanel {
         } catch (IllegalArgumentException ex) {
             listener.getAllData();
         }
+        isWithTax = true;
+        setTaxLabels();
         cpvField.setText(EmptyModel.STRING);
         catNumberField.setText(EmptyModel.STRING);
         descriptionPane.setText(EmptyModel.STRING);
@@ -503,6 +507,9 @@ public class CreateBidPanel extends JPanel {
         BigDecimal onePrice;
         try {
             onePrice = new BigDecimal(onePriceString);
+            if (!isWithTax) {
+                onePrice = onePrice.multiply(BigDecimal.valueOf(1.2));
+            }
         } catch (NumberFormatException ex) {
             Logger.warnEvent(this.getClass(), ex);
             ErrorOptionPane.wrongFormat(parent, Labels.getProperty("oneUnitPrice"), Labels.getProperty("wrongIntegerFormat"));
@@ -511,6 +518,9 @@ public class CreateBidPanel extends JPanel {
         }
 
         BidType currentBidType = (BidType) bidTypeBox.getSelectedItem();
+        if (currentBidType == null) {
+            return false;
+        }
 
         Integer kekv = Parsers.parseInteger(parent, kekvField, Labels.getProperty("kekv"));
         if (kekv == null) {
@@ -629,7 +639,6 @@ public class CreateBidPanel extends JPanel {
     public void setVisible(boolean visible) {
         if (visible) {
             listener.getAllData();
-            setTaxLabels();
         }
         kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
         createdBidModel = new Bid();
