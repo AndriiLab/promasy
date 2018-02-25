@@ -236,13 +236,7 @@ public class MainFrame extends JFrame {
 
             @Override
             public void showCalculator() {
-                //trying to execute system calculator
-                try {
-                    Runtime.getRuntime().exec("calc");
-                } catch (IOException e) {
-                    Logger.warnEvent(this.getClass(), e);
-                    calculatorDialog.setVisible(true);
-                }
+                displayCalculator();
             }
 
             @Override
@@ -330,6 +324,16 @@ public class MainFrame extends JFrame {
             }
 
             @Override
+            public void showCalculator() {
+                displayCalculator();
+            }
+
+            @Override
+            public void showCpvSelectorDialog() {
+                cpvDialog.setVisible(true);
+            }
+
+            @Override
             public void exitAction() {
                 listener.exitEventOccurred();
             }
@@ -354,6 +358,16 @@ public class MainFrame extends JFrame {
             financePanel.refreshYear();
 
         bidsListPanel.refreshYear();
+    }
+
+    private void displayCalculator() {
+        //trying to execute system calculator
+        try {
+            Runtime.getRuntime().exec("calc");
+        } catch (IOException e) {
+            Logger.warnEvent(this.getClass(), e);
+            calculatorDialog.setVisible(true);
+        }
     }
 
     private void changeNumberOfRegistrations() {

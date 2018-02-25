@@ -73,8 +73,8 @@ public class LoggerDialog extends JDialog {
             bw.write(logPane.getText());
             bw.close();
             fw.close();
-            JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("logSavedAs") + fileName, Labels.getProperty("fileSaved"), JOptionPane.INFORMATION_MESSAGE, Icons.INFO);
             this.setVisible(false);
+            parent.showFileSavedDialog(fileName);
         } catch (IOException e1) {
             JOptionPane.showMessageDialog(parent, Labels.withSpaceAfter("fileSaveError"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
             Logger.errorEvent(this.getClass(), parent, e1);

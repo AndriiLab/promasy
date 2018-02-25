@@ -19,7 +19,7 @@ public class Icons {
     public static final Icon SEARCH = IconFontSwing.buildIcon(FontAwesome.SEARCH, 18);
     public static final Icon HOME = IconFontSwing.buildIcon(FontAwesome.HOME, 18);
     public static final Icon LEVEL_UP = IconFontSwing.buildIcon(FontAwesome.LEVEL_UP, 18);
-    public static final Icon ABOUT = IconFontSwing.buildIcon(FontAwesome.INFO, 18);
+    public static final Icon ABOUT = IconFontSwing.buildIcon(FontAwesome.INFO_CIRCLE, 18);
     public static final Icon CONNECTION_SETTINGS = IconFontSwing.buildIcon(FontAwesome.DATABASE, 18);
     public static final Icon CONNECTION_SETTINGS_RED = IconFontSwing.buildIcon(FontAwesome.DATABASE, 18, Colors.RED);
     public static final Icon USER = IconFontSwing.buildIcon(FontAwesome.USER, 18);
@@ -44,7 +44,8 @@ public class Icons {
     public static final Icon OK = IconFontSwing.buildIcon(FontAwesome.CHECK_CIRCLE_O, 15, Colors.GREEN);
     public static final Icon CANCEL = IconFontSwing.buildIcon(FontAwesome.BAN, 15, Colors.RED);
     public static final Icon ARROW_RIGHT = IconFontSwing.buildIcon(FontAwesome.ARROW_RIGHT, 15, Colors.BLUE);
-    public static final Icon MANUAL = IconFontSwing.buildIcon(FontAwesome.BOOK, 18);
+    public static final Icon MANUAL = IconFontSwing.buildIcon(FontAwesome.QUESTION_CIRCLE, 18);
+    public static final Icon BOOK = IconFontSwing.buildIcon(FontAwesome.BOOK, 18);
     public static final Icon UPDATE = IconFontSwing.buildIcon(FontAwesome.GITHUB, 18);
     public static final Icon OPEN_FOLDER = IconFontSwing.buildIcon(FontAwesome.FOLDER_OPEN, 18);
 }

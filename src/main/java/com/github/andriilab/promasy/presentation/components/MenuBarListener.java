@@ -36,4 +36,8 @@ public interface MenuBarListener {
     void showManual();
 
     void visitUpdatesSite();
+
+    void showCalculator();
+
+    void showCpvSelectorDialog();
 }

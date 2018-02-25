@@ -12,22 +12,21 @@ public class ButtonsToolbar extends JToolBar {
 
     public ButtonsToolbar() {
         setFloatable(false);
-        Dimension dim = new Dimension(20, 20);
+        Dimension dim = new Dimension(25, 25);
+
         JButton printBtn = new JButton(Icons.PRINT);
         printBtn.setPreferredSize(dim);
         printBtn.setToolTipText(Labels.getProperty("print"));
 
         JButton exportToTableFileButton = new JButton(Icons.EXCEL_FILE);
         exportToTableFileButton.setPreferredSize(dim);
-        exportToTableFileButton.setPreferredSize(new Dimension(25, 25));
         exportToTableFileButton.setToolTipText(Labels.withThreeDots("exportToTableFile"));
 
         JButton refreshButton = new JButton(Icons.REFRESH);
         refreshButton.setPreferredSize(dim);
-        refreshButton.setPreferredSize(new Dimension(25, 25));
         refreshButton.setToolTipText(Labels.getProperty("refreshTable"));
 
-        JButton cpvBtn = new JButton("CPV");
+        JButton cpvBtn = new JButton(Icons.BOOK);
         cpvBtn.setPreferredSize(dim);
         cpvBtn.setToolTipText(Labels.withThreeDots("cpvPanelTab"));
 

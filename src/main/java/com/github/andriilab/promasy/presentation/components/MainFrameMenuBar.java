@@ -35,6 +35,12 @@ public class MainFrameMenuBar extends JMenuBar {
         editMenu.addSeparator();
         editMenu.add(editCurrentUserItem);
 
+        JMenu toolsMenu = new JMenu(Labels.getProperty("tools"));
+        JMenuItem calcularorItem = new JMenuItem(Labels.withThreeDots("calculator"), Icons.CALCULATOR);
+        JMenuItem cpvSelectorItem = new JMenuItem(Labels.withThreeDots("cpvPanelTab"), Icons.BOOK);
+        toolsMenu.add(calcularorItem);
+        toolsMenu.add(cpvSelectorItem);
+
         JMenu helpMenu = new JMenu(Labels.getProperty("help"));
         JMenuItem manualItem = new JMenuItem(Labels.getProperty("manual"), Icons.MANUAL);
         JMenuItem siteWithUpdatesItem = new JMenuItem(Labels.getProperty("updatesPage"), Icons.UPDATE);
@@ -46,6 +52,7 @@ public class MainFrameMenuBar extends JMenuBar {
 
         add(fileMenu);
         add(editMenu);
+        add(toolsMenu);
 
         // advanced menu for non users
         if (role.equals(Role.ADMIN)) {
@@ -83,21 +90,17 @@ public class MainFrameMenuBar extends JMenuBar {
         exitItem.addActionListener(e -> listener.exitAction());
 
         if (!role.equals(Role.USER) && !role.equals(Role.PERSONALLY_LIABLE_EMPLOYEE) && !role.equals(Role.HEAD_OF_DEPARTMENT)) {
-            JMenu reports = new JMenu(Labels.getProperty("reports"));
-
             JMenuItem procByCpv = new JMenuItem(Labels.withThreeDots("cpvAmounts"));
-            reports.add(procByCpv);
-
-            add(reports);
-
+            toolsMenu.add(procByCpv);
             procByCpv.addActionListener(e -> listener.showCpvAmountDialog());
-
         }
 
         editAmUnitsItem.addActionListener(e -> listener.showAmUnitsDialog());
         editProdItem.addActionListener(e -> listener.showProducerDialog());
         editSuplItem.addActionListener(e -> listener.showSupplierDialog());
         editCurrentUserItem.addActionListener(e -> listener.editCurrentUserAction());
+        calcularorItem.addActionListener(e -> listener.showCalculator());
+        cpvSelectorItem.addActionListener(e -> listener.showCpvSelectorDialog());
         manualItem.addActionListener(e -> listener.showManual());
         siteWithUpdatesItem.addActionListener(e -> listener.visitUpdatesSite());
         infoItem.addActionListener(e -> listener.showInfoDialog());
