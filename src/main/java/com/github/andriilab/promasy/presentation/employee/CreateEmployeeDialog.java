@@ -12,6 +12,7 @@ import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 import org.jdesktop.swingx.prompt.PromptSupport;
@@ -38,9 +39,9 @@ public class CreateEmployeeDialog extends JDialog {
     private final JTextField emailField;
     private final JTextField phoneMainField;
     private final JTextField phoneReserveField;
-    private final PJComboBox<Institute> instituteBox;
-    private final PJComboBox<Department> departmentBox;
-    private final PJComboBox<Subdepartment> subdepartmentBox;
+    private final EntityComboBox<Institute> instituteBox;
+    private final EntityComboBox<Department> departmentBox;
+    private final EntityComboBox<Subdepartment> subdepartmentBox;
     private final PJComboBox<Role> roleBox;
     private final JTextField loginField;
     private final JPasswordField passwordField;
@@ -80,14 +81,14 @@ public class CreateEmployeeDialog extends JDialog {
 
         //Set up institute combo box and edit buttons
         DefaultComboBoxModel<Institute> instModel = new DefaultComboBoxModel<>();
-        instituteBox = new PJComboBox<>(instModel);
+        instituteBox = new EntityComboBox<>(instModel);
         instituteBox.addItem(EmptyModel.INSTITUTE);
         instituteBox.setEditable(false);
         instituteBox.setPreferredSize(comboBoxDim);
 
         //Set up department combo box and edit buttons
         DefaultComboBoxModel<Department> depModel = new DefaultComboBoxModel<>();
-        departmentBox = new PJComboBox<>(depModel);
+        departmentBox = new EntityComboBox<>(depModel);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.setEditable(false);
         departmentBox.setEnabled(false);
@@ -95,7 +96,7 @@ public class CreateEmployeeDialog extends JDialog {
 
         //Set up SubDepartment combo box and edit buttons
         DefaultComboBoxModel<Subdepartment> subdepModel = new DefaultComboBoxModel<>();
-        subdepartmentBox = new PJComboBox<>(subdepModel);
+        subdepartmentBox = new EntityComboBox<>(subdepModel);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
         subdepartmentBox.setEditable(false);
         subdepartmentBox.setEnabled(false);

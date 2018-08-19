@@ -6,6 +6,7 @@ import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
 
@@ -14,16 +15,18 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Abstract dialog with combo box and createOrUpdate, edit, delete buttons
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCEDDialogListener<T>> extends JDialog implements ActionListener {
     protected final T emptyModel;
     protected final JButton createButton;
     protected final JButton editButton;
     protected final JButton deleteButton;
-    protected final PJComboBox<T> comboBox;
+    protected final EntityComboBox<T> comboBox;
     protected T privateModel;
     protected String newName;
     protected final JButton applyButton;
@@ -34,7 +37,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
     private final CEDButtons ced;
     private final Class<T> clazz;
 
-    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, Dimension windowDimension, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, Dimension windowDimension, String windowLabel, String nameCED, EntityComboBox<T> parentComboBox) {
         super(parent, windowLabel, true);
         this.clazz = clazz;
         this.parent = parent;
@@ -49,7 +52,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
         newName = EmptyModel.STRING;
 
         DefaultComboBoxModel<T> prodModel = new DefaultComboBoxModel<>();
-        comboBox = new PJComboBox<>(prodModel);
+        comboBox = new EntityComboBox<>(prodModel);
         comboBox.addItem(emptyModel);
         comboBox.setPreferredSize(comboBoxDim);
         comboBox.setEditable(true);
@@ -92,7 +95,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
         });
     }
 
-    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, PJComboBox<T> parentComboBox) {
+    protected AbstractCEDDialog(Class<T> clazz, MainFrame parent, String windowLabel, String nameCED, EntityComboBox<T> parentComboBox) {
         this(clazz, parent, new Dimension(271, 128), windowLabel, nameCED, parentComboBox);
         layoutControls();
     }
@@ -120,8 +123,8 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
 
     private T createNewInstance() {
         try {
-            return clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
+            return clazz.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             Logger.errorEvent(clazz, parent, e);
             return null;
         }

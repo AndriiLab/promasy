@@ -106,9 +106,9 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                         key == KeyEvent.VK_SUBTRACT ||
                         key == KeyEvent.VK_DIVIDE ||
                         key == KeyEvent.VK_SLASH ||
-                        (key == KeyEvent.VK_EQUALS) && ((e.getModifiers() & KeyEvent.SHIFT_MASK) != 0)) {
+                        (key == KeyEvent.VK_EQUALS) && ((e.getModifiersEx() & KeyEvent.SHIFT_DOWN_MASK) != 0)) {
                     printOperator(String.valueOf(e.getKeyChar()));
-                } else if ((key == KeyEvent.VK_C) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+                } else if ((key == KeyEvent.VK_C) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
                     copyToClipboard();
                 }
             }

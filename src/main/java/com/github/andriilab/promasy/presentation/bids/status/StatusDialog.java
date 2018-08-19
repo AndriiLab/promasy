@@ -16,7 +16,7 @@ public class StatusDialog extends JDialog {
     private final JButton setStatusButton;
     private final JButton closeButton;
     private final JComboBox<Status> statusJComboBox;
-    private final DefaultComboBoxModel defaultComboBoxModel;
+    private final DefaultComboBoxModel<Status> defaultComboBoxModel;
     private final StatusTableModel statusTableModel;
     private final JTable statusTable;
     private StatusDialogListener listener;
@@ -33,7 +33,7 @@ public class StatusDialog extends JDialog {
         statusTableModel = new StatusTableModel();
         statusTable = new JTable(statusTableModel);
 
-        defaultComboBoxModel = new DefaultComboBoxModel(Status.values());
+        defaultComboBoxModel = new DefaultComboBoxModel<>(Status.values());
 
         statusJComboBox = new JComboBox<>(defaultComboBoxModel);
         statusJComboBox.setPreferredSize(comboBoxDim);

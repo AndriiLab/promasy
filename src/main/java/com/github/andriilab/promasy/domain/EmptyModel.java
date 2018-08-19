@@ -18,6 +18,7 @@ import com.github.andriilab.promasy.domain.versioning.entities.Version;
 /**
  * Instances of empty models
  */
+@SuppressWarnings("unchecked")
 public class EmptyModel {
     public static final AmountUnit AMOUNT_UNITS = new AmountUnit();
     public static final Bid BID = new Bid();

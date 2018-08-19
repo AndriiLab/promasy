@@ -48,7 +48,7 @@ public class ConSetDialog extends JDialog {
             ConnectionSettings model = new ConnectionSettings(server, database, schema, portNumber, user,
                     String.valueOf(password));
 
-                listener.preferencesSetEventOccurred(model);
+            listener.preferencesSetEventOccurred(model);
         });
 
         cancelButton.addActionListener(e -> {

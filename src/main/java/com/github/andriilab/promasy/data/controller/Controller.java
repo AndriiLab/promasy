@@ -864,7 +864,7 @@ public class Controller {
 
             return Collections.unmodifiableList(map.values().stream()
                     .sorted(Comparator.comparing(CpvAmount::getType)
-                            .thenComparing(Comparator.comparing(m -> m.getCpv().getCpvId())))
+                            .thenComparing(m -> m.getCpv().getCpvId()))
                     .collect(Collectors.toList()));
         } catch (JDBCException e) {
             Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +

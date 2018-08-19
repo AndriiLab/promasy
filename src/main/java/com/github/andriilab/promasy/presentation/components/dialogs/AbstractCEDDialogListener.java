@@ -8,5 +8,6 @@ import com.github.andriilab.promasy.domain.IEntity;
  */
 public interface AbstractCEDDialogListener<T extends IEntity> {
     void persistModelEventOccurred(CreateOrUpdateCommand<T> command);
+
     void getAllEntries();
 }

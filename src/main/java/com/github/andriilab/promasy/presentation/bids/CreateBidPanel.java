@@ -17,6 +17,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.*;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 import com.github.andriilab.promasy.presentation.components.panes.ErrorOptionPane;
@@ -41,14 +42,14 @@ import java.util.Locale;
  */
 public class CreateBidPanel extends JPanel {
 
-    private final PJComboBox<Department> departmentBox;
-    private final PJComboBox<Subdepartment> subdepartmentBox;
     private final PJComboBox<BidType> bidTypeBox;
-    private final PJComboBox<FinanceDepartment> financeDepartmentBox;
-    private final PJComboBox<Producer> producerBox;
-    private final PJComboBox<Supplier> supplierBox;
-    private final PJComboBox<AmountUnit> amUnitsBox;
-    private final PJComboBox<ReasonForSupplierChoice> reasonForSupplierChoiceBox;
+    private final EntityComboBox<Department> departmentBox;
+    private final EntityComboBox<Subdepartment> subdepartmentBox;
+    private final EntityComboBox<FinanceDepartment> financeDepartmentBox;
+    private final EntityComboBox<Producer> producerBox;
+    private final EntityComboBox<Supplier> supplierBox;
+    private final EntityComboBox<AmountUnit> amUnitsBox;
+    private final EntityComboBox<ReasonForSupplierChoice> reasonForSupplierChoiceBox;
     private final JButton addProducerButton;
     private final JButton addSupplierButton;
     private final JButton searchCPVButton;
@@ -87,15 +88,15 @@ public class CreateBidPanel extends JPanel {
 
         Dimension preferredFieldDim = new Dimension(235, 20);
 
-        departmentBox = new PJComboBox<>();
+        departmentBox = new EntityComboBox<>();
         departmentBox.setPreferredSize(preferredFieldDim);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
 
-        subdepartmentBox = new PJComboBox<>();
+        subdepartmentBox = new EntityComboBox<>();
         subdepartmentBox.setPreferredSize(preferredFieldDim);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
-        financeDepartmentBox = new PJComboBox<>();
+        financeDepartmentBox = new EntityComboBox<>();
         financeDepartmentBox.setPreferredSize(preferredFieldDim);
         financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
 
@@ -105,19 +106,19 @@ public class CreateBidPanel extends JPanel {
 
         preferredFieldDim.setSize(170, 25);
 
-        producerBox = new PJComboBox<>();
+        producerBox = new EntityComboBox<>();
         producerBox.setPreferredSize(preferredFieldDim);
         producerBox.addItem(EmptyModel.PRODUCER);
 
-        supplierBox = new PJComboBox<>();
+        supplierBox = new EntityComboBox<>();
         supplierBox.setPreferredSize(preferredFieldDim);
         supplierBox.addItem(EmptyModel.SUPPLIER);
 
-        reasonForSupplierChoiceBox = new PJComboBox<>();
+        reasonForSupplierChoiceBox = new EntityComboBox<>();
         reasonForSupplierChoiceBox.setPreferredSize(preferredFieldDim);
         reasonForSupplierChoiceBox.addItem(EmptyModel.REASON_FOR_SUPPLIER_CHOICE);
 
-        amUnitsBox = new PJComboBox<>();
+        amUnitsBox = new EntityComboBox<>();
         amUnitsBox.setPreferredSize(preferredFieldDim);
 
         Dimension buttonDim = new Dimension(25, 25);
@@ -574,19 +575,19 @@ public class CreateBidPanel extends JPanel {
         return true;
     }
 
-    public PJComboBox<AmountUnit> getAmUnitsBox() {
+    public EntityComboBox<AmountUnit> getAmUnitsBox() {
         return amUnitsBox;
     }
 
-    public PJComboBox<Producer> getProducerBox() {
+    public EntityComboBox<Producer> getProducerBox() {
         return producerBox;
     }
 
-    public PJComboBox<Supplier> getSupplierBox() {
+    public EntityComboBox<Supplier> getSupplierBox() {
         return supplierBox;
     }
 
-    public PJComboBox<ReasonForSupplierChoice> getReasonForSupplierChoiceBox() {
+    public EntityComboBox<ReasonForSupplierChoice> getReasonForSupplierChoiceBox() {
         return reasonForSupplierChoiceBox;
     }
 

@@ -6,887 +6,895 @@
               name="Bids_Report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802"
               leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="LabelsBundle"
               uuid="c34731e0-a519-4fe6-b889-af61f587c884">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<parameter name="headRoleName" class="java.lang.String"/>
-	<parameter name="headName" class="java.lang.String"/>
-	<parameter name="departmentHeadName" class="java.lang.String"/>
-	<parameter name="personallyLiableEmpName" class="java.lang.String"/>
-	<parameter name="accountantName" class="java.lang.String"/>
-	<parameter name="economistName" class="java.lang.String"/>
-	<parameter name="headTenderName" class="java.lang.String"/>
-	<parameter name="customerName" class="java.lang.String"/>
-	<parameter name="customerPhone" class="java.lang.String"/>
-	<parameter name="generatedDate" class="java.lang.String"/>
-	<queryString>
-		<![CDATA[]]>
-	</queryString>
-	<field name="amount" class="java.lang.Integer">
-		<fieldDescription><![CDATA[amount]]></fieldDescription>
-	</field>
-	<field name="cpvUkr" class="java.lang.String">
-		<fieldDescription><![CDATA[cpvUkr]]></fieldDescription>
-	</field>
-	<field name="onePrice" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[onePrice]]></fieldDescription>
-	</field>
-	<field name="totalPrice" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[totalPrice]]></fieldDescription>
-	</field>
-	<field name="packType" class="java.lang.String">
-		<fieldDescription><![CDATA[packType]]></fieldDescription>
-	</field>
-	<field name="catNum" class="java.lang.String">
-		<fieldDescription><![CDATA[catNum]]></fieldDescription>
-	</field>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <parameter name="headRoleName" class="java.lang.String"/>
+    <parameter name="headName" class="java.lang.String"/>
+    <parameter name="departmentHeadName" class="java.lang.String"/>
+    <parameter name="personallyLiableEmpName" class="java.lang.String"/>
+    <parameter name="accountantName" class="java.lang.String"/>
+    <parameter name="economistName" class="java.lang.String"/>
+    <parameter name="headTenderName" class="java.lang.String"/>
+    <parameter name="customerName" class="java.lang.String"/>
+    <parameter name="customerPhone" class="java.lang.String"/>
+    <parameter name="generatedDate" class="java.lang.String"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="amount" class="java.lang.Integer">
+        <fieldDescription><![CDATA[amount]]></fieldDescription>
+    </field>
+    <field name="cpvUkr" class="java.lang.String">
+        <fieldDescription><![CDATA[cpvUkr]]></fieldDescription>
+    </field>
+    <field name="onePrice" class="java.math.BigDecimal">
+        <fieldDescription><![CDATA[onePrice]]></fieldDescription>
+    </field>
+    <field name="totalPrice" class="java.math.BigDecimal">
+        <fieldDescription><![CDATA[totalPrice]]></fieldDescription>
+    </field>
+    <field name="packType" class="java.lang.String">
+        <fieldDescription><![CDATA[packType]]></fieldDescription>
+    </field>
+    <field name="catNum" class="java.lang.String">
+        <fieldDescription><![CDATA[catNum]]></fieldDescription>
+    </field>
     <field name="financeNumber" class="java.lang.String">
         <fieldDescription><![CDATA[financeNumber]]></fieldDescription>
     </field>
-	<field name="financeName" class="java.lang.String">
-		<fieldDescription><![CDATA[financeName]]></fieldDescription>
-	</field>
-	<field name="financeType" class="java.lang.String">
-		<fieldDescription><![CDATA[financeType]]></fieldDescription>
-	</field>
-	<field name="orderDescription" class="java.lang.String">
-		<fieldDescription><![CDATA[orderDescription]]></fieldDescription>
-	</field>
-	<field name="cpv" class="java.lang.String">
-		<fieldDescription><![CDATA[cpv]]></fieldDescription>
-	</field>
-	<field name="supplier" class="java.lang.String">
-		<fieldDescription><![CDATA[supplier]]></fieldDescription>
-	</field>
-	<field name="reasonForSupplierChoice" class="java.lang.String">
-		<fieldDescription><![CDATA[reasonForSupplierChoice]]></fieldDescription>
-	</field>
-	<field name="producer" class="java.lang.String">
-		<fieldDescription><![CDATA[producer]]></fieldDescription>
-	</field>
-	<field name="department" class="java.lang.String">
-		<fieldDescription><![CDATA[department]]></fieldDescription>
-	</field>
-	<field name="subdepartment" class="java.lang.String">
-		<fieldDescription><![CDATA[subdepartment]]></fieldDescription>
-	</field>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
-	</field>
-	<field name="orderDate" class="java.lang.String">
-		<fieldDescription><![CDATA[orderDate]]></fieldDescription>
-	</field>
-	<sortField name="financeType"/>
-	<sortField name="department"/>
-	<sortField name="subdepartment"/>
-	<sortField name="financeName"/>
-	<sortField name="orderDate"/>
+    <field name="financeName" class="java.lang.String">
+        <fieldDescription><![CDATA[financeName]]></fieldDescription>
+    </field>
+    <field name="financeType" class="java.lang.String">
+        <fieldDescription><![CDATA[financeType]]></fieldDescription>
+    </field>
+    <field name="orderDescription" class="java.lang.String">
+        <fieldDescription><![CDATA[orderDescription]]></fieldDescription>
+    </field>
+    <field name="cpv" class="java.lang.String">
+        <fieldDescription><![CDATA[cpv]]></fieldDescription>
+    </field>
+    <field name="supplier" class="java.lang.String">
+        <fieldDescription><![CDATA[supplier]]></fieldDescription>
+    </field>
+    <field name="reasonForSupplierChoice" class="java.lang.String">
+        <fieldDescription><![CDATA[reasonForSupplierChoice]]></fieldDescription>
+    </field>
+    <field name="producer" class="java.lang.String">
+        <fieldDescription><![CDATA[producer]]></fieldDescription>
+    </field>
+    <field name="department" class="java.lang.String">
+        <fieldDescription><![CDATA[department]]></fieldDescription>
+    </field>
+    <field name="subdepartment" class="java.lang.String">
+        <fieldDescription><![CDATA[subdepartment]]></fieldDescription>
+    </field>
+    <field name="class" class="java.lang.Class">
+        <fieldDescription><![CDATA[class]]></fieldDescription>
+    </field>
+    <field name="orderDate" class="java.lang.String">
+        <fieldDescription><![CDATA[orderDate]]></fieldDescription>
+    </field>
+    <sortField name="financeType"/>
+    <sortField name="department"/>
+    <sortField name="subdepartment"/>
+    <sortField name="financeName"/>
+    <sortField name="orderDate"/>
     <variable name="totalPriceOrder" class="java.math.BigDecimal" resetType="Group" resetGroup="OrderGroup"
               calculation="Sum">
-		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
-	</variable>
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
     <variable name="totalPriceSubdepartment" class="java.math.BigDecimal" resetType="Group"
               resetGroup="SubdepartmentGroup" calculation="Sum">
-		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
-	</variable>
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
     <variable name="totalPriceDepartment" class="java.math.BigDecimal" resetType="Group" resetGroup="DepartmentGroup"
               calculation="Sum">
-		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
-	</variable>
-	<variable name="totalPriceAll" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
-	</variable>
-	<group name="FinanceTypeGroup">
-		<groupExpression><![CDATA[$F{financeType}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<textField>
-					<reportElement x="0" y="0" width="802" height="20" uuid="1ad0503e-eba1-4088-89cb-5206fb65f3c8">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
+    <variable name="totalPriceAll" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA[$F{totalPrice}]]></variableExpression>
+    </variable>
+    <group name="FinanceTypeGroup">
+        <groupExpression><![CDATA[$F{financeType}]]></groupExpression>
+        <groupHeader>
+            <band height="20">
+                <textField>
+                    <reportElement x="0" y="0" width="802" height="20" uuid="1ad0503e-eba1-4088-89cb-5206fb65f3c8">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="14" isBold="false"/>
-					</textElement>
+                    </textElement>
                     <textFieldExpression>
                         <![CDATA[$R{bidsReport.ordersByType} + " \'" + $F{financeType} + "\'"]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="165">
-				<textField>
-					<reportElement x="0" y="0" width="640" height="20" uuid="21e447e5-9914-437c-bbfb-561b08983c18">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="165">
+                <textField>
+                    <reportElement x="0" y="0" width="640" height="20" uuid="21e447e5-9914-437c-bbfb-561b08983c18">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.totalPrice}+":"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="416" y="40" width="133" height="25" uuid="bfef4ed2-99f7-49a4-8031-1c2c5d0689fb">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.totalPrice}+":"]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="416" y="40" width="133" height="25" uuid="bfef4ed2-99f7-49a4-8031-1c2c5d0689fb">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{role.headOfDepartment}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="321" y="65" width="228" height="25" uuid="65f17690-2913-47ff-8656-596e4d8c7ad4">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.headOfDepartment}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="321" y="65" width="228" height="25" uuid="65f17690-2913-47ff-8656-596e4d8c7ad4">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{role.personallyLiableEmployee}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="416" y="90" width="133" height="25" uuid="5b05bf5f-a44f-4c69-b15a-6f401acc8297">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.personallyLiableEmployee}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="416" y="90" width="133" height="25" uuid="5b05bf5f-a44f-4c69-b15a-6f401acc8297">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{role.accountant}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="416" y="115" width="133" height="25" uuid="4969f27c-cebd-47f7-90ff-c7d19f22ecc1">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.accountant}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="416" y="115" width="133" height="25" uuid="4969f27c-cebd-47f7-90ff-c7d19f22ecc1">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{role.economist}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="554" y="40" width="103" height="25" uuid="678af078-7182-4c34-9561-4e58f60da01b">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.economist}]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement x="554" y="40" width="103" height="25" uuid="678af078-7182-4c34-9561-4e58f60da01b">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
+                    </textElement>
                     <text><![CDATA[_______________]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="554" y="65" width="103" height="25" uuid="80a8ca5b-447a-4241-b566-cddacd54ac31">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement>
+                </staticText>
+                <staticText>
+                    <reportElement x="554" y="65" width="103" height="25" uuid="80a8ca5b-447a-4241-b566-cddacd54ac31">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
+                    </textElement>
                     <text><![CDATA[_______________]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="554" y="115" width="103" height="25" uuid="1c0a4f2b-e366-4d98-9e4e-609472286771">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement>
+                </staticText>
+                <staticText>
+                    <reportElement x="554" y="115" width="103" height="25" uuid="1c0a4f2b-e366-4d98-9e4e-609472286771">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
+                    </textElement>
                     <text><![CDATA[_______________]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="554" y="90" width="103" height="25" uuid="cf5bc545-6eaf-4073-86a6-e69570517911">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement>
+                </staticText>
+                <staticText>
+                    <reportElement x="554" y="90" width="103" height="25" uuid="cf5bc545-6eaf-4073-86a6-e69570517911">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
+                    </textElement>
                     <text><![CDATA[_______________]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="657" y="40" width="146" height="25" uuid="adad6c42-92d9-4829-a9a2-6c85180f901f">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement>
+                </staticText>
+                <textField>
+                    <reportElement x="657" y="40" width="146" height="25" uuid="adad6c42-92d9-4829-a9a2-6c85180f901f">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{departmentHeadName}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="657" y="65" width="146" height="25" uuid="6edd8c9c-0e94-40f2-8f50-cc4f24940184">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{departmentHeadName}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="657" y="65" width="146" height="25" uuid="6edd8c9c-0e94-40f2-8f50-cc4f24940184">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{personallyLiableEmpName}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="657" y="90" width="146" height="25" uuid="3b31f01f-e5eb-4ff1-9f2c-2dacd465f25b">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{personallyLiableEmpName}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="657" y="90" width="146" height="25" uuid="3b31f01f-e5eb-4ff1-9f2c-2dacd465f25b">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{accountantName}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="657" y="115" width="146" height="25" uuid="7fa3a4b7-8aa6-4f89-afd9-1ab16092f484">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{accountantName}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="657" y="115" width="146" height="25" uuid="7fa3a4b7-8aa6-4f89-afd9-1ab16092f484">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{economistName}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="640" y="0" width="163" height="20" uuid="ec69cce1-c66d-4d55-8eb9-6ac6477b39de">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{economistName}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="640" y="0" width="163" height="20" uuid="ec69cce1-c66d-4d55-8eb9-6ac6477b39de">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPriceAll}+" "+$R{uah}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="316" y="140" width="233" height="25" uuid="bbba4992-6d82-4dc5-99b3-ae549e862fa3">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$V{totalPriceAll}+" "+$R{uah}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="316" y="140" width="233" height="25" uuid="bbba4992-6d82-4dc5-99b3-ae549e862fa3">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="554" y="140" width="103" height="25" uuid="f1753c53-b109-4b7a-987e-37e602537476">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{role.secretaryOfTenderCommittee}]]></textFieldExpression>
+                </textField>
+                <staticText>
+                    <reportElement x="554" y="140" width="103" height="25" uuid="f1753c53-b109-4b7a-987e-37e602537476">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
+                    </textElement>
                     <text><![CDATA[_______________]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="657" y="140" width="146" height="25" uuid="0499dc8c-671d-40a9-8791-3413662c361d">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
-					<textElement>
+                </staticText>
+                <textField>
+                    <reportElement x="657" y="140" width="146" height="25" uuid="0499dc8c-671d-40a9-8791-3413662c361d">
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
+                    <textElement>
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{headTenderName}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
-	<group name="DepartmentGroup">
-		<groupExpression><![CDATA[$F{department}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$P{headTenderName}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+    <group name="DepartmentGroup">
+        <groupExpression><![CDATA[$F{department}]]></groupExpression>
+        <groupHeader>
+            <band height="20">
+                <textField>
                     <reportElement positionType="FixRelativeToBottom" x="0" y="0" width="802" height="20"
                                    uuid="1489b8a3-19a7-44d4-aa6c-3c8fd7776977">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement verticalAlignment="Middle">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="20">
-				<textField>
-					<reportElement x="0" y="0" width="640" height="20" uuid="32ddefc0-91df-43c9-bd6b-65e7ed47b382">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="20">
+                <textField>
+                    <reportElement x="0" y="0" width="640" height="20" uuid="32ddefc0-91df-43c9-bd6b-65e7ed47b382">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.priceByDepartment}+":"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="640" y="0" width="163" height="20" uuid="9c50d953-55e3-401a-a46a-1ff45396840a">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.priceByDepartment}+":"]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="640" y="0" width="163" height="20" uuid="9c50d953-55e3-401a-a46a-1ff45396840a">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPriceDepartment}+" "+$R{uah}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
-	<group name="SubdepartmentGroup">
-		<groupExpression><![CDATA[$F{subdepartment}]]></groupExpression>
-		<groupHeader>
-			<band height="20">
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$V{totalPriceDepartment}+" "+$R{uah}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+    <group name="SubdepartmentGroup">
+        <groupExpression><![CDATA[$F{subdepartment}]]></groupExpression>
+        <groupHeader>
+            <band height="20">
+                <textField>
                     <reportElement mode="Transparent" x="120" y="0" width="682" height="20"
                                    uuid="76fc0e85-ae7a-40a2-b94c-1ea67acc06b0">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
+                        <topPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement verticalAlignment="Middle">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{subdepartment}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="120" height="20" uuid="94ec4ca8-9143-44d3-9161-34a7d7d6b6ac">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{subdepartment}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="0" y="0" width="120" height="20" uuid="94ec4ca8-9143-44d3-9161-34a7d7d6b6ac">
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box bottomPadding="0">
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{subdepartment} + ": "]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="20">
-				<textField>
-					<reportElement x="0" y="0" width="640" height="20" uuid="f0ba9b32-7f65-411a-b5d4-9cbdf8260bea">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{subdepartment} + ": "]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="20">
+                <textField>
+                    <reportElement x="0" y="0" width="640" height="20" uuid="f0ba9b32-7f65-411a-b5d4-9cbdf8260bea">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.priceBySubdepartment}+":"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="640" y="0" width="163" height="20" uuid="55462339-5adc-492e-8aa4-0197221e777a">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.priceBySubdepartment}+":"]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="640" y="0" width="163" height="20" uuid="55462339-5adc-492e-8aa4-0197221e777a">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPriceSubdepartment}+" "+$R{uah}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
-	<group name="OrderGroup">
-		<groupExpression><![CDATA[$F{financeName}]]></groupExpression>
-		<groupHeader>
-			<band height="60">
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$V{totalPriceSubdepartment}+" "+$R{uah}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+    <group name="OrderGroup">
+        <groupExpression><![CDATA[$F{financeName}]]></groupExpression>
+        <groupHeader>
+            <band height="60">
+                <textField>
                     <reportElement mode="Opaque" x="0" y="20" width="150" height="20" backcolor="#DEDEDE"
                                    uuid="7a9efc3e-d6d3-42e4-83a5-8d023d460c89">
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.classifier}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.classifier}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="0" y="40" width="60" height="20" backcolor="#DEDEDE"
                                    uuid="9c5736ea-05db-4bbd-ba22-302f90b03085">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.code}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.code}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="60" y="40" width="90" height="20" backcolor="#DEDEDE"
                                    uuid="b09690ea-04ba-4acc-b66e-a8dfa97e057e">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{name}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{name}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="150" y="20" width="140" height="40" backcolor="#DEDEDE"
                                    uuid="73ab34f5-684b-4bb2-a209-50857e345f47">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{description}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{description}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="290" y="20" width="230" height="20" backcolor="#DEDEDE"
                                    uuid="032c9c7a-896d-45d8-9e04-e1fe0e291259">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.ordered}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.ordered}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="290" y="40" width="50" height="20" backcolor="#DEDEDE"
                                    uuid="e8494596-e9ab-4e6a-aa13-01591af5adf8">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{amount}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{amount}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="420" y="40" width="100" height="20" backcolor="#DEDEDE"
                                    uuid="675e921f-ff9a-4165-acbd-3d7c89b5aee3">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.totPrice}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.totPrice}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="0" y="0" width="120" height="20" backcolor="#F2F2F2"
                                    uuid="3bd58383-4166-4325-995e-18ce5131f4ce">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0"/>
+                        <leftPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                    </box>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
                         <font fontName="Roboto" size="14"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{finance}+": "]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{finance}+": "]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="120" y="0" width="682" height="20" backcolor="#F2F2F2"
                                    uuid="d4eb2472-b563-44e2-b3ae-992e79dd286c">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
-						<topPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement verticalAlignment="Middle">
+                        <topPen lineWidth="1.0"/>
+                        <bottomPen lineWidth="1.0"/>
+                        <rightPen lineWidth="1.0"/>
+                    </box>
+                    <textElement verticalAlignment="Middle">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
+                    </textElement>
                     <textFieldExpression><![CDATA[$F{financeNumber}+" - "+$F{financeName}]]></textFieldExpression>
-				</textField>
-				<textField>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="520" y="20" width="120" height="40" backcolor="#DEDEDE"
                                    uuid="267aa1ed-042a-4047-be8a-a42c7219c851">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.possibleProducerAndCatNum}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.possibleProducerAndCatNum}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="640" y="20" width="100" height="40" backcolor="#DEDEDE"
                                    uuid="c68e7660-0688-48e8-8e61-869374f82e7d"/>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.possibleSupplier}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.possibleSupplier}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="740" y="20" width="62" height="40" backcolor="#DEDEDE"
                                    uuid="0653f8db-696f-4323-9992-a79e9bb87b24">
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.date}]]></textFieldExpression>
-				</textField>
-				<textField>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.date}]]></textFieldExpression>
+                </textField>
+                <textField>
                     <reportElement mode="Opaque" x="340" y="40" width="80" height="20" backcolor="#DEDEDE"
                                    uuid="8223614d-5b95-4795-893a-bd8b05da16ed">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
                     <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
-						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
+                        <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                        <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    </box>
+                    <textElement textAlignment="Center" verticalAlignment="Middle">
                         <font fontName="Roboto" size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{oneUnitPrice}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="20">
-				<textField>
-					<reportElement x="0" y="0" width="640" height="20" uuid="6f542255-649c-4fc4-88a1-9539c6b9ffc4">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{oneUnitPrice}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="20">
+                <textField>
+                    <reportElement x="0" y="0" width="640" height="20" uuid="6f542255-649c-4fc4-88a1-9539c6b9ffc4">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$R{bidsReport.priceByFinance}+":"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="640" y="0" width="163" height="20" uuid="cf224b18-4169-4b15-8692-88b8080c509d">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					</reportElement>
-					<textElement textAlignment="Right">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$R{bidsReport.priceByFinance}+":"]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement x="640" y="0" width="163" height="20" uuid="cf224b18-4169-4b15-8692-88b8080c509d">
+                        <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                        <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    </reportElement>
+                    <textElement textAlignment="Right">
                         <font fontName="Roboto" size="14" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{totalPriceOrder}+" "+$R{uah}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
-	<title>
-		<band height="60" splitType="Stretch">
-			<textField>
-				<reportElement x="571" y="0" width="229" height="20" uuid="cae5e64c-0554-4659-8ec3-a50ec70c9825">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center">
+                    </textElement>
+                    <textFieldExpression><![CDATA[$V{totalPriceOrder}+" "+$R{uah}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+    <title>
+        <band height="60" splitType="Stretch">
+            <textField>
+                <reportElement x="571" y="0" width="229" height="20" uuid="cae5e64c-0554-4659-8ec3-a50ec70c9825">
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Center">
                     <font fontName="Roboto" size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{bidsReport.approved}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="700" y="40" width="102" height="20" uuid="fa1f9ca2-1a52-4540-9d53-cfb69a9e49b4">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{bidsReport.approved}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="700" y="40" width="102" height="20" uuid="fa1f9ca2-1a52-4540-9d53-cfb69a9e49b4">
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
+                <textElement>
                     <font fontName="Roboto" size="14"/>
-				</textElement>
+                </textElement>
                 <text><![CDATA[_______________]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="571" y="20" width="229" height="20" uuid="45192fc6-f439-401c-b10e-68cca1ad499d">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center">
+            </staticText>
+            <textField>
+                <reportElement x="571" y="20" width="229" height="20" uuid="45192fc6-f439-401c-b10e-68cca1ad499d">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Center">
                     <font fontName="Roboto" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{headRoleName}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="571" y="40" width="119" height="20" uuid="7bde64cb-3228-4b72-a7a1-7e826bab3883">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right">
+                </textElement>
+                <textFieldExpression><![CDATA[$P{headRoleName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="571" y="40" width="119" height="20" uuid="7bde64cb-3228-4b72-a7a1-7e826bab3883">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right">
                     <font fontName="Roboto" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{headName}]]></textFieldExpression>
-			</textField>
-		</band>
-	</title>
-	<detail>
-		<band height="20" splitType="Prevent">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="21a3a64f-427b-4f55-a139-63f8bf7abe84"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{headName}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+    <detail>
+        <band height="20" splitType="Prevent">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20"
+                               uuid="21a3a64f-427b-4f55-a139-63f8bf7abe84"/>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
                     <font fontName="Roboto"/>
                     <paragraph lineSpacing="Single" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0"
                                spacingAfter="0"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cpv}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="90" height="20" uuid="e62f5827-342d-475e-ac36-a3e0feda50d8">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{cpv}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="90" height="20"
+                               uuid="e62f5827-342d-475e-ac36-a3e0feda50d8">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cpvUkr}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="150" y="0" width="140" height="20" uuid="1d3dc438-d420-4c7e-87a1-28b65b7760fb">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{cpvUkr}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="150" y="0" width="140" height="20"
+                               uuid="1d3dc438-d420-4c7e-87a1-28b65b7760fb">
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                </reportElement>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{orderDescription}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="80" height="20" uuid="6d8e776d-bc57-4aa3-9dbd-4c67008d64fc"/>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{orderDescription}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="80" height="20"
+                               uuid="6d8e776d-bc57-4aa3-9dbd-4c67008d64fc"/>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{onePrice}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="420" y="0" width="100" height="20" uuid="0c4c10e2-08e3-4729-a93b-be912441157b">
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{onePrice}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="420" y="0" width="100" height="20"
+                               uuid="0c4c10e2-08e3-4729-a93b-be912441157b">
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="520" y="0" width="120" height="20" uuid="01f8f992-a262-4d83-b5bd-f6f4a77aaef5"/>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="520" y="0" width="120" height="20"
+                               uuid="01f8f992-a262-4d83-b5bd-f6f4a77aaef5"/>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
                 <textFieldExpression>
                     <![CDATA[$F{catNum}.equals("")?$F{producer}:$F{producer}+"\n № "+$F{catNum}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="640" y="0" width="100" height="20" uuid="05dcde6a-fb59-49f1-a3be-ff48f237b9b4"/>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="640" y="0" width="100" height="20"
+                               uuid="05dcde6a-fb59-49f1-a3be-ff48f237b9b4"/>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
                 <textFieldExpression>
                     <![CDATA[$F{reasonForSupplierChoice}.equals("")?$F{supplier}:$F{supplier}+"\n"+$R{bidsReport.reason}+": "+$F{reasonForSupplierChoice}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
+            </textField>
+            <textField isStretchWithOverflow="true">
                 <reportElement stretchType="RelativeToBandHeight" x="740" y="0" width="62" height="20"
                                uuid="cfb25a52-53c9-406d-b846-b36dad7233fc">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+                </reportElement>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center">
                     <font fontName="Roboto"/>
                     <paragraph firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="50" height="20" uuid="8909628e-3f8a-4f26-aaf5-6a5f4981192b"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
+            </textField>
+            <textField isStretchWithOverflow="true">
+                <reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="50" height="20"
+                               uuid="8909628e-3f8a-4f26-aaf5-6a5f4981192b"/>
                 <box padding="3">
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
+                    <topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
                     <font fontName="Roboto"/>
-					<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{amount}+" "+$F{packType}]]></textFieldExpression>
-			</textField>
-		</band>
-	</detail>
-	<pageFooter>
-		<band height="20" splitType="Prevent">
-			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField>
-				<reportElement x="30" y="0" width="550" height="20" uuid="7725781b-baa6-4e3c-a777-5cb65904d28b">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<textElement>
+                    <paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="0" spacingAfter="2"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{amount}+" "+$F{packType}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="20" splitType="Prevent">
+            <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+            <textField>
+                <reportElement x="30" y="0" width="550" height="20" uuid="7725781b-baa6-4e3c-a777-5cb65904d28b">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                </reportElement>
+                <textElement>
                     <font fontName="Roboto" size="10"/>
-				</textElement>
+                </textElement>
                 <textFieldExpression>
                     <![CDATA[$R{bidsReport.generated} + " " + $P{generatedDate} + ". " + $R{bidsReport.customer} + ": " + $P{customerName} + " " + $R{phone} + ": " + $P{customerPhone}]]></textFieldExpression>
-			</textField>
-			<textField>
+            </textField>
+            <textField>
                 <reportElement positionType="Float" x="600" y="0" width="161" height="20"
                                uuid="25136276-113a-405f-9c4b-f3ff8a220c38">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right">
+                    <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                    <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+                </reportElement>
+                <textElement textAlignment="Right">
                     <font fontName="Roboto" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="761" y="0" width="41" height="20" uuid="1c3988bf-41ad-46af-893f-e586e6d973be">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
+                </textElement>
+                <textFieldExpression><![CDATA[$R{bidsReport.page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="761" y="0" width="41" height="20" uuid="1c3988bf-41ad-46af-893f-e586e6d973be">
+                    <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+                </reportElement>
                 <textElement>
                     <font fontName="Roboto"/>
                 </textElement>
-				<textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
+                <textFieldExpression><![CDATA[" " + $R{bidsReport.from} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
 </jasperReport>

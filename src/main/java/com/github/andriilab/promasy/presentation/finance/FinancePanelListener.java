@@ -14,10 +14,16 @@ import java.math.BigDecimal;
  */
 public interface FinancePanelListener {
     <T extends IEntity> void persistModelEventOccurred(CreateOrUpdateCommand<T> command);
+
     void loadDepartments();
+
     void getFinancesByDepartment(GetFinancesQuery query);
+
     void getAllData();
+
     BigDecimal getUnassignedAmountEvent(GetFinanceUnassignedAmountQuery query);
+
     BigDecimal getLeftAmountEvent(GetFinanceLeftAmountQuery query);
+
     BigDecimal getLeftAmountEvent(GetFinanceDepartmentLeftAmountQuery query);
 }

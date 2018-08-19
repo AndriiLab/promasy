@@ -7,7 +7,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Institute;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
-import com.github.andriilab.promasy.presentation.components.PJComboBox;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 
 import javax.swing.*;
@@ -31,9 +31,9 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private JButton createSubdepButton;
     private final JButton editSubdepButton;
     private final JButton deleteSubdepButton;
-    private final PJComboBox<Institute> instituteBox;
-    private final PJComboBox<Department> departmentBox;
-    private final PJComboBox<Subdepartment> subdepartmentBox;
+    private final EntityComboBox<Institute> instituteBox;
+    private final EntityComboBox<Department> departmentBox;
+    private final EntityComboBox<Subdepartment> subdepartmentBox;
     private OrganizationDialogListener listener;
     private String newDepName;
     private String newSubdepName;
@@ -58,7 +58,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         //Set up institute combo box and edit buttons
         DefaultComboBoxModel<Institute> instModel = new DefaultComboBoxModel<>();
-        instituteBox = new PJComboBox<>(instModel);
+        instituteBox = new EntityComboBox<>(instModel);
         instituteBox.addItem(EmptyModel.INSTITUTE);
         instituteBox.setEditable(true);
         instituteBox.addActionListener(this);
@@ -71,7 +71,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         //Set up department combo box and edit buttons
         DefaultComboBoxModel<Department> depModel = new DefaultComboBoxModel<>();
-        departmentBox = new PJComboBox<>(depModel);
+        departmentBox = new EntityComboBox<>(depModel);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.setEditable(true);
         departmentBox.setEnabled(false);
@@ -92,7 +92,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         //Set up SubDepartment combo box and edit buttons
         DefaultComboBoxModel<Subdepartment> subdepModel = new DefaultComboBoxModel<>();
-        subdepartmentBox = new PJComboBox<>(subdepModel);
+        subdepartmentBox = new EntityComboBox<>(subdepModel);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
         subdepartmentBox.setEditable(true);
         subdepartmentBox.setEnabled(false);

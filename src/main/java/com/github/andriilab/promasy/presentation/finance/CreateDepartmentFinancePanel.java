@@ -11,6 +11,7 @@ import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.commons.Parsers;
 import com.github.andriilab.promasy.presentation.commons.Validator;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 
@@ -24,7 +25,7 @@ import java.math.RoundingMode;
  */
 public class CreateDepartmentFinancePanel extends JPanel {
 
-    private final PJComboBox<Department> departmentBox;
+    private final EntityComboBox<Department> departmentBox;
     private Subdepartment selectedSubdepartment;
     private Finance currentFinanceModel;
 
@@ -35,7 +36,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
 
     private final JFrame parent;
     private FinanceDepartment currentFinanceDepartmentModel;
-    private PJComboBox<Subdepartment> subdepartmentBox;
+    private EntityComboBox<Subdepartment> subdepartmentBox;
     private final JTextField depMaterialsAmountField;
     private final JTextField depEquipmentAmountField;
     private final JTextField depServicesAmountField;
@@ -59,7 +60,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
         equpmetLeft = new JLabel();
         servicesLeft = new JLabel();
 
-        departmentBox = new PJComboBox<>();
+        departmentBox = new EntityComboBox<>();
         departmentBox.setPreferredSize(PJComboBox.COMBOBOX_DIMENSION);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
         departmentBox.addActionListener(e -> {
@@ -70,7 +71,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
             subdepartmentBox.setEnabled(true);
         });
 
-        subdepartmentBox = new PJComboBox<>();
+        subdepartmentBox = new EntityComboBox<>();
         subdepartmentBox.setPreferredSize(PJComboBox.COMBOBOX_DIMENSION);
         subdepartmentBox.setEnabled(false);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);

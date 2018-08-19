@@ -10,6 +10,8 @@ import java.math.BigDecimal;
  */
 interface CreateBidPanelListener {
     void persistModelEventOccurred(Bid model);
+
     void getAllData();
+
     BigDecimal getLeftAmount(GetFinanceDepartmentLeftAmountQuery query);
 }

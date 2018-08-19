@@ -20,6 +20,7 @@ import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.bids.status.StatusDialog;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.presentation.components.EntityComboBox;
 import com.github.andriilab.promasy.presentation.components.PJComboBox;
 import com.github.andriilab.promasy.presentation.components.dialogs.CEDButtons;
 
@@ -43,9 +44,9 @@ public class BidsListPanel extends JPanel {
     private final JButton editBidButton;
     private final JButton deleteBidButton;
     private final JButton changeStatusButton;
-    private final PJComboBox<Department> departmentBox;
-    private final PJComboBox<Subdepartment> subdepartmentBox;
-    private final PJComboBox<FinanceDepartment> financeDepartmentBox;
+    private final EntityComboBox<Department> departmentBox;
+    private final EntityComboBox<Subdepartment> subdepartmentBox;
+    private final EntityComboBox<FinanceDepartment> financeDepartmentBox;
     private final PJComboBox<BidType> bidTypeBox;
     private final BidsTableModel bidsTableModel;
     private final JTable bidsTable;
@@ -101,15 +102,15 @@ public class BidsListPanel extends JPanel {
         changeStatusButton.setPreferredSize(buttonDim);
         changeStatusButton.setEnabled(false);
 
-        departmentBox = new PJComboBox<>();
+        departmentBox = new EntityComboBox<>();
         departmentBox.setPreferredSize(comboDim);
         departmentBox.addItem(EmptyModel.DEPARTMENT);
 
-        subdepartmentBox = new PJComboBox<>();
+        subdepartmentBox = new EntityComboBox<>();
         subdepartmentBox.setPreferredSize(comboDim);
         subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
 
-        financeDepartmentBox = new PJComboBox<>();
+        financeDepartmentBox = new EntityComboBox<>();
         financeDepartmentBox.setPreferredSize(comboDim);
         financeDepartmentBox.addItem(EmptyModel.FINANCE_DEPARTMENT);
 

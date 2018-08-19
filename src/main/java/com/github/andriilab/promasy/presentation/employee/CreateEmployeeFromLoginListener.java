@@ -7,5 +7,6 @@ import com.github.andriilab.promasy.presentation.login.LoginPanel;
  */
 public interface CreateEmployeeFromLoginListener {
     void newUserCreatedEvent();
+
     void cancelEvent();
 }

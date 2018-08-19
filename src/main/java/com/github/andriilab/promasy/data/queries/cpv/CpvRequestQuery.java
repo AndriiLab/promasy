@@ -10,9 +10,10 @@ public class CpvRequestQuery implements IQuery {
         this.cpvRequest = cpvRequest;
         this.depth = depth;
     }
-	public String getCpvRequest() {
-		return cpvRequest;
-	}
+
+    public String getCpvRequest() {
+        return cpvRequest;
+    }
 
     public int getDepth() {
         return depth;

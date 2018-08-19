@@ -25,34 +25,40 @@ public class Cpv {
     @Column(name = "terminal")
     private boolean cpvTerminal;
 
-	public Cpv(String cpvId, String cpvUkr, String cpvEng,
-			   int cpvLevel, boolean cpvTerminal) {
-		this.cpvId = cpvId;
-		this.cpvUkr = cpvUkr;
-		this.cpvEng = cpvEng;
-		this.cpvLevel = cpvLevel;
-		this.cpvTerminal = cpvTerminal;
-	}
-
-	public Cpv() {
+    public Cpv(String cpvId, String cpvUkr, String cpvEng,
+               int cpvLevel, boolean cpvTerminal) {
+        this.cpvId = cpvId;
+        this.cpvUkr = cpvUkr;
+        this.cpvEng = cpvEng;
+        this.cpvLevel = cpvLevel;
+        this.cpvTerminal = cpvTerminal;
     }
-	public String getCpvId() {
-		return cpvId;
-	}
-	public String getCpvUkr() {
-		return cpvUkr;
-	}
-	public String getCpvEng() {
-		return cpvEng;
-	}
-	public int getCpvLevel() {
-		return cpvLevel;
-	}
-	public boolean isCpvTerminal() {
-		return cpvTerminal;
-	}
-	@Override
-	public String toString() {
-		return cpvUkr;
-	}
+
+    public Cpv() {
+    }
+
+    public String getCpvId() {
+        return cpvId;
+    }
+
+    public String getCpvUkr() {
+        return cpvUkr;
+    }
+
+    public String getCpvEng() {
+        return cpvEng;
+    }
+
+    public int getCpvLevel() {
+        return cpvLevel;
+    }
+
+    public boolean isCpvTerminal() {
+        return cpvTerminal;
+    }
+
+    @Override
+    public String toString() {
+        return cpvUkr;
+    }
 }

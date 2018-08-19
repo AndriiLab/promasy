@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public interface ReportParametersDialogListener {
     void roleSelectionOccurred(Role role);
+
     List<Employee> getEmployees(GetEmployeesQuery query);
+
     void reportParametersSelectionOccurred(Map<String, Object> parameters);
 }

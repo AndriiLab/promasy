@@ -31,15 +31,19 @@ public class Labels {
     public static String withColon(final String key) {
         return getProperty(key) + ": ";
     }
+
     public static String withSpaceBefore(final String key) {
-        return " "+getProperty(key);
+        return " " + getProperty(key);
     }
+
     public static String withSpaceAfter(final String key) {
         return getProperty(key) + " ";
     }
+
     public static String withDot(final String key) {
         return getProperty(key) + ".";
     }
+
     public static String withThreeDots(final String key) {
         return getProperty(key) + "...";
     }
@@ -51,6 +55,7 @@ public class Labels {
     public static String getVersion() {
         return VERSION.getString("versionNumber");
     }
+
     public static String getBuildDate() {
         return VERSION.getString("buildDate");
     }

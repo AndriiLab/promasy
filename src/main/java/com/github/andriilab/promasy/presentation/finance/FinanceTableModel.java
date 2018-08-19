@@ -98,7 +98,7 @@ class FinanceTableModel extends AbstractTableModel {
                 }
             case 6:
                 BigDecimal servicesLeft = listener.getLeftAmount(new GetFinanceLeftAmountQuery(model, BidType.SERVICES));
-                    return servicesLeft.setScale(2, RoundingMode.CEILING);
+                return servicesLeft.setScale(2, RoundingMode.CEILING);
             case 7:
                 return model.getStartDate();
             case 8:
