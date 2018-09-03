@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.presentation.finance;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -99,7 +98,7 @@ class CreateFinancePanel extends JPanel {
                 currentFinanceModel.setTotalEquipment(equipmentAmount);
                 currentFinanceModel.setTotalServices(servicesAmount);
                 currentFinanceModel.setFundType((Fund) fundBox.getSelectedItem());
-                currentFinanceModel.setKPKVK(kpkvk);
+                currentFinanceModel.setKpkvk(kpkvk);
                 if (currentFinanceModel.getModelId() == 0) {
                     currentFinanceModel.setCreated();
                 } else {
@@ -123,7 +122,7 @@ class CreateFinancePanel extends JPanel {
     }
 
     void clear() {
-        String emptyString = EmptyModel.STRING;
+        String emptyString = "";
         orderNumberField.setText(emptyString);
         orderNameField.setText(emptyString);
         materialsAmountField.setText(emptyString);
@@ -133,7 +132,7 @@ class CreateFinancePanel extends JPanel {
         startDatePicker.setDate(defaultStartDate);
         endDatePicker.setDate(defaultEndDate);
         fundBox.setSelectedIndex(0);
-        orderNumber = EmptyModel.STRING;
+        orderNumber = "";
         orderName = emptyString;
         kpkvk = null;
         startDate = null;
@@ -155,7 +154,7 @@ class CreateFinancePanel extends JPanel {
         startDatePicker.setDate(currentFinanceModel.getStartDate().toLocalDate());
         endDatePicker.setDate(currentFinanceModel.getEndDate().toLocalDate());
         fundBox.setSelectedItem(selectedFinanceModel.getFundType());
-        kpkvkField.setText(String.valueOf(selectedFinanceModel.getKPKVK()));
+        kpkvkField.setText(String.valueOf(selectedFinanceModel.getKpkvk()));
         okButton.setText(Labels.getProperty("edit"));
         super.setVisible(true);
     }

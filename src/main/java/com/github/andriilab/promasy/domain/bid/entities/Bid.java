@@ -8,6 +8,8 @@ import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.item.entities.Producer;
 import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,63 +26,92 @@ import java.util.List;
 @Table(name = "bids")
 public class Bid extends AbstractEntity {
 
+    @Column(name = "bid_desc")
+    private String description;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "producer_id")
-    private Producer producer;
+    private @Getter
+    @Setter
+    Producer producer;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "am_unit_id")
-    private AmountUnit amountUnit;
+    private @Getter
+    @Setter
+    AmountUnit amountUnit;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cpv_code")
-    private Cpv cpv;
+    private @Getter
+    @Setter
+    Cpv cpv;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "finance_dep_id")
-    private FinanceDepartment finances;
+    private @Getter
+    @Setter
+    FinanceDepartment finances;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    private @Getter
+    @Setter
+    Supplier supplier;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "reason_id")
-    private ReasonForSupplierChoice reasonForSupplierChoice;
+    private @Getter
+    @Setter
+    ReasonForSupplierChoice reasonForSupplierChoice;
 
     @OneToMany(mappedBy = "bid", cascade = CascadeType.PERSIST)
-    private List<BidStatus> statuses = new ArrayList<>();
+    private @Getter
+    @Setter
+    List<BidStatus> statuses = new ArrayList<>();
 
     @Column(name = "cat_num")
-    private String catNum;
-
-    @Column(name = "bid_desc")
-    private String bidDesc;
+    private @Getter
+    @Setter
+    String catNum;
 
     @Column(name = "one_price")
-    private BigDecimal onePrice;
+    private @Getter
+    @Setter
+    BigDecimal onePrice;
 
     @Column(name = "amount")
-    private int amount;
+    private @Getter
+    @Setter
+    int amount;
 
     @Transient
-    private int transientAmount;
+    private @Setter
+    int transientAmount;
 
     @Enumerated(EnumType.STRING)
-    private BidType type;
+    private @Getter
+    @Setter
+    BidType type;
 
     @Column(name = "kekv")
     private Integer kekv;
 
     @Column(name = "proc_start_date")
-    private Date procurementStartDate;
+    private @Getter
+    @Setter
+    Date procurementStartDate;
 
 
-    public Bid(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate, boolean active, Producer producer, String catNum, String bidDesc, Cpv cpv, BigDecimal onePrice, int amount, AmountUnit amountUnit, FinanceDepartment finances, Supplier supplier, List<BidStatus> statuses, ReasonForSupplierChoice reasonForSupplierChoice, BidType type, Date procurementStartDate) {
+    public Bid(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate,
+               boolean active, Producer producer, String catNum, String description, Cpv cpv, BigDecimal onePrice,
+               int amount, AmountUnit amountUnit, FinanceDepartment finances, Supplier supplier,
+               List<BidStatus> statuses, ReasonForSupplierChoice reasonForSupplierChoice, BidType type,
+               Date procurementStartDate) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
         this.producer = producer;
         this.catNum = catNum;
-        this.bidDesc = bidDesc;
+        this.description = description;
         this.cpv = cpv;
         this.onePrice = onePrice;
         this.amount = amount;
@@ -93,10 +124,12 @@ public class Bid extends AbstractEntity {
         this.procurementStartDate = procurementStartDate;
     }
 
-    public Bid(Producer producer, String catNum, String bidDesc, Cpv cpv, BigDecimal onePrice, int amount, AmountUnit amountUnit, FinanceDepartment finances, Supplier supplier, List<BidStatus> statuses, ReasonForSupplierChoice reasonForSupplierChoice, BidType type, Date procurementStartDate) {
+    public Bid(Producer producer, String catNum, String description, Cpv cpv, BigDecimal onePrice, int amount,
+               AmountUnit amountUnit, FinanceDepartment finances, Supplier supplier, List<BidStatus> statuses,
+               ReasonForSupplierChoice reasonForSupplierChoice, BidType type, Date procurementStartDate) {
         this.producer = producer;
         this.catNum = catNum;
-        this.bidDesc = bidDesc;
+        this.description = description;
         this.cpv = cpv;
         this.onePrice = onePrice;
         this.amount = amount;
@@ -113,112 +146,25 @@ public class Bid extends AbstractEntity {
     }
 
     @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
     public void setDescription(String description) {
-        this.bidDesc = description;
-    }
-
-    public BidType getType() {
-        return type;
-    }
-
-    public void setType(BidType type) {
-        this.type = type;
-    }
-
-    public Producer getProducer() {
-        return producer;
-    }
-
-    public void setProducer(Producer producer) {
-        this.producer = producer;
-    }
-
-    public String getCatNum() {
-        return catNum;
-    }
-
-    public void setCatNum(String catNum) {
-        this.catNum = catNum;
-    }
-
-    public String getBidDesc() {
-        return bidDesc;
-    }
-
-    public void setBidDesc(String bidDesc) {
-        this.bidDesc = bidDesc;
-    }
-
-    public Cpv getCpv() {
-        return cpv;
-    }
-
-    public void setCpv(Cpv cpv) {
-        this.cpv = cpv;
-    }
-
-    public BigDecimal getOnePrice() {
-        return onePrice;
-    }
-
-    public void setOnePrice(BigDecimal onePrice) {
-        this.onePrice = onePrice;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public AmountUnit getAmountUnit() {
-        return amountUnit;
-    }
-
-    public void setAmountUnit(AmountUnit amountUnit) {
-        this.amountUnit = amountUnit;
-    }
-
-    public FinanceDepartment getFinances() {
-        return finances;
-    }
-
-    public void setFinances(FinanceDepartment finances) {
-        this.finances = finances;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public List<BidStatus> getStatuses() {
-        return statuses;
-    }
-
-    public Date getProcurementStartDate() {
-        return procurementStartDate;
-    }
-
-    public void setProcurementStartDate(Date procurementStartDate) {
-        this.procurementStartDate = procurementStartDate;
+        this.description = description;
     }
 
     public int getKEKV() {
         if (kekv == null) {
-            return type.getKEKV();
+            return type.getKekv();
         } else {
             return kekv;
         }
     }
 
     public void setKEKV(Integer kekv) {
-        if (!type.getKEKV().equals(kekv)) {
+        if (!type.getKekv().equals(kekv)) {
             this.kekv = kekv;
         } else {
             this.kekv = null;
@@ -228,14 +174,6 @@ public class Bid extends AbstractEntity {
     public void addStatus(BidStatus bidStatusModel) {
         statuses.add(bidStatusModel);
         bidStatusModel.setBid(this);
-    }
-
-    public ReasonForSupplierChoice getReasonForSupplierChoice() {
-        return reasonForSupplierChoice;
-    }
-
-    public void setReasonForSupplierChoice(ReasonForSupplierChoice reasonForSupplierChoice) {
-        this.reasonForSupplierChoice = reasonForSupplierChoice;
     }
 
     public BigDecimal getTotalPrice() {
@@ -250,17 +188,13 @@ public class Bid extends AbstractEntity {
         return transientAmount;
     }
 
-    public void setTransientAmount(int transientAmount) {
-        this.transientAmount = transientAmount;
-    }
-
     public void clearTransientAmount() {
         this.transientAmount = amount;
     }
 
     @Override
     public String toString() {
-        return bidDesc;
+        return description;
     }
 
     public BidStatus getLastBidStatusModel() {

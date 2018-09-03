@@ -3,6 +3,9 @@ package com.github.andriilab.promasy.domain;
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.repositories.ServerRepository;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,7 +20,10 @@ import java.time.Instant;
 public abstract class AbstractEntity implements IEntity {
 
     @Column(name = "active")
-    private boolean active;
+    private @Getter
+    @Setter
+    boolean active;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_seq_gen")
     @GenericGenerator(
@@ -30,17 +36,32 @@ public abstract class AbstractEntity implements IEntity {
                     @Parameter(name = "optimizer", value = "hilo")
             })
     @Column(name = "id", nullable = false)
-    private long modelId;
+    private @Getter
+    @Setter
+    long modelId;
+
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private Employee createdEmployee;
+    private @Getter
+    @Setter(AccessLevel.PRIVATE)
+    Employee createdEmployee;
+
     @Column(name = "created_date")
-    private Timestamp createdDate;
+    private @Getter
+    @Setter
+    Timestamp createdDate;
+
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "modified_by")
-    private Employee modifiedEmployee;
+    private @Getter
+    @Setter(AccessLevel.PRIVATE)
+    Employee modifiedEmployee;
+
     @Column(name = "modified_date")
-    private Timestamp modifiedDate;
+    private @Getter
+    @Setter
+    Timestamp modifiedDate;
+
     @Version
     private long version = 0;
 
@@ -63,71 +84,13 @@ public abstract class AbstractEntity implements IEntity {
     }
 
     @Override
-    public Employee getCreatedEmployee() {
-        return createdEmployee;
-    }
-
-    private void setCreatedEmployee(Employee createdEmployee) {
-        this.createdEmployee = createdEmployee;
-    }
-
-    @Override
-    public Employee getModifiedEmployee() {
-        return modifiedEmployee;
-    }
-
-    private void setModifiedEmployee(Employee modifiedEmployee) {
-        this.modifiedEmployee = modifiedEmployee;
-    }
-
-    @Override
-    public long getModelId() {
-        return modelId;
-    }
-
-    @Override
-    public void setModelId(long modelId) {
-        this.modelId = modelId;
-    }
-
-    @Override
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    @Override
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    @Override
-    public Timestamp getModifiedDate() {
-        return modifiedDate;
-    }
-
-    @Override
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    @Override
-    public boolean isActive() {
-        return active;
-    }
-
-    @Override
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    @Override
     public String getLastEditPersonName() {
         if (modifiedEmployee != null && !modifiedEmployee.getShortName().isEmpty()) {
             return modifiedEmployee.getShortName();
         } else if (createdEmployee != null && !createdEmployee.getShortName().isEmpty()) {
             return createdEmployee.getShortName();
         }
-        return EmptyModel.STRING;
+        return "";
     }
 
     @Override

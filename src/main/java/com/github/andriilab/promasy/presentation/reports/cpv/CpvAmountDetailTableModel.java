@@ -51,7 +51,7 @@ class CpvAmountDetailTableModel extends AbstractTableModel {
             case 1:
                 return bidModel.getFinances().getSubdepartment().toString();
             case 2:
-                return bidModel.getBidDesc();
+                return bidModel.getDescription();
             case 3:
                 return bidModel.getOnePrice();
             case 4:

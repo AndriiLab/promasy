@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.domain.organization.enums;
 
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
 
 /**
  * Types of streets with full and short names. According to http://zakon3.rada.gov.ua/laws/show/v0048359-09
@@ -27,20 +28,14 @@ public enum StreetTypes {
     MICRODISTRICT(Labels.getProperty("streetTypes.microdistrict"), Labels.getProperty("streetTypes.microdistrictShort"));
 
 
-    private final String name;
-    private final String shortName;
+    private final @Getter
+    String name;
+    private final @Getter
+    String shortName;
 
     StreetTypes(String name, String shortName) {
         this.name = name;
         this.shortName = shortName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getShortName() {
-        return shortName;
     }
 
     @Override

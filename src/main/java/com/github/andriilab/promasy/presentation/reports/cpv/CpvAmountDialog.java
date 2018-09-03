@@ -4,7 +4,6 @@ import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.controller.ReportsGenerator;
 import com.github.andriilab.promasy.data.models.CpvAmountReportModel;
 import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
 import com.github.andriilab.promasy.domain.bid.enums.ProcurementProcedure;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
@@ -140,7 +139,7 @@ public class CpvAmountDialog extends JDialog {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("year", parent.getReportYear());
         parameters.put("organization", institute.getInstName());
-        parameters.put("edrpou", institute.getEDRPOU());
+        parameters.put("edrpou", institute.getEdrpou());
         parameters.put("headTender", listener.getEmployee(new GetEmployeesQuery(Role.HEAD_OF_TENDER_COMMITTEE)));
         parameters.put("secretaryTender", listener.getEmployee(new GetEmployeesQuery(Role.SECRETARY_OF_TENDER_COMMITTEE)));
         parameters.put("resolutionDate", resolutionDate);
@@ -175,7 +174,7 @@ public class CpvAmountDialog extends JDialog {
     public void setVisible(boolean visible) {
         if (visible) {
             this.setTitle(Labels.getProperty("cpvAmounts") + " - " + parent.getReportYear());
-            resolutionField.setText(EmptyModel.STRING);
+            resolutionField.setText("");
             resolutionDatePicker.clear();
             listener.getData(parent.getReportYear());
         }

@@ -1,8 +1,9 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,17 +16,21 @@ import java.util.List;
 public class Department extends AbstractEntity {
 
     @Column(name = "dep_name")
-    private String depName;
+    private @Getter
+    @Setter
+    String depName;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "inst_id")
-    private Institute institute;
+    private @Getter
+    @Setter
+    Institute institute;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.PERSIST)
     private List<Subdepartment> subdepartments = new ArrayList<>();
 
     public Department() {
-        this.depName = EmptyModel.STRING;
+        this.depName = "";
     }
 
     public Department(String depName) {
@@ -46,20 +51,9 @@ public class Department extends AbstractEntity {
         this.depName = description;
     }
 
-    public String getDepName() {
-        return depName;
-    }
-
-    public void setDepName(String depName) {
-        this.depName = depName;
-    }
-
-    public Institute getInstitute() {
-        return institute;
-    }
-
-    public void setInstitute(Institute institute) {
-        this.institute = institute;
+    @Override
+    public String getDescription() {
+        return this.depName;
     }
 
     public List<Subdepartment> getSubdepartments() {

@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.presentation.components;
 
 import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -23,11 +22,11 @@ public class StatusPanel extends JPanel {
         setPreferredSize(new Dimension(parent.getWidth(), 20));
         setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-        currentDbLabel = new JLabel(EmptyModel.STRING);
+        currentDbLabel = new JLabel("");
         currentDbLabel.setHorizontalAlignment(SwingConstants.LEFT);
         currentDbLabel.setIcon(Icons.CONNECTION_SETTINGS);
 
-        status = new JLabel(EmptyModel.STRING);
+        status = new JLabel("");
         status.setHorizontalAlignment(SwingConstants.RIGHT);
 
         add(currentDbLabel);

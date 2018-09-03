@@ -1,19 +1,19 @@
 package com.github.andriilab.promasy.domain.finance.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -26,26 +26,35 @@ public class FinanceDepartment extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "finance_id")
-    private Finance finances;
+    private @Getter
+    @Setter
+    Finance finances;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "subdep_id")
-    private Subdepartment subdepartment;
+    private @Getter
+    @Setter
+    Subdepartment subdepartment;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<Bid> bids = new ArrayList<>();
+    private @Getter
+    @Setter
+    List<Bid> bids = new ArrayList<>();
 
     @Column(name = "total_materials")
-    private BigDecimal totalMaterialsAmount;
+    private @Getter
+    @Setter
+    BigDecimal totalMaterialsAmount;
 
     @Column(name = "total_eqipment")
-    private BigDecimal totalEquipmentAmount;
+    private @Getter
+    @Setter
+    BigDecimal totalEquipmentAmount;
 
     @Column(name = "total_services")
-    private BigDecimal totalServicesAmount;
-
-    @Transient
-    private Map<BidType, BigDecimal> leftAmount;
+    private @Getter
+    @Setter
+    BigDecimal totalServicesAmount;
 
     public FinanceDepartment(long modelId, Employee createdEmployee, Timestamp createdDate, Employee modifiedEmployee, Timestamp modifiedDate, boolean active, Finance finances, Subdepartment subdepartment, List<Bid> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEquipmentAmount, BigDecimal totalServicesAmount) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);
@@ -70,23 +79,11 @@ public class FinanceDepartment extends AbstractEntity {
 
     @Override
     public void setDescription(String description) {
-
     }
 
-    public Finance getFinances() {
-        return finances;
-    }
-
-    public void setFinances(Finance finances) {
-        this.finances = finances;
-    }
-
-    private List<Bid> getBids() {
-        return bids;
-    }
-
-    public void setBids(List<Bid> bids) {
-        this.bids = bids;
+    @Override
+    public String getDescription() {
+        return "";
     }
 
     public List<Bid> getActiveBids() {
@@ -95,14 +92,6 @@ public class FinanceDepartment extends AbstractEntity {
 
     public List<Bid> getBids(BidType bidType) {
         return bids.stream().filter(b -> b.getType().equals(bidType)).collect(Collectors.toList());
-    }
-
-    public Subdepartment getSubdepartment() {
-        return subdepartment;
-    }
-
-    public void setSubdepartment(Subdepartment subdepartment) {
-        this.subdepartment = subdepartment;
     }
 
     public void addBid(Bid model) {
@@ -117,30 +106,6 @@ public class FinanceDepartment extends AbstractEntity {
         } else {
             bids.add(model);
         }
-    }
-
-    public BigDecimal getTotalMaterialsAmount() {
-        return totalMaterialsAmount;
-    }
-
-    public void setTotalMaterialsAmount(BigDecimal totalMaterialsAmount) {
-        this.totalMaterialsAmount = totalMaterialsAmount;
-    }
-
-    public BigDecimal getTotalEquipmentAmount() {
-        return totalEquipmentAmount;
-    }
-
-    public void setTotalEquipmentAmount(BigDecimal totalEqupmentAmount) {
-        this.totalEquipmentAmount = totalEqupmentAmount;
-    }
-
-    public BigDecimal getTotalServicesAmount() {
-        return totalServicesAmount;
-    }
-
-    public void setTotalServicesAmount(BigDecimal totalServicesAmount) {
-        this.totalServicesAmount = totalServicesAmount;
     }
 
     public BigDecimal getTotalAmount(BidType bidType) {
@@ -159,7 +124,7 @@ public class FinanceDepartment extends AbstractEntity {
     @Override
     public String toString() {
         if (finances == null) {
-            return EmptyModel.STRING;
+            return "";
         }
         return finances.toString();
     }

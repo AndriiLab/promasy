@@ -1,5 +1,7 @@
 package com.github.andriilab.promasy.domain.cpv.entities;
 
+import lombok.Getter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,19 +13,24 @@ public class Cpv {
 
     @Id
     @Column(name = "cpv_code")
-    private String cpvId;
+    private @Getter
+    String cpvId;
 
     @Column(name = "cpv_ukr")
-    private String cpvUkr;
+    private @Getter
+    String cpvUkr;
 
     @Column(name = "cpv_eng")
-    private String cpvEng;
+    private @Getter
+    String cpvEng;
 
     @Column(name = "cpv_level")
-    private int cpvLevel;
+    private @Getter
+    int cpvLevel;
 
     @Column(name = "terminal")
-    private boolean cpvTerminal;
+    private @Getter
+    boolean cpvTerminal;
 
     public Cpv(String cpvId, String cpvUkr, String cpvEng,
                int cpvLevel, boolean cpvTerminal) {
@@ -35,26 +42,6 @@ public class Cpv {
     }
 
     public Cpv() {
-    }
-
-    public String getCpvId() {
-        return cpvId;
-    }
-
-    public String getCpvUkr() {
-        return cpvUkr;
-    }
-
-    public String getCpvEng() {
-        return cpvEng;
-    }
-
-    public int getCpvLevel() {
-        return cpvLevel;
-    }
-
-    public boolean isCpvTerminal() {
-        return cpvTerminal;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.presentation.login;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -124,8 +123,8 @@ public class LoginPanel extends JPanel {
                     listener.loginCancelled();
                 }
             });
-            userField.setText(EmptyModel.STRING);
-            passwordField.setText(EmptyModel.STRING);
+            userField.setText("");
+            passwordField.setText("");
             if (listener.isAbleToRegister()) {
                 parent.getCreateEmployeeDialog().setRoleBox(Role.USER);
                 parent.getCreateEmployeeDialog().setVisible(true);

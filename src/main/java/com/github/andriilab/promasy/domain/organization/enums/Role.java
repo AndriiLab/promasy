@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.domain.organization.enums;
 
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
 
 /**
  * Enum holds data about available user roles
@@ -17,14 +18,11 @@ public enum Role {
     PERSONALLY_LIABLE_EMPLOYEE(Labels.getProperty("role.personallyLiableEmployee")),
     USER(Labels.getProperty("role.user"));
 
-    private final String roleName;
+    private final @Getter
+    String roleName;
 
     Role(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getRoleName() {
-        return roleName;
     }
 
     @Override

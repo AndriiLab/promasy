@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 
 import javax.persistence.Column;
@@ -17,24 +16,30 @@ import java.sql.Timestamp;
 public class ReasonForSupplierChoice extends AbstractEntity {
 
     @Column(name = "reason_name")
-    private String reason;
+    private String description;
 
-    public ReasonForSupplierChoice(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate, boolean active, String reason) {
+    public ReasonForSupplierChoice(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy,
+                                   Timestamp modifiedDate, boolean active, String description) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.reason = reason;
+        this.description = description;
     }
 
-    public ReasonForSupplierChoice(String reason) {
-        this.reason = reason;
+    public ReasonForSupplierChoice(String description) {
+        this.description = description;
     }
 
     public ReasonForSupplierChoice() {
-        this.reason = EmptyModel.STRING;
+        this.description = "";
     }
 
     @Override
-    public void setDescription(String reason) {
-        this.reason = reason;
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -42,16 +47,8 @@ public class ReasonForSupplierChoice extends AbstractEntity {
         return "addOrUpdateReasonForSupplierChoice";
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
     @Override
     public String toString() {
-        return reason;
+        return description;
     }
 }

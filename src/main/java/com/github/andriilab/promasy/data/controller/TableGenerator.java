@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.data.controller;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -119,7 +118,7 @@ public class TableGenerator {
         generalStyle.setWrapText(true);
         generalStyle.setFont(generalFont);
 
-        String[] headerTitles = {EmptyModel.STRING, Labels.getProperty("indicators"), Labels.getProperty("units"), Labels.getProperty("amount"), Labels.getProperty("oneUnitPrice"), Labels.getProperty("summ")};
+        String[] headerTitles = {"", Labels.getProperty("indicators"), Labels.getProperty("units"), Labels.getProperty("amount"), Labels.getProperty("oneUnitPrice"), Labels.getProperty("summ")};
 
         for (String title : headerTitles) {
             createCell(row, colNum++, headerStyle, title);
@@ -150,7 +149,7 @@ public class TableGenerator {
                             createCell(row, col, subHeaderStyle, Labels.getProperty("uah"));
                             break;
                         default:
-                            createCell(row, col, subHeaderStyle, EmptyModel.STRING);
+                            createCell(row, col, subHeaderStyle, "");
                             break;
                     }
                 }
@@ -162,9 +161,9 @@ public class TableGenerator {
             groups.put(groupHeader, groupSize);
             kekv = bid.getKEKV();
 
-            createCell(row, colNum++, generalStyle, EmptyModel.STRING);
+            createCell(row, colNum++, generalStyle, "");
             createCell(row, colNum++, generalStyle, bid.getCpv().getCpvUkr());
-            createCell(row, colNum++, generalStyle, bid.getAmountUnit().getAmUnitDesc());
+            createCell(row, colNum++, generalStyle, bid.getAmountUnit().getDescription());
             createCell(row, colNum++, generalStyle, bid.getTransientAmount());
             createCell(row, colNum++, generalStyle, bid.getOnePrice().doubleValue());
             HSSFCell totalPriceCell = makeCell(row, colNum, generalStyle);

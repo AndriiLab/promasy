@@ -158,7 +158,7 @@ public class Controller {
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = PasswordUtils.makePass(password, retrieveUserSalt(user));
-                if (pass.equals(EmptyModel.STRING)) {
+                if (pass.equals("")) {
                     ErrorOptionPane.criticalError(mainFrame);
                     close();
                 }
@@ -196,12 +196,12 @@ public class Controller {
         Object[] options = {Labels.getProperty("okBtn"), Labels.getProperty("downloadFromSite")};
         Version currentVersion = new Version(Labels.getVersion());
         Version dbVersion = getDBVersion();
-        Logger.infoEvent(this.getClass(), mainFrame, "Your version: " + currentVersion.get() + " DB version: " + dbVersion.get());
+        Logger.infoEvent(this.getClass(), mainFrame, "Your version: " + currentVersion.getVersion() + " DB version: " + dbVersion.getVersion());
         if (currentVersion.compareTo(dbVersion) < 0) {
             int selectedOption = JOptionPane.showOptionDialog(mainFrame,
                     Labels.withDot("oldVersionOfApp") + "\n" +
-                            Labels.withColon("yourVersion") + currentVersion.get() + "\n" +
-                            Labels.withColon("minVersion") + dbVersion.get() + "\n" +
+                            Labels.withColon("yourVersion") + currentVersion.getVersion() + "\n" +
+                            Labels.withColon("minVersion") + dbVersion.getVersion() + "\n" +
                             Labels.withColon("askAdminAboutUpdate") + "\n" +
                             Labels.getProperty("updateUrl"),
                     Labels.getProperty("youCantUseThisVersion"),
@@ -489,7 +489,7 @@ public class Controller {
             public String getEmployee(GetEmployeesQuery query) {
                 List<Employee> models = retrieveEmployees(query);
                 if (models.isEmpty()) {
-                    return EmptyModel.STRING;
+                    return "";
                 } else {
                     return models.get(0).getShortName();
                 }

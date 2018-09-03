@@ -71,7 +71,7 @@ public class CpvDialog extends JDialog {
 
         homeButton.addActionListener(e -> {
             upButton.setEnabled(false);
-            makeCpvQuery(EmptyModel.STRING, 0);
+            makeCpvQuery("", 0);
             searchField.setText(null);
             selectButton.setEnabled(false);
         });
@@ -91,7 +91,7 @@ public class CpvDialog extends JDialog {
             cpvRequest = cpvRequest.substring(0, cpvRequest.length() - 1);
             if (cpvRequest.length() < 2) {
                 upButton.setEnabled(false);
-                cpvRequest = EmptyModel.STRING;
+                cpvRequest = "";
             }
             searchField.setText(cpvRequest);
         });
@@ -187,9 +187,9 @@ public class CpvDialog extends JDialog {
         selectButton.setVisible(parent.getCreateBidPanel().isVisible());
         selectedCpvModel = EmptyModel.CPV;
         if (visible) {
-            makeCpvQuery(EmptyModel.STRING, 0);
+            makeCpvQuery("", 0);
         } else {
-            searchField.setText(EmptyModel.STRING);
+            searchField.setText("");
             selectButton.setVisible(true);
         }
         super.setVisible(visible);

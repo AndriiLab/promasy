@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.domain.bid.enums;
 
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
 
 /**
  * Types of procurement procedures
@@ -17,14 +18,11 @@ public enum ProcurementProcedure {
     COMPETITIVE_DIALOGUE(Labels.getProperty("procProc.competitiveDialogue")),
     COMPETITIVE_DIALOGUE_ENG(Labels.getProperty("procProc.competitiveDialogueWEng"));
 
-    private final String description;
+    private final @Getter
+    String description;
 
     ProcurementProcedure(String description) {
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     @Override

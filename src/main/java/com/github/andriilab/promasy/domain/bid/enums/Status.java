@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.domain.bid.enums;
 
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
 
 import java.util.Comparator;
 
@@ -15,20 +16,14 @@ public enum Status {
     NOT_RECEIVED(Labels.getProperty("status.notReceived"), 4),
     DECLINED(Labels.getProperty("status.declined"), 5);
 
-    private final String statusDesc;
-    private final int idNum;
+    private final @Getter
+    String statusDesc;
+    private final @Getter
+    int idNum;
 
     Status(String statusDesc, int idNum) {
         this.statusDesc = statusDesc;
         this.idNum = idNum;
-    }
-
-    public String getStatusDesc() {
-        return statusDesc;
-    }
-
-    private int getIdNum() {
-        return idNum;
     }
 
     @Override

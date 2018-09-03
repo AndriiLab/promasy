@@ -172,7 +172,7 @@ public class BidsListPanel extends JPanel {
 
         deleteBidButton.addActionListener(e -> {
             if (!selectedBidModel.equals(EmptyModel.BID)) {
-                if (ced.deleteEntry(parent, selectedBidModel.getBidDesc())) {
+                if (ced.deleteEntry(parent, selectedBidModel.getDescription())) {
                     selectedBidModel.setDeleted();
                     selectedFinanceDepartmentModel.addBid(selectedBidModel);
                     listener.persistModelEventOccurred(new CreateOrUpdateCommand<>(selectedBidModel));
@@ -361,8 +361,8 @@ public class BidsListPanel extends JPanel {
             sumLabel.setText(Labels.withColon("totalPrice2") + " " + sum.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
             financeLeftLabel.setText(Labels.withColon("financeLeftByTema") + " " + financeLeft.setScale(2, RoundingMode.CEILING) + Labels.withSpaceBefore("uah"));
         } else {
-            sumLabel.setText(EmptyModel.STRING);
-            financeLeftLabel.setText(EmptyModel.STRING);
+            sumLabel.setText("");
+            financeLeftLabel.setText("");
         }
     }
 

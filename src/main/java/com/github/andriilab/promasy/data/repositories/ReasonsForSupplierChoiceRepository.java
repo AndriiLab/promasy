@@ -20,7 +20,7 @@ public class ReasonsForSupplierChoiceRepository extends Repository<ReasonForSupp
     public List<ReasonForSupplierChoice> getResults() throws JDBCException {
         super.retrieve();
         criteriaQuery.where(criteriaBuilder.equal(root.get(ReasonForSupplierChoice_.active), true));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ReasonForSupplierChoice_.reason)));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get(ReasonForSupplierChoice_.description)));
         return super.getList();
     }
 }

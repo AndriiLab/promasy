@@ -34,6 +34,8 @@ public interface IEntity {
 
     void setDescription(String description);
 
+    String getDescription();
+
     // methods for setting created/modified employee and created/modified date
     void setCreated();
 

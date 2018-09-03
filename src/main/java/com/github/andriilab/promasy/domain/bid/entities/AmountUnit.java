@@ -13,25 +13,30 @@ import java.sql.Timestamp;
 public class AmountUnit extends AbstractEntity {
 
     @Column(name = "amount_unit_desc")
-    private String amUnitDesc;
+    private String description;
 
-    public AmountUnit(long amUnitId, String amUnitDesc, Employee createdBy,
+    public AmountUnit(long amUnitId, String description, Employee createdBy,
                       Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate,
                       boolean active) {
         super(amUnitId, createdBy, createdDate, modifiedBy, modifiedDate, active);
-        this.amUnitDesc = amUnitDesc;
+        this.description = description;
     }
 
-    public AmountUnit(String amUnitDesc) {
-        this.amUnitDesc = amUnitDesc;
+    public AmountUnit(String description) {
+        this.description = description;
     }
 
     public AmountUnit() {
     }
 
     @Override
+    public String getDescription() {
+        return null;
+    }
+
+    @Override
     public void setDescription(String description) {
-        this.amUnitDesc = description;
+        this.description = description;
     }
 
     @Override
@@ -39,16 +44,8 @@ public class AmountUnit extends AbstractEntity {
         return "addOrUpdateAmUnit";
     }
 
-    public String getAmUnitDesc() {
-        return amUnitDesc;
-    }
-
-    public void setAmUnitDesc(String amUnitDesc) {
-        this.amUnitDesc = amUnitDesc;
-    }
-
     public String toString() {
-        return amUnitDesc;
+        return description;
     }
 
 }

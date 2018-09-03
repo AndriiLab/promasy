@@ -368,7 +368,7 @@ public class FinancePanel extends JPanel {
                 options,
                 options[0]);
         if (reportType == null) {
-            return new FinanceReport(EmptyModel.STRING, Collections.emptyList());
+            return new FinanceReport("", Collections.emptyList());
         } else if (reportType.startsWith(Labels.getProperty("selectedFinance"))) {
             return new FinanceReport(selectedFinanceModel.toString(), getBidsList(selectedFinanceModel));
         } else if (reportType.equals(Labels.getProperty("fund.commonFund"))) {

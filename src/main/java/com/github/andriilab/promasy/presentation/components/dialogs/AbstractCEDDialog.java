@@ -2,7 +2,6 @@ package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
 import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -49,7 +48,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
         Dimension comboBoxDim = new Dimension(150, 25);
 
         privateModel = emptyModel;
-        newName = EmptyModel.STRING;
+        newName = "";
 
         DefaultComboBoxModel<T> prodModel = new DefaultComboBoxModel<>();
         comboBox = new EntityComboBox<>(prodModel);
@@ -132,7 +131,7 @@ public abstract class AbstractCEDDialog<T extends IEntity, U extends AbstractCED
 
     protected void clearDialog() {
         privateModel = emptyModel;
-        newName = EmptyModel.STRING;
+        newName = "";
         editButton.setEnabled(false);
         deleteButton.setEnabled(false);
     }

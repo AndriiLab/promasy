@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.presentation.components.panes;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
 public class ErrorOptionPane {
 
     public static void emptyField(JFrame parent, String fieldName) {
-        String field = fieldName == null ? EmptyModel.STRING : " \"" + fieldName + "\"";
+        String field = fieldName == null ? "" : " \"" + fieldName + "\"";
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("enterDataIntoField") + field,
                 Labels.getProperty("fieldCannotBeEmpty") + field,
@@ -23,7 +22,7 @@ public class ErrorOptionPane {
     }
 
     public static void longField(JFrame parent, String fieldName, int size) {
-        String field = fieldName == null ? EmptyModel.STRING : " \"" + fieldName + "\" ";
+        String field = fieldName == null ? "" : " \"" + fieldName + "\" ";
         JOptionPane.showMessageDialog(parent,
                 Labels.getProperty("maxFieldSize") + field + size + Labels.withSpaceBefore("chars"),
                 Labels.getProperty("tooLongField") + field,

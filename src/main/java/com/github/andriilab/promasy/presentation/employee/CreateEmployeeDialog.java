@@ -167,17 +167,17 @@ public class CreateEmployeeDialog extends JDialog {
         currentEmployeeModel = EmptyModel.EMPLOYEE;
         setTitle(Labels.getProperty("createNewUser"));
         okButton.setText(Labels.getProperty("createUser"));
-        nameField.setText(EmptyModel.STRING);
-        middleNameField.setText(EmptyModel.STRING);
-        lastNameField.setText(EmptyModel.STRING);
-        emailField.setText(EmptyModel.STRING);
-        phoneMainField.setText(EmptyModel.STRING);
-        phoneReserveField.setText(EmptyModel.STRING);
+        nameField.setText("");
+        middleNameField.setText("");
+        lastNameField.setText("");
+        emailField.setText("");
+        phoneMainField.setText("");
+        phoneReserveField.setText("");
         instituteBox.setSelectedIndex(0);
-        roleBox.setSelectedItem(EmptyModel.STRING);
-        loginField.setText(EmptyModel.STRING);
-        passwordField.setText(EmptyModel.STRING);
-        repeatPasswordField.setText(EmptyModel.STRING);
+        roleBox.setSelectedItem("");
+        loginField.setText("");
+        passwordField.setText("");
+        repeatPasswordField.setText("");
         roleBox.setSelectedIndex(0);
         instituteBox.setSelectedIndex(0);
     }

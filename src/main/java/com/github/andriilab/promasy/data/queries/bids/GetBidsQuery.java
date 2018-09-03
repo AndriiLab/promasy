@@ -5,13 +5,19 @@ import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
+import lombok.Getter;
 
 public class GetBidsQuery implements IQuery {
-    private BidType type;
-    private int year;
-    private long departmentId;
-    private long subdepartmentId;
-    private long financeDepartmentId;
+    private @Getter
+    BidType type;
+    private @Getter
+    int year;
+    private @Getter
+    long departmentId;
+    private @Getter
+    long subdepartmentId;
+    private @Getter
+    long financeDepartmentId;
 
     public GetBidsQuery(int year) {
         this.year = year;
@@ -38,25 +44,5 @@ public class GetBidsQuery implements IQuery {
         this.type = type;
         this.year = year;
         this.financeDepartmentId = financeDepartment.getModelId();
-    }
-
-    public BidType getType() {
-        return type;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public long getDepartmentId() {
-        return departmentId;
-    }
-
-    public long getSubdepartmentId() {
-        return subdepartmentId;
-    }
-
-    public long getFinanceDepartmentId() {
-        return financeDepartmentId;
     }
 }

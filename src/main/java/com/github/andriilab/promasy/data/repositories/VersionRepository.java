@@ -24,7 +24,7 @@ public class VersionRepository {
 
         //trying to get min version
         if (minimumVersion != null) {
-            version = minimumVersion.get();
+            version = minimumVersion.getVersion();
         } else {
             //if entry doesn't exist (0 rows returned) creating new entry equal to software version
             version = Labels.getVersion();
@@ -45,7 +45,7 @@ public class VersionRepository {
         entityManager.getTransaction().begin();
 
         Version minimumVersion = entityManager.find(Version.class, 1);
-        minimumVersion.set(Labels.getVersion());
+        minimumVersion.setVersion(Labels.getVersion());
 
         entityManager.getTransaction().commit();
     }

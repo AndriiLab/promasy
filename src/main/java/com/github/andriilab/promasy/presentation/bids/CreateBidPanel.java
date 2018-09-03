@@ -223,7 +223,7 @@ public class CreateBidPanel extends JPanel {
                     catNumberField.setEnabled(true);
                 } else {
                     catNumberField.setEnabled(false);
-                    catNumberField.setText(EmptyModel.STRING);
+                    catNumberField.setText("");
                 }
             }
         });
@@ -243,7 +243,7 @@ public class CreateBidPanel extends JPanel {
         });
 
         bidTypeBox.addActionListener(e -> {
-            kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
+            kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKekv()));
             kekvField.setEnabled(false);
         });
 
@@ -352,12 +352,12 @@ public class CreateBidPanel extends JPanel {
         }
         isWithTax = true;
         setTaxLabels();
-        cpvField.setText(EmptyModel.STRING);
-        catNumberField.setText(EmptyModel.STRING);
-        descriptionPane.setText(EmptyModel.STRING);
-        amountField.setText(EmptyModel.STRING);
-        oneUnitPriceField.setText(EmptyModel.STRING);
-        kekvField.setText(EmptyModel.STRING);
+        cpvField.setText("");
+        catNumberField.setText("");
+        descriptionPane.setText("");
+        amountField.setText("");
+        oneUnitPriceField.setText("");
+        kekvField.setText("");
         kekvField.setEnabled(false);
         calculateTotalPrice();
         okButton.setText(Labels.getProperty("create"));
@@ -499,7 +499,7 @@ public class CreateBidPanel extends JPanel {
         }
 
         String onePriceString = oneUnitPriceField.getText();
-        if (onePriceString.equals(EmptyModel.STRING)) {
+        if (onePriceString.equals("")) {
             ErrorOptionPane.emptyField(parent, Labels.getProperty("oneUnitPrice"));
             oneUnitPriceField.requestFocusInWindow();
             return false;
@@ -561,7 +561,7 @@ public class CreateBidPanel extends JPanel {
 
         createdBidModel.setProducer(selectedProducerModel);
         createdBidModel.setCatNum(selectedCatNum);
-        createdBidModel.setBidDesc(selectedDescription);
+        createdBidModel.setDescription(selectedDescription);
         createdBidModel.setCpv(selectedCPV);
         createdBidModel.setOnePrice(onePrice);
         createdBidModel.setAmount(amount);
@@ -615,7 +615,7 @@ public class CreateBidPanel extends JPanel {
         selectedCPV = model.getCpv();
         cpvField.setText(model.getCpv().getCpvId());
         catNumberField.setText(model.getCatNum());
-        descriptionPane.setText(model.getBidDesc());
+        descriptionPane.setText(model.getDescription());
         kekvField.setText(String.valueOf(model.getKEKV()));
         amountField.setText(Integer.toString(model.getAmount()));
         oneUnitPriceField.setText(model.getOnePrice().toString());
@@ -641,7 +641,7 @@ public class CreateBidPanel extends JPanel {
         if (visible) {
             listener.getAllData();
         }
-        kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKEKV()));
+        kekvField.setText(String.valueOf(((BidType) bidTypeBox.getSelectedItem()).getKekv()));
         createdBidModel = new Bid();
         super.setVisible(visible);
     }

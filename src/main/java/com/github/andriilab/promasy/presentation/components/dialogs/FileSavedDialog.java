@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.presentation.components.dialogs;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
 import com.github.andriilab.promasy.presentation.commons.SystemCommands;
@@ -24,11 +23,11 @@ public class FileSavedDialog extends JDialog {
 
         Dimension buttonDim = new Dimension(25, 25);
 
-        messageLabel = new JLabel(EmptyModel.STRING, Icons.INFO, JLabel.CENTER);
+        messageLabel = new JLabel("", Icons.INFO, JLabel.CENTER);
 
         JLabel pathLabel = new JLabel(Labels.withColon("pathToFile"));
 
-        pathField = new JTextField(EmptyModel.STRING);
+        pathField = new JTextField("");
         pathField.setEditable(false);
         pathField.setPreferredSize(new Dimension(300, 25));
 

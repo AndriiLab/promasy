@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.commons.Colors;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -15,6 +14,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
         logPane = new JTextPane();
         logPane.setEditable(false);
         logPane.setPreferredSize(new Dimension(40, 135));
-        logPane.setText(EmptyModel.STRING);
+        logPane.setText("");
 
         sb = new StringBuilder();
 
@@ -55,7 +55,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
             button.setPreferredSize(buttonDim);
             switch (operator) {
                 case "clp":
-                    button.setText(EmptyModel.STRING);
+                    button.setText("");
                     button.setIcon(Icons.CLIPBOARD);
                     button.setToolTipText(Labels.getProperty("copyToClipboard"));
                     break;
@@ -117,7 +117,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 sb.setLength(0);
-                logPane.setText(EmptyModel.STRING);
+                logPane.setText("");
                 setVisible(false);
             }
         });
@@ -254,7 +254,7 @@ public class CalculatorDialog extends JDialog implements ActionListener {
                 break;
             case "/":
                 if (!number2.equals(BigDecimal.ZERO)) {
-                    result = number1.divide(number2);
+                    result = number1.divide(number2, RoundingMode.HALF_UP);
                     break;
                 }
             default:

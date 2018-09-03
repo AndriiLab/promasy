@@ -3,6 +3,8 @@ package com.github.andriilab.promasy.domain.item.entities;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +20,9 @@ import java.sql.Timestamp;
 public class Producer extends AbstractEntity {
 
     @Column(name = "brand_name")
-    private String brandName;
+    private @Getter
+    @Setter
+    String brandName;
 
     public Producer(Employee createdBy, Timestamp createdDate, Employee modifiedBy,
                     Timestamp modifiedDate, boolean active, long brandId,
@@ -41,16 +45,13 @@ public class Producer extends AbstractEntity {
     }
 
     @Override
+    public String getDescription() {
+        return this.brandName;
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateProd";
-    }
-
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
     }
 
     public String toString() {

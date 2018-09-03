@@ -5,6 +5,8 @@ import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.bid.enums.ProcurementProcedure;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -14,10 +16,15 @@ import java.util.*;
  */
 public class CpvAmount {
 
-    private final List<Bid> bids = new LinkedList<>();
-    private BidType type;
+    private final @Getter
+    List<Bid> bids = new LinkedList<>();
+    private @Getter
+    @Setter
+    BidType type;
+    private @Getter
+    @Setter
+    Cpv cpv;
     private BigDecimal totalAmount;
-    private Cpv cpv;
 
     private CpvAmount(Cpv cpv, BidType type, BigDecimal totalAmount) {
         this.cpv = cpv;
@@ -35,26 +42,6 @@ public class CpvAmount {
 
     public void addToTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = this.totalAmount.add(totalAmount);
-    }
-
-    public Cpv getCpv() {
-        return cpv;
-    }
-
-    public void setCpv(Cpv cpv) {
-        this.cpv = cpv;
-    }
-
-    public BidType getType() {
-        return type;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public List<Bid> getBids() {
-        return bids;
     }
 
     public void addBidModel(Bid model) {
@@ -79,7 +66,7 @@ public class CpvAmount {
         Set<Integer> kpkvkSet = new HashSet<>();
         StringJoiner kpkvk = new StringJoiner(", ");
         for (Bid bid : bids) {
-            Integer kpkvkInt = bid.getFinances().getFinances().getKPKVK();
+            Integer kpkvkInt = bid.getFinances().getFinances().getKpkvk();
             if (kpkvkInt != null) {
                 kpkvkSet.add(kpkvkInt);
             }

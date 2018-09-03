@@ -3,6 +3,8 @@ package com.github.andriilab.promasy.domain.bid.entities;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.bid.enums.Status;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,11 +18,15 @@ import java.sql.Timestamp;
 public class BidStatus extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private @Getter
+    @Setter
+    Status status;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_id")
-    private Bid bid;
+    private @Getter
+    @Setter
+    Bid bid;
 
     public BidStatus() {
     }
@@ -38,8 +44,12 @@ public class BidStatus extends AbstractEntity {
     }
 
     @Override
-    public void setDescription(String description) {
+    public String getDescription() {
+        return null;
+    }
 
+    @Override
+    public void setDescription(String description) {
     }
 
     @Override
@@ -50,21 +60,5 @@ public class BidStatus extends AbstractEntity {
     @Override
     public String toString() {
         return status.getStatusDesc();
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Bid getBid() {
-        return bid;
-    }
-
-    public void setBid(Bid bid) {
-        this.bid = bid;
     }
 }

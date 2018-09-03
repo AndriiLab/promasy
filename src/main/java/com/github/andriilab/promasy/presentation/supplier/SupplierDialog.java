@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.presentation.supplier;
 
 import com.github.andriilab.promasy.data.commands.CreateOrUpdateCommand;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.item.entities.Supplier;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
@@ -27,8 +26,8 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
     public SupplierDialog(MainFrame parent) {
         super(Supplier.class, parent, new Dimension(335, 235), Labels.getProperty("suplDialogSuper"), Labels.getProperty("supplier_ced"), parent.getCreateBidPanel().getSupplierBox());
 
-        newSuplTel = EmptyModel.STRING;
-        newSuplComment = EmptyModel.STRING;
+        newSuplTel = "";
+        newSuplComment = "";
 
         telField = new JTextField(13);
         telField.setPreferredSize(new Dimension(150, 25));
@@ -48,8 +47,8 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
             if (item instanceof Supplier) {
                 privateModel = (Supplier) item;
                 if (privateModel.equals(emptyModel)) {
-                    telField.setText(EmptyModel.STRING);
-                    commentsPane.setText(EmptyModel.STRING);
+                    telField.setText("");
+                    commentsPane.setText("");
                     editButton.setEnabled(false);
                     deleteButton.setEnabled(false);
                 } else {
@@ -120,10 +119,10 @@ public class SupplierDialog extends AbstractCEDDialog<Supplier, SupplierDialogLi
 
     @Override
     protected void clearDialog() {
-        newSuplTel = EmptyModel.STRING;
-        newSuplComment = EmptyModel.STRING;
-        telField.setText(EmptyModel.STRING);
-        commentsPane.setText(EmptyModel.STRING);
+        newSuplTel = "";
+        newSuplComment = "";
+        telField.setText("");
+        commentsPane.setText("");
     }
 
     @Override

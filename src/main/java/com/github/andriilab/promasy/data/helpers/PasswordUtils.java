@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.data.helpers;
 
 import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.commons.Utils;
 
 import java.nio.ByteBuffer;
@@ -27,7 +26,7 @@ public class PasswordUtils {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             Logger.warnEvent(Utils.class, e);
-            return EmptyModel.STRING;
+            return "";
         }
     }
 }

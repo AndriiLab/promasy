@@ -1,11 +1,12 @@
 package com.github.andriilab.promasy.domain.finance.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -25,34 +26,53 @@ import java.util.Map;
 public class Finance extends AbstractEntity {
 
     @Column(name = "number")
-    private String financeNumber;
+    private @Getter
+    @Setter
+    String financeNumber;
 
     @Column(name = "name")
-    private String financeName;
+    private @Getter
+    @Setter
+    String financeName;
 
     @Column(name = "total_materials")
-    private BigDecimal totalMaterials;
+    private @Getter
+    @Setter
+    BigDecimal totalMaterials;
 
     @Column(name = "total_equpment")
-    private BigDecimal totalEquipment;
+    private @Getter
+    @Setter
+    BigDecimal totalEquipment;
 
     @Column(name = "total_services")
-    private BigDecimal totalServices;
+    private @Getter
+    @Setter
+    BigDecimal totalServices;
 
     @Column(name = "starts_on")
-    private Date startDate;
+    private @Getter
+    @Setter
+    Date startDate;
 
     @Column(name = "due_to")
-    private Date endDate;
+    private @Getter
+    @Setter
+    Date endDate;
 
     @Enumerated(EnumType.STRING)
-    private Fund fundType;
+    private @Getter
+    @Setter
+    Fund fundType;
 
     @Column(name = "kpkvk")
-    private Integer kpkvk;
+    private @Getter
+    @Setter
+    Integer kpkvk;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private List<FinanceDepartment> financeDepartmentModels = new ArrayList<>();
+    private @Getter
+    List<FinanceDepartment> financeDepartmentModels = new ArrayList<>();
 
     @Transient
     private Map<BidType, BigDecimal> leftAmount;
@@ -91,56 +111,17 @@ public class Finance extends AbstractEntity {
         this.financeName = financeName;
     }
 
+    @Override
+    public String getDescription() {
+        return financeName;
+    }
+
     public List<FinanceDepartment> getFinanceDepartmentModelsSorted() {
         //two stage sort, first by department, then by subdepartment
         financeDepartmentModels.sort(Comparator
                 .comparing((FinanceDepartment sm) -> sm.getSubdepartment().getDepartment().getDepName())
                 .thenComparing(sm -> sm.getSubdepartment().getSubdepName()));
         return financeDepartmentModels;
-    }
-
-    public List<FinanceDepartment> getFinanceDepartmentModels() {
-        return financeDepartmentModels;
-    }
-
-    public String getFinanceNumber() {
-        return financeNumber;
-    }
-
-    public void setFinanceNumber(String financeNumber) {
-        this.financeNumber = financeNumber;
-    }
-
-    public String getFinanceName() {
-        return financeName;
-    }
-
-    public void setFinanceName(String financeName) {
-        this.financeName = financeName;
-    }
-
-    public BigDecimal getTotalMaterials() {
-        return totalMaterials;
-    }
-
-    public void setTotalMaterials(BigDecimal totalMaterials) {
-        this.totalMaterials = totalMaterials;
-    }
-
-    public BigDecimal getTotalEquipment() {
-        return totalEquipment;
-    }
-
-    public void setTotalEquipment(BigDecimal totalEquipment) {
-        this.totalEquipment = totalEquipment;
-    }
-
-    public BigDecimal getTotalServices() {
-        return totalServices;
-    }
-
-    public void setTotalServices(BigDecimal totalServices) {
-        this.totalServices = totalServices;
     }
 
     public BigDecimal getTotalAmount(BidType type) {
@@ -156,42 +137,10 @@ public class Finance extends AbstractEntity {
         }
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public Fund getFundType() {
-        return fundType;
-    }
-
-    public void setFundType(Fund fundType) {
-        this.fundType = fundType;
-    }
-
-    public Integer getKPKVK() {
-        return kpkvk;
-    }
-
-    public void setKPKVK(Integer kpkvk) {
-        this.kpkvk = kpkvk;
-    }
-
     @Override
     public String toString() {
         if (financeNumber == null && financeName == null) {
-            return EmptyModel.STRING;
+            return "";
         }
         return "(" + financeNumber + ") " + financeName;
     }

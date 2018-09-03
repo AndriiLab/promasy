@@ -36,8 +36,6 @@ public class EmptyModel {
     public static final Version VERSION = new Version();
     public static final Object OBJECT = new Object();
 
-    public static final String STRING = "";
-
     private static IEntity[] entities = new IEntity[]{
             AMOUNT_UNITS, BID, BID_STATUS,
             DEPARTMENT, EMPLOYEE, FINANCE_DEPARTMENT, FINANCE,

@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.presentation.components.dialogs;
 
 import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.presentation.MainFrame;
 import com.github.andriilab.promasy.presentation.commons.Icons;
 import com.github.andriilab.promasy.presentation.commons.Labels;
@@ -35,7 +34,7 @@ public class LoggerDialog extends JDialog {
 
         logPane = new JTextPane();
         logPane.setEditable(false);
-        logPane.setText(EmptyModel.STRING);
+        logPane.setText("");
 
         JButton saveButton = new JButton(Labels.getProperty("saveLog"));
         saveButton.addActionListener(e -> saveLog());

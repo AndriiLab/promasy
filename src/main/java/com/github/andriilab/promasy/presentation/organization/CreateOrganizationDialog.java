@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.presentation.organization;
 
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.entities.Address;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
 import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
@@ -87,7 +86,7 @@ class CreateOrganizationDialog extends JDialog {
     }
 
     private void clear() {
-        String empty = EmptyModel.STRING;
+        String empty = "";
         instituteNameField.setText(empty);
         mailField.setText(empty);
         phoneField.setText(empty);
@@ -111,7 +110,7 @@ class CreateOrganizationDialog extends JDialog {
         mailField.setText(model.getEMail());
         phoneField.setText(model.getPhoneNumber());
         faxField.setText(model.getFaxNumber());
-        edrpouField.setText(String.valueOf(model.getEDRPOU()));
+        edrpouField.setText(String.valueOf(model.getEdrpou()));
         if (model.getAddress() != null) {
             countryField.setText(model.getAddress().getCountry());
             regionField.setText(model.getAddress().getRegion());
@@ -211,7 +210,7 @@ class CreateOrganizationDialog extends JDialog {
         model.setEMail(email);
         model.setPhoneNumber(phone);
         model.setFaxNumber(fax);
-        model.setEDRPOU(edrpou);
+        model.setEdrpou(edrpou);
         Address address;
         if (model.getAddress() == null) {
             address = new Address();

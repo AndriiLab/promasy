@@ -89,7 +89,7 @@ public class CPVRepository {
         // if one level up
         if (depth == -1) {
             if (requestedCpv.length() < 3) { // if request is shorter than 3 char return general groups
-                return new CPVRequestObject(EmptyModel.STRING, 1);
+                return new CPVRequestObject("", 1);
             } else { //else trim last char
                 requestedCpv = requestedCpv.substring(0, requestedCpv.length() - 1);
             }

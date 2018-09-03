@@ -3,6 +3,8 @@ package com.github.andriilab.promasy.domain.item.entities;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +20,19 @@ import java.sql.Timestamp;
 public class Supplier extends AbstractEntity {
 
     @Column(name = "supplier_name")
-    private String supplierName;
+    private @Getter
+    @Setter
+    String supplierName;
 
     @Column(name = "supplier_tel")
-    private String supplierTel;
+    private @Getter
+    @Setter
+    String supplierTel;
 
     @Column(name = "supplier_comments")
-    private String supplierComments;
+    private @Getter
+    @Setter
+    String supplierComments;
 
     public Supplier(Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate,
                     boolean active, long supplierId, String supplierName, String supplierTel,
@@ -52,32 +60,13 @@ public class Supplier extends AbstractEntity {
     }
 
     @Override
+    public String getDescription() {
+        return this.supplierName;
+    }
+
+    @Override
     public String getMessage() {
         return "addOrUpdateSupl";
-    }
-
-    public String getSupplierName() {
-        return supplierName;
-    }
-
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
-    public String getSupplierTel() {
-        return supplierTel;
-    }
-
-    public void setSupplierTel(String supplierTel) {
-        this.supplierTel = supplierTel;
-    }
-
-    public String getSupplierComments() {
-        return supplierComments;
-    }
-
-    public void setSupplierComments(String supplierComments) {
-        this.supplierComments = supplierComments;
     }
 
     @Override

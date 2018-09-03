@@ -1,5 +1,8 @@
 package com.github.andriilab.promasy.domain.versioning.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,7 +21,9 @@ public class Version implements Comparable<Version> {
     private int id = 1;
 
     @Column(name = "version_allowed")
-    private String version;
+    private @Getter
+    @Setter
+    String version;
 
     public Version() {
     }
@@ -33,20 +38,12 @@ public class Version implements Comparable<Version> {
         this.version = version;
     }
 
-    public String get() {
-        return this.version;
-    }
-
-    public void set(String version) {
-        this.version = version;
-    }
-
     public int compareTo(Version that) {
         if (that == null) {
             return 1;
         }
-        String[] thisParts = this.get().split("\\.");
-        String[] thatParts = that.get().split("\\.");
+        String[] thisParts = this.getVersion().split("\\.");
+        String[] thatParts = that.getVersion().split("\\.");
         int length = Math.max(thisParts.length, thatParts.length);
         for (int i = 0; i < length; i++) {
             int thisPart = i < thisParts.length ? Integer.parseInt(thisParts[i]) : 0;
@@ -65,5 +62,4 @@ public class Version implements Comparable<Version> {
     public boolean equals(Object that) {
         return this == that || that != null && this.getClass() == that.getClass() && this.compareTo((Version) that) == 0;
     }
-
 }

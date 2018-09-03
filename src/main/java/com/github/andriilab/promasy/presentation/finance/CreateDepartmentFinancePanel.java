@@ -120,7 +120,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
     }
 
     void clear() {
-        String emptyString = EmptyModel.STRING;
+        String emptyString = "";
         departmentBox.setSelectedIndex(0);
         subdepartmentBox.setSelectedIndex(0);
         depMaterialsAmountField.setText(emptyString);
@@ -268,7 +268,7 @@ public class CreateDepartmentFinancePanel extends JPanel {
         gc.gridx = 0;
         gc.anchor = GridBagConstraints.WEST;
         gc.insets = largePadding;
-        financesPanel.add(new JLabel(EmptyModel.STRING), gc);
+        financesPanel.add(new JLabel(""), gc);
 
         gc.gridx++;
         gc.anchor = GridBagConstraints.WEST;

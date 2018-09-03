@@ -1,8 +1,9 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -15,29 +16,41 @@ import java.util.List;
 public class Institute extends AbstractEntity {
 
     @Column(name = "inst_name")
-    private String instName;
+    private @Getter
+    @Setter
+    String instName;
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private @Getter
+    @Setter
+    String phoneNumber;
 
     @Column(name = "fax_number")
-    private String faxNumber;
+    private @Getter
+    @Setter
+    String faxNumber;
 
     @Column(name = "email")
-    private String eMail;
+    private @Getter
+    @Setter
+    String eMail;
 
     @Column(name = "edrpou")
-    private Integer edrpou;
+    private @Getter
+    @Setter
+    Integer edrpou;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
-    private Address address;
+    private @Getter
+    @Setter
+    Address address;
 
     @OneToMany(mappedBy = "institute", cascade = CascadeType.PERSIST)
     private List<Department> departments = new ArrayList<>();
 
     public Institute() {
-        this.instName = EmptyModel.STRING;
+        this.instName = "";
     }
 
     public Institute(String instName, String phoneNumber, String faxNumber, String eMail, Integer edrpou, Address address) {
@@ -65,56 +78,9 @@ public class Institute extends AbstractEntity {
         this.instName = instName;
     }
 
-    public String getInstName() {
-        return instName;
-    }
-
-    public void setInstName(String instName) {
-        this.instName = instName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getFaxNumber() {
-        return faxNumber;
-    }
-
-    public void setFaxNumber(String faxNumber) {
-        this.faxNumber = faxNumber;
-    }
-
-    public String getEMail() {
-        return eMail;
-    }
-
-    public void setEMail(String eMail) {
-        this.eMail = eMail;
-    }
-
-    public Integer getEDRPOU() {
-        return edrpou;
-    }
-
-    public void setEDRPOU(Integer edrpou) {
-        this.edrpou = edrpou;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String toString() {
-        return instName;
+    @Override
+    public String getDescription() {
+        return this.instName;
     }
 
     public List<Department> getDepartments() {

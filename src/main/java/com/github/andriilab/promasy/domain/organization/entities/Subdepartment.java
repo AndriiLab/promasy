@@ -3,6 +3,8 @@ package com.github.andriilab.promasy.domain.organization.entities;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,14 +16,19 @@ import java.util.List;
 public class Subdepartment extends AbstractEntity {
 
     @Column(name = "subdep_name")
-    private String subdepName;
+    private @Getter
+    @Setter
+    String subdepName;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "dep_id")
-    private Department department;
+    private @Getter
+    @Setter
+    Department department;
 
     @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
-    private List<Employee> employees = new ArrayList<>();
+    private @Getter
+    List<Employee> employees = new ArrayList<>();
 
     @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
     private List<FinanceDepartment> financeDepartments = new ArrayList<>();
@@ -46,24 +53,9 @@ public class Subdepartment extends AbstractEntity {
         this.subdepName = subdepName;
     }
 
-    public String getSubdepName() {
-        return subdepName;
-    }
-
-    public void setSubdepName(String subdepName) {
-        this.subdepName = subdepName;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public List<Employee> getEmployees() {
-        return employees;
+    @Override
+    public String getDescription() {
+        return this.subdepName;
     }
 
     public List<FinanceDepartment> getFinanceDepartments() {
@@ -108,5 +100,4 @@ public class Subdepartment extends AbstractEntity {
     public String getMessage() {
         return "addOrUpdateSubdepartment";
     }
-
 }

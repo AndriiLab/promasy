@@ -1,10 +1,11 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
 import com.github.andriilab.promasy.domain.organization.enums.StreetTypes;
 import com.github.andriilab.promasy.presentation.commons.Labels;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -18,31 +19,49 @@ import java.sql.Timestamp;
 public class Address extends AbstractEntity {
 
     @Column
-    private String country;
+    private @Getter
+    @Setter
+    String country;
 
     @Column
-    private String region;
+    private @Getter
+    @Setter
+    String region;
 
     @Enumerated(EnumType.STRING)
-    private CityTypes cityType;
+    private @Getter
+    @Setter
+    CityTypes cityType;
 
     @Column
-    private String city;
+    private @Getter
+    @Setter
+    String city;
 
     @Enumerated(EnumType.STRING)
-    private StreetTypes streetType;
+    private @Getter
+    @Setter
+    StreetTypes streetType;
 
     @Column
-    private String street;
+    private @Getter
+    @Setter
+    String street;
 
     @Column(name = "building_number")
-    private String buildingNumber;
+    private @Getter
+    @Setter
+    String buildingNumber;
 
     @Column(name = "corpus_number")
-    private String corpusNumber;
+    private @Getter
+    @Setter
+    String corpusNumber;
 
     @Column(name = "postal_code")
-    private String postalCode;
+    private @Getter
+    @Setter
+    String postalCode;
 
     public Address(String country, String region, CityTypes cityType, String city, StreetTypes streetType, String street, String buildingNumber, String corpusNumber, String postalCode) {
         this.country = country;
@@ -72,86 +91,18 @@ public class Address extends AbstractEntity {
     public Address() {
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public CityTypes getCityType() {
-        return cityType;
-    }
-
-    public void setCityType(CityTypes cityType) {
-        this.cityType = cityType;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public StreetTypes getStreetType() {
-        return streetType;
-    }
-
-    public void setStreetType(StreetTypes streetType) {
-        this.streetType = streetType;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
-    public String getCorpusNumber() {
-        return corpusNumber;
-    }
-
-    public void setCorpusNumber(String corpusNumber) {
-        this.corpusNumber = corpusNumber;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    @Override
+    public String getDescription() {
+        return "";
     }
 
     @Override
-    public void setDescription(String description) {
-        //won't need here
+    public void setDescription(String description) { // not used
     }
 
     @Override
     public String getMessage() {
-        return EmptyModel.STRING;
+        return "";
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.github.andriilab.promasy.data.controller.Logger;
 import com.github.andriilab.promasy.data.controller.LoginData;
 import com.github.andriilab.promasy.data.controller.TableGenerator;
 import com.github.andriilab.promasy.data.storage.ConnectionSettings;
-import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.bid.entities.AmountUnit;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
 import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
@@ -397,7 +396,7 @@ public class MainFrame extends JFrame {
 
     private void onExportToTableClick() {
         java.util.List<Bid> reportList = null;
-        String name = EmptyModel.STRING;
+        String name = "";
         if (tabPane != null) {
             if (tabPane.getSelectedComponent().equals(bidsListPanel)) {
                 reportList = bidsListPanel.getSelectedBids();
