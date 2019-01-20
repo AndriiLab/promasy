@@ -21,9 +21,7 @@ public class Version implements Comparable<Version> {
     private int id = 1;
 
     @Column(name = "version_allowed")
-    private @Getter
-    @Setter
-    String version;
+    @Getter @Setter private String version;
 
     public Version() {
     }

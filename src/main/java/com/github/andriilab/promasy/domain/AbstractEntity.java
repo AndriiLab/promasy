@@ -20,9 +20,7 @@ import java.time.Instant;
 public abstract class AbstractEntity implements IEntity {
 
     @Column(name = "active")
-    private @Getter
-    @Setter
-    boolean active;
+    @Getter @Setter private boolean active;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_seq_gen")
@@ -36,31 +34,21 @@ public abstract class AbstractEntity implements IEntity {
                     @Parameter(name = "optimizer", value = "hilo")
             })
     @Column(name = "id", nullable = false)
-    private @Getter
-    @Setter
-    long modelId;
+    @Getter @Setter private long modelId;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    private @Getter
-    @Setter(AccessLevel.PRIVATE)
-    Employee createdEmployee;
+    @Getter @Setter(AccessLevel.PRIVATE) private Employee createdEmployee;
 
     @Column(name = "created_date")
-    private @Getter
-    @Setter
-    Timestamp createdDate;
+    @Getter @Setter private Timestamp createdDate;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "modified_by")
-    private @Getter
-    @Setter(AccessLevel.PRIVATE)
-    Employee modifiedEmployee;
+    @Getter @Setter(AccessLevel.PRIVATE) private Employee modifiedEmployee;
 
     @Column(name = "modified_date")
-    private @Getter
-    @Setter
-    Timestamp modifiedDate;
+    @Getter @Setter private Timestamp modifiedDate;
 
     @Version
     private long version = 0;

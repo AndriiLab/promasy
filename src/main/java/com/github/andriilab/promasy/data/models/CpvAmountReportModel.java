@@ -10,33 +10,15 @@ import java.math.BigDecimal;
  * IEntity for report table with information about procurements by CPV code
  */
 public class CpvAmountReportModel {
-    private @Getter
-    @Setter
-    String bidType;
-    private @Getter
-    @Setter
-    String cpvNumber;
-    private @Getter
-    @Setter
-    String cpvName;
-    private @Getter
-    @Setter
-    String kpkvk;
-    private @Getter
-    @Setter
-    BigDecimal totalPrice;
-    private @Getter
-    @Setter
-    String procurementProcedure;
-    private @Getter
-    @Setter
-    String startDate;
-    private @Getter
-    @Setter
-    String notation;
-    private @Getter
-    @Setter
-    CpvAmount parentModel;
+    @Getter @Setter private String bidType;
+    @Getter @Setter private String cpvNumber;
+    @Getter @Setter private String cpvName;
+    @Getter @Setter private String kpkvk;
+    @Getter @Setter private BigDecimal totalPrice;
+    @Getter @Setter private String procurementProcedure;
+    @Getter @Setter private String startDate;
+    @Getter @Setter private String notation;
+    @Getter @Setter private CpvAmount parentModel;
 
     public CpvAmountReportModel(CpvAmount parentModel, String bidType, String cpvNumber, String cpvName, String kpkvk, BigDecimal totalPrice, String procurementProcedure, String startDate, String notation) {
         this.parentModel = parentModel;

@@ -16,35 +16,23 @@ import java.util.List;
 public class Institute extends AbstractEntity {
 
     @Column(name = "inst_name")
-    private @Getter
-    @Setter
-    String instName;
+    @Getter @Setter private String instName;
 
     @Column(name = "phone_number")
-    private @Getter
-    @Setter
-    String phoneNumber;
+    @Getter @Setter private String phoneNumber;
 
     @Column(name = "fax_number")
-    private @Getter
-    @Setter
-    String faxNumber;
+    @Getter @Setter private String faxNumber;
 
     @Column(name = "email")
-    private @Getter
-    @Setter
-    String eMail;
+    @Getter @Setter private String eMail;
 
     @Column(name = "edrpou")
-    private @Getter
-    @Setter
-    Integer edrpou;
+    @Getter @Setter private Integer edrpou;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
-    private @Getter
-    @Setter
-    Address address;
+    @Getter @Setter private Address address;
 
     @OneToMany(mappedBy = "institute", cascade = CascadeType.PERSIST)
     private List<Department> departments = new ArrayList<>();

@@ -20,19 +20,13 @@ import java.sql.Timestamp;
 public class Supplier extends AbstractEntity {
 
     @Column(name = "supplier_name")
-    private @Getter
-    @Setter
-    String supplierName;
+    @Getter @Setter private String supplierName;
 
     @Column(name = "supplier_tel")
-    private @Getter
-    @Setter
-    String supplierTel;
+    @Getter @Setter private String supplierTel;
 
     @Column(name = "supplier_comments")
-    private @Getter
-    @Setter
-    String supplierComments;
+    @Getter @Setter private String supplierComments;
 
     public Supplier(Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate,
                     boolean active, long supplierId, String supplierName, String supplierTel,

@@ -5,10 +5,8 @@ import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import lombok.Getter;
 
 public class GetFinanceDepartmentLeftAmountQuery {
-    private @Getter
-    FinanceDepartment model;
-    private @Getter
-    BidType type;
+    @Getter private FinanceDepartment model;
+    @Getter private BidType type;
 
     public GetFinanceDepartmentLeftAmountQuery(FinanceDepartment model, BidType type) {
         this.model = model;

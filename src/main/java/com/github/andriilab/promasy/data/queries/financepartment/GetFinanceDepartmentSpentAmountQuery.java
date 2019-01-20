@@ -6,10 +6,8 @@ import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import lombok.Getter;
 
 public class GetFinanceDepartmentSpentAmountQuery implements IQuery {
-    private @Getter
-    FinanceDepartment model;
-    private @Getter
-    BidType type;
+    @Getter private FinanceDepartment model;
+    @Getter private BidType type;
 
     public GetFinanceDepartmentSpentAmountQuery(FinanceDepartment model, BidType type) {
         this.model = model;

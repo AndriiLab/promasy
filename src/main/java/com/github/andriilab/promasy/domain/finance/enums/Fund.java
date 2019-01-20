@@ -10,8 +10,7 @@ public enum Fund {
     COMMON_FUND(Labels.getProperty("fund.commonFund")),
     SPECIAL_FUND(Labels.getProperty("fund.specialFund"));
 
-    private final @Getter
-    String name;
+    @Getter private final String name;
     Fund(String name) {
         this.name = name;
     }

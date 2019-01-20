@@ -13,61 +13,39 @@ import java.sql.Timestamp;
 public class Employee extends AbstractEntity {
 
     @Column(name = "emp_fname")
-    private @Getter
-    @Setter
-    String empFName;
+    @Getter @Setter private String empFName;
 
     @Column(name = "emp_mname")
-    private @Getter
-    @Setter
-    String empMName;
+    @Getter @Setter private String empMName;
 
     @Column(name = "emp_lname")
-    private @Getter
-    @Setter
-    String empLName;
+    @Getter @Setter private String empLName;
 
     @Column(name = "email")
-    private @Getter
-    @Setter
-    String email;
+    @Getter @Setter private String email;
 
     @Column(name = "phone_main")
-    private @Getter
-    @Setter
-    String phoneMain;
+    @Getter @Setter private String phoneMain;
 
     @Column(name = "phone_reserve")
-    private @Getter
-    @Setter
-    String phoneReserve;
+    @Getter @Setter private String phoneReserve;
 
     @Column(name = "login")
-    private @Getter
-    @Setter
-    String login;
+    @Getter @Setter private String login;
 
     @Column(name = "password")
-    private @Getter
-    @Setter
-    String password;
+    @Getter @Setter private String password;
 
     @Column(name = "salt")
-    private @Getter
-    @Setter
-    long salt;
+    @Getter @Setter private long salt;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "subdep_id")
-    private @Getter
-    @Setter
-    Subdepartment subdepartment;
+    @Getter @Setter private Subdepartment subdepartment;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private @Getter
-    @Setter
-    Role role;
+    @Getter @Setter private Role role;
 
     public Employee(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate, boolean active, String empFName, String empMName, String empLName, String email, String phoneMain, String phoneReserve, Subdepartment subdepartment, Role role, String login, String password, long salt) {
         super(modelId, createdBy, createdDate, modifiedBy, modifiedDate, active);

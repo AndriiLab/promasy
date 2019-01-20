@@ -16,19 +16,14 @@ import java.util.List;
 public class Subdepartment extends AbstractEntity {
 
     @Column(name = "subdep_name")
-    private @Getter
-    @Setter
-    String subdepName;
+    @Getter @Setter private String subdepName;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "dep_id")
-    private @Getter
-    @Setter
-    Department department;
+    @Getter @Setter private Department department;
 
     @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
-    private @Getter
-    List<Employee> employees = new ArrayList<>();
+    @Getter private List<Employee> employees = new ArrayList<>();
 
     @OneToMany(mappedBy = "subdepartment", cascade = CascadeType.PERSIST)
     private List<FinanceDepartment> financeDepartments = new ArrayList<>();

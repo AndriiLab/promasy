@@ -31,76 +31,51 @@ public class Bid extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "producer_id")
-    private @Getter
-    @Setter
-    Producer producer;
+    @Getter @Setter private Producer producer;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "am_unit_id")
-    private @Getter
-    @Setter
-    AmountUnit amountUnit;
+    @Getter @Setter private AmountUnit amountUnit;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cpv_code")
-    private @Getter
-    @Setter
-    Cpv cpv;
+    @Getter @Setter private Cpv cpv;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "finance_dep_id")
-    private @Getter
-    @Setter
-    FinanceDepartment finances;
+    @Getter @Setter private FinanceDepartment finances;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "supplier_id")
-    private @Getter
-    @Setter
-    Supplier supplier;
+    @Getter @Setter private Supplier supplier;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "reason_id")
-    private @Getter
-    @Setter
-    ReasonForSupplierChoice reasonForSupplierChoice;
+    @Getter @Setter private ReasonForSupplierChoice reasonForSupplierChoice;
 
     @OneToMany(mappedBy = "bid", cascade = CascadeType.PERSIST)
-    private @Getter
-    @Setter
-    List<BidStatus> statuses = new ArrayList<>();
+    @Getter @Setter private List<BidStatus> statuses = new ArrayList<>();
 
     @Column(name = "cat_num")
-    private @Getter
-    @Setter
-    String catNum;
+    @Getter @Setter private String catNum;
 
     @Column(name = "one_price")
-    private @Getter
-    @Setter
-    BigDecimal onePrice;
+    @Getter @Setter private BigDecimal onePrice;
 
     @Column(name = "amount")
-    private @Getter
-    @Setter
-    int amount;
+    @Getter @Setter private int amount;
 
     @Transient
-    private @Setter
-    int transientAmount;
+    @Setter private int transientAmount;
 
     @Enumerated(EnumType.STRING)
-    private @Getter
-    @Setter
-    BidType type;
+    @Getter @Setter private BidType type;
 
     @Column(name = "kekv")
     private Integer kekv;
 
     @Column(name = "proc_start_date")
-    private @Getter
-    @Setter
-    Date procurementStartDate;
+    @Getter @Setter private Date procurementStartDate;
 
 
     public Bid(long modelId, Employee createdBy, Timestamp createdDate, Employee modifiedBy, Timestamp modifiedDate,

@@ -63,7 +63,7 @@ import com.github.andriilab.promasy.presentation.reports.cpv.CpvAmountDialog;
 import com.github.andriilab.promasy.presentation.reports.cpv.CpvAmountDialogListener;
 import com.github.andriilab.promasy.presentation.supplier.SupplierDialog;
 import com.github.andriilab.promasy.presentation.supplier.SupplierDialogListener;
-import jiconfont.icons.FontAwesome;
+import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 
 import javax.swing.*;
@@ -79,7 +79,7 @@ public class MainFrame extends JFrame {
     private LoginPanel loginPanel;
     private ButtonsToolbar buttonsToolbar;
     private ControlsToolbar controlsToolbar;
-    private MainFrameMenuBar menuBar;
+    private MainFrameMenuBar mainFrameMenuBar;
     private ConSetDialog conSettDialog;
     private OrganizationDialog editOrgDialog;
     private EditEmployeeDialog editEmpDialog;
@@ -163,8 +163,8 @@ public class MainFrame extends JFrame {
         Role role = LoginData.getInstance().getRole();
 
         //creating and setting menu bar
-        menuBar = new MainFrameMenuBar(role);
-        setJMenuBar(menuBar);
+        mainFrameMenuBar = new MainFrameMenuBar(role);
+        setJMenuBar(mainFrameMenuBar);
 
         // init main pane and menu bar according to user roles
         switch (role) {
@@ -251,7 +251,7 @@ public class MainFrame extends JFrame {
 
         controlsToolbar.setListener(this::updateYearInVisibleComponent);
 
-        menuBar.setMenuBarListener(new MenuBarListener() {
+        mainFrameMenuBar.setMenuBarListener(new MenuBarListener() {
             @Override
             public void showEmpEditDialog() {
                 editEmpDialog.setVisible(true);
@@ -339,14 +339,12 @@ public class MainFrame extends JFrame {
 
             @Override
             public void setCurrentVersionAsMinimum() {
-                {
-                    int action = JOptionPane.showConfirmDialog(MainFrame.this,
-                            Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?",
-                            Labels.getProperty("confirmAction"),
-                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
-                    if (action == JOptionPane.OK_OPTION) {
-                        listener.setMinimumVersionEventOccurred();
-                    }
+                int action = JOptionPane.showConfirmDialog(MainFrame.this,
+                        Labels.getProperty("setMinimumVersionLong") + " " + Labels.getVersion() + "?",
+                        Labels.getProperty("confirmAction"),
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, Icons.QUESTION);
+                if (action == JOptionPane.OK_OPTION) {
+                    listener.setMinimumVersionEventOccurred();
                 }
             }
         });

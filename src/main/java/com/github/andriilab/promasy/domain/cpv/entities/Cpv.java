@@ -13,24 +13,19 @@ public class Cpv {
 
     @Id
     @Column(name = "cpv_code")
-    private @Getter
-    String cpvId;
+    @Getter private String cpvId;
 
     @Column(name = "cpv_ukr")
-    private @Getter
-    String cpvUkr;
+    @Getter private String cpvUkr;
 
     @Column(name = "cpv_eng")
-    private @Getter
-    String cpvEng;
+    @Getter private String cpvEng;
 
     @Column(name = "cpv_level")
-    private @Getter
-    int cpvLevel;
+    @Getter private int cpvLevel;
 
     @Column(name = "terminal")
-    private @Getter
-    boolean cpvTerminal;
+    @Getter private boolean cpvTerminal;
 
     public Cpv(String cpvId, String cpvUkr, String cpvEng,
                int cpvLevel, boolean cpvTerminal) {

@@ -18,8 +18,7 @@ public enum Role {
     PERSONALLY_LIABLE_EMPLOYEE(Labels.getProperty("role.personallyLiableEmployee")),
     USER(Labels.getProperty("role.user"));
 
-    private final @Getter
-    String roleName;
+    @Getter private final String roleName;
 
     Role(String roleName) {
         this.roleName = roleName;

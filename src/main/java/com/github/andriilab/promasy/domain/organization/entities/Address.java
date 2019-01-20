@@ -19,49 +19,31 @@ import java.sql.Timestamp;
 public class Address extends AbstractEntity {
 
     @Column
-    private @Getter
-    @Setter
-    String country;
+    @Getter @Setter private String country;
 
     @Column
-    private @Getter
-    @Setter
-    String region;
+    @Getter @Setter private String region;
 
     @Enumerated(EnumType.STRING)
-    private @Getter
-    @Setter
-    CityTypes cityType;
+    @Getter @Setter private CityTypes cityType;
 
     @Column
-    private @Getter
-    @Setter
-    String city;
+    @Getter @Setter private String city;
 
     @Enumerated(EnumType.STRING)
-    private @Getter
-    @Setter
-    StreetTypes streetType;
+    @Getter @Setter private StreetTypes streetType;
 
     @Column
-    private @Getter
-    @Setter
-    String street;
+    @Getter @Setter private String street;
 
     @Column(name = "building_number")
-    private @Getter
-    @Setter
-    String buildingNumber;
+    @Getter @Setter private String buildingNumber;
 
     @Column(name = "corpus_number")
-    private @Getter
-    @Setter
-    String corpusNumber;
+    @Getter @Setter private String corpusNumber;
 
     @Column(name = "postal_code")
-    private @Getter
-    @Setter
-    String postalCode;
+    @Getter @Setter private String postalCode;
 
     public Address(String country, String region, CityTypes cityType, String city, StreetTypes streetType, String street, String buildingNumber, String corpusNumber, String postalCode) {
         this.country = country;

@@ -18,15 +18,11 @@ import java.sql.Timestamp;
 public class BidStatus extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
-    private @Getter
-    @Setter
-    Status status;
+    @Getter @Setter private Status status;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "bid_id")
-    private @Getter
-    @Setter
-    Bid bid;
+    @Getter @Setter private Bid bid;
 
     public BidStatus() {
     }

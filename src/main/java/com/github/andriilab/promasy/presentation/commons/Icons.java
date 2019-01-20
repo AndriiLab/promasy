@@ -1,6 +1,6 @@
 package com.github.andriilab.promasy.presentation.commons;
 
-import jiconfont.icons.FontAwesome;
+import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 
 import javax.swing.*;

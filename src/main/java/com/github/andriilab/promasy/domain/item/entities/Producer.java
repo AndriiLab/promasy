@@ -20,9 +20,7 @@ import java.sql.Timestamp;
 public class Producer extends AbstractEntity {
 
     @Column(name = "brand_name")
-    private @Getter
-    @Setter
-    String brandName;
+    @Getter @Setter private String brandName;
 
     public Producer(Employee createdBy, Timestamp createdDate, Employee modifiedBy,
                     Timestamp modifiedDate, boolean active, long brandId,

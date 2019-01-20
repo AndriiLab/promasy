@@ -6,12 +6,9 @@ import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import lombok.Getter;
 
 public class GetFinanceDepartmentsQuery implements IQuery {
-    private @Getter
-    int year;
-    private @Getter
-    Subdepartment subdepartment;
-    private @Getter
-    Finance finance;
+    @Getter private int year;
+    @Getter private Subdepartment subdepartment;
+    @Getter private Finance finance;
 
     public GetFinanceDepartmentsQuery(int year, Subdepartment subdepartment) {
         this.year = year;

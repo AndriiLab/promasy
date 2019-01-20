@@ -9,38 +9,22 @@ import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 
 public class BidsReportModel {
-    private @Getter
-    String department;
-    private @Getter
-    String subdepartment;
-    private @Getter
-    String financeNumber;
-    private @Getter
-    String financeName;
-    private @Getter
-    String financeType;
-    private @Getter
-    String cpv;
-    private @Getter
-    String cpvUkr;
-    private @Getter
-    String orderDescription;
-    private @Getter
-    String orderDate;
-    private @Getter
-    String producer;
-    private @Getter
-    String catNum;
-    private @Getter
-    String supplier;
-    private @Getter
-    String reasonForSupplierChoice;
-    private @Getter
-    String packType;
-    private @Getter
-    BigDecimal onePrice;
-    private @Getter
-    int amount;
+    @Getter private String department;
+    @Getter private String subdepartment;
+    @Getter private String financeNumber;
+    @Getter private String financeName;
+    @Getter private String financeType;
+    @Getter private String cpv;
+    @Getter private String cpvUkr;
+    @Getter private String orderDescription;
+    @Getter private String orderDate;
+    @Getter private String producer;
+    @Getter private String catNum;
+    @Getter private String supplier;
+    @Getter private String reasonForSupplierChoice;
+    @Getter private String packType;
+    @Getter private BigDecimal onePrice;
+    @Getter private int amount;
 
     public BidsReportModel(Bid bid) {
         this(

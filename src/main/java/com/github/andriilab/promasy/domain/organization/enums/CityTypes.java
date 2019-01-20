@@ -12,10 +12,8 @@ public enum CityTypes {
     SETTLEMENT(Labels.getProperty("cityTypes.settlement"), Labels.getProperty("cityTypes.settlementShort")),
     VILLAGE(Labels.getProperty("cityTypes.village"), Labels.withDot("cityTypes.villageShort"));
 
-    private final @Getter
-    String name;
-    private final @Getter
-    String shortName;
+    @Getter private final String name;
+    @Getter private final String shortName;
 
     CityTypes(String name, String shortName) {
         this.name = name;

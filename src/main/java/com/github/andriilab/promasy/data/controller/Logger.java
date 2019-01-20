@@ -10,6 +10,10 @@ import org.apache.log4j.LogManager;
  */
 public class Logger {
 
+    private Logger() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static <T> void infoEvent(Class<T> callerClass, MainFrame mainFrame, String message) {
         LogManager.getLogger(callerClass).info(message);
         if (mainFrame != null) {

@@ -19,8 +19,7 @@ public class RegistrationTicket {
     private int id = 1;
 
     @Column(name = "registrations_left")
-    private @Getter
-    int registrationTicketNumber;
+    @Getter private int registrationTicketNumber;
 
     public RegistrationTicket() {
     }

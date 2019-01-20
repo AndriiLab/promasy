@@ -26,53 +26,34 @@ import java.util.Map;
 public class Finance extends AbstractEntity {
 
     @Column(name = "number")
-    private @Getter
-    @Setter
-    String financeNumber;
+    @Getter @Setter private String financeNumber;
 
     @Column(name = "name")
-    private @Getter
-    @Setter
-    String financeName;
+    @Getter @Setter private String financeName;
 
     @Column(name = "total_materials")
-    private @Getter
-    @Setter
-    BigDecimal totalMaterials;
+    @Getter @Setter private BigDecimal totalMaterials;
 
     @Column(name = "total_equpment")
-    private @Getter
-    @Setter
-    BigDecimal totalEquipment;
+    @Getter @Setter private BigDecimal totalEquipment;
 
     @Column(name = "total_services")
-    private @Getter
-    @Setter
-    BigDecimal totalServices;
+    @Getter @Setter private BigDecimal totalServices;
 
     @Column(name = "starts_on")
-    private @Getter
-    @Setter
-    Date startDate;
+    @Getter @Setter private Date startDate;
 
     @Column(name = "due_to")
-    private @Getter
-    @Setter
-    Date endDate;
+    @Getter @Setter private Date endDate;
 
     @Enumerated(EnumType.STRING)
-    private @Getter
-    @Setter
-    Fund fundType;
+    @Getter @Setter private Fund fundType;
 
     @Column(name = "kpkvk")
-    private @Getter
-    @Setter
-    Integer kpkvk;
+    @Getter @Setter private Integer kpkvk;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private @Getter
-    List<FinanceDepartment> financeDepartmentModels = new ArrayList<>();
+    @Getter private List<FinanceDepartment> financeDepartmentModels = new ArrayList<>();
 
     @Transient
     private Map<BidType, BigDecimal> leftAmount;

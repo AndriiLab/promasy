@@ -16,10 +16,8 @@ public enum Status {
     NOT_RECEIVED(Labels.getProperty("status.notReceived"), 4),
     DECLINED(Labels.getProperty("status.declined"), 5);
 
-    private final @Getter
-    String statusDesc;
-    private final @Getter
-    int idNum;
+    @Getter private final String statusDesc;
+    @Getter private final int idNum;
 
     Status(String statusDesc, int idNum) {
         this.statusDesc = statusDesc;

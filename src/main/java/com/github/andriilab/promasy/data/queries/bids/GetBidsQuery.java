@@ -8,16 +8,11 @@ import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import lombok.Getter;
 
 public class GetBidsQuery implements IQuery {
-    private @Getter
-    BidType type;
-    private @Getter
-    int year;
-    private @Getter
-    long departmentId;
-    private @Getter
-    long subdepartmentId;
-    private @Getter
-    long financeDepartmentId;
+    @Getter private BidType type;
+    @Getter private int year;
+    @Getter private long departmentId;
+    @Getter private long subdepartmentId;
+    @Getter private long financeDepartmentId;
 
     public GetBidsQuery(int year) {
         this.year = year;

@@ -16,14 +16,9 @@ import java.util.*;
  */
 public class CpvAmount {
 
-    private final @Getter
-    List<Bid> bids = new LinkedList<>();
-    private @Getter
-    @Setter
-    BidType type;
-    private @Getter
-    @Setter
-    Cpv cpv;
+    @Getter private final List<Bid> bids = new LinkedList<>();
+    @Getter @Setter private BidType type;
+    @Getter @Setter private Cpv cpv;
     private BigDecimal totalAmount;
 
     private CpvAmount(Cpv cpv, BidType type, BigDecimal totalAmount) {

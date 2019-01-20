@@ -6,6 +6,5 @@
 /build/
 /gradle/
 /out/
-/reports/Bids_Report.jasper
-/reports/CPV_Amount_Report.jasper
+/reports/*.jasper
 /src/main/generated/

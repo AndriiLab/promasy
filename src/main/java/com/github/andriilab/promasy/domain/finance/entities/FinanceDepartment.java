@@ -26,35 +26,23 @@ public class FinanceDepartment extends AbstractEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "finance_id")
-    private @Getter
-    @Setter
-    Finance finances;
+    @Getter @Setter private Finance finances;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "subdep_id")
-    private @Getter
-    @Setter
-    Subdepartment subdepartment;
+    @Getter @Setter private Subdepartment subdepartment;
 
     @OneToMany(mappedBy = "finances", cascade = CascadeType.PERSIST)
-    private @Getter
-    @Setter
-    List<Bid> bids = new ArrayList<>();
+    @Getter @Setter private List<Bid> bids = new ArrayList<>();
 
     @Column(name = "total_materials")
-    private @Getter
-    @Setter
-    BigDecimal totalMaterialsAmount;
+    @Getter @Setter private BigDecimal totalMaterialsAmount;
 
     @Column(name = "total_eqipment")
-    private @Getter
-    @Setter
-    BigDecimal totalEquipmentAmount;
+    @Getter @Setter private BigDecimal totalEquipmentAmount;
 
     @Column(name = "total_services")
-    private @Getter
-    @Setter
-    BigDecimal totalServicesAmount;
+    @Getter @Setter private BigDecimal totalServicesAmount;
 
     public FinanceDepartment(long modelId, Employee createdEmployee, Timestamp createdDate, Employee modifiedEmployee, Timestamp modifiedDate, boolean active, Finance finances, Subdepartment subdepartment, List<Bid> bids, BigDecimal totalMaterialsAmount, BigDecimal totalEquipmentAmount, BigDecimal totalServicesAmount) {
         super(modelId, createdEmployee, createdDate, modifiedEmployee, modifiedDate, active);

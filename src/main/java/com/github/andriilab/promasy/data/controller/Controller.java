@@ -60,8 +60,8 @@ import com.github.andriilab.promasy.presentation.reports.cpv.CpvAmountDialogList
 import com.github.andriilab.promasy.presentation.supplier.SupplierDialogListener;
 import org.hibernate.JDBCException;
 
-import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -71,13 +71,18 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 public class Controller {
+
+    private static String tableUpdater = "tableUpdater";
+    private static String connectionSettings = "connectionSettings";
+    private static String connectionStatistics = "connectionStatistics";
+    private static String logSave = "logSave";
 
     private final MainFrame mainFrame;
     private Storage storage;
@@ -93,14 +98,14 @@ public class Controller {
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
-        DbConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+        DbConnector.INSTANCE.loadConnectionSettings(parameters.contains(tableUpdater));
         mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
 
         //show ConSettDialog if it was defined in command line arguments
-        if (parameters.contains("connectionSettings")) {
+        if (parameters.contains(connectionSettings)) {
             mainFrame.showConSettDialog();
         }
-        if (parameters.contains("connectionStatistics")) {
+        if (parameters.contains(connectionStatistics)) {
             DbConnector.INSTANCE.showConnectionStats(mainFrame);
         }
 
@@ -116,16 +121,16 @@ public class Controller {
         List<String> parameters = new ArrayList<>();
         for (String arg : args) {
             if (arg.contains("-c") || arg.contains("--config")) {
-                parameters.add("connectionSettings");
+                parameters.add(connectionSettings);
             }
             if (arg.contains("-g") || arg.contains("--generate")) {
-                parameters.add("tableUpdater");
+                parameters.add(tableUpdater);
             }
             if (arg.contains("-s") || arg.contains("--statistics")) {
-                parameters.add("connectionStatistics");
+                parameters.add(connectionStatistics);
             }
             if (arg.contains("-l") || arg.contains("--log")) {
-                parameters.add("logSave");
+                parameters.add(logSave);
             }
         }
         return parameters;
@@ -143,7 +148,7 @@ public class Controller {
                 }
 
                 // trying to connect with new settings
-                DbConnector.INSTANCE.loadConnectionSettings(parameters.contains("tableUpdater"));
+                DbConnector.INSTANCE.loadConnectionSettings(parameters.contains(tableUpdater));
                 mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
                 connect();
             }
@@ -221,6 +226,7 @@ public class Controller {
         mainFrame.initialize();
         // adding implementation for closing operation via X-button on window
         mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 closeDialog();
             }
@@ -896,7 +902,7 @@ public class Controller {
     private void close() {
         DbConnector.INSTANCE.disconnect();
         Logger.infoEvent(this.getClass(), mainFrame, "Disconnected successfully");
-        if (parameters.contains("logSave")) {
+        if (parameters.contains(logSave)) {
             mainFrame.saveLog();
         }
         mainFrame.dispose();
