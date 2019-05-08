@@ -97,4 +97,9 @@ public class Institute extends AbstractEntity {
     public String getMessage() {
         return "addOrUpdateInstitute";
     }
+
+    @Override
+    public String toString() {
+        return instName;
+    }
 }

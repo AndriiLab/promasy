@@ -57,6 +57,7 @@ public class Department extends AbstractEntity {
         return subdepartments;
     }
 
+    @Override
     public String toString() {
         return depName;
     }
