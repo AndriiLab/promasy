@@ -1,4 +1,4 @@
-#Packages used in ProMaSy 0.8.2.3 build
+#Packages used in ProMaSy 0.8.2.4 build
 
 Package name|Version
 ---|---
