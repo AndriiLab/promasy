@@ -1,0 +1,27 @@
+plugins {
+    id 'com.github.ben-manes.versions'
+}
+
+apply plugin: 'java'
+
+archivesBaseName = 'promasy-app'
+version = '0.8.5'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':persistence')
+
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}

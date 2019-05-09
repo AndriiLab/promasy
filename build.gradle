@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version = '0.8.2.3'
+version = '0.8.5'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -108,7 +108,7 @@ jar {
 task createVersionProperties(dependsOn: processResources) {
     doFirst {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        new File("src/main/resources/PromasyVersion.properties").withWriter { w ->
+        new File("gui/src/main/resources/PromasyVersion.properties").withWriter { w ->
             Properties p = new Properties()
             p.setProperty('versionNumber', project.version.toString())
             p.setProperty('buildDate', format.format(Calendar.getInstance().getTime()))
@@ -132,7 +132,7 @@ task setConsoleCyrillicSupport(dependsOn: processResources) {
 }
 
 task writePackages(dependsOn: processResources) {
-    File pkgsFile = new File("src/markdown/PACKAGES.md")
+    File pkgsFile = new File("gui/src/markdown/PACKAGES.md")
     pkgsFile.write("#Packages used in ProMaSy " + project.version + " build\n\n")
     pkgsFile.append("Package name|Version\n")
     pkgsFile.append("---|---\n")
@@ -146,8 +146,8 @@ task writePackages(dependsOn: processResources) {
 
 task convertMarkdown(dependsOn: processResources) {
     markdownToHtml.tables = true
-    markdownToHtml.sourceDir = project.file("src/markdown")
-    markdownToHtml.outputDir = project.file("src/main/resources")
+    markdownToHtml.sourceDir = project.file("gui/src/markdown")
+    markdownToHtml.outputDir = project.file("gui/src/main/resources")
     convertMarkdown.finalizedBy markdownToHtml
 }
 

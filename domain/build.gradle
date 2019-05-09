@@ -1,0 +1,34 @@
+plugins {
+    id 'com.github.ben-manes.versions'
+}
+
+apply plugin: 'java'
+
+archivesBaseName = 'promasy-domain'
+version = '0.8.5'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    compile project(':commons')
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
+    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.2.Final'
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.2.Final'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}

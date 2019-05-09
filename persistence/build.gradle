@@ -1,0 +1,46 @@
+plugins {
+    id 'com.github.ben-manes.versions'
+}
+
+apply plugin: 'java'
+
+archivesBaseName = 'promasy-persistence'
+version = '0.8.5'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/" }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+    
+    // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
+    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.8.0'
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0
+    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.4.2.Final'
+
+    // https://mvnrepository.com/artifact/com.mchange/c3p0
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.4'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
+
+    compile project(':domain')
+
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
