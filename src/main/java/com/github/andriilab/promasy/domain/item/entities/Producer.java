@@ -2,7 +2,7 @@ package com.github.andriilab.promasy.domain.item.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.app.commons.Labels;
 import lombok.Getter;
 import lombok.Setter;
 

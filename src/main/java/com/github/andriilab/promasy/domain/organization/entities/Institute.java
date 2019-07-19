@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.IEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -88,12 +87,6 @@ public class Institute extends AbstractEntity {
     }
 
     @Override
-    public void setDeleted() {
-        departments.forEach(IEntity::setDeleted);
-        super.setDeleted();
-    }
-
-    @Override
     public String getMessage() {
         return "addOrUpdateInstitute";
     }
@@ -101,5 +94,13 @@ public class Institute extends AbstractEntity {
     @Override
     public String toString() {
         return instName;
+    }
+
+    @Override
+    public void setActive(boolean active, Employee employee, Timestamp modifiedDate) {
+        if(!active){
+            departments.forEach(d -> d.setActive(false, employee, modifiedDate));
+        }
+        super.setActive(active, employee, modifiedDate);
     }
 }

@@ -12,11 +12,33 @@ public class CommandsHandler {
         this.storage = storage;
     }
 
-    public <T extends IEntity> void Handle(CreateOrUpdateCommand<T> command) {
-        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).createOrUpdate(command.getObject());
+    public <T extends IEntity> void Handle(ICommand<T> command) {
+        if (command instanceof CreateCommand) {
+            HandleCreate((CreateCommand<T>) command);
+        } else if (command instanceof UpdateCommand) {
+            HandleUpdate((UpdateCommand<T>) command);
+        } else if (command instanceof DeleteCommand) {
+            HandleDelete((DeleteCommand<T>) command);
+        } else if (command instanceof RefreshCommand) {
+            HandleRefresh((RefreshCommand<T>) command);
+        } else {
+            throw new UnsupportedOperationException(command.getClass().getName());
+        }
     }
 
-    public <T extends IEntity> void Handle(RefreshCommand<T> command) {
+    private <T extends IEntity> void HandleCreate(CreateCommand<T> command) {
+        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).create(command.getObject());
+    }
+
+    private <T extends IEntity> void HandleUpdate(UpdateCommand<T> command) {
+        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).update(command.getObject());
+    }
+
+    private <T extends IEntity> void HandleDelete(DeleteCommand<T> command) {
+        ((IRepository<T>) storage.getByClass(command.getObject().getClass())).delete(command.getObject());
+    }
+
+    private <T extends IEntity> void HandleRefresh(RefreshCommand<T> command) {
         ((IRepository<T>) storage.getByClass(command.getObject().getClass())).refresh(command.getObject());
     }
 }

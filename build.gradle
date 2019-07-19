@@ -21,10 +21,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.8.0'
+    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.9.0'
 
     // google roboto font (https://github.com/google/roboto/releases) package for jasper reports
     // howto: https://community.jaspersoft.com/wiki/custom-font-font-extension

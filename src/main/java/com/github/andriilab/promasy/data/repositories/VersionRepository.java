@@ -1,7 +1,7 @@
 package com.github.andriilab.promasy.data.repositories;
 
 import com.github.andriilab.promasy.domain.versioning.entities.Version;
-import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.app.commons.Labels;
 import org.hibernate.JDBCException;
 
 import javax.persistence.EntityManager;

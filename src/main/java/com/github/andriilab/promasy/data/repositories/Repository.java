@@ -1,5 +1,6 @@
 package com.github.andriilab.promasy.data.repositories;
 
+import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.domain.IEntity;
 import org.hibernate.JDBCException;
 
@@ -26,10 +27,23 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     }
 
     @Override
-    public void createOrUpdate(T object) throws JDBCException {
-        entityManager.getTransaction().begin();
-        entityManager.persist(object);
-        entityManager.getTransaction().commit();
+    public void create(T object) throws JDBCException {
+        object.setCreatedDate(ServerRepository.getServerTimestamp());
+        object.setCreatedEmployee(LoginData.getInstance());
+        createOrUpdate(object);
+    }
+
+    @Override
+    public void update(T object) throws JDBCException {
+        object.setModifiedDate(ServerRepository.getServerTimestamp());
+        object.setModifiedEmployee(LoginData.getInstance());
+        createOrUpdate(object);
+    }
+
+    @Override
+    public void delete(T object) throws JDBCException {
+        object.setActive(false, LoginData.getInstance(), ServerRepository.getServerTimestamp());
+        createOrUpdate(object);
     }
 
     @Override
@@ -59,5 +73,11 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
 
     public Class<T> getEntityClass() {
         return entityClass;
+    }
+
+    private void createOrUpdate(T object) throws JDBCException {
+        entityManager.getTransaction().begin();
+        entityManager.persist(object);
+        entityManager.getTransaction().commit();
     }
 }

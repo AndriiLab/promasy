@@ -28,7 +28,7 @@ javax.persistence-api|2.2
 jaxb-api|2.4.0-b180830.0359
 log4j|1.2.17
 byte-buddy|1.9.10
-jasperreports|6.8.0
+jasperreports|6.9.0
 commons-collections4|4.3
 commons-lang3|3.9
 commons-math3|3.6.1
@@ -50,6 +50,6 @@ jandex|2.0.5.Final
 jcommon|1.0.23
 jfreechart|1.0.19
 stax-ex|1.8
-postgresql|42.2.5
+postgresql|42.2.6
 swingx-all|1.6.5-1
 google-roboto|2.138

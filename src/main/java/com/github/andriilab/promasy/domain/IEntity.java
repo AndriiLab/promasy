@@ -8,8 +8,10 @@ import java.sql.Timestamp;
  * Interface for all models
  */
 public interface IEntity {
+    void setCreatedEmployee(Employee employee);
     Employee getCreatedEmployee();
 
+    void setModifiedEmployee(Employee employee);
     Employee getModifiedEmployee();
 
     long getModelId();
@@ -26,7 +28,7 @@ public interface IEntity {
 
     boolean isActive();
 
-    void setActive(boolean active);
+    void setActive(boolean active, Employee employee, Timestamp modifiedDate);
 
     String getLastEditPersonName();
 
@@ -35,13 +37,6 @@ public interface IEntity {
     void setDescription(String description);
 
     String getDescription();
-
-    // methods for setting created/modified employee and created/modified date
-    void setCreated();
-
-    void setUpdated();
-
-    void setDeleted();
 
     String getMessage();
 }
