@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.ben-manes.versions' version '0.21.0'
+    id 'com.github.ben-manes.versions' version '0.36.0'
     id 'org.kordamp.markdown.convert' version '1.2.0'
 }
 
@@ -7,71 +7,72 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version = '0.8.2.4'
+version = '0.8.3'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url = "http://repo.spring.io/release" }
-    maven { url = "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/" }
-    maven { url = 'http://dl.bintray.com/content/aalmiray/kordamp' }
+    maven { url 'https://plugins.gradle.org/m2/' }
+    maven { url 'https://repo.spring.io/release' }
+    maven { url 'http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/' }
+    maven { url 'https://dl.bintray.com/content/aalmiray/kordamp' }
 }
 
 dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.19'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.9.0'
+    implementation group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.16.0'
 
     // google roboto font (https://github.com/google/roboto/releases) package for jasper reports
     // howto: https://community.jaspersoft.com/wiki/custom-font-font-extension
-    compile files('libs/google-roboto-2.138.jar')
+    implementation files('libs/google-roboto-2.138.jar')
 
     // https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-all
-    compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'
+    implementation group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.5-1'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-swing
-    compile group: 'com.github.jiconfont', name: 'jiconfont-swing', version: '1.0.1'
+    implementation group: 'com.github.jiconfont', name: 'jiconfont-swing', version: '1.0.1'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-font_awesome
-    compile group: 'com.github.jiconfont', name: 'jiconfont-font_awesome', version: '4.7.0.1'
+    implementation group: 'com.github.jiconfont', name: 'jiconfont-font_awesome', version: '4.7.0.1'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.4.28.Final'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0
-    compile group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.4.2.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-c3p0', version: '5.4.28.Final'
 
     // https://mvnrepository.com/artifact/com.mchange/c3p0
-    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.4'
+    implementation group: 'com.mchange', name: 'c3p0', version: '0.9.5.5'
 
     // https://mvnrepository.com/artifact/log4j/log4j
-    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    implementation group: 'log4j', name: 'log4j', version: '1.2.17'
 
     // https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker
-    compile group: 'com.github.lgooddatepicker', name: 'LGoodDatePicker', version: '10.3.1'
+    implementation group: 'com.github.lgooddatepicker', name: 'LGoodDatePicker', version: '11.1.0'
 
     // https://mvnrepository.com/artifact/org.apache.poi/poi
-    compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
+    implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
 
-    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
 
-    compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+    implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
 
-    compileOnly 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compileOnly 'org.projectlombok:lombok:1.18.18'
+    annotationProcessor 'org.projectlombok:lombok:1.18.18'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
-    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.2.Final'
-    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.2.Final'
+    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.28.Final'
+    annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.4.28.Final'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompileOnly group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 compileJava {
@@ -84,9 +85,9 @@ jar {
     manifest {
         attributes 'SplashScreen-Image': 'splash.png',
                 'Implementation-Title': 'ProMaSy',
-                'Implementation-Version': version,
+                'Implementation-Version': archiveVersion,
                 'Main-Class': 'com.github.andriilab.promasy.App',
-                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
+                'Class-Path': configurations.runtimeClasspath.files.collect { "lib/$it.name" }.join(' ')
     }
 
     doFirst {
@@ -136,7 +137,7 @@ task writePackages(dependsOn: processResources) {
     pkgsFile.write("#Packages used in ProMaSy " + project.version + " build\n\n")
     pkgsFile.append("Package name|Version\n")
     pkgsFile.append("---|---\n")
-    configurations.compile.sort().each {
+    configurations.compileClasspath.sort().each {
         String fileName = it.name
         String pkgName = fileName.find("^.+?(?=-\\d)")
         String pkgVersion = fileName.substring(pkgName.length() + 1, fileName.length() - 4)
