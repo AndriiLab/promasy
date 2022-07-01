@@ -8,3 +8,6 @@
 /out/
 /reports/*.jasper
 **/generated/
+**/build/
+**/out/
+settings.ser

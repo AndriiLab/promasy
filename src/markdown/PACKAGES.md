@@ -1,60 +1,60 @@
 #Packages used in ProMaSy 0.8.3 build
 
-Package name|Version
----|---
-antlr|2.7.7
-jackson-annotations|2.10.0
-jackson-core|2.10.0
-jackson-databind|2.10.0
-classmate|1.5.1
-jiconfont-font_awesome|4.7.0.1
-jiconfont-swing|1.0.1
-jiconfont|1.0.0
-LGoodDatePicker|11.1.0
-itext|2.1.7.js8
-c3p0|0.9.5.5
-mchange-commons-java|0.2.19
-istack-commons-runtime|3.0.7
-FastInfoset|1.2.15
-SparseBitSet|1.2
-commons-beanutils|1.9.4
-commons-codec|1.15
-commons-collections|3.2.2
-commons-digester|2.1
-commons-logging|1.2
-javax.activation-api|1.2.0
-javax.annotation-api|1.3.2
-javax.inject|1
-javax.persistence-api|2.2
-jaxb-api|2.4.0-b180830.0359
-log4j|1.2.17
-byte-buddy|1.10.17
-jasperreports|6.16.0
-commons-collections4|4.4
-commons-lang3|3.11
-commons-math3|3.6.1
-poi|5.0.0
-bcprov-jdk15on|1.64
-castor-core|1.4.1
-castor-xml|1.4.1
-dom4j|2.1.3
-ecj|3.21.0
-jaxb-runtime|2.3.1
-txw2|2.3.1
-hibernate-commons-annotations|5.1.2.Final
-hibernate-c3p0|5.4.28.Final
-hibernate-core|5.4.28.Final
-hibernate-jpamodelgen|5.4.28.Final
-javassist|3.27.0-GA
-jboss-logging|3.4.1.Final
-jboss-transaction-api_1.2_spec|1.1.1.Final
-jandex|2.2.3.Final
-jcommon|1.0.23
-jfreechart|1.0.19
-stax-ex|1.8
-postgresql|42.2.19
-lombok|1.18.18
-jcl-over-slf4j|1.7.30
-slf4j-api|1.7.30
-swingx-all|1.6.5-1
-google-roboto|2.138
+| Package name                   | Version            |
+|--------------------------------|--------------------|
+| antlr                          | 2.7.7              |
+| jackson-annotations            | 2.13.1             |
+| jackson-core                   | 2.13.1             |
+| jackson-databind               | 2.13.1             |
+| jackson-dataformat-xml         | 2.13.1             |
+| woodstox-core                  | 6.2.7              |
+| classmate                      | 1.5.1              |
+| jiconfont-font_awesome         | 4.7.0.1            |
+| jiconfont-swing                | 1.0.1              |
+| jiconfont                      | 1.0.0              |
+| LGoodDatePicker                | 11.2.1             |
+| itext                          | 2.1.7.js9          |
+| c3p0                           | 0.9.5.5            |
+| mchange-commons-java           | 0.2.19             |
+| istack-commons-runtime         | 3.0.7              |
+| FastInfoset                    | 1.2.15             |
+| SparseBitSet                   | 1.2                |
+| commons-beanutils              | 1.9.4              |
+| commons-codec                  | 1.15               |
+| commons-collections            | 3.2.2              |
+| commons-digester               | 2.1                |
+| commons-io                     | 2.11.0             |
+| commons-logging                | 1.2                |
+| javax.activation-api           | 1.2.0              |
+| javax.annotation-api           | 1.3.2              |
+| javax.persistence-api          | 2.2                |
+| jaxb-api                       | 2.4.0-b180830.0359 |
+| log4j                          | 1.2.17             |
+| byte-buddy                     | 1.10.17            |
+| jasperreports                  | 6.19.1             |
+| commons-collections4           | 4.4                |
+| commons-lang3                  | 3.12.0             |
+| commons-math3                  | 3.6.1              |
+| log4j-api                      | 2.17.2             |
+| poi                            | 5.2.2              |
+| bcprov-jdk15on                 | 1.68               |
+| stax2-api                      | 4.2.1              |
+| dom4j                          | 2.1.3              |
+| ecj                            | 3.21.0             |
+| jaxb-runtime                   | 2.3.1              |
+| txw2                           | 2.3.1              |
+| hibernate-commons-annotations  | 5.1.2.Final        |
+| hibernate-c3p0                 | 5.4.28.Final       |
+| hibernate-core                 | 5.4.28.Final       |
+| hibernate-jpamodelgen          | 5.4.28.Final       |
+| javassist                      | 3.27.0-GA          |
+| jboss-logging                  | 3.4.1.Final        |
+| jboss-transaction-api_1.2_spec | 1.1.1.Final        |
+| jandex                         | 2.2.3.Final        |
+| jcommon                        | 1.0.23             |
+| jfreechart                     | 1.0.19             |
+| stax-ex                        | 1.8                |
+| postgresql                     | 42.4.0             |
+| lombok                         | 1.18.24            |
+| swingx-all                     | 1.6.5-1            |
+| google-roboto                  | 2.138              |
