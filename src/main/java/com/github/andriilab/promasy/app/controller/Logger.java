@@ -3,7 +3,7 @@ package com.github.andriilab.promasy.app.controller;
 import com.github.andriilab.promasy.app.view.MainFrame;
 import com.github.andriilab.promasy.app.commons.Colors;
 import com.github.andriilab.promasy.app.commons.Labels;
-import org.apache.log4j.LogManager;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Implementation of log4j with internal logger in com.github.andriilab.promasy.app
