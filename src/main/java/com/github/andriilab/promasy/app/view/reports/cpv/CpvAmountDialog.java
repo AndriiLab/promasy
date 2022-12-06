@@ -4,6 +4,7 @@ import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.data.reports.ReportsGenerator;
 import com.github.andriilab.promasy.data.reports.models.CpvAmountReportModel;
 import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
+import com.github.andriilab.promasy.data.reports.models.CpvAmountsReportRequest;
 import com.github.andriilab.promasy.domain.bid.entities.CpvAmount;
 import com.github.andriilab.promasy.domain.bid.enums.ProcurementProcedure;
 import com.github.andriilab.promasy.domain.organization.entities.Institute;
@@ -33,16 +34,19 @@ import java.util.stream.Collectors;
  */
 public class CpvAmountDialog extends JDialog {
     private final CpvAmountTableModel tableModel;
-    private JTable table;
+    private final JTable table;
     private final CpvAmountDetailDialog dialog;
     private CpvAmountDialogListener listener;
     private final MainFrame parent;
     private final JTextField resolutionField;
     private final DatePicker resolutionDatePicker;
+    private final ReportsGenerator reportsGenerator;
 
     public CpvAmountDialog(MainFrame parent) {
         super(parent, Labels.getProperty("cpvAmounts"), true);
         this.parent = parent;
+        reportsGenerator = new ReportsGenerator(parent);
+
         setSize(1000, 500);
         setResizable(false);
         setLocationRelativeTo(parent);
@@ -144,7 +148,7 @@ public class CpvAmountDialog extends JDialog {
         parameters.put("resolutionNum", resolutionNum);
 
         this.setVisible(false);
-        new ReportsGenerator(ReportsGenerator.CPV_AMOUNT_REPORT, parameters, Collections.unmodifiableList(list), parent);
+        reportsGenerator.showPrintDialog(new CpvAmountsReportRequest(parameters, Collections.unmodifiableList(list)));
     }
 
     private void setupEditableCells() {

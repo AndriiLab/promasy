@@ -17,7 +17,8 @@ import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepar
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentSpentAmountQuery;
 import com.github.andriilab.promasy.data.queries.financepartment.GetFinanceDepartmentsQuery;
 import com.github.andriilab.promasy.data.reports.ReportsGenerator;
-import com.github.andriilab.promasy.data.reports.models.BidsReportModel;
+import com.github.andriilab.promasy.data.reports.models.BidReportModel;
+import com.github.andriilab.promasy.data.reports.models.BidsReportRequest;
 import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.entities.Bid;
@@ -68,11 +69,13 @@ public class BidsListPanel extends JPanel {
     private final CreateBidPanel createBidPanel;
     private JSplitPane splitPane;
     private Thread bidRequestThread;
+    private ReportsGenerator reportsGenerator;
 
     public BidsListPanel(MainFrame parent) {
         this.parent = parent;
         Dimension buttonDim = new Dimension(25, 25);
         Dimension comboDim = new Dimension(200, 20);
+        reportsGenerator = new ReportsGenerator(parent);
 
         listener = new EmptyBidsListPanelListener();
         useUserDepartment = false;
@@ -512,8 +515,8 @@ public class BidsListPanel extends JPanel {
     }
 
     public void printBidList(Map<String, Object> parameters) {
-        List<BidsReportModel> list = getSelectedBids().stream().map(BidsReportModel::new).collect(Collectors.toList());
-        new ReportsGenerator(ReportsGenerator.BIDS_REPORT, parameters, Collections.unmodifiableList(list), parent);
+        List<BidReportModel> list = getSelectedBids().stream().map(BidReportModel::new).collect(Collectors.toList());
+        reportsGenerator.showPrintDialog(new BidsReportRequest(parameters, list));
     }
 
     public List<Bid> getSelectedBids() {

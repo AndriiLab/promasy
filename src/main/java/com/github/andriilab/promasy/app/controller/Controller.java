@@ -89,14 +89,14 @@ public class Controller {
 
     private final MainFrame mainFrame;
     private Storage storage;
-    private List<String> parameters;
+    private final List<String> parameters;
     private CommandsHandler commandsHandler;
 
     public Controller(String[] args, MainFrame mainFrame) {
         this.mainFrame = mainFrame;
 
         parameters = parseArgs(args);
-        ReportsGenerator.precompileReports(mainFrame);
+        new ReportsGenerator(mainFrame).precompileReports();
         initPrimaryListeners();
 
         // trying to get connection settings form serialized object,

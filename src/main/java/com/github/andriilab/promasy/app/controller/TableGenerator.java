@@ -134,7 +134,6 @@ public class TableGenerator {
                 cell.setCellValue(bid.getOnePrice().doubleValue());
 
                 HSSFCell totalPriceCell = makeCell(row, colNum, generalStyle);
-                totalPriceCell.setCellType(CellType.FORMULA);
                 totalPriceCell.setCellFormula(String.format("D%d*E%d", rowNum + 1, rowNum + 1));
 
                 //erasing bid transient amount
@@ -144,7 +143,6 @@ public class TableGenerator {
             for (Map.Entry<Integer, Integer> entry : groups.entrySet()) {
                 row = spreadsheet.getRow(entry.getKey());
                 HSSFCell totalCell = makeCell(row, 5, subHeaderStyle);
-                totalCell.setCellType(CellType.FORMULA);
                 totalCell.setCellFormula(String.format("SUM(F%d:F%d)", entry.getKey() + 2, entry.getKey() + 1 + entry.getValue()));
             }
 

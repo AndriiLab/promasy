@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 
-public class BidsReportModel {
+public class BidReportModel {
     @Getter private String department;
     @Getter private String subdepartment;
     @Getter private String financeNumber;
@@ -26,7 +26,7 @@ public class BidsReportModel {
     @Getter private BigDecimal onePrice;
     @Getter private int amount;
 
-    public BidsReportModel(Bid bid) {
+    public BidReportModel(Bid bid) {
         this(
                 bid.getFinances().getSubdepartment().getDepartment().getDepName(),
                 bid.getFinances().getSubdepartment().getSubdepName(),
@@ -47,7 +47,7 @@ public class BidsReportModel {
         );
     }
 
-    public BidsReportModel(String department, String subdepartment, String financeNumber, String financeName, String financeType, String cpv, String cpvUkr, String orderDescription, String orderDate, String producer, String catNum, String supplier, String reasonForSupplierChoice, String packType, BigDecimal onePrice, int amount) {
+    public BidReportModel(String department, String subdepartment, String financeNumber, String financeName, String financeType, String cpv, String cpvUkr, String orderDescription, String orderDate, String producer, String catNum, String supplier, String reasonForSupplierChoice, String packType, BigDecimal onePrice, int amount) {
         this.department = department;
         this.subdepartment = subdepartment;
         this.financeNumber = financeNumber;

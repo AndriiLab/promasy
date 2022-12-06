@@ -134,7 +134,6 @@ public class CreateDepartmentFinancePanel extends JPanel {
     }
 
     private boolean checkInput() {
-        Department selectedDepartment = (Department) departmentBox.getSelectedItem();
         if (Validator.isEmptyComboBox(parent, departmentBox, Labels.getProperty("department"))) {
             return false;
         }
