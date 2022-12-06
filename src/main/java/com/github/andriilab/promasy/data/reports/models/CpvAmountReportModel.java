@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringJoiner;
 
 /**
  * IEntity for report table with information about procurements by CPV code
@@ -39,22 +38,10 @@ public class CpvAmountReportModel {
     }
 
     public CpvAmountReportModel(CpvAmount amount) {
-        Set<Integer> kpkvkSet = new HashSet<>();
-        StringJoiner kpkvkBuilder = new StringJoiner(", ");
+        Set<String> kpkvkSet = new HashSet<>();
         for (Bid bid : amount.getBids()) {
             Integer kpkvkInt = bid.getFinances().getFinances().getKpkvk();
-            if (kpkvkInt != null) {
-                kpkvkSet.add(kpkvkInt);
-            }
-        }
-        if (kpkvkSet.isEmpty()) {
-            kpkvkBuilder.add(Labels.getProperty("default.kpkvk"));
-        } else if (kpkvkSet.size() == 1) {
-            kpkvkBuilder.add(kpkvkSet.iterator().next().toString());
-        } else {
-            while (kpkvkSet.iterator().hasNext()) {
-                kpkvkBuilder.add(kpkvkSet.iterator().next().toString());
-            }
+            kpkvkSet.add(kpkvkInt != null ? kpkvkInt.toString() : Labels.getProperty("default.kpkvk"));
         }
 
         String procProcedure;
@@ -68,7 +55,7 @@ public class CpvAmountReportModel {
         this.bidType = amount.getType().getBidTypeName();
         this.cpvNumber = amount.getCpv().getCpvId();
         this.cpvName = amount.getCpv().getCpvUkr();
-        this.kpkvk =  kpkvkBuilder.toString();
+        this.kpkvk = String.join(" ,", kpkvkSet);
         this.totalPrice =  amount.getTotalAmount();
         this.procurementProcedure = procProcedure;
         this.startDate = Labels.getProperty("duringYear");
