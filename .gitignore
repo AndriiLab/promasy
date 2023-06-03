@@ -7,5 +7,7 @@
 /gradle/
 /out/
 /reports/*.jasper
-/src/main/generated/
 **/generated/
+**/build/
+**/out/
+settings.ser

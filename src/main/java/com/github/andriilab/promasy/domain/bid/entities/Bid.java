@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain.bid.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
@@ -185,13 +184,15 @@ public class Bid extends AbstractEntity {
     }
 
     @Override
-    public void setDeleted() {
-        statuses.forEach(IEntity::setDeleted);
-        super.setDeleted();
+    public String getMessage() {
+        return "createOrUpdateUserBid";
     }
 
     @Override
-    public String getMessage() {
-        return "createOrUpdateUserBid";
+    public void setActive(boolean active, Employee employee, Timestamp modifiedDate) {
+        if(!active){
+            statuses.forEach(s -> s.setActive(false, employee, modifiedDate));
+        }
+        super.setActive(active, employee, modifiedDate);
     }
 }

@@ -1,6 +1,6 @@
 package com.github.andriilab.promasy.data.repositories;
 
-import com.github.andriilab.promasy.data.controller.LoginData;
+import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.data.queries.employees.GetEmployeesQuery;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import com.github.andriilab.promasy.domain.organization.entities.Employee_;

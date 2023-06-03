@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain.organization.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import lombok.Getter;
 import lombok.Setter;
@@ -85,14 +84,16 @@ public class Subdepartment extends AbstractEntity {
     }
 
     @Override
-    public void setDeleted() {
-        employees.forEach(IEntity::setDeleted);
-        financeDepartments.forEach(IEntity::setDeleted);
-        super.setDeleted();
+    public String getMessage() {
+        return "addOrUpdateSubdepartment";
     }
 
     @Override
-    public String getMessage() {
-        return "addOrUpdateSubdepartment";
+    public void setActive(boolean active, Employee employee, Timestamp modifiedDate) {
+        if(!active){
+            financeDepartments.forEach(f -> f.setActive(false, employee, modifiedDate));
+            employees.forEach(e -> e.setActive(false, employee, modifiedDate));
+        }
+        super.setActive(active, employee, modifiedDate);
     }
 }

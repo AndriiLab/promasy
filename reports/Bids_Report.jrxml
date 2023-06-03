@@ -68,9 +68,6 @@
     <field name="subdepartment" class="java.lang.String">
         <fieldDescription><![CDATA[subdepartment]]></fieldDescription>
     </field>
-    <field name="class" class="java.lang.Class">
-        <fieldDescription><![CDATA[class]]></fieldDescription>
-    </field>
     <field name="orderDate" class="java.lang.String">
         <fieldDescription><![CDATA[orderDate]]></fieldDescription>
     </field>
@@ -712,7 +709,7 @@
     <detail>
         <band height="20" splitType="Prevent">
             <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20"
                                uuid="21a3a64f-427b-4f55-a139-63f8bf7abe84"/>
                 <box padding="3">
@@ -728,7 +725,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpv}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="90" height="20"
                                uuid="e62f5827-342d-475e-ac36-a3e0feda50d8">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -745,7 +742,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpvUkr}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="150" y="0" width="140" height="20"
                                uuid="1d3dc438-d420-4c7e-87a1-28b65b7760fb">
                     <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -762,7 +759,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{orderDescription}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="340" y="0" width="80" height="20"
                                uuid="6d8e776d-bc57-4aa3-9dbd-4c67008d64fc"/>
                 <box padding="3">
@@ -777,7 +774,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{onePrice}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="420" y="0" width="100" height="20"
                                uuid="0c4c10e2-08e3-4729-a93b-be912441157b">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -794,7 +791,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="520" y="0" width="120" height="20"
                                uuid="01f8f992-a262-4d83-b5bd-f6f4a77aaef5"/>
                 <box padding="3">
@@ -810,7 +807,7 @@
                 <textFieldExpression>
                     <![CDATA[$F{catNum}.equals("")?$F{producer}:$F{producer}+"\n № "+$F{catNum}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="640" y="0" width="100" height="20"
                                uuid="05dcde6a-fb59-49f1-a3be-ff48f237b9b4"/>
                 <box padding="3">
@@ -826,7 +823,7 @@
                 <textFieldExpression>
                     <![CDATA[$F{reasonForSupplierChoice}.equals("")?$F{supplier}:$F{supplier}+"\n"+$R{bidsReport.reason}+": "+$F{reasonForSupplierChoice}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="740" y="0" width="62" height="20"
                                uuid="cfb25a52-53c9-406d-b846-b36dad7233fc">
                     <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
@@ -844,7 +841,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" x="290" y="0" width="50" height="20"
                                uuid="8909628e-3f8a-4f26-aaf5-6a5f4981192b"/>
                 <box padding="3">

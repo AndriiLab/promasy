@@ -3,7 +3,7 @@ package com.github.andriilab.promasy.domain.organization.entities;
 import com.github.andriilab.promasy.domain.AbstractEntity;
 import com.github.andriilab.promasy.domain.organization.enums.CityTypes;
 import com.github.andriilab.promasy.domain.organization.enums.StreetTypes;
-import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.app.commons.Labels;
 import lombok.Getter;
 import lombok.Setter;
 

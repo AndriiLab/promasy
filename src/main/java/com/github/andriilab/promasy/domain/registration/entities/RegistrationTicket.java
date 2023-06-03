@@ -16,7 +16,7 @@ public class RegistrationTicket {
 
     @Id
     @Column(name = "id")
-    private int id = 1;
+    private final int id = 1;
 
     @Column(name = "registrations_left")
     @Getter private int registrationTicketNumber;

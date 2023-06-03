@@ -1,6 +1,6 @@
 package com.github.andriilab.promasy.domain.finance.enums;
 
-import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.app.commons.Labels;
 import lombok.Getter;
 
 /**

@@ -24,7 +24,7 @@ public class Storage {
     public final ReasonsForSupplierChoiceRepository REASONS;
     public final RegistrationRepository REGISTRATION;
 
-    private IRepository<? extends IEntity>[] repositories;
+    private final IRepository<? extends IEntity>[] repositories;
 
     public Storage(EntityManager entityManager) {
         CPV = new CPVRepository(entityManager);

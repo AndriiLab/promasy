@@ -373,7 +373,7 @@
     </title>
     <detail>
         <band height="20" splitType="Stretch">
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="87" y="0"
                                width="305" height="20" backcolor="#FFFFFF" uuid="f3a5462f-5f5d-4e79-8eff-de1119cb760d">
                     <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
@@ -389,7 +389,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpvName}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="392" y="0" width="82"
                                height="20" backcolor="#FFFFFF" uuid="fb05f766-4d8d-468f-aa13-040fe9551a19"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -403,7 +403,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA["2281/3210\n"+$F{kpkvk}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="474" y="0" width="82"
                                height="20" backcolor="#FFFFFF" uuid="345524fe-075d-4c3a-aebc-5972459507ac"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -418,7 +418,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="556" y="0" width="82"
                                height="20" backcolor="#FFFFFF" uuid="ca902fc7-a58f-4f31-ae34-589723a5bb3e"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -432,7 +432,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{procurementProcedure}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="638" y="0" width="82"
                                height="20" backcolor="#FFFFFF" uuid="6984e5c1-c62c-4bdb-82a9-f09520c36953"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">
@@ -446,7 +446,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true">
+            <textField textAdjust="StretchHeight">
                 <reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="1" y="0"
                                width="86" height="20" backcolor="#FFFFFF" uuid="5ce22c85-03f8-4298-a676-3a05c5a24066">
                     <property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -463,7 +463,7 @@
                 </textElement>
                 <textFieldExpression><![CDATA[$F{cpvNumber}]]></textFieldExpression>
             </textField>
-            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
                 <reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="720" y="0" width="82"
                                height="20" backcolor="#FFFFFF" uuid="deec1436-7cc1-4b37-b83a-ead7a24cdb32"/>
                 <box topPadding="0" leftPadding="3" bottomPadding="0" rightPadding="3">

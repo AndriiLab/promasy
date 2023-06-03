@@ -1,8 +1,8 @@
 package com.github.andriilab.promasy.data.storage;
 
-import com.github.andriilab.promasy.data.controller.Logger;
-import com.github.andriilab.promasy.presentation.MainFrame;
-import com.github.andriilab.promasy.presentation.commons.Labels;
+import com.github.andriilab.promasy.app.controller.Logger;
+import com.github.andriilab.promasy.app.view.MainFrame;
+import com.github.andriilab.promasy.app.commons.Labels;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 

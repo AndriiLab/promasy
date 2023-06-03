@@ -10,13 +10,11 @@ import java.util.List;
  * Interface for queries
  */
 public interface IRepository<T extends IEntity> {
-    void createOrUpdate(T object) throws JDBCException;
+    void create(T object) throws JDBCException;
+    void update(T object) throws JDBCException;
+    void delete(T object) throws JDBCException;
 
-    default void createOrUpdate(Collection<T> objects) throws JDBCException {
-        objects.forEach(this::createOrUpdate);
-    }
-
-    void refresh(T object);
+    void refresh(T object)throws JDBCException;
 
     default void refresh(Collection<T> objects) throws JDBCException {
         objects.forEach(this::refresh);

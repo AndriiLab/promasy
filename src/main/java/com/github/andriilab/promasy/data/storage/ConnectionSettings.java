@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionSettings implements Serializable {
-    private Map<String, String> props;
+    private static final long serialVersionUID = 2325696144327518932L;
 
+    private final Map<String, String> props;
 
     public ConnectionSettings(String server, String database, String schema, int portNumber, String user, String password) {
         props = new HashMap<>();

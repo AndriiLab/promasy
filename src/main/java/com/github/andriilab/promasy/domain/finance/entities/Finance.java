@@ -1,7 +1,6 @@
 package com.github.andriilab.promasy.domain.finance.entities;
 
 import com.github.andriilab.promasy.domain.AbstractEntity;
-import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.enums.Fund;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
@@ -138,13 +137,15 @@ public class Finance extends AbstractEntity {
     }
 
     @Override
-    public void setDeleted() {
-        financeDepartmentModels.forEach(IEntity::setDeleted);
-        super.setDeleted();
+    public String getMessage() {
+        return "createOrUpdateOrder";
     }
 
     @Override
-    public String getMessage() {
-        return "createOrUpdateOrder";
+    public void setActive(boolean active, Employee employee, Timestamp modifiedDate) {
+        if(!active){
+            financeDepartmentModels.forEach(f -> f.setActive(false, employee, modifiedDate));
+        }
+        super.setActive(active, employee, modifiedDate);
     }
 }

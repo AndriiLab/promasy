@@ -1,9 +1,6 @@
 package com.github.andriilab.promasy.domain;
 
-import com.github.andriilab.promasy.data.controller.LoginData;
-import com.github.andriilab.promasy.data.repositories.ServerRepository;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -20,7 +17,7 @@ import java.time.Instant;
 public abstract class AbstractEntity implements IEntity {
 
     @Column(name = "active")
-    @Getter @Setter private boolean active;
+    @Getter private boolean active;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_seq_gen")
@@ -38,20 +35,20 @@ public abstract class AbstractEntity implements IEntity {
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
-    @Getter @Setter(AccessLevel.PRIVATE) private Employee createdEmployee;
+    @Getter @Setter private Employee createdEmployee;
 
     @Column(name = "created_date")
     @Getter @Setter private Timestamp createdDate;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "modified_by")
-    @Getter @Setter(AccessLevel.PRIVATE) private Employee modifiedEmployee;
+    @Getter @Setter private Employee modifiedEmployee;
 
     @Column(name = "modified_date")
     @Getter @Setter private Timestamp modifiedDate;
 
     @Version
-    private long version = 0;
+    private final long version = 0;
 
     protected AbstractEntity() {
         this.createdEmployee = null;
@@ -105,22 +102,10 @@ public abstract class AbstractEntity implements IEntity {
         return new HashCodeBuilder().append(modelId).hashCode();
     }
 
-    // methods for setting created/modified employee and created/modified date
     @Override
-    public void setCreated() {
-        this.setCreatedEmployee(LoginData.getInstance());
-        this.setCreatedDate(ServerRepository.getServerTimestamp());
-    }
-
-    @Override
-    public void setUpdated() {
-        this.setModifiedEmployee(LoginData.getInstance());
-        this.setModifiedDate(ServerRepository.getServerTimestamp());
-    }
-
-    @Override
-    public void setDeleted() {
-        this.setActive(false);
-        setUpdated();
+    public void setActive(boolean active, Employee employee, Timestamp modifiedDate) {
+        this.active = active;
+        this.modifiedEmployee = employee;
+        this.modifiedDate = modifiedDate;
     }
 }
