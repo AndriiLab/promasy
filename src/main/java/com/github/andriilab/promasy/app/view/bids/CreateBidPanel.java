@@ -71,8 +71,8 @@ public class CreateBidPanel extends JPanel {
     private final JTextField oneUnitPriceField;
     private final JTextField kekvField;
     private final JCheckBox taxCheckBox;
-    private JLabel oneUnitPriceLabel;
-    private JLabel totalPriceDescLabel;
+    private final JLabel oneUnitPriceLabel;
+    private final JLabel totalPriceDescLabel;
     private boolean isWithTax;
     private final JTextPane descriptionPane;
     private final JScrollPane descriptionScrollPane;

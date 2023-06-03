@@ -25,18 +25,6 @@ public class CpvAmountReportModel {
     @Getter @Setter private String notation;
     @Getter @Setter private CpvAmount parentModel;
 
-    public CpvAmountReportModel(CpvAmount parentModel, String bidType, String cpvNumber, String cpvName, String kpkvk, BigDecimal totalPrice, String procurementProcedure, String startDate, String notation) {
-        this.parentModel = parentModel;
-        this.bidType = bidType;
-        this.cpvNumber = cpvNumber;
-        this.cpvName = cpvName;
-        this.kpkvk = kpkvk;
-        this.totalPrice = totalPrice;
-        this.procurementProcedure = procurementProcedure;
-        this.startDate = startDate;
-        this.notation = notation;
-    }
-
     public CpvAmountReportModel(CpvAmount amount) {
         Set<String> kpkvkSet = new HashSet<>();
         for (Bid bid : amount.getBids()) {

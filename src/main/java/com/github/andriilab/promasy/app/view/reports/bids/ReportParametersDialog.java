@@ -34,7 +34,7 @@ public class ReportParametersDialog extends JDialog {
     private final JButton cancelButton;
     private ReportParametersDialogListener listener;
     private final Map<String, Object> parameters;
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
 
     public ReportParametersDialog(MainFrame parent) {
         super(parent, Labels.getProperty("reportParameters"), true);

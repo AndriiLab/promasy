@@ -36,7 +36,7 @@ public class EmptyModel {
     public static final Version VERSION = new Version();
     public static final Object OBJECT = new Object();
 
-    private static IEntity[] entities = new IEntity[]{
+    private static final IEntity[] entities = new IEntity[]{
             AMOUNT_UNITS, BID, BID_STATUS,
             DEPARTMENT, EMPLOYEE, FINANCE_DEPARTMENT, FINANCE,
             INSTITUTE, PRODUCER, REASON_FOR_SUPPLIER_CHOICE,

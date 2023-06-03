@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
  */
 public class RegistrationRepository {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public RegistrationRepository(EntityManager entityManager) {
         this.entityManager = entityManager;

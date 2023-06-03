@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 public class ControlsToolbar extends JToolBar {
 
     private ControlsToolbarListener listener;
-    private JComboBox<Integer> yearPicker;
+    private final JComboBox<Integer> yearPicker;
     private int selectedYear;
 
     public ControlsToolbar() {

@@ -26,12 +26,7 @@ class EmployeeTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        switch (col) {
-            case 5:
-                return true;
-            default:
-                return false;
-        }
+        return col == 5;
     }
 
     public void setData(List<Employee> db) {

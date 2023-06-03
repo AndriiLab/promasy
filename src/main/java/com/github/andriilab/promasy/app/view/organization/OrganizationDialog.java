@@ -27,10 +27,10 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private final JButton createInstButton;
     private final JButton editInstButton;
     private final JButton deleteInstButton;
-    private JButton createDepButton;
+    private final JButton createDepButton;
     private final JButton editDepButton;
     private final JButton deleteDepButton;
-    private JButton createSubdepButton;
+    private final JButton createSubdepButton;
     private final JButton editSubdepButton;
     private final JButton deleteSubdepButton;
     private final EntityComboBox<Institute> instituteBox;

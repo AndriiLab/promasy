@@ -41,10 +41,10 @@ public class FinancePanel extends JPanel {
     private final JButton deleteOrderButton;
     private final JTable financeTable;
     private final FinanceTableModel financeTableModel;
-    private JButton createDepOrderButton;
-    private JButton editDepOrderButton;
-    private JButton deleteDepOrderButton;
-    private JButton showBidsButton;
+    private final JButton createDepOrderButton;
+    private final JButton editDepOrderButton;
+    private final JButton deleteDepOrderButton;
+    private final JButton showBidsButton;
     private final JTable depFinanceTable;
     private final DepartmentFinanceTableModel departmentFinanceTableModel;
     private FinancePanelListener listener;

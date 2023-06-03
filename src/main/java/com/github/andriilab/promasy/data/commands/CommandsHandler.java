@@ -6,7 +6,7 @@ import com.github.andriilab.promasy.domain.IEntity;
 
 @SuppressWarnings("unchecked")
 public class CommandsHandler {
-    private Storage storage;
+    private final Storage storage;
 
     public CommandsHandler(Storage storage) {
         this.storage = storage;

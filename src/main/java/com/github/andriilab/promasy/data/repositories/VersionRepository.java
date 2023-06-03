@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
  */
 public class VersionRepository {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public VersionRepository(EntityManager entityManager) {
         this.entityManager = entityManager;

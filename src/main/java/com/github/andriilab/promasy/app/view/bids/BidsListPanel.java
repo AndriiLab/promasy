@@ -69,7 +69,7 @@ public class BidsListPanel extends JPanel {
     private final CreateBidPanel createBidPanel;
     private JSplitPane splitPane;
     private Thread bidRequestThread;
-    private ReportsGenerator reportsGenerator;
+    private final ReportsGenerator reportsGenerator;
 
     public BidsListPanel(MainFrame parent) {
         this.parent = parent;

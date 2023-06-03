@@ -16,7 +16,7 @@ import java.util.List;
 public class CPVRepository {
 
     private List<Cpv> list = new LinkedList<>();
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public CPVRepository(EntityManager entityManager) {
         this.entityManager = entityManager;

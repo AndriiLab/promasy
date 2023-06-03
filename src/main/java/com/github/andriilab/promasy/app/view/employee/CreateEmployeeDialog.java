@@ -319,11 +319,7 @@ public class CreateEmployeeDialog extends JDialog {
     public void setRoleBox(Role role) {
         roleBox.setSelectedItem(role);
         roleBox.setEnabled(false);
-        if (role == Role.ADMIN) {
-            addOrganizationButton.setEnabled(true);
-        } else {
-            addOrganizationButton.setEnabled(false);
-        }
+        addOrganizationButton.setEnabled(role == Role.ADMIN);
     }
 
     public void setInstData(List<Institute> instDb) {

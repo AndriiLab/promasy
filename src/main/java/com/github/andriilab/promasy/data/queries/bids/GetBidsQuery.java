@@ -9,7 +9,7 @@ import lombok.Getter;
 
 public class GetBidsQuery implements IQuery {
     @Getter private BidType type;
-    @Getter private int year;
+    @Getter private final int year;
     @Getter private long departmentId;
     @Getter private long subdepartmentId;
     @Getter private long financeDepartmentId;

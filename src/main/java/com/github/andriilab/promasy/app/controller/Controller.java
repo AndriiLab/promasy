@@ -82,10 +82,10 @@ import java.util.stream.Collectors;
 
 public class Controller {
 
-    private static String tableUpdater = "tableUpdater";
-    private static String connectionSettings = "connectionSettings";
-    private static String connectionStatistics = "connectionStatistics";
-    private static String logSave = "logSave";
+    private static final String tableUpdater = "tableUpdater";
+    private static final String connectionSettings = "connectionSettings";
+    private static final String connectionStatistics = "connectionStatistics";
+    private static final String logSave = "logSave";
 
     private final MainFrame mainFrame;
     private Storage storage;

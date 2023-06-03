@@ -10,8 +10,8 @@ import java.awt.*;
 import java.nio.file.Paths;
 
 public class FileSavedDialog extends JDialog {
-    private JLabel messageLabel;
-    private JTextField pathField;
+    private final JLabel messageLabel;
+    private final JTextField pathField;
 
     public FileSavedDialog(Frame parent, boolean modal) {
         super(parent, modal);
