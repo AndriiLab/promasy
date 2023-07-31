@@ -35,7 +35,7 @@ dependencies {
     implementation 'org.swinglabs.swingx:swingx-all:1.6.5-1'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-swing
     implementation 'com.github.jiconfont:jiconfont-swing:1.0.1'
