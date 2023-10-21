@@ -65,6 +65,7 @@ import com.github.andriilab.promasy.app.view.supplier.SupplierDialog;
 import com.github.andriilab.promasy.app.view.supplier.SupplierDialogListener;
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,6 +84,7 @@ public class MainFrame extends JFrame {
     private final ConSetDialog conSettDialog;
     private final OrganizationDialog editOrgDialog;
     private final EditEmployeeDialog editEmpDialog;
+    @Getter
     private final CreateEmployeeDialog createEmployeeDialog;
     private final InfoDialog infoDialog;
     private final CpvDialog cpvDialog;
@@ -92,6 +94,7 @@ public class MainFrame extends JFrame {
     private final SupplierDialog supplierDialog;
     private final ReasonsDialog reasonsDialog;
     private final FinancePanel financePanel;
+    @Getter
     private final BidsListPanel bidsListPanel;
     private final CpvAmountDialog cpvAmountDialog;
     private final LoggerDialog loggerDialog;
@@ -99,13 +102,14 @@ public class MainFrame extends JFrame {
     private JTabbedPane tabPane;
     private final CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
+    @Getter
     private final DrawSplashScreen splashScreen;
     private final TableGenerator tg;
     private final HtmlViewerDialog manualViewer;
     private final FileSavedDialog fileSavedDialog;
 
     public MainFrame() {
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         System.out.println("ProMasy - Procurement Management System version " + Labels.getVersion() + "\n" +
                 "Copyright (C) 2016-" + Labels.getBuildYear() + " Andrii Labyntsev et al.");
@@ -379,7 +383,7 @@ public class MainFrame extends JFrame {
         if (regNumberStr == null) return;
         try {
             int regNumber = Integer.parseInt(regNumberStr);
-            regNumber = regNumber >= 0 ? regNumber : 0;
+            regNumber = Math.max(regNumber, 0);
             listener.setNumberOfRegistrations(regNumber);
         } catch (NumberFormatException ex) {
             JOptionPane.showConfirmDialog(this,
@@ -647,20 +651,8 @@ public class MainFrame extends JFrame {
         editOrgDialog.setVisible(true);
     }
 
-    public CreateEmployeeDialog getCreateEmployeeDialog() {
-        return createEmployeeDialog;
-    }
-
     public CreateBidPanel getCreateBidPanel() {
         return bidsListPanel.getCreateBidPanel();
-    }
-
-    public DrawSplashScreen getSplashScreen() {
-        return splashScreen;
-    }
-
-    public BidsListPanel getBidsListPanel() {
-        return bidsListPanel;
     }
 
     public void saveLog() {

@@ -15,9 +15,7 @@ class CpvTableModel extends AbstractTableModel {
             Labels.getProperty("ukrainianName"),
             Labels.getProperty("englishName")};
 
-    public CpvTableModel() {
-    }
-
+    @Override
     public String getColumnName(int column) {
         return colNames[column];
     }
@@ -43,8 +41,8 @@ class CpvTableModel extends AbstractTableModel {
                 return cpv;
             case 2:
                 return cpv.getCpvEng();
+            default:
+                return EmptyModel.OBJECT;
         }
-        return EmptyModel.OBJECT;
     }
-
 }

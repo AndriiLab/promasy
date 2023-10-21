@@ -27,6 +27,7 @@ import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,6 +67,7 @@ public class BidsListPanel extends JPanel {
     private final MainFrame parent;
     private boolean useUserDepartment;
     private BidType selectedBidType;
+    @Getter
     private final CreateBidPanel createBidPanel;
     private JSplitPane splitPane;
     private Thread bidRequestThread;
@@ -431,10 +433,6 @@ public class BidsListPanel extends JPanel {
 
     public void setListener(BidsListPanelListener listener) {
         this.listener = listener;
-    }
-
-    public CreateBidPanel getCreateBidPanel() {
-        return createBidPanel;
     }
 
     public void setSelectedModel(FinanceDepartment model) {

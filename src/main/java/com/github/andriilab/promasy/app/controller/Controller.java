@@ -7,7 +7,6 @@ import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.data.commands.CommandsHandler;
 import com.github.andriilab.promasy.data.commands.CreateCommand;
 import com.github.andriilab.promasy.data.commands.ICommand;
-import com.github.andriilab.promasy.data.commands.RefreshCommand;
 import com.github.andriilab.promasy.data.authorization.PasswordUtils;
 import com.github.andriilab.promasy.data.queries.bids.GetBidsQuery;
 import com.github.andriilab.promasy.data.queries.cpv.CpvRequestQuery;
@@ -82,33 +81,28 @@ import java.util.stream.Collectors;
 
 public class Controller {
 
-    private static final String tableUpdater = "tableUpdater";
-    private static final String connectionSettings = "connectionSettings";
-    private static final String connectionStatistics = "connectionStatistics";
-    private static final String logSave = "logSave";
-
     private final MainFrame mainFrame;
     private Storage storage;
-    private final List<String> parameters;
+    private final CommandLineSettings parameters;
     private CommandsHandler commandsHandler;
 
     public Controller(String[] args, MainFrame mainFrame) {
         this.mainFrame = mainFrame;
 
-        parameters = parseArgs(args);
+        parameters = new CommandLineSettings(args);
         new ReportsGenerator(mainFrame).precompileReports();
         initPrimaryListeners();
 
         // trying to get connection settings form serialized object,
         // if it doesn't exist defaults will be used
-        DbConnector.INSTANCE.loadConnectionSettings(parameters.contains(tableUpdater));
+        DbConnector.INSTANCE.loadConnectionSettings(parameters.isEnableModifyTableSchemas());
         mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
 
         //show ConSettDialog if it was defined in command line arguments
-        if (parameters.contains(connectionSettings)) {
+        if (parameters.isShowConnectionSettingsDialog()) {
             mainFrame.showConSettDialog();
         }
-        if (parameters.contains(connectionStatistics)) {
+        if (parameters.isShowConnectionStatistics()) {
             DbConnector.INSTANCE.showConnectionStats(mainFrame);
         }
 
@@ -117,26 +111,6 @@ public class Controller {
         checkFirstRun();
 
         mainFrame.showLoginPane();
-    }
-
-    // parser for command-line arguments
-    private static List<String> parseArgs(String[] args) {
-        List<String> parameters = new ArrayList<>();
-        for (String arg : args) {
-            if (arg.contains("-c") || arg.contains("--config")) {
-                parameters.add(connectionSettings);
-            }
-            if (arg.contains("-g") || arg.contains("--generate")) {
-                parameters.add(tableUpdater);
-            }
-            if (arg.contains("-s") || arg.contains("--statistics")) {
-                parameters.add(connectionStatistics);
-            }
-            if (arg.contains("-l") || arg.contains("--log")) {
-                parameters.add(logSave);
-            }
-        }
-        return parameters;
     }
 
     private void initPrimaryListeners() {
@@ -151,7 +125,7 @@ public class Controller {
                 }
 
                 // trying to connect with new settings
-                DbConnector.INSTANCE.loadConnectionSettings(parameters.contains(tableUpdater));
+                DbConnector.INSTANCE.loadConnectionSettings(parameters.isEnableModifyTableSchemas());
                 mainFrame.setDefaultConnectionSettings(DbConnector.INSTANCE.getConnectionSettings());
                 connect();
             }
@@ -166,7 +140,7 @@ public class Controller {
         mainFrame.setLoginListener(new LoginListener() {
             public void loginAttemptOccurred(String user, char[] password) {
                 String pass = PasswordUtils.makePass(password, retrieveUserSalt(user));
-                if (pass.equals("")) {
+                if (pass.isEmpty()) {
                     ErrorOptionPane.criticalError(mainFrame);
                     close();
                 }
@@ -879,7 +853,7 @@ public class Controller {
     // Create/update
     private <T extends IEntity> void handleCommand(ICommand<T> command) {
         try {
-            commandsHandler.Handle(command);
+            commandsHandler.handle(command);
             Logger.infoEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString());
         } catch (JDBCException e) {
             Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon(command.getObject().getMessage()) + command.getObject().toString(), e);
@@ -890,7 +864,7 @@ public class Controller {
     private void close() {
         DbConnector.INSTANCE.disconnect();
         Logger.infoEvent(this.getClass(), mainFrame, "Disconnected successfully");
-        if (parameters.contains(logSave)) {
+        if (parameters.isSaveLogToFile()) {
             mainFrame.saveLog();
         }
         mainFrame.dispose();

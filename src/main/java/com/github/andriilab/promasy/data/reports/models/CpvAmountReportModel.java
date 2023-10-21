@@ -14,16 +14,17 @@ import java.util.Set;
 /**
  * IEntity for report table with information about procurements by CPV code
  */
+@Getter @Setter
 public class CpvAmountReportModel {
-    @Getter @Setter private String bidType;
-    @Getter @Setter private String cpvNumber;
-    @Getter @Setter private String cpvName;
-    @Getter @Setter private String kpkvk;
-    @Getter @Setter private BigDecimal totalPrice;
-    @Getter @Setter private String procurementProcedure;
-    @Getter @Setter private String startDate;
-    @Getter @Setter private String notation;
-    @Getter @Setter private CpvAmount parentModel;
+    private String bidType;
+    private String cpvNumber;
+    private String cpvName;
+    private String kpkvk;
+    private BigDecimal totalPrice;
+    private String procurementProcedure;
+    private String startDate;
+    private String notation;
+    private CpvAmount parentModel;
 
     public CpvAmountReportModel(CpvAmount amount) {
         Set<String> kpkvkSet = new HashSet<>();

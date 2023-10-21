@@ -6,7 +6,11 @@ import com.github.andriilab.promasy.app.components.panes.ErrorOptionPane;
 
 import javax.swing.*;
 
-public class Validator {
+public final class Validator {
+
+    private Validator() {
+    }
+
     @SuppressWarnings("unchecked")
     public static <E extends IEntity> boolean isEmptyComboBox(JFrame parent, JComboBox<E> box, String name) {
         E selectedModel = (E) box.getSelectedItem();

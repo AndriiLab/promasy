@@ -68,11 +68,11 @@ class CreateOrganizationDialog extends JDialog {
 
         cityTypeBox = new PJComboBox<>(CityTypes.values());
         cityTypeBox.setPreferredSize(boxSize);
-        ((JLabel) cityTypeBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        ((JLabel) cityTypeBox.getRenderer()).setHorizontalAlignment(SwingConstants.RIGHT);
 
         streetTypeBox = new PJComboBox<>(StreetTypes.values());
         streetTypeBox.setPreferredSize(boxSize);
-        ((JLabel) streetTypeBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        ((JLabel) streetTypeBox.getRenderer()).setHorizontalAlignment(SwingConstants.RIGHT);
 
         createButton = new JButton(Labels.getProperty("create"));
         cancelButton = new JButton(Labels.getProperty("cancel"));
@@ -81,7 +81,7 @@ class CreateOrganizationDialog extends JDialog {
 
         createButton.addActionListener(e -> onCreateAction());
         cancelButton.addActionListener(e -> onCancel());
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

@@ -6,7 +6,11 @@ import com.github.andriilab.promasy.app.components.panes.ErrorOptionPane;
 import javax.swing.*;
 import java.math.BigDecimal;
 
-public class Parsers {
+public final class Parsers {
+
+    private Parsers() {
+    }
+
     public static Integer parseInteger(JFrame parent, JTextField jTextField, String fieldName) {
         String targetIntegerText = jTextField.getText();
         if (targetIntegerText.isEmpty()) {
@@ -14,7 +18,7 @@ public class Parsers {
             jTextField.requestFocusInWindow();
             return null;
         }
-        Integer integer;
+        int integer;
         try {
             targetIntegerText = Formatters.formatFinanceString(targetIntegerText);
             integer = Integer.parseInt(targetIntegerText);

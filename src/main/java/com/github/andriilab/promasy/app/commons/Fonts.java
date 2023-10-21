@@ -7,7 +7,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Fonts {
+public final class Fonts {
+
+    private Fonts() {
+    }
+
     public static void setInterfaceFont() {
         Map<Integer, Font> fonts = new HashMap<>();
         fonts.put(Font.PLAIN, getFont("", 13f));
@@ -21,7 +25,7 @@ public class Fonts {
         for (Map.Entry<Object, Object> entry : UIManager.getDefaults().entrySet()) {
             Object key = entry.getKey();
             Object value = UIManager.get(key);
-            if (value != null && value instanceof FontUIResource) {
+            if (value instanceof FontUIResource) {
                 FontUIResource oldFont = (FontUIResource) value;
                 FontUIResource newFont = new FontUIResource(fonts.get(oldFont.getStyle()));
                 UIManager.put(key, newFont);
@@ -32,6 +36,7 @@ public class Fonts {
     private static Font getFont(String path, float size) {
         try {
             InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+            assert stream != null;
             return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(size);
         } catch (Exception e) {
             e.printStackTrace();

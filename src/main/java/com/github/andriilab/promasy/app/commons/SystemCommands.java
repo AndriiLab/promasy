@@ -6,7 +6,11 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 
-public class SystemCommands {
+public final class SystemCommands {
+
+    private SystemCommands() {
+    }
+
     public static void copyToClipboard(String string) {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
                 new StringSelection(string), null);

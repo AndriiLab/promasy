@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 /**
  * Implementation of log4j with internal logger in com.github.andriilab.promasy.app
  */
-public class Logger {
+public final class Logger {
 
     private Logger() {
         throw new IllegalStateException("Utility class");

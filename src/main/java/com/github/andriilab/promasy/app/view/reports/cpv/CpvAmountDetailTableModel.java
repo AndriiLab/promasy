@@ -21,13 +21,11 @@ class CpvAmountDetailTableModel extends AbstractTableModel {
             Labels.getProperty("amount"),
             Labels.getProperty("bidsReport.totPrice")};
 
-    public CpvAmountDetailTableModel() {
-    }
-
     public void setData(CpvAmount model) {
         this.model = model;
     }
 
+    @Override
     public String getColumnName(int column) {
         return colNames[column];
     }
@@ -67,17 +65,14 @@ class CpvAmountDetailTableModel extends AbstractTableModel {
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return String.class;
+            case 2:
             case 1:
                 return String.class;
-            case 2:
-                return String.class;
             case 3:
+            case 5:
                 return BigDecimal.class;
             case 4:
                 return Integer.class;
-            case 5:
-                return BigDecimal.class;
             default:
                 return Bid.class;
         }

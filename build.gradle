@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 
 apply plugin: 'java'
 
-version = '0.8.3.1'
+version = '0.8.3.2'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -97,20 +97,21 @@ jar {
     doFirst {
         copy {
             from configurations.runtimeClasspath
-            into "$buildDir/libs/lib"
+            into layout.buildDirectory.dir("libs/lib")
         }
     }
 
     doLast {
         copy {
-            from "reports/Bids_Report.jrxml"
-            from "reports/CPV_Amount_Report.jrxml"
-            into "$buildDir/libs/reports"
+            from "reports"
+            include "*.jrxml"
+            into layout.buildDirectory.dir("libs/reports")
         }
     }
 }
 
-task createVersionProperties(dependsOn: processResources) {
+tasks.register('createVersionProperties') {
+    dependsOn processResources
     doFirst {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         new File("src/main/resources/PromasyVersion.properties").withWriter { w ->
@@ -121,24 +122,26 @@ task createVersionProperties(dependsOn: processResources) {
         }
         copy {
             from "src/main/resources/PromasyVersion.properties"
-            into "$buildDir/resources/main"
+            into layout.buildDirectory.dir("resources/main")
         }
     }
 }
 
-task setConsoleCyrillicSupport(dependsOn: processResources) {
+tasks.register('setConsoleCyrillicSupport') {
+    dependsOn processResources
     doLast {
         Properties props = new Properties()
-        File propsFile = new File("$buildDir/resources/main/log4j2.properties")
+        File propsFile = layout.buildDirectory.file("/resources/main/log4j2.properties").get().asFile
         props.load(propsFile.newDataInputStream())
         props.setProperty('appender.console.encoding', 'CP866')
         props.store(propsFile.newWriter(), null)
     }
 }
 
-task writePackages(dependsOn: processResources) {
+tasks.register('writePackages') {
+    dependsOn processResources
     File pkgsFile = new File("src/markdown/PACKAGES.md")
-    pkgsFile.write("#Packages used in ProMaSy " + project.version + " build\n\n")
+    pkgsFile.write("# Packages used in ProMaSy ${project.version} build\n\n")
     pkgsFile.append("|Package name|Version|\n")
     pkgsFile.append("|---|---|\n")
     configurations.compileClasspath.sort().each {
@@ -149,7 +152,8 @@ task writePackages(dependsOn: processResources) {
     }
 }
 
-task convertMarkdown(dependsOn: processResources) {
+tasks.register('convertMarkdown') {
+    dependsOn processResources
     markdownToHtml.tables = true
     markdownToHtml.sourceDir = project.file("src/markdown")
     markdownToHtml.outputDir = project.file("src/main/resources")

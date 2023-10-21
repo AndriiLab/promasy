@@ -5,7 +5,11 @@ import java.awt.*;
 /**
  * Default colors for project
  */
-public class Colors {
+public final class Colors {
+
+    private Colors() {
+    }
+
     public static final Color GREEN = new Color(0, 153, 51);
     public static final Color GREEN_LIGHT = new Color(128, 255, 168);
     public static final Color GREEN_LIGHT_SELECTED = new Color(26, 255, 98);

@@ -8,23 +8,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 
+@Getter
 public class BidReportModel {
-    @Getter private final String department;
-    @Getter private final String subdepartment;
-    @Getter private final String financeNumber;
-    @Getter private final String financeName;
-    @Getter private final String financeType;
-    @Getter private final String cpv;
-    @Getter private final String cpvUkr;
-    @Getter private final String orderDescription;
-    @Getter private final String orderDate;
-    @Getter private final String producer;
-    @Getter private final String catNum;
-    @Getter private final String supplier;
-    @Getter private final String reasonForSupplierChoice;
-    @Getter private final String packType;
-    @Getter private final BigDecimal onePrice;
-    @Getter private final int amount;
+    private final String department;
+    private final String subdepartment;
+    private final String financeNumber;
+    private final String financeName;
+    private final String financeType;
+    private final String cpv;
+    private final String cpvUkr;
+    private final String orderDescription;
+    private final String orderDate;
+    private final String producer;
+    private final String catNum;
+    private final String supplier;
+    private final String reasonForSupplierChoice;
+    private final String packType;
+    private final BigDecimal onePrice;
+    private final int amount;
 
     public BidReportModel(Bid bid) {
         this(
