@@ -1,15 +1,16 @@
+import java.text.SimpleDateFormat
+
 plugins {
-    id 'com.github.ben-manes.versions' version '0.46.0'
+    id 'java'
+    id 'com.github.ben-manes.versions' version '0.49.0'
     id 'org.kordamp.gradle.markdown' version '2.2.0'
 }
 
-import java.text.SimpleDateFormat
-
-apply plugin: 'java'
-
-version = '0.8.3.2'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    version = '0.8.3.2'
+}
 
 repositories {
     mavenLocal()
@@ -25,7 +26,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.6.0'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    implementation 'net.sf.jasperreports:jasperreports:6.20.5'
+    implementation 'net.sf.jasperreports:jasperreports:6.20.6'
 
     // google roboto font (https://github.com/google/roboto/releases) package for jasper reports
     // howto: https://community.jaspersoft.com/wiki/custom-font-font-extension
@@ -35,7 +36,7 @@ dependencies {
     implementation 'org.swinglabs.swingx:swingx-all:1.6.5-1'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-swing
     implementation 'com.github.jiconfont:jiconfont-swing:1.0.1'
@@ -62,7 +63,7 @@ dependencies {
     implementation 'com.github.lgooddatepicker:LGoodDatePicker:11.2.1'
 
     // https://mvnrepository.com/artifact/org.apache.poi/poi
-    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi:5.2.4'
 
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
@@ -71,8 +72,8 @@ dependencies {
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
     compileOnly 'org.hibernate:hibernate-jpamodelgen:5.6.15.Final'
@@ -81,7 +82,7 @@ dependencies {
 
 compileJava {
     options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
 }
 
 jar {
@@ -97,15 +98,15 @@ jar {
     doFirst {
         copy {
             from configurations.runtimeClasspath
-            into layout.buildDirectory.dir("libs/lib")
+            into layout.buildDirectory.dir('libs/lib')
         }
     }
 
     doLast {
         copy {
-            from "reports"
-            include "*.jrxml"
-            into layout.buildDirectory.dir("libs/reports")
+            from 'reports'
+            include '*.jrxml'
+            into layout.buildDirectory.dir('libs/reports')
         }
     }
 }
@@ -113,16 +114,16 @@ jar {
 tasks.register('createVersionProperties') {
     dependsOn processResources
     doFirst {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        new File("src/main/resources/PromasyVersion.properties").withWriter { w ->
+        SimpleDateFormat format = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
+        new File('src/main/resources/PromasyVersion.properties').withWriter { w ->
             Properties p = new Properties()
             p.setProperty('versionNumber', project.version.toString())
             p.setProperty('buildDate', format.format(Calendar.getInstance().getTime()))
             p.store w, null
         }
         copy {
-            from "src/main/resources/PromasyVersion.properties"
-            into layout.buildDirectory.dir("resources/main")
+            from 'src/main/resources/PromasyVersion.properties'
+            into layout.buildDirectory.dir('resources/main')
         }
     }
 }
@@ -131,7 +132,7 @@ tasks.register('setConsoleCyrillicSupport') {
     dependsOn processResources
     doLast {
         Properties props = new Properties()
-        File propsFile = layout.buildDirectory.file("/resources/main/log4j2.properties").get().asFile
+        File propsFile = layout.buildDirectory.file('/resources/main/log4j2.properties').get().asFile
         props.load(propsFile.newDataInputStream())
         props.setProperty('appender.console.encoding', 'CP866')
         props.store(propsFile.newWriter(), null)
@@ -140,23 +141,25 @@ tasks.register('setConsoleCyrillicSupport') {
 
 tasks.register('writePackages') {
     dependsOn processResources
-    File pkgsFile = new File("src/markdown/PACKAGES.md")
-    pkgsFile.write("# Packages used in ProMaSy ${project.version} build\n\n")
-    pkgsFile.append("|Package name|Version|\n")
-    pkgsFile.append("|---|---|\n")
-    configurations.compileClasspath.sort().each {
-        String fileName = it.name
-        String pkgName = fileName.find("^.+?(?=-\\d)")
-        String pkgVersion = fileName.substring(pkgName.length() + 1, fileName.length() - 4)
-        pkgsFile.append("|" + pkgName + "|" + pkgVersion + "|\n")
-    }
+    File pkgsFile = new File('src/markdown/PACKAGES.md')
+    pkgsFile.write("# Packages used in ProMaSy $project.version build\n\n")
+    pkgsFile.append('|Name|Version|\n')
+    pkgsFile.append('|---|---|\n')
+    configurations.compileClasspath
+            .collect { it.name }
+            .sort(false, String.CASE_INSENSITIVE_ORDER)
+            .each {
+                String pkgName = it.find('^.+?(?=-\\d)')
+                String pkgVersion = it.substring(pkgName.length() + 1, it.length() - 4)
+                pkgsFile.append("|$pkgName|$pkgVersion|\n")
+            }
 }
 
 tasks.register('convertMarkdown') {
     dependsOn processResources
     markdownToHtml.tables = true
-    markdownToHtml.sourceDir = project.file("src/markdown")
-    markdownToHtml.outputDir = project.file("src/main/resources")
+    markdownToHtml.sourceDir = project.file('src/markdown')
+    markdownToHtml.outputDir = project.file('src/main/resources')
     convertMarkdown.finalizedBy markdownToHtml
 }
 
