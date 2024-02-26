@@ -5,7 +5,7 @@ import com.github.andriilab.promasy.domain.organization.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity

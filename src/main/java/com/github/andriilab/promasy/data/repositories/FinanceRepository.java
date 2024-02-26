@@ -5,9 +5,9 @@ import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.finance.entities.Finance_;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +62,7 @@ public class FinanceRepository extends Repository<Finance> {
         entityManager.getTransaction().begin();
         Query q;
 
-        switch (query.getType()) {
+        switch (query.type()) {
             case MATERIALS:
                 q = entityManager.createQuery("select sum(dfm.totalMaterialsAmount) from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
                 break;
@@ -76,7 +76,7 @@ public class FinanceRepository extends Repository<Finance> {
                 return BigDecimal.ZERO;
         }
 
-        q.setParameter("finances", query.getModel());
+        q.setParameter("finances", query.model());
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
@@ -84,8 +84,8 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     public BigDecimal retrieveUnassignedAmount(GetFinanceUnassignedAmountQuery query) {
-        BigDecimal totalAmount = query.getModel().getTotalAmount(query.getType());
-        BigDecimal assignedAmount = retrieveAssignedAmount(new GetFinanceAssignedAmountQuery(query.getModel(), query.getType()));
+        BigDecimal totalAmount = query.model().getTotalAmount(query.type());
+        BigDecimal assignedAmount = retrieveAssignedAmount(new GetFinanceAssignedAmountQuery(query.model(), query.type()));
 
         return totalAmount.subtract(assignedAmount);
     }
@@ -94,8 +94,8 @@ public class FinanceRepository extends Repository<Finance> {
         entityManager.getTransaction().begin();
         Query q = entityManager.createQuery("select sum(bd.onePrice * bd.amount) from Bid bd inner join FinanceDepartment fd on bd.finances = fd where bd.active = true and bd.type=:bidType and fd.finances=:finance");
 
-        q.setParameter("finance", query.getModel())
-                .setParameter("bidType", query.getType());
+        q.setParameter("finance", query.model())
+                .setParameter("bidType", query.type());
         BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
         entityManager.getTransaction().commit();
 
@@ -103,8 +103,8 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     public BigDecimal retrieveLeftAmount(GetFinanceLeftAmountQuery query) {
-        BigDecimal totalAmount = query.getModel().getTotalAmount(query.getType());
-        BigDecimal spentAmount = retrieveSpentAmount(new GetFinanceSpentAmountQuery(query.getModel(), query.getType()));
+        BigDecimal totalAmount = query.model().getTotalAmount(query.type());
+        BigDecimal spentAmount = retrieveSpentAmount(new GetFinanceSpentAmountQuery(query.model(), query.type()));
 
         return totalAmount.subtract(spentAmount);
     }

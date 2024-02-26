@@ -7,7 +7,7 @@ import com.github.andriilab.promasy.app.commons.Labels;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 /**

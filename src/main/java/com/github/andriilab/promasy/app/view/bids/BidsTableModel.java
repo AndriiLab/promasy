@@ -53,44 +53,29 @@ class BidsTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Bid model = db.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return model;
-            case 1:
-                return model.getAmount();
-            case 2:
-                return model.getOnePrice().setScale(2, RoundingMode.CEILING);
-            case 3:
-                return (model.getOnePrice().multiply(BigDecimal.valueOf(model.getAmount()))).setScale(2, RoundingMode.CEILING);
-            case 4:
-                return model.getLastEditPersonName();
-            case 5:
-                return model.getLastEditDate();
-            case 6:
-                return model.getLastBidStatusModel().getStatus();
-            default:
-                return EmptyModel.OBJECT;
-        }
+        return switch (columnIndex) {
+            case 0 -> model;
+            case 1 -> model.getAmount();
+            case 2 -> model.getOnePrice().setScale(2, RoundingMode.CEILING);
+            case 3 ->
+                    (model.getOnePrice().multiply(BigDecimal.valueOf(model.getAmount()))).setScale(2, RoundingMode.CEILING);
+            case 4 -> model.getLastEditPersonName();
+            case 5 -> model.getLastEditDate();
+            case 6 -> model.getLastBidStatusModel().getStatus();
+            default -> EmptyModel.OBJECT;
+        };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return Bid.class;
-            case 1:
-                return Integer.class;
-            case 2:
-            case 3:
-                return BigDecimal.class;
-            case 4:
-                return String.class;
-            case 5:
-                return Timestamp.class;
-            case 6:
-                return Status.class;
-            default:
-                return Object.class;
-        }
+        return switch (columnIndex) {
+            case 0 -> Bid.class;
+            case 1 -> Integer.class;
+            case 2, 3 -> BigDecimal.class;
+            case 4 -> String.class;
+            case 5 -> Timestamp.class;
+            case 6 -> Status.class;
+            default -> Object.class;
+        };
     }
 }

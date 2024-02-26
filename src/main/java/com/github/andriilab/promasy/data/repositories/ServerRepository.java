@@ -2,7 +2,7 @@ package com.github.andriilab.promasy.data.repositories;
 
 import com.github.andriilab.promasy.data.storage.DbConnector;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 

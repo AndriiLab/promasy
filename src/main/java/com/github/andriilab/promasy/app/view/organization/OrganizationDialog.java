@@ -11,6 +11,7 @@ import com.github.andriilab.promasy.app.view.MainFrame;
 import com.github.andriilab.promasy.app.commons.Labels;
 import com.github.andriilab.promasy.app.components.EntityComboBox;
 import com.github.andriilab.promasy.app.components.dialogs.CEDButtons;
+import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -36,6 +37,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
     private final EntityComboBox<Institute> instituteBox;
     private final EntityComboBox<Department> departmentBox;
     private final EntityComboBox<Subdepartment> subdepartmentBox;
+    @Setter
     private OrganizationDialogListener listener;
     private String newDepName;
     private String newSubdepName;
@@ -233,10 +235,6 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         subdepartmentBox.setBoxData(subdepDb, EmptyModel.SUBDEPARTMENT, true);
     }
 
-    public void setListener(OrganizationDialogListener organizationDialogListener) {
-        this.listener = organizationDialogListener;
-    }
-
     private void disableInstituteEdit() {
         editInstButton.setEnabled(false);
         deleteInstButton.setEnabled(false);
@@ -309,8 +307,8 @@ public class OrganizationDialog extends JDialog implements ActionListener {
 
         if (box == instituteBox) {
             departmentBox.removeAllItems();
-            if (obj instanceof Institute) {
-                privateInstModel = (Institute) obj;
+            if (obj instanceof Institute institute) {
+                privateInstModel = institute;
                 setDepData(privateInstModel.getDepartments());
                 if (!obj.equals(EmptyModel.INSTITUTE)) {
                     enableInstituteEdit();
@@ -321,8 +319,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                     subdepartmentBox.setEnabled(false);
                     disableInstituteEdit();
                 }
-            } else if (obj instanceof String) {
-                String name = (String) obj;
+            } else if (obj instanceof String name) {
                 departmentBox.setEnabled(false);
                 subdepartmentBox.setEnabled(false);
                 if (!name.isEmpty()) {
@@ -337,8 +334,8 @@ public class OrganizationDialog extends JDialog implements ActionListener {
         } else if (box == departmentBox) {
             subdepartmentBox.removeAllItems();
             subdepartmentBox.addItem(EmptyModel.SUBDEPARTMENT);
-            if (obj instanceof Department) {
-                privateDepModel = (Department) obj;
+            if (obj instanceof Department department) {
+                privateDepModel = department;
                 setSubdepData(privateDepModel.getSubdepartments());
                 if (!obj.equals(EmptyModel.DEPARTMENT)) {
                     subdepartmentBox.setEnabled(true);
@@ -350,8 +347,7 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                         createDepButton.setEnabled(false);
                     }
                 }
-            } else if (obj instanceof String) {
-                String name = (String) obj;
+            } else if (obj instanceof String name) {
                 subdepartmentBox.setEnabled(false);
                 if (!name.isEmpty()) {
                     newDepName = name;
@@ -363,23 +359,21 @@ public class OrganizationDialog extends JDialog implements ActionListener {
                 }
             }
         } else if (box == subdepartmentBox) {
-            if (obj instanceof Subdepartment) {
+            if (obj instanceof Subdepartment subdepartment) {
                 if (!obj.equals(EmptyModel.SUBDEPARTMENT)) {
                     enableSubdepartmentEdit();
-                    privateSubdepModel = (Subdepartment) obj;
+                    privateSubdepModel = subdepartment;
                 } else {
                     disableSubdepartmentEdit();
                 }
-            } else if (obj instanceof String) {
-                String name = (String) obj;
-                if (!name.isEmpty()) {
-                    newSubdepName = name;
-                    if (!privateSubdepModel.equals(EmptyModel.SUBDEPARTMENT)) {
-                        enableSubdepartmentEdit();
-                    } else {
-                        disableSubdepartmentEdit();
-                    }
+            } else if (obj instanceof String name && (!name.isEmpty())) {
+                newSubdepName = name;
+                if (!privateSubdepModel.equals(EmptyModel.SUBDEPARTMENT)) {
+                    enableSubdepartmentEdit();
+                } else {
+                    disableSubdepartmentEdit();
                 }
+
             }
         }
     }

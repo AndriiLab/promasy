@@ -113,23 +113,12 @@ class FinanceTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return String.class;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                return BigDecimal.class;
-            case 7:
-            case 8:
-                return Date.class;
-            case 9:
-                return Finance.class;
-            default:
-                return Object.class;
-        }
+        return switch (columnIndex) {
+            case 0 -> String.class;
+            case 1, 2, 3, 4, 5, 6 -> BigDecimal.class;
+            case 7, 8 -> Date.class;
+            case 9 -> Finance.class;
+            default -> Object.class;
+        };
     }
 }

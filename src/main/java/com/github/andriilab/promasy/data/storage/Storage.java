@@ -3,7 +3,7 @@ package com.github.andriilab.promasy.data.storage;
 import com.github.andriilab.promasy.data.repositories.*;
 import com.github.andriilab.promasy.domain.IEntity;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 
 @SuppressWarnings("unchecked")

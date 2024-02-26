@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Getter
 public class BidReportModel {
@@ -72,11 +73,7 @@ public class BidReportModel {
         this.packType = packType;
         this.onePrice = onePrice;
         this.amount = amount;
-        if (reasonForSupplierChoice == null) {
-            this.reasonForSupplierChoice = "";
-        } else {
-            this.reasonForSupplierChoice = reasonForSupplierChoice;
-        }
+        this.reasonForSupplierChoice = Objects.requireNonNullElse(reasonForSupplierChoice, "");
     }
 
     public BigDecimal getTotalPrice() {

@@ -5,10 +5,10 @@ import com.github.andriilab.promasy.domain.EmptyModel;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv;
 import com.github.andriilab.promasy.domain.cpv.entities.Cpv_;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,7 +120,7 @@ public class CPVRepository {
         criteria.where(cb.equal(root.get(Cpv_.cpvId), cpvCode));
         List<Cpv> list = entityManager.createQuery(criteria).setMaxResults(100).getResultList();
         if (list.size() == 1) {
-            return list.get(0);
+            return list.getFirst();
         } else {
             return EmptyModel.CPV;
         }

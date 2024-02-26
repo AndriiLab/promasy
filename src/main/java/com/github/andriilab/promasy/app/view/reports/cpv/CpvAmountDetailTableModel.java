@@ -43,38 +43,24 @@ class CpvAmountDetailTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Bid bidModel = model.getBids().get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return bidModel.getFinances().getSubdepartment().getDepartment().toString();
-            case 1:
-                return bidModel.getFinances().getSubdepartment().toString();
-            case 2:
-                return bidModel.getDescription();
-            case 3:
-                return bidModel.getOnePrice();
-            case 4:
-                return bidModel.getAmount();
-            case 5:
-                return bidModel.getTotalPrice();
-            default:
-                return bidModel;
-        }
+        return switch (columnIndex) {
+            case 0 -> bidModel.getFinances().getSubdepartment().getDepartment().toString();
+            case 1 -> bidModel.getFinances().getSubdepartment().toString();
+            case 2 -> bidModel.getDescription();
+            case 3 -> bidModel.getOnePrice();
+            case 4 -> bidModel.getAmount();
+            case 5 -> bidModel.getTotalPrice();
+            default -> bidModel;
+        };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-            case 2:
-            case 1:
-                return String.class;
-            case 3:
-            case 5:
-                return BigDecimal.class;
-            case 4:
-                return Integer.class;
-            default:
-                return Bid.class;
-        }
+        return switch (columnIndex) {
+            case 0, 2, 1 -> String.class;
+            case 3, 5 -> BigDecimal.class;
+            case 4 -> Integer.class;
+            default -> Bid.class;
+        };
     }
 }

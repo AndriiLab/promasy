@@ -4,7 +4,7 @@ import com.github.andriilab.promasy.domain.versioning.entities.Version;
 import com.github.andriilab.promasy.app.commons.Labels;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * DB access com.github.andriilab.promasy.domain.model for handling program version

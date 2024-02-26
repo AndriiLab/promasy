@@ -513,7 +513,7 @@ public class BidsListPanel extends JPanel {
     }
 
     public void printBidList(Map<String, Object> parameters) {
-        List<BidReportModel> list = getSelectedBids().stream().map(BidReportModel::new).collect(Collectors.toList());
+        List<BidReportModel> list = getSelectedBids().stream().map(BidReportModel::new).toList();
         reportsGenerator.showPrintDialog(new BidsReportRequest(parameters, list));
     }
 

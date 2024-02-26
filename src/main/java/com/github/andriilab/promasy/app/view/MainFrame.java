@@ -100,7 +100,6 @@ public class MainFrame extends JFrame {
     private final LoggerDialog loggerDialog;
     private final ReportParametersDialog reportParametersDialog;
     private JTabbedPane tabPane;
-    private final CalculatorDialog calculatorDialog;
     private MainFrameListener listener;
     @Getter
     private final DrawSplashScreen splashScreen;
@@ -128,7 +127,6 @@ public class MainFrame extends JFrame {
         conSettDialog = new ConSetDialog(this);
         loggerDialog = new LoggerDialog(this);
         statusPanel = new StatusPanel(this);
-        calculatorDialog = new CalculatorDialog(this);
         bidsListPanel = new BidsListPanel(this);
         amUnitsDialog = new AmUnitsDialog(this);
         producerDialog = new ProducerDialog(this);
@@ -364,10 +362,9 @@ public class MainFrame extends JFrame {
     private void displayCalculator() {
         //trying to execute system calculator
         try {
-            Runtime.getRuntime().exec("calc");
+            new ProcessBuilder("calc").start();
         } catch (IOException e) {
             Logger.warnEvent(this.getClass(), e);
-            calculatorDialog.setVisible(true);
         }
     }
 

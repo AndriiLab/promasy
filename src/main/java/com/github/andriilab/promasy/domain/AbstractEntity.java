@@ -8,11 +8,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-@javax.persistence.Entity
+@Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractEntity implements IEntity {
 
@@ -23,7 +23,7 @@ public abstract class AbstractEntity implements IEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hilo_seq_gen")
     @GenericGenerator(
             name = "hilo_seq_gen",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            type = org.hibernate.id.enhanced.SequenceStyleGenerator.class,
             parameters = {
                     @Parameter(name = "sequence_name", value = "hilo_seqeunce"),
                     @Parameter(name = "initial_value", value = "1"),
@@ -90,11 +90,10 @@ public abstract class AbstractEntity implements IEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof IEntity)) {
-            return false;
+        if (obj instanceof IEntity otherEntity) {
+            return new EqualsBuilder().append(modelId, otherEntity.getModelId()).isEquals();
         }
-        IEntity otherEntity = (IEntity) obj;
-        return new EqualsBuilder().append(modelId, otherEntity.getModelId()).isEquals();
+        return false;
     }
 
     @Override

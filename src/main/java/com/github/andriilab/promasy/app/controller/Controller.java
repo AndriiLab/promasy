@@ -77,7 +77,6 @@ import java.util.List;
 import java.util.*;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -469,7 +468,7 @@ public class Controller {
                 if (models.isEmpty()) {
                     return "";
                 } else {
-                    return models.get(0).getShortName();
+                    return models.getFirst().getShortName();
                 }
             }
         });
@@ -542,7 +541,7 @@ public class Controller {
         if (employees.isEmpty()) {
             firstUser = new Employee(Role.ADMIN);
         } else {
-            firstUser = employees.get(0);
+            firstUser = employees.getFirst();
         }
         handleCommand(new CreateCommand<>(firstUser));
         LoginData.getInstance(firstUser);
@@ -834,15 +833,14 @@ public class Controller {
                     cpvAmount.addToTotalAmount(bidAmount);
                     map.put(key, cpvAmount);
                 } else {
-                    Cpv fourDigitCpv = storage.CPV.get(new CpvRequestQuery(key, 0)).get(0);
+                    Cpv fourDigitCpv = storage.CPV.get(new CpvRequestQuery(key, 0)).getFirst();
                     map.put(key, new CpvAmount(fourDigitCpv, type, bidAmount, bidModel));
                 }
             }
 
-            return Collections.unmodifiableList(map.values().stream()
+            return map.values().stream()
                     .sorted(Comparator.comparing(CpvAmount::getType)
-                            .thenComparing(m -> m.getCpv().getCpvId()))
-                    .collect(Collectors.toList()));
+                            .thenComparing(m -> m.getCpv().getCpvId())).toList();
         } catch (JDBCException e) {
             Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("cpvAmounts"), e);

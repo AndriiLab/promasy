@@ -4,7 +4,7 @@ import com.github.andriilab.promasy.domain.bid.entities.AmountUnit;
 import com.github.andriilab.promasy.domain.bid.entities.AmountUnit_;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public class AmountUnitRepository extends Repository<AmountUnit> {

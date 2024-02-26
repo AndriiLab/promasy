@@ -36,10 +36,10 @@
             <property name="hibernate.c3p0.breakAfterAcquireFailure" value="false"/>
 
             <!-- !!! Check LabelsBundle.properties for default connection settings-->
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
 
             <!-- SQL dialect -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 
             <!-- Create/update tables automatically using mapping metadata -->
             <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->

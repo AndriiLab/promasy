@@ -7,7 +7,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -20,7 +20,7 @@ import java.util.Map;
  * IEntity for financial data
  */
 
-@javax.persistence.Entity
+@jakarta.persistence.Entity
 @Table(name = "finances")
 public class Finance extends AbstractEntity {
 
@@ -105,16 +105,12 @@ public class Finance extends AbstractEntity {
     }
 
     public BigDecimal getTotalAmount(BidType type) {
-        switch (type) {
-            case EQUIPMENT:
-                return totalEquipment;
-            case MATERIALS:
-                return totalMaterials;
-            case SERVICES:
-                return totalServices;
-            default:
-                return BigDecimal.ZERO;
-        }
+        return switch (type) {
+            case EQUIPMENT -> totalEquipment;
+            case MATERIALS -> totalMaterials;
+            case SERVICES -> totalServices;
+            default -> BigDecimal.ZERO;
+        };
     }
 
     @Override

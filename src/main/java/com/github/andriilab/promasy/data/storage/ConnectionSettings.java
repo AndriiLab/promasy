@@ -16,8 +16,8 @@ public class ConnectionSettings implements Serializable {
         props.put("_database", database);
         props.put("_portNumber", String.valueOf(portNumber));
 
-        props.put("javax.persistence.jdbc.user", user);
-        props.put("javax.persistence.jdbc.password", password);
+        props.put("jakarta.persistence.jdbc.user", user);
+        props.put("jakarta.persistence.jdbc.password", password);
         props.put("hibernate.default_schema", schema);
     }
 
@@ -38,15 +38,15 @@ public class ConnectionSettings implements Serializable {
     }
 
     public String getUser() {
-        return props.get("javax.persistence.jdbc.user");
+        return props.get("jakarta.persistence.jdbc.user");
     }
 
     public String getPassword() {
-        return props.get("javax.persistence.jdbc.password");
+        return props.get("jakarta.persistence.jdbc.password");
     }
 
     public Map<String, String> getProperties() {
-        props.put("javax.persistence.jdbc.url", getUrl());
+        props.put("jakarta.persistence.jdbc.url", getUrl());
         return props;
     }
 

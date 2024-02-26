@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.app.view.finance;
 
-import com.github.andriilab.promasy.data.commands.CreateCommand;
 import com.github.andriilab.promasy.data.commands.ICommand;
 import com.github.andriilab.promasy.data.queries.finance.GetFinanceLeftAmountQuery;
 import com.github.andriilab.promasy.data.queries.finance.GetFinanceUnassignedAmountQuery;

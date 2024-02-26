@@ -13,16 +13,12 @@ public class CommandsHandler {
     }
 
     public <T extends IEntity> void handle(ICommand<T> command) {
-        if (command instanceof CreateCommand) {
-            handleCreate((CreateCommand<T>) command);
-        } else if (command instanceof UpdateCommand) {
-            handleUpdate((UpdateCommand<T>) command);
-        } else if (command instanceof DeleteCommand) {
-            handleDelete((DeleteCommand<T>) command);
-        } else if (command instanceof RefreshCommand) {
-            handleRefresh((RefreshCommand<T>) command);
-        } else {
-            throw new UnsupportedOperationException(command.getClass().getName());
+        switch (command) {
+            case CreateCommand<T> createCommand -> handleCreate(createCommand);
+            case UpdateCommand<T> updateCommand -> handleUpdate(updateCommand);
+            case DeleteCommand<T> deleteCommand -> handleDelete(deleteCommand);
+            case RefreshCommand<T> refreshCommand -> handleRefresh(refreshCommand);
+            case null, default -> throw new UnsupportedOperationException(command.getClass().getName());
         }
     }
 

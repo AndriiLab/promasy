@@ -4,7 +4,7 @@ import com.github.andriilab.promasy.domain.item.entities.Producer;
 import com.github.andriilab.promasy.domain.item.entities.Producer_;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 /**

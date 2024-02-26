@@ -25,8 +25,7 @@ public final class Fonts {
         for (Map.Entry<Object, Object> entry : UIManager.getDefaults().entrySet()) {
             Object key = entry.getKey();
             Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                FontUIResource oldFont = (FontUIResource) value;
+            if (value instanceof FontUIResource oldFont) {
                 FontUIResource newFont = new FontUIResource(fonts.get(oldFont.getStyle()));
                 UIManager.put(key, newFont);
             }

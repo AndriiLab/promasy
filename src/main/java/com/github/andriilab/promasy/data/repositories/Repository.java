@@ -4,10 +4,10 @@ import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.domain.IEntity;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

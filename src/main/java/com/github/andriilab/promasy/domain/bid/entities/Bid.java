@@ -10,7 +10,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * IEntity for storing data related to the bid
  */
-@javax.persistence.Entity
+@Entity
 @Table(name = "bids")
 public class Bid extends AbstractEntity {
 

@@ -2,10 +2,7 @@ package com.github.andriilab.promasy.domain.registration.entities;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * POJO for number of registrations left

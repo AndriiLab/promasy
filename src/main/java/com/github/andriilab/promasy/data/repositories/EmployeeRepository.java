@@ -7,9 +7,9 @@ import com.github.andriilab.promasy.domain.organization.entities.Employee_;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import org.hibernate.JDBCException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class EmployeeRepository extends Repository<Employee> {
@@ -77,7 +77,7 @@ public class EmployeeRepository extends Repository<Employee> {
             return 0;
         }
 
-        Employee employee = empList.get(0);
+        Employee employee = empList.getFirst();
         return employee.getSalt();
     }
 
@@ -92,7 +92,7 @@ public class EmployeeRepository extends Repository<Employee> {
             return false;
         }
 
-        LoginData.getInstance(empList.get(0));
+        LoginData.getInstance(empList.getFirst());
         return true;
     }
 

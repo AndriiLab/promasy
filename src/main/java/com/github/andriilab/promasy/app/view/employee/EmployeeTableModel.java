@@ -43,39 +43,25 @@ class EmployeeTableModel extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         Employee model = db.get(row);
 
-        switch (col) {
-            case 0:
-                return model;
-            case 1:
-                return model.getSubdepartment().getDepartment().getInstitute().getInstName();
-            case 2:
-                return model.getSubdepartment().getDepartment().getDepName();
-            case 3:
-                return model.getSubdepartment().getSubdepName();
-            case 4:
-                return model.getRole().toString();
-            case 5:
-                return model.isActive();
-            default:
-                return EmptyModel.OBJECT;
-        }
+        return switch (col) {
+            case 0 -> model;
+            case 1 -> model.getSubdepartment().getDepartment().getInstitute().getInstName();
+            case 2 -> model.getSubdepartment().getDepartment().getDepName();
+            case 3 -> model.getSubdepartment().getSubdepName();
+            case 4 -> model.getRole().toString();
+            case 5 -> model.isActive();
+            default -> EmptyModel.OBJECT;
+        };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
 
-        switch (columnIndex) {
-            case 0:
-                return Employee.class;
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-                return String.class;
-            case 5:
-                return Boolean.class;
-            default:
-                return Object.class;
-        }
+        return switch (columnIndex) {
+            case 0 -> Employee.class;
+            case 1, 2, 3, 4 -> String.class;
+            case 5 -> Boolean.class;
+            default -> Object.class;
+        };
     }
 }

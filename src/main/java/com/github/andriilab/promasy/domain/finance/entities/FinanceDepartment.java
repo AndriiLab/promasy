@@ -8,7 +8,7 @@ import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -96,16 +96,12 @@ public class FinanceDepartment extends AbstractEntity {
     }
 
     public BigDecimal getTotalAmount(BidType bidType) {
-        switch (bidType) {
-            case MATERIALS:
-                return totalMaterialsAmount;
-            case SERVICES:
-                return totalServicesAmount;
-            case EQUIPMENT:
-                return totalEquipmentAmount;
-            default:
-                return BigDecimal.ZERO;
-        }
+        return switch (bidType) {
+            case MATERIALS -> totalMaterialsAmount;
+            case SERVICES -> totalServicesAmount;
+            case EQUIPMENT -> totalEquipmentAmount;
+            default -> BigDecimal.ZERO;
+        };
     }
 
     @Override

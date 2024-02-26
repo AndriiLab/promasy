@@ -2,7 +2,7 @@ package com.github.andriilab.promasy.data.repositories;
 
 import com.github.andriilab.promasy.domain.registration.entities.RegistrationTicket;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * Queries associated with registration of a new user

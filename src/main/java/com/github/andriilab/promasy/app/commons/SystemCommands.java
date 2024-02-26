@@ -18,7 +18,7 @@ public final class SystemCommands {
 
     public static void showInExplorer(String path) {
         try {
-            Runtime.getRuntime().exec("explorer.exe /select, " + path);
+            new ProcessBuilder("explorer.exe", "/select,", path).start();
         } catch (IOException e) {
             Logger.errorEvent(Utils.class, null, e);
         }

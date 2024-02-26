@@ -105,21 +105,11 @@ class DepartmentFinanceTableModel extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-            case 1:
-                return String.class;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-                return BigDecimal.class;
-            case 8:
-                return FinanceDepartment.class;
-            default:
-                return Object.class;
-        }
+        return switch (columnIndex) {
+            case 0, 1 -> String.class;
+            case 2, 3, 4, 5, 6, 7 -> BigDecimal.class;
+            case 8 -> FinanceDepartment.class;
+            default -> Object.class;
+        };
     }
 }

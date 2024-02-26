@@ -42,28 +42,20 @@ class StatusTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         BidStatus model = bidModel.getStatuses().get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                return model.getLastEditDate();
-            case 1:
-                return model.getStatus().getStatusDesc();
-            case 2:
-                return model.getLastEditPersonName();
-            default:
-                return EmptyModel.OBJECT;
-        }
+        return switch (columnIndex) {
+            case 0 -> model.getLastEditDate();
+            case 1 -> model.getStatus().getStatusDesc();
+            case 2 -> model.getLastEditPersonName();
+            default -> EmptyModel.OBJECT;
+        };
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        switch (columnIndex) {
-            case 0:
-                return Timestamp.class;
-            case 1:
-            case 2:
-                return String.class;
-            default:
-                return Object.class;
-        }
+        return switch (columnIndex) {
+            case 0 -> Timestamp.class;
+            case 1, 2 -> String.class;
+            default -> Object.class;
+        };
     }
 }

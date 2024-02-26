@@ -5,12 +5,12 @@ import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@javax.persistence.Entity
+@jakarta.persistence.Entity
 @Table(name = "subdepartments")
 public class Subdepartment extends AbstractEntity {
 

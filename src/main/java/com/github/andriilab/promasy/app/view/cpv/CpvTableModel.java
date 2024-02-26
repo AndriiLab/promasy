@@ -34,15 +34,11 @@ class CpvTableModel extends AbstractTableModel {
 
     public Object getValueAt(int row, int col) {
         Cpv cpv = db.get(row);
-        switch (col) {
-            case 0:
-                return cpv.getCpvId();
-            case 1:
-                return cpv;
-            case 2:
-                return cpv.getCpvEng();
-            default:
-                return EmptyModel.OBJECT;
-        }
+        return switch (col) {
+            case 0 -> cpv.getCpvId();
+            case 1 -> cpv;
+            case 2 -> cpv.getCpvEng();
+            default -> EmptyModel.OBJECT;
+        };
     }
 }
