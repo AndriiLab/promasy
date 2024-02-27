@@ -27,10 +27,6 @@ class BidsTableModel extends AbstractTableModel {
             Labels.getProperty("dateModified"),
             Labels.getProperty("status")};
 
-    public BidsTableModel() {
-
-    }
-
     @Override
     public String getColumnName(int column) {
         return colNames[column];
@@ -72,9 +68,9 @@ class BidsTableModel extends AbstractTableModel {
                 return model.getLastEditDate();
             case 6:
                 return model.getLastBidStatusModel().getStatus();
+            default:
+                return EmptyModel.OBJECT;
         }
-
-        return EmptyModel.OBJECT;
     }
 
     @Override
@@ -85,7 +81,6 @@ class BidsTableModel extends AbstractTableModel {
             case 1:
                 return Integer.class;
             case 2:
-                return BigDecimal.class;
             case 3:
                 return BigDecimal.class;
             case 4:

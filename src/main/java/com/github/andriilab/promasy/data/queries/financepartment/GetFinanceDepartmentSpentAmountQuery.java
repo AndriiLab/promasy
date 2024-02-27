@@ -5,9 +5,10 @@ import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import lombok.Getter;
 
+@Getter
 public class GetFinanceDepartmentSpentAmountQuery implements IQuery {
-    @Getter private final FinanceDepartment model;
-    @Getter private final BidType type;
+    private final FinanceDepartment model;
+    private final BidType type;
 
     public GetFinanceDepartmentSpentAmountQuery(FinanceDepartment model, BidType type) {
         this.model = model;

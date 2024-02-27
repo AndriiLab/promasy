@@ -18,13 +18,12 @@ class EmployeeTableModel extends AbstractTableModel {
             Labels.getProperty("role"),
             Labels.getProperty("isActive")};
 
-    public EmployeeTableModel() {
-    }
-
+    @Override
     public String getColumnName(int column) {
         return colNames[column];
     }
 
+    @Override
     public boolean isCellEditable(int row, int col) {
         return col == 5;
     }
@@ -57,22 +56,20 @@ class EmployeeTableModel extends AbstractTableModel {
                 return model.getRole().toString();
             case 5:
                 return model.isActive();
+            default:
+                return EmptyModel.OBJECT;
         }
-
-        return EmptyModel.OBJECT;
     }
 
+    @Override
     public Class<?> getColumnClass(int columnIndex) {
 
         switch (columnIndex) {
             case 0:
                 return Employee.class;
             case 1:
-                return String.class;
             case 2:
-                return String.class;
             case 3:
-                return String.class;
             case 4:
                 return String.class;
             case 5:

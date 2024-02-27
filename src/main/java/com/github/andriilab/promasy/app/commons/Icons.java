@@ -9,7 +9,11 @@ import java.awt.*;
 /**
  * Icons for com.github.andriilab.promasy.app classes
  */
-public class Icons {
+public final class Icons {
+
+    private Icons() {
+    }
+
     public static final Icon CREATE = IconFontSwing.buildIcon(FontAwesome.PLUS_CIRCLE, 18, Colors.GREEN);
     public static final Icon COPY = IconFontSwing.buildIcon(FontAwesome.FILES_O, 18, Colors.BLUE);
     public static final Icon EDIT = IconFontSwing.buildIcon(FontAwesome.PENCIL, 18, Colors.BLUE);

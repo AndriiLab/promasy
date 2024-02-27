@@ -6,7 +6,11 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 
-public class SystemCommands {
+public final class SystemCommands {
+
+    private SystemCommands() {
+    }
+
     public static void copyToClipboard(String string) {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
                 new StringSelection(string), null);
@@ -14,7 +18,7 @@ public class SystemCommands {
 
     public static void showInExplorer(String path) {
         try {
-            Runtime.getRuntime().exec("explorer.exe /select, " + path);
+            new ProcessBuilder("explorer.exe", "/select,", path).start();
         } catch (IOException e) {
             Logger.errorEvent(Utils.class, null, e);
         }

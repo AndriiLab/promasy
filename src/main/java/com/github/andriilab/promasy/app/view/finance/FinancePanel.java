@@ -1,6 +1,5 @@
 package com.github.andriilab.promasy.app.view.finance;
 
-import com.github.andriilab.promasy.data.commands.CreateCommand;
 import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.data.commands.DeleteCommand;
 import com.github.andriilab.promasy.data.commands.ICommand;
@@ -18,6 +17,7 @@ import com.github.andriilab.promasy.app.commons.Labels;
 import com.github.andriilab.promasy.app.commons.Utils;
 import com.github.andriilab.promasy.app.components.dialogs.CEDButtons;
 import com.github.andriilab.promasy.app.components.panes.ErrorOptionPane;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,6 +52,7 @@ public class FinancePanel extends JPanel {
     private Finance selectedFinanceModel;
     private FinanceDepartment selectedDepFinModel;
     private final CreateFinancePanel createFinancePanel;
+    @Getter
     private final CreateDepartmentFinancePanel createDepartmentFinancePanel;
     private JSplitPane financeSplitPane;
     private JSplitPane departmentFinanceSplitPane;
@@ -247,10 +248,9 @@ public class FinancePanel extends JPanel {
         //removing all inactive items from list
         List<FinanceDepartment> activeList = new LinkedList<>();
         for (FinanceDepartment model : db) {
-            if (model.isActive()) {
-                if (!useUserDepartment || (useUserDepartment && model.getSubdepartment().getDepartment().equals(LoginData.getInstance().getSubdepartment().getDepartment()))) {
-                    activeList.add(model);
-                }
+            if (model.isActive() &&
+                    (!useUserDepartment || model.getSubdepartment().getDepartment().equals(LoginData.getInstance().getSubdepartment().getDepartment()))) {
+                activeList.add(model);
             }
         }
         departmentFinanceTableModel.setData(activeList);
@@ -284,10 +284,6 @@ public class FinancePanel extends JPanel {
     public void setUseUserDepartment() {
         useUserDepartment = true;
         listener.getFinancesByDepartment(new GetFinancesQuery(parent.getReportYear(), LoginData.getInstance().getSubdepartment().getDepartment()));
-    }
-
-    public CreateDepartmentFinancePanel getCreateDepartmentFinancePanel() {
-        return createDepartmentFinancePanel;
     }
 
     private void showAssociatedBids() {
@@ -384,21 +380,14 @@ public class FinancePanel extends JPanel {
         }
     }
 
-    public class FinanceReport {
+    @Getter
+    public static class FinanceReport {
         private final String name;
         private final List<Bid> list;
 
         FinanceReport(String name, List<Bid> list) {
             this.name = name;
             this.list = list;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public List<Bid> getList() {
-            return list;
         }
     }
 }

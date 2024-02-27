@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * Listener for {@link CreateDepartmentFinancePanel}
  */
-interface CreateDepartmentFinancePanelListener {
+public interface CreateDepartmentFinancePanelListener {
     void persistModelEventOccurred(ICommand<FinanceDepartment> model);
 
     void loadDepartments();

@@ -102,7 +102,7 @@ public class LoginPanel extends JPanel {
         okButton.addActionListener(e -> {
             String username = userField.getText();
             char[] password = passwordField.getPassword();
-            if (username.length() > 0 && password.length > 0) {
+            if (!username.isEmpty() && password.length > 0) {
                 listener.loginAttemptOccurred(username, password);
             } else showLoginError();
         });

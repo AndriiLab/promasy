@@ -4,6 +4,7 @@ import com.github.andriilab.promasy.app.commons.Colors;
 import com.github.andriilab.promasy.app.commons.Icons;
 import com.github.andriilab.promasy.app.commons.Labels;
 import com.github.andriilab.promasy.app.components.panes.ErrorOptionPane;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +14,11 @@ import java.awt.*;
  */
 public class CEDButtons {
 
+    @Getter
     private final JButton createButton;
+    @Getter
     private final JButton editButton;
+    @Getter
     private final JButton deleteButton;
     private final String propertyName;
 
@@ -45,18 +49,6 @@ public class CEDButtons {
         closeButton.setToolTipText(Labels.getProperty("closeBtn"));
 
         return closeButton;
-    }
-
-    public JButton getCreateButton() {
-        return createButton;
-    }
-
-    public JButton getEditButton() {
-        return editButton;
-    }
-
-    public JButton getDeleteButton() {
-        return deleteButton;
     }
 
     public boolean deleteEntry(JFrame parent, String entryName) {

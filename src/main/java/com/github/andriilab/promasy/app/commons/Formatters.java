@@ -1,6 +1,10 @@
 package com.github.andriilab.promasy.app.commons;
 
-public class Formatters {
+public final class Formatters {
+
+    private Formatters() {
+    }
+
     public static String formatFinanceString(String bigDecimal) throws NumberFormatException {
         if (bigDecimal.contains(",")) {
             bigDecimal = bigDecimal.replace(",", ".");

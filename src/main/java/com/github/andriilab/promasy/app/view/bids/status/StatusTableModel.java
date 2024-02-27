@@ -20,10 +20,6 @@ class StatusTableModel extends AbstractTableModel {
             Labels.getProperty("status"),
             Labels.getProperty("role.user")};
 
-    public StatusTableModel() {
-
-    }
-
     @Override
     public String getColumnName(int column) {
         return colNames[column];
@@ -53,8 +49,9 @@ class StatusTableModel extends AbstractTableModel {
                 return model.getStatus().getStatusDesc();
             case 2:
                 return model.getLastEditPersonName();
+            default:
+                return EmptyModel.OBJECT;
         }
-        return EmptyModel.OBJECT;
     }
 
     @Override
@@ -63,7 +60,6 @@ class StatusTableModel extends AbstractTableModel {
             case 0:
                 return Timestamp.class;
             case 1:
-                return String.class;
             case 2:
                 return String.class;
             default:

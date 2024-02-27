@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class InfoDialog extends JDialog {
 
@@ -36,7 +37,7 @@ public class InfoDialog extends JDialog {
 
     private JLabel createLabel() {
         try {
-            BufferedImage img = ImageIO.read(getClass().getResource("/splash.png"));
+            BufferedImage img = ImageIO.read(Objects.requireNonNull(getClass().getResource("/splash.png")));
             Graphics2D g = (Graphics2D) img.getGraphics();
             DrawSplashScreen.drawFullInfo(g);
             ImageIcon icon = new ImageIcon(img);

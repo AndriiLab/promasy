@@ -37,6 +37,7 @@ public class DrawSplashScreen extends Thread {
         g.drawString(Labels.getProperty("copyright1") + Labels.getBuildYear() + Labels.withSpaceBefore("copyright2"), 200, 380);
     }
 
+    @Override
     public void run() {
         splash = SplashScreen.getSplashScreen();
 

@@ -9,7 +9,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class PasswordUtils {
+public final class PasswordUtils {
+
+    private PasswordUtils() {
+    }
+
     public static long makeSalt() {
         return new SecureRandom().nextLong();
     }

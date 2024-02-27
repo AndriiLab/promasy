@@ -30,7 +30,7 @@ public class CpvDialog extends JDialog {
         setSize(800, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         listener = new EmptyCpvSearchListener();
         selectedCpvModel = EmptyModel.CPV;
@@ -56,7 +56,6 @@ public class CpvDialog extends JDialog {
 
         selectButton = new JButton(Labels.getProperty("selectCode"));
         selectButton.setEnabled(false);
-//        selectButton.setPreferredSize(buttonDim);
 
         //set format for table
         table.getColumnModel().getColumn(0).setMaxWidth(150);
@@ -64,6 +63,7 @@ public class CpvDialog extends JDialog {
         PromptSupport.setPrompt(Labels.getProperty("searchFieldHint"), searchField);
         PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.HIGHLIGHT_PROMPT, searchField);
         searchField.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyTyped(KeyEvent e) {
                 selectButton.setEnabled(false);
             }
@@ -117,6 +117,7 @@ public class CpvDialog extends JDialog {
         });
 
         table.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent ev) {
                 int row = table.rowAtPoint(ev.getPoint());
                 table.getSelectionModel().setSelectionInterval(row, row);

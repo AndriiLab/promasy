@@ -5,10 +5,11 @@ import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
 import lombok.Getter;
 
+@Getter
 public class GetFinanceDepartmentsQuery implements IQuery {
-    @Getter private final int year;
-    @Getter private Subdepartment subdepartment;
-    @Getter private Finance finance;
+    private final int year;
+    private Subdepartment subdepartment;
+    private Finance finance;
 
     public GetFinanceDepartmentsQuery(int year, Subdepartment subdepartment) {
         this.year = year;

@@ -29,6 +29,7 @@ import com.github.andriilab.promasy.app.components.panes.ErrorOptionPane;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import lombok.Getter;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -51,9 +52,13 @@ public class CreateBidPanel extends JPanel {
     private final EntityComboBox<Department> departmentBox;
     private final EntityComboBox<Subdepartment> subdepartmentBox;
     private final EntityComboBox<FinanceDepartment> financeDepartmentBox;
+    @Getter
     private final EntityComboBox<Producer> producerBox;
+    @Getter
     private final EntityComboBox<Supplier> supplierBox;
+    @Getter
     private final EntityComboBox<AmountUnit> amUnitsBox;
+    @Getter
     private final EntityComboBox<ReasonForSupplierChoice> reasonForSupplierChoiceBox;
     private final JButton addProducerButton;
     private final JButton addSupplierButton;
@@ -432,8 +437,6 @@ public class CreateBidPanel extends JPanel {
             return false;
         }
 
-        Department selectedDepartmentModel = (Department) departmentBox.getSelectedItem();
-        Subdepartment selectedSubdepartmentModel = (Subdepartment) subdepartmentBox.getSelectedItem();
         FinanceDepartment selectedFinanceDepartmentModel = (FinanceDepartment) financeDepartmentBox.getSelectedItem();
 
         boolean financeChanged = !selectedFinanceDepartmentModel.equals(createdBidModel.getFinances());
@@ -577,22 +580,6 @@ public class CreateBidPanel extends JPanel {
         createdBidModel.setKEKV(kekv);
 
         return true;
-    }
-
-    public EntityComboBox<AmountUnit> getAmUnitsBox() {
-        return amUnitsBox;
-    }
-
-    public EntityComboBox<Producer> getProducerBox() {
-        return producerBox;
-    }
-
-    public EntityComboBox<Supplier> getSupplierBox() {
-        return supplierBox;
-    }
-
-    public EntityComboBox<ReasonForSupplierChoice> getReasonForSupplierChoiceBox() {
-        return reasonForSupplierChoiceBox;
     }
 
     void setCreateBidDialogListener(CreateBidPanelListener listener) {

@@ -4,9 +4,10 @@ import com.github.andriilab.promasy.data.queries.IQuery;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import lombok.Getter;
 
+@Getter
 public class GetFinancesQuery implements IQuery {
-    @Getter private final int year;
-    @Getter private long departmentId;
+    private final int year;
+    private long departmentId;
 
     public GetFinancesQuery(int year) {
         this.year = year;

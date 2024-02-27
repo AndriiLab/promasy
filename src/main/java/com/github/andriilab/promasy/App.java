@@ -26,7 +26,7 @@ import com.github.andriilab.promasy.app.view.MainFrame;
 
 import javax.swing.*;
 
-class AppMain {
+class App {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> run(args));

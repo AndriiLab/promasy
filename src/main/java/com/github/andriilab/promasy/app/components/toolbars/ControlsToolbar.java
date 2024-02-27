@@ -1,6 +1,7 @@
 package com.github.andriilab.promasy.app.components.toolbars;
 
 import com.github.andriilab.promasy.app.commons.Labels;
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ public class ControlsToolbar extends JToolBar {
 
     private ControlsToolbarListener listener;
     private final JComboBox<Integer> yearPicker;
+    @Getter
     private int selectedYear;
 
     public ControlsToolbar() {
@@ -39,7 +41,7 @@ public class ControlsToolbar extends JToolBar {
     }
 
     private boolean parseSelectedYear() {
-        if (yearPicker.getSelectedItem() != null && yearPicker.getSelectedItem() instanceof Integer) {
+        if (yearPicker.getSelectedItem() instanceof Integer) {
             int input = Math.abs((int) yearPicker.getSelectedItem());
             if ((int) (Math.log10(input) + 1) == 4)
                 return setSelectedYear(input);
@@ -54,10 +56,6 @@ public class ControlsToolbar extends JToolBar {
             return false;
         selectedYear = year;
         return true;
-    }
-
-    public int getSelectedYear() {
-        return selectedYear;
     }
 
     public void setListener(ControlsToolbarListener listener) {

@@ -55,9 +55,9 @@ public class CreateEmployeeDialog extends JDialog {
         super(parent, Labels.getProperty("createNewUser"), true);
         this.parent = parent;
         setSize(780, 320);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(parent);
-        setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         Dimension comboBoxDim = new Dimension(400, 25);
 
@@ -215,7 +215,7 @@ public class CreateEmployeeDialog extends JDialog {
         }
         String phoneReserve = phoneReserveField.getText();
         String login = loginField.getText();
-        if (login.length() == 0) {
+        if (login.isEmpty()) {
             loginField.setDisabledTextColor(Color.RED);
             ErrorOptionPane.emptyField(parent, Labels.getProperty("userName"));
             phoneReserveField.requestFocusInWindow();
@@ -254,24 +254,25 @@ public class CreateEmployeeDialog extends JDialog {
             boolean isUniqueUser = listener.checkUniqueLogin(login);
             long salt = PasswordUtils.makeSalt();
             String pass = PasswordUtils.makePass(password, salt);
-            if (pass == null) {
+            if (pass.isEmpty()) {
                 ErrorOptionPane.criticalError(parent);
                 loginListener.cancelEvent();
                 return false;
             }
             // if com.github.andriilab.promasy.domain.model empty createOrUpdate new user
-            if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && isUniqueUser) {
-                currentEmployeeModel = new Employee(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
-                return true;
-            } else if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE) && !isUniqueUser) {
+            if (currentEmployeeModel.equals(EmptyModel.EMPLOYEE)) {
+                if (isUniqueUser) {
+                    currentEmployeeModel = new Employee(firstName, middleName, lastName, email, phoneMain, phoneReserve, subdepartmentModel, roleModel, login, pass, salt);
+                    return true;
+                }
                 JOptionPane.showMessageDialog(parent, Labels.getProperty("nonUniqueUser"), Labels.getProperty("error"), JOptionPane.ERROR_MESSAGE, Icons.ERROR);
                 loginField.requestFocusInWindow();
                 return false;
-            } else {
-                // else - update existing
-                currentEmployeeModel.setSalt(salt);
-                currentEmployeeModel.setPassword(pass);
             }
+
+            // else - update existing
+            currentEmployeeModel.setSalt(salt);
+            currentEmployeeModel.setPassword(pass);
         }
         // executes when all fields ok, but we don't want to change the pass
         currentEmployeeModel.setEmpFName(firstName);

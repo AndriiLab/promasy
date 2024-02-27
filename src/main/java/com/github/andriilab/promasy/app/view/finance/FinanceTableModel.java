@@ -41,6 +41,7 @@ class FinanceTableModel extends AbstractTableModel {
         this.listener = listener;
     }
 
+    @Override
     public String getColumnName(int column) {
         return colNames[column];
     }
@@ -116,19 +117,13 @@ class FinanceTableModel extends AbstractTableModel {
             case 0:
                 return String.class;
             case 1:
-                return BigDecimal.class;
             case 2:
-                return BigDecimal.class;
             case 3:
-                return BigDecimal.class;
             case 4:
-                return BigDecimal.class;
             case 5:
-                return BigDecimal.class;
             case 6:
                 return BigDecimal.class;
             case 7:
-                return Date.class;
             case 8:
                 return Date.class;
             case 9:

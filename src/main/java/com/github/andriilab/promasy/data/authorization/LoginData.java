@@ -1,9 +1,14 @@
 package com.github.andriilab.promasy.data.authorization;
 
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import lombok.Getter;
 
 public final class LoginData {
 
+    private LoginData() {
+    }
+
+    @Getter
     private static volatile Employee instance;
 
     public static Employee getInstance(Employee model) {
@@ -17,9 +22,5 @@ public final class LoginData {
             }
         }
         return localInstance;
-    }
-
-    public static Employee getInstance() {
-        return instance;
     }
 }

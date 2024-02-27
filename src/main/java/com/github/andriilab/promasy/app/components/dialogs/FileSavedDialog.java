@@ -23,7 +23,7 @@ public class FileSavedDialog extends JDialog {
 
         Dimension buttonDim = new Dimension(25, 25);
 
-        messageLabel = new JLabel("", Icons.INFO, JLabel.CENTER);
+        messageLabel = new JLabel("", Icons.INFO, SwingConstants.CENTER);
 
         JLabel pathLabel = new JLabel(Labels.withColon("pathToFile"));
 

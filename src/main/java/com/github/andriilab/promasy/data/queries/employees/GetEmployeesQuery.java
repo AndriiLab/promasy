@@ -4,9 +4,10 @@ import com.github.andriilab.promasy.data.queries.IQuery;
 import com.github.andriilab.promasy.domain.organization.enums.Role;
 import lombok.Getter;
 
+@Getter
 public class GetEmployeesQuery implements IQuery {
-    @Getter private Role role;
-    @Getter private long departmentId;
+    private Role role;
+    private long departmentId;
 
     public GetEmployeesQuery() {
     }

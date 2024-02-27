@@ -66,12 +66,10 @@ public class LoggerDialog extends JDialog {
 
     public void saveLog() {
         String fileName = "log_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".txt";
-        try {
-            FileWriter fw = new FileWriter(fileName);
-            BufferedWriter bw = new BufferedWriter(fw);
+        try (
+                FileWriter fw = new FileWriter(fileName);
+                BufferedWriter bw = new BufferedWriter(fw)) {
             bw.write(logPane.getText());
-            bw.close();
-            fw.close();
             this.setVisible(false);
             parent.showFileSavedDialog(fileName);
         } catch (IOException e1) {

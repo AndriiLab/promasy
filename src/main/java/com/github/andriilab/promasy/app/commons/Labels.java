@@ -8,11 +8,11 @@ import java.util.ResourceBundle;
 /**
  * Getter class for LabelsBundle.properties
  */
-public class Labels {
-    private static final String LABELS_BUNDLE = "LabelsBundle";
-    private static final ResourceBundle LABELS = ResourceBundle.getBundle(LABELS_BUNDLE);
-    private static final String VERSION_BUNDLE = "PromasyVersion";
-    private static final ResourceBundle VERSION = ResourceBundle.getBundle(VERSION_BUNDLE);
+public final class Labels {
+    private static final String LABELS_BUNDLE_NAME = "LabelsBundle";
+    private static final ResourceBundle LABELS_BUNDLE = ResourceBundle.getBundle(LABELS_BUNDLE_NAME);
+    private static final String VERSION_BUNDLE_NAME = "PromasyVersion";
+    private static final ResourceBundle VERSION_BUNDLE = ResourceBundle.getBundle(VERSION_BUNDLE_NAME);
 
     static {
         UIManager.put("OptionPane.yesButtonText", getProperty("yes"));
@@ -20,12 +20,15 @@ public class Labels {
         UIManager.put("OptionPane.cancelButtonText", getProperty("cancel"));
     }
 
+    private Labels() {
+    }
+
     public static String getProperty(final String key) {
-        return LABELS.getString(key);
+        return LABELS_BUNDLE.getString(key);
     }
 
     public static int getInt(final String key) {
-        return Integer.parseInt(LABELS.getString(key));
+        return Integer.parseInt(LABELS_BUNDLE.getString(key));
     }
 
     public static String withColon(final String key) {
@@ -53,11 +56,11 @@ public class Labels {
     }
 
     public static String getVersion() {
-        return VERSION.getString("versionNumber");
+        return VERSION_BUNDLE.getString("versionNumber");
     }
 
     public static String getBuildDate() {
-        return VERSION.getString("buildDate");
+        return VERSION_BUNDLE.getString("buildDate");
     }
 
     public static int getBuildYear() {

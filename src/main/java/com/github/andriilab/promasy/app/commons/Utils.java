@@ -2,7 +2,11 @@ package com.github.andriilab.promasy.app.commons;
 
 import javax.swing.*;
 
-public class Utils {
+public final class Utils {
+
+    private Utils() {
+    }
+
     /**
      * Function determines row with searchObject in given table
      *

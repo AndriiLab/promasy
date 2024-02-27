@@ -11,7 +11,10 @@ import java.math.BigDecimal;
 /**
  * Dialogs with various errors
  */
-public class ErrorOptionPane {
+public final class ErrorOptionPane {
+
+    private ErrorOptionPane() {
+    }
 
     public static void emptyField(JFrame parent, String fieldName) {
         String field = fieldName == null ? "" : " \"" + fieldName + "\"";
