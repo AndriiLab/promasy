@@ -31,7 +31,7 @@ public class AmountUnit extends AbstractEntity {
 
     @Override
     public String getDescription() {
-        return null;
+        return this.description;
     }
 
     @Override

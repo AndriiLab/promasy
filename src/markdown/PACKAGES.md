@@ -1,4 +1,4 @@
-# Packages used in ProMaSy 0.8.3.2 build
+# Packages used in ProMaSy 0.8.3.3 build
 
 |Name|Version|
 |---|---|
@@ -11,8 +11,8 @@
 |commons-collections|3.2.2|
 |commons-collections4|4.4|
 |commons-digester|2.1|
-|commons-io|2.13.0|
-|commons-lang3|3.13.0|
+|commons-io|2.15.0|
+|commons-lang3|3.14.0|
 |commons-logging|1.2|
 |commons-math3|3.6.1|
 |ecj|3.21.0|
@@ -23,12 +23,12 @@
 |hibernate-core|5.6.15.Final|
 |hibernate-jpamodelgen|5.6.15.Final|
 |istack-commons-runtime|3.0.7|
-|jackson-annotations|2.14.1|
-|jackson-core|2.14.1|
-|jackson-databind|2.14.1|
-|jackson-dataformat-xml|2.14.1|
+|jackson-annotations|2.15.3|
+|jackson-core|2.15.3|
+|jackson-databind|2.15.3|
+|jackson-dataformat-xml|2.15.3|
 |jandex|2.4.2.Final|
-|jasperreports|6.20.6|
+|jasperreports|6.21.2|
 |javax.activation-api|1.2.0|
 |javax.annotation-api|1.3.2|
 |javax.persistence-api|2.2|
@@ -42,16 +42,16 @@
 |jiconfont-font_awesome|4.7.0.1|
 |jiconfont-swing|1.0.1|
 |LGoodDatePicker|11.2.1|
-|log4j-api|2.20.0|
+|log4j-api|2.21.1|
 |log4j-core|2.20.0|
 |lombok|1.18.30|
 |mchange-commons-java|0.2.19|
-|openpdf|1.3.30.jaspersoft.3|
-|poi|5.2.4|
-|postgresql|42.6.0|
+|openpdf|1.3.32|
+|poi|5.2.5|
+|postgresql|42.7.2|
 |SparseBitSet|1.3|
 |stax-ex|1.8|
 |stax2-api|4.2.1|
 |swingx-all|1.6.5-1|
 |txw2|2.3.1|
-|woodstox-core|6.4.0|
+|woodstox-core|6.5.1|
