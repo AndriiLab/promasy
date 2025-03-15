@@ -1,18 +1,18 @@
-# Packages used in ProMaSy 0.8.3.3 build
+# Packages used in ProMaSy 0.8.3.4 build
 
 |Name|Version|
 |---|---|
 |antlr|2.7.7|
 |byte-buddy|1.12.18|
-|c3p0|0.9.5.5|
+|c3p0|0.10.1|
 |classmate|1.5.1|
 |commons-beanutils|1.9.4|
-|commons-codec|1.16.0|
+|commons-codec|1.17.1|
 |commons-collections|3.2.2|
 |commons-collections4|4.4|
 |commons-digester|2.1|
-|commons-io|2.15.0|
-|commons-lang3|3.14.0|
+|commons-io|2.18.0|
+|commons-lang3|3.17.0|
 |commons-logging|1.2|
 |commons-math3|3.6.1|
 |ecj|3.21.0|
@@ -28,7 +28,7 @@
 |jackson-databind|2.15.3|
 |jackson-dataformat-xml|2.15.3|
 |jandex|2.4.2.Final|
-|jasperreports|6.21.2|
+|jasperreports|6.21.3|
 |javax.activation-api|1.2.0|
 |javax.annotation-api|1.3.2|
 |javax.persistence-api|2.2|
@@ -42,13 +42,14 @@
 |jiconfont-font_awesome|4.7.0.1|
 |jiconfont-swing|1.0.1|
 |LGoodDatePicker|11.2.1|
-|log4j-api|2.21.1|
-|log4j-core|2.20.0|
-|lombok|1.18.30|
-|mchange-commons-java|0.2.19|
+|log4j-api|3.0.0-beta2|
+|log4j-core|3.0.0-beta2|
+|log4j-plugins|3.0.0-beta2|
+|lombok|1.18.36|
+|mchange-commons-java|0.3.1|
 |openpdf|1.3.32|
-|poi|5.2.5|
-|postgresql|42.7.2|
+|poi|5.4.0|
+|postgresql|42.7.5|
 |SparseBitSet|1.3|
 |stax-ex|1.8|
 |stax2-api|4.2.1|

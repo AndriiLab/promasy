@@ -155,7 +155,7 @@
                     <textFieldExpression><![CDATA[$R{role.accountant}]]></textFieldExpression>
                 </textField>
                 <textField>
-                    <reportElement x="416" y="115" width="133" height="25" uuid="4969f27c-cebd-47f7-90ff-c7d19f22ecc1">
+                    <reportElement x="321" y="115" width="228" height="25" uuid="4969f27c-cebd-47f7-90ff-c7d19f22ecc1">
                         <property name="com.jaspersoft.studio.unit.x" value="pixel"/>
                         <property name="com.jaspersoft.studio.unit.y" value="pixel"/>
                         <property name="com.jaspersoft.studio.unit.height" value="pixel"/>
