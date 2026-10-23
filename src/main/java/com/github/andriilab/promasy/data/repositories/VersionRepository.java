@@ -18,35 +18,25 @@ public class VersionRepository {
     }
 
     public String retrieve() throws JDBCException {
-        String version;
-
-        Version minimumVersion = entityManager.find(Version.class, 1);
+        Version minimumVersion = Repository.readOnly(entityManager, () -> entityManager.find(Version.class, 1));
 
         //trying to get min version
         if (minimumVersion != null) {
-            version = minimumVersion.getVersion();
-        } else {
-            //if entry doesn't exist (0 rows returned) creating new entry equal to software version
-            version = Labels.getVersion();
-
-            entityManager.getTransaction().begin();
-
-            Version currentVersion = new Version(version);
-            entityManager.persist(currentVersion);
-
-            entityManager.getTransaction().commit();
+            return minimumVersion.getVersion();
         }
+
+        //if entry doesn't exist (0 rows returned) creating new entry equal to software version
+        String version = Labels.getVersion();
+        Repository.inTransaction(entityManager, () -> entityManager.persist(new Version(version)));
 
         return version;
     }
 
 
     public void updateVersion() {
-        entityManager.getTransaction().begin();
-
-        Version minimumVersion = entityManager.find(Version.class, 1);
-        minimumVersion.setVersion(Labels.getVersion());
-
-        entityManager.getTransaction().commit();
+        Repository.inTransaction(entityManager, () -> {
+            Version minimumVersion = entityManager.find(Version.class, 1);
+            minimumVersion.setVersion(Labels.getVersion());
+        });
     }
 }

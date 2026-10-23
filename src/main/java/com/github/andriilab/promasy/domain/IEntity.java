@@ -16,6 +16,11 @@ public interface IEntity {
 
     long getModelId();
 
+    /** The optimistic-locking version the row had when this entity was last read or written. */
+    long getVersion();
+
+    void setVersion(long version);
+
     void setModelId(long modelId);
 
     Timestamp getCreatedDate();

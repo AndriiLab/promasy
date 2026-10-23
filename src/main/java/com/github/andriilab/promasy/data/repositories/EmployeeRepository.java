@@ -39,38 +39,36 @@ public class EmployeeRepository extends Repository<Employee> {
     }
 
     private List<Employee> retrieve(Role role, long departmentId) {
-        entityManager.getTransaction().begin();
-        TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole order by em.empLName, em.empFName", Employee.class)
-                .setParameter("empRole", role)
-                .setParameter("departmentId", departmentId);
-        List<Employee> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return list;
+        return readOnly(() -> {
+            TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole order by em.empLName, em.empFName", Employee.class)
+                    .setParameter("empRole", role)
+                    .setParameter("departmentId", departmentId);
+            return query.getResultList();
+        });
     }
 
     private List<Employee> retrieve(Role role) throws JDBCException {
         super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.role), role));
+        criteriaQuery.where(criteriaBuilder.and(
+                criteriaBuilder.equal(root.get(Employee_.active), true),
+                criteriaBuilder.equal(root.get(Employee_.role), role)));
         criteriaQuery.orderBy(criteriaBuilder.asc(root.get(Employee_.empLName)), criteriaBuilder.asc(root.get(Employee_.empFName)));
         return super.getList();
     }
 
     private List<Employee> retrieve(long departmentId) {
-        entityManager.getTransaction().begin();
-        TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId order by em.empLName, em.empFName", Employee.class)
-                .setParameter("departmentId", departmentId);
-        List<Employee> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return list;
+        return readOnly(() -> {
+            TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId order by em.empLName, em.empFName", Employee.class)
+                    .setParameter("departmentId", departmentId);
+            return query.getResultList();
+        });
     }
 
     public long getSalt(String username) throws JDBCException {
         super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.login), username));
+        criteriaQuery.where(criteriaBuilder.and(
+                criteriaBuilder.equal(root.get(Employee_.active), true),
+                criteriaBuilder.equal(root.get(Employee_.login), username)));
         List<Employee> empList = super.getList();
 
         if (empList.isEmpty()) {
@@ -83,9 +81,10 @@ public class EmployeeRepository extends Repository<Employee> {
 
     public boolean checkLogin(String username, String password) throws JDBCException {
         super.retrieve();
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.active), true));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.login), username));
-        criteriaQuery.where(criteriaBuilder.equal(root.get(Employee_.password), password));
+        criteriaQuery.where(criteriaBuilder.and(
+                criteriaBuilder.equal(root.get(Employee_.active), true),
+                criteriaBuilder.equal(root.get(Employee_.login), username),
+                criteriaBuilder.equal(root.get(Employee_.password), password)));
         List<Employee> empList = super.getList();
 
         if (empList.isEmpty()) {
@@ -106,19 +105,15 @@ public class EmployeeRepository extends Repository<Employee> {
 
     //if no users exist - return true
     public boolean isFirstRun() {
-        entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("select count(em) from Employee em where em.login is not null");
-        long numberOfUsers = (long) query.getSingleResult();
-        entityManager.getTransaction().commit();
+        long numberOfUsers = readOnly(() -> {
+            Query query = entityManager.createQuery("select count(em) from Employee em where em.login is not null");
+            return (long) query.getSingleResult();
+        });
 
         return numberOfUsers == 0;
     }
 
     public Employee getUserWithId(long id) {
-        entityManager.getTransaction().begin();
-        Employee model = entityManager.find(Employee.class, id);
-        entityManager.getTransaction().commit();
-
-        return model;
+        return readOnly(() -> entityManager.find(Employee.class, id));
     }
 }

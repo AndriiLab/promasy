@@ -37,75 +37,73 @@ public class BidsRepository extends Repository<Bid> {
     }
 
     private List<Bid> retrieveByFinanceDepartment(BidType type, int year, long financeDepartmentId) throws JDBCException {
-        entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.id = :financeDepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
-                Bid.class)
-                .setParameter("requestedYear", year)
-                .setParameter("bidType", type)
-                .setParameter("financeDepartmentId", financeDepartmentId);
-        List<Bid> list = query.getResultList();
-        entityManager.getTransaction().commit();
+        List<Bid> list = readOnly(() -> {
+            TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and bm.finances.id = :financeDepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+                    Bid.class)
+                    .setParameter("requestedYear", year)
+                    .setParameter("bidType", type)
+                    .setParameter("financeDepartmentId", financeDepartmentId);
+            return query.getResultList();
+        });
 
-        list.forEach(entityManager::refresh);
-
-        return list;
+        return refreshed(list);
     }
 
     private List<Bid> retrieveBySubdepartment(BidType type, int year, long subdepartmentId) throws JDBCException {
-        entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.id = :subdepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
-                Bid.class)
-                .setParameter("requestedYear", year)
-                .setParameter("bidType", type)
-                .setParameter("subdepartmentId", subdepartmentId);
-        List<Bid> list = query.getResultList();
-        entityManager.getTransaction().commit();
+        List<Bid> list = readOnly(() -> {
+            TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.id = :subdepartmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+                    Bid.class)
+                    .setParameter("requestedYear", year)
+                    .setParameter("bidType", type)
+                    .setParameter("subdepartmentId", subdepartmentId);
+            return query.getResultList();
+        });
 
-        list.forEach(entityManager::refresh);
-
-        return list;
+        return refreshed(list);
     }
 
     private List<Bid> retrieveByDepartment(BidType type, int year, long departmentId) throws JDBCException {
-        entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.department.id = :departmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
-                Bid.class)
-                .setParameter("requestedYear", year)
-                .setParameter("bidType", type)
-                .setParameter("departmentId", departmentId);
-        List<Bid> list = query.getResultList();
-        entityManager.getTransaction().commit();
+        List<Bid> list = readOnly(() -> {
+            TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType and fd.subdepartment.department.id = :departmentId order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+                    Bid.class)
+                    .setParameter("requestedYear", year)
+                    .setParameter("bidType", type)
+                    .setParameter("departmentId", departmentId);
+            return query.getResultList();
+        });
 
-        list.forEach(entityManager::refresh);
-
-        return list;
+        return refreshed(list);
     }
 
     private List<Bid> retrieveByType(BidType type, int year) throws JDBCException {
-        entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType order by coalesce(bm.modifiedDate, bm.createdDate) desc",
-                Bid.class)
-                .setParameter("requestedYear", year)
-                .setParameter("bidType", type);
-        List<Bid> list = query.getResultList();
-        entityManager.getTransaction().commit();
+        List<Bid> list = readOnly(() -> {
+            TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true and bm.type = :bidType order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+                    Bid.class)
+                    .setParameter("requestedYear", year)
+                    .setParameter("bidType", type);
+            return query.getResultList();
+        });
 
-        list.forEach(entityManager::refresh);
-
-        return list;
+        return refreshed(list);
     }
 
     private List<Bid> retrieveByYear(int year) throws JDBCException {
-        entityManager.getTransaction().begin();
-        TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true order by coalesce(bm.modifiedDate, bm.createdDate) desc",
-                Bid.class)
-                .setParameter("requestedYear", year);
-        List<Bid> list = query.getResultList();
-        entityManager.getTransaction().commit();
+        List<Bid> list = readOnly(() -> {
+            TypedQuery<Bid> query = entityManager.createQuery("select bm from Bid bm join bm.finances fd join fd.finances fm where EXTRACT(YEAR from fm.startDate) <= :requestedYear and EXTRACT(YEAR from fm.endDate) >= :requestedYear and bm.active = true order by coalesce(bm.modifiedDate, bm.createdDate) desc",
+                    Bid.class)
+                    .setParameter("requestedYear", year);
+            return query.getResultList();
+        });
 
-        list.forEach(entityManager::refresh);
+        return refreshed(list);
+    }
 
-        return list;
+    /** The query returns bids that were already managed with their cached state, so reload them. */
+    private List<Bid> refreshed(List<Bid> bids) {
+        return readOnlyInTransaction(() -> {
+            bids.forEach(entityManager::refresh);
+            return bids;
+        });
     }
 
     @Override
@@ -117,12 +115,12 @@ public class BidsRepository extends Repository<Bid> {
     }
 
     public BigDecimal getTotalAmount(FinanceDepartment financeDepartmentModel, BidType bidType) {
-        entityManager.getTransaction().begin();
-        Query query = entityManager.createQuery("select sum(bm.amount * bm.onePrice) from Bid bm where bm.active = true and bm.type = :bidType and bm.finances = :finances")
-                .setParameter("bidType", bidType)
-                .setParameter("finances", financeDepartmentModel);
-        BigDecimal totalAmount = (BigDecimal) query.getSingleResult();
-        entityManager.getTransaction().commit();
+        BigDecimal totalAmount = readOnly(() -> {
+            Query query = entityManager.createQuery("select sum(bm.amount * bm.onePrice) from Bid bm where bm.active = true and bm.type = :bidType and bm.finances = :finances")
+                    .setParameter("bidType", bidType)
+                    .setParameter("finances", financeDepartmentModel);
+            return (BigDecimal) query.getSingleResult();
+        });
 
         return totalAmount != null ? totalAmount : BigDecimal.ZERO;
     }

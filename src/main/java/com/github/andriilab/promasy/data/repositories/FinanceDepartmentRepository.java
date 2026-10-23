@@ -24,58 +24,52 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     public List<FinanceDepartment> get(GetFinanceDepartmentsQuery query) {
-        if (query.getSubdepartment().getModelId() != 0)
+        if (query.getSubdepartment() != null && query.getSubdepartment().getModelId() != 0)
             return retrieveBySubdepartment(query.getSubdepartment(), query.getYear());
-        else if (query.getFinance().getModelId() != 0)
+        else if (query.getFinance() != null && query.getFinance().getModelId() != 0)
             return retrieveByFinance(query.getFinance(), query.getYear());
         return Collections.emptyList();
     }
 
     private List<FinanceDepartment> retrieveByFinance(Finance finance, int year) {
-        entityManager.getTransaction().begin();
-        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.finances where fdm.finances = :finance and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
-                FinanceDepartment.class);
-        query.setParameter("finance", finance);
-        query.setParameter("year", year);
-        List<FinanceDepartment> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return readOnly(() -> {
+            TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.finances where fdm.finances = :finance and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
+                    FinanceDepartment.class);
+            query.setParameter("finance", finance);
+            query.setParameter("year", year);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     private List<FinanceDepartment> retrieveBySubdepartment(Subdepartment subdepartment, int year) {
-        entityManager.getTransaction().begin();
-        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.subdepartment = :subdepartment and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.finances.financeNumber, fdm.subdepartment.subdepName",
-                FinanceDepartment.class);
-        query.setParameter("subdepartment", subdepartment);
-        query.setParameter("year", year);
-        List<FinanceDepartment> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return readOnly(() -> {
+            TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.subdepartment = :subdepartment and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.finances.financeNumber, fdm.subdepartment.subdepName",
+                    FinanceDepartment.class);
+            query.setParameter("subdepartment", subdepartment);
+            query.setParameter("year", year);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     @Override
     public List<FinanceDepartment> getResults() {
-        entityManager.getTransaction().begin();
-        TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.active = true order by fdm.finances.financeNumber, fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
-                FinanceDepartment.class);
-        List<FinanceDepartment> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return readOnly(() -> {
+            TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.active = true order by fdm.finances.financeNumber, fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
+                    FinanceDepartment.class);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     public BigDecimal retrieveSpentAmount(GetFinanceDepartmentSpentAmountQuery query) {
-        entityManager.getTransaction().begin();
-        Query q = entityManager.createQuery("select sum(b.onePrice * b.amount) from Bid b where b.active = true and b.finances = :financeDepartment and b.type = :bidType");
+        BigDecimal spentAmount = readOnly(() -> {
+            Query q = entityManager.createQuery("select sum(b.onePrice * b.amount) from Bid b where b.active = true and b.finances = :financeDepartment and b.type = :bidType");
 
-        q.setParameter("financeDepartment", query.getModel())
-                .setParameter("bidType", query.getType());
-        BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
-        entityManager.getTransaction().commit();
+            q.setParameter("financeDepartment", query.getModel())
+                    .setParameter("bidType", query.getType());
+            return (BigDecimal) q.getSingleResult();
+        });
 
-        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
+        return spentAmount != null ? spentAmount : BigDecimal.ZERO;
     }
 
     public BigDecimal retrieveLeftAmount(GetFinanceDepartmentLeftAmountQuery query) {

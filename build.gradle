@@ -1,23 +1,33 @@
+import com.vladsch.flexmark.ext.tables.TablesExtension
+import com.vladsch.flexmark.html.HtmlRenderer
+import com.vladsch.flexmark.parser.Parser
+import com.vladsch.flexmark.util.data.MutableDataSet
+
 import java.text.SimpleDateFormat
 
 buildscript {
-    configurations.configureEach {
-        resolutionStrategy.dependencySubstitution {
-            substitute module("com.overzealous:remark:1.1.0") using module("com.wavefront:remark:2023-07.07") because "not available on maven central anymore"
-        }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // renders src/markdown/*.md into the HTML shown by the in-app viewers
+        classpath 'com.vladsch.flexmark:flexmark:0.64.8'
+        classpath 'com.vladsch.flexmark:flexmark-ext-tables:0.64.8'
     }
 }
 
 plugins {
     id 'java'
-    id 'com.github.ben-manes.versions' version '0.52.0'
-    id 'org.kordamp.gradle.markdown' version '2.2.0'
+    id 'jacoco'
+    id 'com.github.ben-manes.versions' version '0.66.0'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    version = '0.8.3.4'
+    // Gradle itself may run on any supported JDK (17-27); compilation uses a JDK 8 toolchain so the jar runs on JRE 8
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+    version = '0.8.4.0'
 }
 
 repositories {
@@ -31,10 +41,10 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
-    implementation 'org.postgresql:postgresql:42.7.5'
+    implementation 'org.postgresql:postgresql:42.7.14'
 
     // https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-    implementation 'net.sf.jasperreports:jasperreports:6.21.3'
+    implementation 'net.sf.jasperreports:jasperreports:6.21.5'
 
     // google roboto font (https://github.com/google/roboto/releases) package for jasper reports
     // howto: https://community.jaspersoft.com/wiki/custom-font-font-extension
@@ -44,7 +54,7 @@ dependencies {
     implementation 'org.swinglabs.swingx:swingx-all:1.6.5-1'
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    implementation 'org.apache.commons:commons-lang3:3.21.0'
 
     // https://mvnrepository.com/artifact/com.github.jiconfont/jiconfont-swing
     implementation 'com.github.jiconfont:jiconfont-swing:1.0.1'
@@ -59,19 +69,20 @@ dependencies {
     implementation 'org.hibernate:hibernate-c3p0:5.6.15.Final'
 
     // https://mvnrepository.com/artifact/com.mchange/c3p0
-    implementation 'com.mchange:c3p0:0.10.1'
+    // 0.10.x proxies reference JDBC 4.3 (Java 9+) types such as java.sql.ShardingKey and fail on JRE 8
+    implementation 'com.mchange:c3p0:0.9.5.5'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    implementation 'org.apache.logging.log4j:log4j-core:3.0.0-beta2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.26.1'
 
     // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
-    implementation 'org.apache.logging.log4j:log4j-api:3.0.0-beta2'
+    implementation 'org.apache.logging.log4j:log4j-api:2.26.1'
 
     // https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker
     implementation 'com.github.lgooddatepicker:LGoodDatePicker:11.2.1'
 
     // https://mvnrepository.com/artifact/org.apache.poi/poi
-    implementation 'org.apache.poi:poi:5.4.0'
+    implementation 'org.apache.poi:poi:5.5.1'
 
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
@@ -80,17 +91,93 @@ dependencies {
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly 'org.projectlombok:lombok:1.18.36'
-    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+    compileOnly 'org.projectlombok:lombok:1.18.48'
+    annotationProcessor 'org.projectlombok:lombok:1.18.48'
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
     compileOnly 'org.hibernate:hibernate-jpamodelgen:5.6.15.Final'
     annotationProcessor group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.6.15.Final'
+
+    // tests run on the JDK 8 toolchain: JUnit 6 needs Java 17, Mockito 5 needs Java 11
+    testImplementation platform('org.junit:junit-bom:5.13.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // Gradle 9 no longer provides the launcher implicitly
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.assertj:assertj-core:3.27.6'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    // inline mock maker, needed for mockStatic
+    testImplementation 'org.mockito:mockito-inline:4.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
 }
 
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'java.awt.headless', 'true'
+    finalizedBy jacocoTestReport
+}
+
+// Integration tests against a real PostgreSQL in a container (Testcontainers; Docker or Podman must be running).
+// `./gradlew test` stays database-free; `./gradlew integrationTest` or `check` runs this suite.
+testing {
+    suites {
+        integrationTest(JvmTestSuite) {
+            useJUnitJupiter('5.13.4')
+            dependencies {
+                implementation project()
+                // 1.x still runs on Java 8; 1.21.4+ negotiates the API version Docker 29 requires
+                implementation platform('org.testcontainers:testcontainers-bom:1.21.4')
+                implementation 'org.testcontainers:postgresql'
+                implementation 'org.assertj:assertj-core:3.27.6'
+            }
+            targets.all {
+                testTask.configure {
+                    shouldRunAfter test
+                    systemProperty 'java.awt.headless', 'true'
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    // Hibernate/JPA types are needed to compile the integration tests, not only to run them
+    integrationTestImplementation.extendsFrom implementation
+}
+
+compileIntegrationTestJava {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('check') {
+    dependsOn testing.suites.integrationTest
+}
+
+// XML is consumed by the coverage step in .github/workflows/ci.yml
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+// Coverage of the main code by the integration tests alone (the jar on the suite's classpath is the same bytecode)
+tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+    dependsOn tasks.named('integrationTest')
+    executionData files(layout.buildDirectory.file('jacoco/integrationTest.exec'))
+    sourceSets sourceSets.main
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
 
 jar {
@@ -119,6 +206,17 @@ jar {
     }
 }
 
+// Release bundle published by .github/workflows/cd.yml: one promasy/ folder with the jar, its lib/ and the report templates
+tasks.register('releaseZip', Zip) {
+    archiveFileName = "promasy-${project.version}.bin.zip"
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    into('promasy') {
+        from jar
+        into('lib') { from configurations.runtimeClasspath }
+        into('reports') { from('reports') { include '*.jrxml' } }
+    }
+}
+
 tasks.register('createVersionProperties') {
     dependsOn processResources
     doFirst {
@@ -140,10 +238,11 @@ tasks.register('setConsoleCyrillicSupport') {
     dependsOn processResources
     doLast {
         Properties props = new Properties()
-        File propsFile = layout.buildDirectory.file('/resources/main/log4j2.properties').get().asFile
-        props.load(propsFile.newDataInputStream())
-        props.setProperty('appender.console.encoding', 'CP866')
-        props.store(propsFile.newWriter(), null)
+        File propsFile = layout.buildDirectory.file('resources/main/log4j2.properties').get().asFile
+        // with* closes the streams; leaked handles keep the daemon locking the file and break `clean`
+        propsFile.withInputStream { props.load(it) }
+        props.setProperty('appender.console.layout.charset', 'CP866')
+        propsFile.withWriter { props.store(it, null) }
     }
 }
 
@@ -165,10 +264,18 @@ tasks.register('writePackages') {
 
 tasks.register('convertMarkdown') {
     dependsOn processResources
-    markdownToHtml.tables = true
-    markdownToHtml.sourceDir = project.file('src/markdown')
-    markdownToHtml.outputDir = project.file('src/main/resources')
-    convertMarkdown.finalizedBy markdownToHtml
+    File sourceDir = file('src/markdown')
+    File outputDir = file('src/main/resources')
+    doLast {
+        MutableDataSet options = new MutableDataSet()
+        options.set(Parser.EXTENSIONS, [TablesExtension.create()])
+        Parser parser = Parser.builder(options).build()
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build()
+        sourceDir.listFiles().findAll { it.name.endsWith('.md') }.each { md ->
+            File html = new File(outputDir, md.name.replaceAll(/\.md$/, '.html'))
+            html.setText(renderer.render(parser.parse(md.getText('UTF-8'))), 'UTF-8')
+        }
+    }
 }
 
 classes {

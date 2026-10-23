@@ -6,15 +6,10 @@ public final class Formatters {
     }
 
     public static String formatFinanceString(String bigDecimal) throws NumberFormatException {
-        if (bigDecimal.contains(",")) {
-            bigDecimal = bigDecimal.replace(",", ".");
-            //if has more than 2 digits after '.' + dot (3) throw exception
-            if (bigDecimal.substring(bigDecimal.indexOf(".")).length() > 3) {
-                throw new NumberFormatException();
-            }
-        }
-        if (bigDecimal.contains(" ")) {
-            bigDecimal = bigDecimal.replace(" ", "");
+        bigDecimal = bigDecimal.replace(",", ".").replace(" ", "");
+        //if has more than 2 digits after '.' + dot (3) throw exception
+        if (bigDecimal.contains(".") && bigDecimal.substring(bigDecimal.indexOf(".")).length() > 3) {
+            throw new NumberFormatException();
         }
         return bigDecimal;
     }

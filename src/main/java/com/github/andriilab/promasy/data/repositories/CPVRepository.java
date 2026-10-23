@@ -10,12 +10,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 public class CPVRepository {
 
-    private List<Cpv> list = new LinkedList<>();
     private final EntityManager entityManager;
 
     public CPVRepository(EntityManager entityManager) {
@@ -24,8 +22,6 @@ public class CPVRepository {
 
     public List<Cpv> get(CpvRequestQuery requestedCpvEvent) {
         String requestedCpv = requestedCpvEvent.getCpvRequest();
-
-        list.clear();
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Cpv> criteria = cb.createQuery(Cpv.class);
@@ -64,13 +60,14 @@ public class CPVRepository {
         criteria.orderBy(cb.asc(root.get(Cpv_.cpvId)));
 
         // getting only first 100 results
-        list = entityManager.createQuery(criteria).setMaxResults(100).getResultList();
+        List<Cpv> list = Repository.readOnly(entityManager,
+                () -> entityManager.createQuery(criteria).setMaxResults(100).getResultList());
 
         return Collections.unmodifiableList(list);
     }
 
     // 0 - exact lvl, -1 - upper level, 1 - lower level
-    private CPVRequestObject prepareDigitCpv(String requestedCpv, int depth) {
+    static CPVRequestObject prepareDigitCpv(String requestedCpv, int depth) {
         // trim string if more than 8 char
         if (requestedCpv.length() > 8) {
             requestedCpv = requestedCpv.substring(0, 8);
@@ -98,7 +95,7 @@ public class CPVRepository {
         return new CPVRequestObject(requestedCpv, determineLevel(requestedCpv) + 1);
     }
 
-    private int determineLevel(String requestedCpv) {
+    static int determineLevel(String requestedCpv) {
         if (requestedCpv.length() < 3) {
             return 1;
         } else {
@@ -107,9 +104,7 @@ public class CPVRepository {
     }
 
     public void create(Cpv model) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(model);
-        entityManager.getTransaction().commit();
+        Repository.inTransaction(entityManager, () -> entityManager.persist(model));
     }
 
     public Cpv validateCode(String cpvCode) {
@@ -118,7 +113,8 @@ public class CPVRepository {
         Root<Cpv> root = criteria.from(Cpv.class);
         criteria.select(root);
         criteria.where(cb.equal(root.get(Cpv_.cpvId), cpvCode));
-        List<Cpv> list = entityManager.createQuery(criteria).setMaxResults(100).getResultList();
+        List<Cpv> list = Repository.readOnly(entityManager,
+                () -> entityManager.createQuery(criteria).setMaxResults(100).getResultList());
         if (list.size() == 1) {
             return list.get(0);
         } else {
@@ -126,7 +122,7 @@ public class CPVRepository {
         }
     }
 
-    private class CPVRequestObject {
+    static class CPVRequestObject {
         private final String cpvRequest;
         private final int lvl;
 

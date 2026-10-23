@@ -13,9 +13,7 @@ public class ServerRepository {
 
     public static Timestamp getServerTimestamp() {
         EntityManager em = DbConnector.INSTANCE.getEntityManager();
-        em.getTransaction().begin();
-        Timestamp serverTime = (Timestamp) em.createNativeQuery("SELECT current_timestamp").getSingleResult();
-        em.getTransaction().commit();
+        Timestamp serverTime = Repository.readOnly(em, () -> (Timestamp) em.createNativeQuery("SELECT current_timestamp").getSingleResult());
 
         return serverTime != null ? serverTime : Timestamp.from(Instant.now());
     }

@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * POJO for data of finance amount spent on each cpv code
@@ -30,6 +32,37 @@ public class CpvAmount {
     }
 
     public CpvAmount() {
+        this.totalAmount = BigDecimal.ZERO;
+    }
+
+    /**
+     * Groups bids by 4-digit CPV group and bid type, summing their total prices.
+     *
+     * @param cpvLookup resolves an 8-character CPV code (4-digit group padded with zeros) to its {@link Cpv}
+     * @return unmodifiable list sorted by bid type, then CPV code
+     */
+    public static List<CpvAmount> groupByCpvAndType(List<Bid> bids, Function<String, Cpv> cpvLookup) {
+        Map<String, CpvAmount> map = new HashMap<>();
+
+        for (Bid bid : bids) {
+            String cpvCode = bid.getCpv().getCpvId().substring(0, 4) + "0000";
+            BidType bidType = bid.getType();
+            BigDecimal bidAmount = bid.getTotalPrice();
+
+            String key = cpvCode + " " + bidType;
+            CpvAmount cpvAmount = map.get(key);
+            if (cpvAmount != null) {
+                cpvAmount.addBidModel(bid);
+                cpvAmount.addToTotalAmount(bidAmount);
+            } else {
+                map.put(key, new CpvAmount(cpvLookup.apply(cpvCode), bidType, bidAmount, bid));
+            }
+        }
+
+        return Collections.unmodifiableList(map.values().stream()
+                .sorted(Comparator.comparing(CpvAmount::getType)
+                        .thenComparing(m -> m.getCpv().getCpvId()))
+                .collect(Collectors.toList()));
     }
 
     public void addToTotalAmount(BigDecimal totalAmount) {

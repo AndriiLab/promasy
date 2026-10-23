@@ -37,10 +37,18 @@ public class ReportsGenerator {
 
         this.parent = parent;
     }
+
+    /**
+     * Fills the compiled template of the request with its parameters and models, without showing anything.
+     */
+    public JasperPrint fillReport(ReportRequest<?> request) throws NoSuchFileException, JRException {
+        return JasperFillManager.fillReport(getReportPath(request) + JASPER_EXTENSION, request.getParameters(), new JRBeanCollectionDataSource(request.getModelsList()));
+    }
+
     public void showPrintDialog(ReportRequest<?> request) {
         JasperPrint jasperPrint;
         try {
-            jasperPrint = JasperFillManager.fillReport(getReportPath(request) + JASPER_EXTENSION, request.getParameters(), new JRBeanCollectionDataSource(request.getModelsList()));
+            jasperPrint = fillReport(request);
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             EventQueue.invokeLater(() -> {
                 jasperViewer.setVisible(true);

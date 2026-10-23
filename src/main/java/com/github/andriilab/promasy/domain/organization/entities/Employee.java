@@ -100,11 +100,15 @@ public class Employee extends AbstractEntity {
     }
 
     public String getShortName() {
-        if (empFName != null && empLName != null && empMName != null) {
-            return empLName + " " + empFName.substring(0, 1) + "."
-                    + empMName.substring(0, 1) + ".";
+        if (empFName == null || empLName == null || empMName == null) {
+            return "";
         }
-        return "";
+        String initials = initial(empFName) + initial(empMName);
+        return initials.isEmpty() ? empLName : empLName + " " + initials;
+    }
+
+    private static String initial(String name) {
+        return name.isEmpty() ? "" : name.substring(0, 1) + ".";
     }
 
     public String toString() {

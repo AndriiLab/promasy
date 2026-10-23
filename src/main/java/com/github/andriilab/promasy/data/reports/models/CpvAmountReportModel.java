@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * IEntity for report table with information about procurements by CPV code
@@ -27,7 +27,7 @@ public class CpvAmountReportModel {
     private CpvAmount parentModel;
 
     public CpvAmountReportModel(CpvAmount amount) {
-        Set<String> kpkvkSet = new HashSet<>();
+        Set<String> kpkvkSet = new TreeSet<>();
         for (Bid bid : amount.getBids()) {
             Integer kpkvkInt = bid.getFinances().getFinances().getKpkvk();
             kpkvkSet.add(kpkvkInt != null ? kpkvkInt.toString() : Labels.getProperty("default.kpkvk"));
@@ -44,7 +44,7 @@ public class CpvAmountReportModel {
         this.bidType = amount.getType().getBidTypeName();
         this.cpvNumber = amount.getCpv().getCpvId();
         this.cpvName = amount.getCpv().getCpvUkr();
-        this.kpkvk = String.join(" ,", kpkvkSet);
+        this.kpkvk = String.join(", ", kpkvkSet);
         this.totalPrice =  amount.getTotalAmount();
         this.procurementProcedure = procProcedure;
         this.startDate = Labels.getProperty("duringYear");

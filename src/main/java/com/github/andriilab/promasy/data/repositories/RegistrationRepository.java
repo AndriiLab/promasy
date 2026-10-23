@@ -16,42 +16,43 @@ public class RegistrationRepository {
     }
 
     public int getRegistrationsLeft() {
-        entityManager.getTransaction().begin();
+        return Repository.readOnly(entityManager, () -> {
+            RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
 
-        RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
-
-        int registrationsLeft = model != null ? model.getRegistrationTicketNumber() : 0;
-
-        entityManager.getTransaction().commit();
-
-        return registrationsLeft;
+            return model != null ? model.getRegistrationTicketNumber() : 0;
+        });
     }
 
+    /**
+     * Takes one registration ticket, if there is one, in a single transaction.
+     *
+     * @return the number of tickets there were <em>before</em> this call, so a positive result means a ticket was
+     * taken and the registration is allowed; {@code 0} means there was none and nothing changed
+     */
     public int useRegistration() {
-        int registrationNumber = getRegistrationsLeft();
+        return Repository.inTransaction(entityManager, () -> {
+            RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
+            if (model == null) {
+                entityManager.persist(new RegistrationTicket(0));
+                return 0;
+            }
 
-        entityManager.getTransaction().begin();
-        RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
-
-        if (model != null) {
-            model.setRegistrationTicketNumber(registrationNumber < 0 ? 0 : --registrationNumber);
-        } else {
-            model = new RegistrationTicket(registrationNumber);
-        }
-
-        entityManager.persist(model);
-        entityManager.getTransaction().commit();
-
-        return registrationNumber;
+            int ticketsBefore = model.getRegistrationTicketNumber();
+            if (ticketsBefore > 0) {
+                model.setRegistrationTicketNumber(ticketsBefore - 1);
+            }
+            return ticketsBefore;
+        });
     }
 
     public void changeNumberOfRegistrationTickets(int numberOfRegistrationTickets) {
-
-        entityManager.getTransaction().begin();
-
-        RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
-        model.setRegistrationTicketNumber(numberOfRegistrationTickets);
-
-        entityManager.getTransaction().commit();
+        Repository.inTransaction(entityManager, () -> {
+            RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
+            if (model != null) {
+                model.setRegistrationTicketNumber(numberOfRegistrationTickets);
+            } else {
+                entityManager.persist(new RegistrationTicket(numberOfRegistrationTickets));
+            }
+        });
     }
 }
