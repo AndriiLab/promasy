@@ -27,7 +27,7 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(8)
     }
-    version = '0.8.3.4'
+    version = '0.8.4.0'
 }
 
 repositories {
@@ -203,6 +203,17 @@ jar {
             include '*.jrxml'
             into layout.buildDirectory.dir('libs/reports')
         }
+    }
+}
+
+// Release bundle published by .github/workflows/cd.yml: one promasy/ folder with the jar, its lib/ and the report templates
+tasks.register('releaseZip', Zip) {
+    archiveFileName = "promasy-${project.version}.bin.zip"
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    into('promasy') {
+        from jar
+        into('lib') { from configurations.runtimeClasspath }
+        into('reports') { from('reports') { include '*.jrxml' } }
     }
 }
 
