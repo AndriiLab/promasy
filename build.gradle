@@ -125,6 +125,42 @@ test {
     finalizedBy jacocoTestReport
 }
 
+// Integration tests against a real PostgreSQL in a container (Testcontainers; Docker or Podman must be running).
+// `./gradlew test` stays database-free; `./gradlew integrationTest` or `check` runs this suite.
+testing {
+    suites {
+        integrationTest(JvmTestSuite) {
+            useJUnitJupiter('5.13.4')
+            dependencies {
+                implementation project()
+                // 1.x still runs on Java 8; 1.21.4+ negotiates the API version Docker 29 requires
+                implementation platform('org.testcontainers:testcontainers-bom:1.21.4')
+                implementation 'org.testcontainers:postgresql'
+                implementation 'org.assertj:assertj-core:3.27.6'
+            }
+            targets.all {
+                testTask.configure {
+                    shouldRunAfter test
+                    systemProperty 'java.awt.headless', 'true'
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    // Hibernate/JPA types are needed to compile the integration tests, not only to run them
+    integrationTestImplementation.extendsFrom implementation
+}
+
+compileIntegrationTestJava {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('check') {
+    dependsOn testing.suites.integrationTest
+}
+
 // XML is consumed by the coverage step in .github/workflows/ci.yml
 jacocoTestReport {
     reports {

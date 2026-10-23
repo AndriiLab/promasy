@@ -65,3 +65,38 @@ jobs:
             build/reports/tests/test
             build/reports/jacoco/test/html
           if-no-files-found: ignore
+
+  # Runs src/integrationTest against PostgreSQL in a Testcontainers container (Docker is preinstalled on the runner).
+  integration-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 27
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.8.2
+
+      - name: Integration tests
+        run: gradle integrationTest --no-daemon
+
+      - name: Publish integration test results
+        if: ${{ !cancelled() }}
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          check_name: Integration Test Results
+          comment_title: Integration Test Results
+          files: build/test-results/integrationTest/**/*.xml
+
+      - name: Upload integration test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-report
+          path: build/reports/tests/integrationTest
+          if-no-files-found: ignore

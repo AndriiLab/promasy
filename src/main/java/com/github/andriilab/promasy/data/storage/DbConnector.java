@@ -54,6 +54,11 @@ public enum DbConnector {
         return connectionSettings;
     }
 
+    public void connect(ConnectionSettings connectionSettings) throws SQLException {
+        this.connectionSettings = connectionSettings;
+        connect();
+    }
+
     public void connect() throws SQLException {
         if (connectionSettings == null)
             loadConnectionSettings(false);

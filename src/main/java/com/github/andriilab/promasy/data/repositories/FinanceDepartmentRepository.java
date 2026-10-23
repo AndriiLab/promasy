@@ -24,9 +24,9 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     public List<FinanceDepartment> get(GetFinanceDepartmentsQuery query) {
-        if (query.getSubdepartment().getModelId() != 0)
+        if (query.getSubdepartment() != null && query.getSubdepartment().getModelId() != 0)
             return retrieveBySubdepartment(query.getSubdepartment(), query.getYear());
-        else if (query.getFinance().getModelId() != 0)
+        else if (query.getFinance() != null && query.getFinance().getModelId() != 0)
             return retrieveByFinance(query.getFinance(), query.getYear());
         return Collections.emptyList();
     }

@@ -37,7 +37,7 @@ public class FinanceRepository extends Repository<Finance> {
 
     private List<Finance> retrieve(long departmentId, int year) {
         return inTransaction(() -> {
-            TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
+            TypedQuery<Finance> query = entityManager.createQuery("select distinct fm from Finance fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fdm.active = true and fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
                     Finance.class);
             query.setParameter("departmentId", departmentId);
             query.setParameter("year", year);

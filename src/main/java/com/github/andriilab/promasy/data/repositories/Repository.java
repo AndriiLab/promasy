@@ -2,7 +2,10 @@ package com.github.andriilab.promasy.data.repositories;
 
 import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.domain.IEntity;
+import com.github.andriilab.promasy.domain.organization.entities.Employee;
 import org.hibernate.JDBCException;
+import org.hibernate.LockOptions;
+import org.hibernate.Session;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -40,6 +43,7 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
             return result;
         } catch (RuntimeException e) {
             rollbackAfterFailure(transaction, e);
+            reattachLoggedInEmployee(entityManager, e);
             throw e;
         }
     }
@@ -58,6 +62,22 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
             }
         } catch (RuntimeException rollbackFailure) {
             cause.addSuppressed(rollbackFailure);
+        }
+    }
+
+    /**
+     * A rollback detaches every entity of the shared {@link EntityManager}, including the logged-in employee that
+     * {@code create}/{@code update} put into the audit fields. Those fields cascade PERSIST, so a detached employee
+     * would make every later write fail with "detached entity passed to persist"; attach it again.
+     */
+    static void reattachLoggedInEmployee(EntityManager entityManager, RuntimeException cause) {
+        try {
+            Employee employee = LoginData.getInstance();
+            if (employee != null && !entityManager.contains(employee)) {
+                entityManager.unwrap(Session.class).buildLockRequest(LockOptions.NONE).lock(employee);
+            }
+        } catch (RuntimeException reattachFailure) {
+            cause.addSuppressed(reattachFailure);
         }
     }
 
@@ -114,6 +134,7 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
             return Collections.unmodifiableList(list);
         } catch (RuntimeException e) {
             rollbackAfterFailure(transaction, e);
+            reattachLoggedInEmployee(entityManager, e);
             throw e;
         }
     }

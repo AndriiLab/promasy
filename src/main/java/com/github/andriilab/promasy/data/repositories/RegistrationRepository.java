@@ -44,7 +44,11 @@ public class RegistrationRepository {
     public void changeNumberOfRegistrationTickets(int numberOfRegistrationTickets) {
         Repository.inTransaction(entityManager, () -> {
             RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
-            model.setRegistrationTicketNumber(numberOfRegistrationTickets);
+            if (model != null) {
+                model.setRegistrationTicketNumber(numberOfRegistrationTickets);
+            } else {
+                entityManager.persist(new RegistrationTicket(numberOfRegistrationTickets));
+            }
         });
     }
 }
