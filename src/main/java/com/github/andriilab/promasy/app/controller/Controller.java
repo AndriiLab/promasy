@@ -164,7 +164,7 @@ public class Controller {
             // creating new user
             public boolean isAbleToRegister() {
                 int registrationNumber = registrationsLeft();
-                Logger.infoEvent(this.getClass(), mainFrame, "Ticket number: " + registrationNumber);
+                Logger.infoEvent(this.getClass(), mainFrame, "Tickets before this registration: " + registrationNumber);
                 if (registrationNumber > 0) {
                     LoginData.getInstance(storage.EMPLOYEES.getUserWithId(1L));
                     initMainFrame();

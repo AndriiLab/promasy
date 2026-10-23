@@ -49,7 +49,7 @@ public abstract class AbstractEntity implements IEntity {
     @Getter @Setter private Timestamp modifiedDate;
 
     @Version
-    private final long version = 0;
+    @Getter @Setter private long version;
 
     protected AbstractEntity() {
         this.createdEmployee = null;

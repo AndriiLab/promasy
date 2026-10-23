@@ -156,6 +156,43 @@ class RepositoryIT extends AbstractIntegrationTest {
         assertThat(listedDescriptions(subject)).contains(another.getDescription());
     }
 
+    /** A failed write rolls back and clears the shared EM, so every entity the UI still holds is detached. */
+    @ParameterizedTest
+    @MethodSource("subjects")
+    <T extends IEntity> void update_entityDetachedByEarlierFailedWrite_savesChangesAndKeepsVersionInSync(Subject<T> subject) {
+        T held = created(subject, "held");
+        T broken = created(subject, "broken");
+        Sql.execute("UPDATE " + subject.table + " SET version = version + 1 WHERE id = ?", broken.getModelId());
+        broken.setDescription("stale write");
+        assertThatThrownBy(() -> commands.handle(new UpdateCommand<>(broken))).isInstanceOf(PersistenceException.class);
+        assertThat(em.contains(held)).isFalse();
+
+        held.setDescription("first");
+        commands.handle(new UpdateCommand<>(held));
+        // the caller keeps its own instance, so a second write must not look stale
+        held.setDescription("second");
+        commands.handle(new UpdateCommand<>(held));
+
+        long id = held.getModelId();
+        assertThat(column(subject, subject.descriptionColumn, id)).isEqualTo("second");
+        assertThat(held.getVersion()).isEqualTo((Long) column(subject, "version", id));
+        assertThat(column(subject, "modified_by", id)).isEqualTo(admin.getModelId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("subjects")
+    <T extends IEntity> void delete_entityDetachedByEarlierFailedWrite_deactivatesRow(Subject<T> subject) {
+        T held = created(subject, "held");
+        T broken = created(subject, "broken");
+        Sql.execute("UPDATE " + subject.table + " SET version = version + 1 WHERE id = ?", broken.getModelId());
+        assertThatThrownBy(() -> commands.handle(new UpdateCommand<>(broken))).isInstanceOf(PersistenceException.class);
+
+        commands.handle(new DeleteCommand<>(held));
+
+        assertThat(column(subject, "active", held.getModelId())).isEqualTo(false);
+        assertThat(listedDescriptions(subject)).doesNotContain("held");
+    }
+
     @ParameterizedTest
     @MethodSource("subjects")
     <T extends IEntity> void getResults_calledTwice_returnsIndependentListsOrderedByDescription(Subject<T> subject) {

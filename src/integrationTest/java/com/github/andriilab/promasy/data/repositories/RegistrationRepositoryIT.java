@@ -28,30 +28,46 @@ class RegistrationRepositoryIT extends AbstractIntegrationTest {
     }
 
     @Test
-    void useRegistration_ticketsLeft_decrementsStoredNumber() {
+    void useRegistration_ticketsLeft_decrementsStoredNumberAndReturnsNumberBeforeUse() {
         Sql.execute("INSERT INTO promasy.registrations (id, registrations_left) VALUES (1, 3)");
 
-        storage.REGISTRATION.useRegistration();
+        int result = storage.REGISTRATION.useRegistration();
 
+        assertThat(result).isEqualTo(3);
         assertThat(storedTickets()).isEqualTo(2);
         assertThat(storage.REGISTRATION.getRegistrationsLeft()).isEqualTo(2);
     }
 
+    /** The controller allows the registration when the result is positive, so the last ticket must count. */
     @Test
-    void useRegistration_calledRepeatedly_neverStoresNegativeNumber() {
+    void useRegistration_lastTicket_returnsPositiveAndLeavesZero() {
+        Sql.execute("INSERT INTO promasy.registrations (id, registrations_left) VALUES (1, 1)");
+
+        assertThat(storage.REGISTRATION.useRegistration()).isPositive();
+        assertThat(storedTickets()).isEqualTo(0);
+        assertThat(storage.REGISTRATION.useRegistration()).isZero();
+        assertThat(storedTickets()).isEqualTo(0);
+    }
+
+    @Test
+    void useRegistration_calledRepeatedly_allowsExactlyAsManyRegistrationsAsTickets() {
         Sql.execute("INSERT INTO promasy.registrations (id, registrations_left) VALUES (1, 2)");
 
+        int allowed = 0;
         for (int i = 0; i < 4; i++) {
-            storage.REGISTRATION.useRegistration();
+            if (storage.REGISTRATION.useRegistration() > 0) {
+                allowed++;
+            }
         }
 
+        assertThat(allowed).isEqualTo(2);
         assertThat(storedTickets()).isEqualTo(0);
         assertThat(storage.REGISTRATION.getRegistrationsLeft()).isZero();
     }
 
     @Test
-    void useRegistration_noRow_createsRowWithZeroTickets() {
-        storage.REGISTRATION.useRegistration();
+    void useRegistration_noRow_returnsZeroAndCreatesRowWithZeroTickets() {
+        assertThat(storage.REGISTRATION.useRegistration()).isZero();
 
         assertThat(storedTickets()).isEqualTo(0);
     }

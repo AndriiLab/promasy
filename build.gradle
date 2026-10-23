@@ -169,6 +169,17 @@ jacocoTestReport {
     }
 }
 
+// Coverage of the main code by the integration tests alone (the jar on the suite's classpath is the same bytecode)
+tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+    dependsOn tasks.named('integrationTest')
+    executionData files(layout.buildDirectory.file('jacoco/integrationTest.exec'))
+    sourceSets sourceSets.main
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
 jar {
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
     manifest {

@@ -23,21 +23,25 @@ public class RegistrationRepository {
         });
     }
 
+    /**
+     * Takes one registration ticket, if there is one, in a single transaction.
+     *
+     * @return the number of tickets there were <em>before</em> this call, so a positive result means a ticket was
+     * taken and the registration is allowed; {@code 0} means there was none and nothing changed
+     */
     public int useRegistration() {
-        int registrationNumber = getRegistrationsLeft();
-
         return Repository.inTransaction(entityManager, () -> {
             RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
-            int registrationsLeft = registrationNumber;
-
-            if (model != null) {
-                model.setRegistrationTicketNumber(registrationsLeft < 0 ? 0 : --registrationsLeft);
-            } else {
-                model = new RegistrationTicket(registrationsLeft);
+            if (model == null) {
+                entityManager.persist(new RegistrationTicket(0));
+                return 0;
             }
 
-            entityManager.persist(model);
-            return registrationsLeft;
+            int ticketsBefore = model.getRegistrationTicketNumber();
+            if (ticketsBefore > 0) {
+                model.setRegistrationTicketNumber(ticketsBefore - 1);
+            }
+            return ticketsBefore;
         });
     }
 

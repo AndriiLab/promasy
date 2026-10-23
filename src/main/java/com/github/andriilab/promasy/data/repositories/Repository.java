@@ -100,13 +100,13 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     public void update(T object) throws JDBCException {
         object.setModifiedDate(ServerRepository.getServerTimestamp());
         object.setModifiedEmployee(LoginData.getInstance());
-        createOrUpdate(object);
+        save(object);
     }
 
     @Override
     public void delete(T object) throws JDBCException {
         object.setActive(false, LoginData.getInstance(), ServerRepository.getServerTimestamp());
-        createOrUpdate(object);
+        save(object);
     }
 
     @Override
@@ -145,5 +145,20 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
 
     private void createOrUpdate(T object) throws JDBCException {
         inTransaction(() -> entityManager.persist(object));
+    }
+
+    /**
+     * Writes the changes of an entity that already has a row. A rollback detaches every entity the UI still holds,
+     * and {@code persist} rejects a detached entity (and, through the PERSIST cascades, any detached entity it
+     * references), so such an entity is merged instead. The merge works on the managed copy, so the new version is
+     * copied back: the caller keeps using its own instance and the next write must not look stale.
+     */
+    private void save(T object) throws JDBCException {
+        if (object.getModelId() == 0 || entityManager.contains(object)) {
+            createOrUpdate(object);
+            return;
+        }
+        T merged = inTransaction(() -> entityManager.merge(object));
+        object.setVersion(merged.getVersion());
     }
 }

@@ -105,6 +105,52 @@ class RepositoryTest {
     }
 
     @Test
+    void update_detachedEntityWithId_isMergedAndGetsVersionOfManagedCopy() {
+        AmountUnit unit = new AmountUnit("pcs");
+        unit.setModelId(5);
+        AmountUnit managed = new AmountUnit("pcs");
+        managed.setModelId(5);
+        managed.setVersion(7);
+        when(entityManager.contains(unit)).thenReturn(false);
+        when(entityManager.merge(unit)).thenReturn(managed);
+
+        repository.update(unit);
+
+        InOrder order = inOrder(mockTransaction, entityManager);
+        order.verify(mockTransaction).begin();
+        order.verify(entityManager).merge(unit);
+        order.verify(mockTransaction).commit();
+        verify(entityManager, never()).persist(any());
+        assertThat(unit.getVersion()).isEqualTo(7);
+        assertThat(unit.getModifiedEmployee()).isSameAs(currentUser);
+    }
+
+    @Test
+    void update_managedEntityWithId_isPersistedNotMerged() {
+        AmountUnit unit = new AmountUnit("pcs");
+        unit.setModelId(5);
+        when(entityManager.contains(unit)).thenReturn(true);
+
+        repository.update(unit);
+
+        verify(entityManager).persist(unit);
+        verify(entityManager, never()).merge(any());
+    }
+
+    @Test
+    void delete_detachedEntityWithId_isMergedAsSoftDelete() {
+        AmountUnit unit = new AmountUnit("pcs");
+        unit.setModelId(5);
+        when(entityManager.merge(unit)).thenReturn(unit);
+
+        repository.delete(unit);
+
+        assertThat(unit.isActive()).isFalse();
+        verify(entityManager).merge(unit);
+        verify(entityManager, never()).persist(any());
+    }
+
+    @Test
     void delete_activeEntity_isSoftDeletedAndPersisted() {
         AmountUnit unit = new AmountUnit("pcs");
 
