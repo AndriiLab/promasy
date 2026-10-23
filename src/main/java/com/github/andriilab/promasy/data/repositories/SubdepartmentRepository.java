@@ -16,7 +16,7 @@ public class SubdepartmentRepository extends Repository<Subdepartment> {
     }
 
     public List<Subdepartment> get(long departmentId) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<Subdepartment> query = entityManager.createQuery("select sdm from Subdepartment sdm join sdm.department where sdm.department.modelId = :departmentId and sdm.active = true order by sdm.subdepName", Subdepartment.class);
             query.setParameter("departmentId", departmentId);
             return Collections.unmodifiableList(query.getResultList());

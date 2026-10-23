@@ -8,7 +8,6 @@ import com.github.andriilab.promasy.data.queries.finance.GetFinancesQuery;
 import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.Finance;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
-import com.github.andriilab.promasy.testutil.FakeTransaction;
 import com.github.andriilab.promasy.testutil.TestEntities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +17,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Answers;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -36,8 +33,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,8 +44,6 @@ class FinanceRepositoryTest {
 
     @Mock
     private EntityManager entityManager;
-    @Mock
-    private EntityTransaction transaction;
     @Mock(answer = Answers.RETURNS_SELF)
     private TypedQuery<Finance> typedQuery;
     @Mock(answer = Answers.RETURNS_SELF)
@@ -60,7 +53,6 @@ class FinanceRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        lenient().when(entityManager.getTransaction()).thenReturn(transaction);
         repository = new FinanceRepository(entityManager);
     }
 
@@ -110,9 +102,7 @@ class FinanceRepositoryTest {
     }
 
     @Test
-    void get_queryFails_rollsBackSoTheNextCallCanBegin() {
-        FakeTransaction fakeTransaction = new FakeTransaction();
-        when(entityManager.getTransaction()).thenReturn(fakeTransaction);
+    void get_queryFails_rethrowsAndTheNextCallStillWorks() {
         when(entityManager.createQuery(anyString(), eq(Finance.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList())
                 .thenThrow(new PersistenceException("boom"))
@@ -122,8 +112,7 @@ class FinanceRepositoryTest {
         List<Finance> second = repository.get(new GetFinancesQuery(YEAR));
 
         assertThat(second).isEmpty();
-        assertThat(fakeTransaction.getRollbacks()).isEqualTo(1);
-        assertThat(fakeTransaction.getCommits()).isEqualTo(1);
+        verify(entityManager, never()).getTransaction();
     }
 
     // ---- assigned / unassigned amount
@@ -142,10 +131,7 @@ class FinanceRepositoryTest {
         verify(entityManager).createQuery(jpql.capture());
         assertThat(jpql.getValue()).contains("sum(dfm." + column + ")").contains("dfm.active = true");
         verify(scalarQuery).setParameter("finances", finance);
-        InOrder order = inOrder(transaction, scalarQuery);
-        order.verify(transaction).begin();
-        order.verify(scalarQuery).getSingleResult();
-        order.verify(transaction).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @ParameterizedTest
@@ -158,21 +144,18 @@ class FinanceRepositoryTest {
                 new GetFinanceAssignedAmountQuery(TestEntities.finance("1", "a", "1", "1", "1"), type));
 
         assertThat(result).isEqualTo(BigDecimal.ZERO);
-        verify(transaction).commit();
     }
 
     @Test
-    void retrieveAssignedAmount_queryFails_rollsBackAndRethrows() {
+    void retrieveAssignedAmount_queryFails_rethrowsWithoutTransaction() {
         when(entityManager.createQuery(anyString())).thenReturn(scalarQuery);
         when(scalarQuery.getSingleResult()).thenThrow(new PersistenceException("boom"));
-        when(transaction.isActive()).thenReturn(true);
 
         assertThatThrownBy(() -> repository.retrieveAssignedAmount(
                 new GetFinanceAssignedAmountQuery(TestEntities.finance("1", "a", "1", "1", "1"), BidType.MATERIALS)))
                 .isInstanceOf(PersistenceException.class);
 
-        verify(transaction).rollback();
-        verify(transaction, never()).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @ParameterizedTest(name = "{0}: total 1000, assigned {1} -> {2}")
@@ -212,7 +195,7 @@ class FinanceRepositoryTest {
         assertThat(result).isEqualByComparingTo("42.10");
         verify(scalarQuery).setParameter("finance", finance);
         verify(scalarQuery).setParameter("bidType", BidType.SERVICES);
-        verify(transaction).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @Test

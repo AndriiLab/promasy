@@ -18,7 +18,7 @@ public class VersionRepository {
     }
 
     public String retrieve() throws JDBCException {
-        Version minimumVersion = entityManager.find(Version.class, 1);
+        Version minimumVersion = Repository.readOnly(entityManager, () -> entityManager.find(Version.class, 1));
 
         //trying to get min version
         if (minimumVersion != null) {

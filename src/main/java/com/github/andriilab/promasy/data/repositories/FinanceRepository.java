@@ -36,7 +36,7 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     private List<Finance> retrieve(long departmentId, int year) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<Finance> query = entityManager.createQuery("select distinct fm from Finance fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fdm.active = true and fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
                     Finance.class);
             query.setParameter("departmentId", departmentId);
@@ -46,7 +46,7 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     private List<Finance> retrieve(int year) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm where fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
                     Finance.class);
             query.setParameter("year", year);
@@ -71,7 +71,7 @@ public class FinanceRepository extends Repository<Finance> {
                 return BigDecimal.ZERO;
         }
 
-        return inTransaction(() -> {
+        return readOnly(() -> {
             Query q = entityManager.createQuery("select sum(dfm." + field + ") from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
             q.setParameter("finances", query.getModel());
             return amountOrZero((BigDecimal) q.getSingleResult());
@@ -86,7 +86,7 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     public BigDecimal retrieveSpentAmount(GetFinanceSpentAmountQuery query) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             Query q = entityManager.createQuery("select sum(bd.onePrice * bd.amount) from Bid bd inner join FinanceDepartment fd on bd.finances = fd where bd.active = true and bd.type=:bidType and fd.finances=:finance");
 
             q.setParameter("finance", query.getModel())

@@ -107,8 +107,8 @@ class RepositoryIT extends AbstractIntegrationTest {
 
         long id = entity.getModelId();
         assertThat(column(subject, subject.descriptionColumn, id)).isEqualTo("after");
-        // not exactly 1: getServerTimestamp()'s transaction already flushes the caller's edit once
-        assertThat((Long) column(subject, "version", id)).isGreaterThan(0L);
+        // one UPDATE: getServerTimestamp() reads without a transaction, so it no longer flushes the edit first
+        assertThat(column(subject, "version", id)).isEqualTo(1L);
         assertThat(column(subject, "modified_by", id)).isEqualTo(admin.getModelId());
         assertThat(column(subject, "modified_date", id)).isNotNull();
     }

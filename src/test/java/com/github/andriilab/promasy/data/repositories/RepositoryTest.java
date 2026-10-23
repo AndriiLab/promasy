@@ -235,7 +235,7 @@ class RepositoryTest {
     }
 
     @Test
-    void getResults_activeEntities_returnsUnmodifiableListAndCommits() {
+    void getResults_activeEntities_returnsUnmodifiableListWithoutTransaction() {
         List<AmountUnit> rows = Arrays.asList(new AmountUnit("kg"), new AmountUnit("pcs"));
         stubCriteriaQuery(rows);
 
@@ -243,10 +243,7 @@ class RepositoryTest {
 
         assertThat(result).containsExactlyElementsOf(rows);
         assertThatThrownBy(() -> result.add(new AmountUnit("l"))).isInstanceOf(UnsupportedOperationException.class);
-        InOrder order = inOrder(mockTransaction, entityManager);
-        order.verify(mockTransaction).begin();
-        order.verify(entityManager).createQuery(any(CriteriaQuery.class));
-        order.verify(mockTransaction).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @Test
@@ -263,15 +260,13 @@ class RepositoryTest {
     }
 
     @Test
-    void getResults_queryFails_rollsBackAndRethrows() {
+    void getResults_queryFails_rethrowsWithoutTransaction() {
         PersistenceException failure = new PersistenceException("query failed");
         stubCriteriaQueryFailing(failure);
-        when(mockTransaction.isActive()).thenReturn(true);
 
         assertThatThrownBy(() -> repository.getResults()).isSameAs(failure);
 
-        verify(mockTransaction).rollback();
-        verify(mockTransaction, never()).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @SafeVarargs

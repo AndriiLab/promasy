@@ -6,8 +6,9 @@ import com.github.andriilab.promasy.domain.bid.enums.BidType;
 import com.github.andriilab.promasy.domain.finance.entities.FinanceDepartment;
 import com.github.andriilab.promasy.domain.organization.entities.Department;
 import com.github.andriilab.promasy.domain.organization.entities.Subdepartment;
-import com.github.andriilab.promasy.testutil.FakeTransaction;
 import com.github.andriilab.promasy.testutil.TestEntities;
+import org.hibernate.FlushMode;
+import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
@@ -46,6 +48,8 @@ class BidsRepositoryTest {
     private EntityManager entityManager;
     @Mock
     private EntityTransaction transaction;
+    @Mock
+    private Session session;
     @Mock(answer = Answers.RETURNS_SELF)
     private TypedQuery<Bid> typedQuery;
     @Mock(answer = Answers.RETURNS_SELF)
@@ -58,7 +62,10 @@ class BidsRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        // the refresh after a bid query runs in a transaction that never flushes
         lenient().when(entityManager.getTransaction()).thenReturn(transaction);
+        lenient().when(entityManager.unwrap(Session.class)).thenReturn(session);
+        lenient().when(session.getHibernateFlushMode()).thenReturn(FlushMode.AUTO);
         repository = new BidsRepository(entityManager);
     }
 
@@ -152,31 +159,45 @@ class BidsRepositoryTest {
     }
 
     @Test
-    void retrieve_bidsFound_refreshesEveryBidAfterCommit() {
+    void retrieve_bidsFound_queriesWithoutTransactionThenRefreshesInTransactionThatNeverFlushes() {
         stubBidQuery(bids);
 
         repository.retrieve(new GetBidsQuery(BidType.MATERIALS, YEAR));
 
-        InOrder order = inOrder(transaction, entityManager);
+        InOrder order = inOrder(typedQuery, session, transaction, entityManager);
+        order.verify(typedQuery).getResultList();
+        order.verify(session).setHibernateFlushMode(FlushMode.MANUAL);
         order.verify(transaction).begin();
-        order.verify(transaction).commit();
         order.verify(entityManager).refresh(bids.get(0));
         order.verify(entityManager).refresh(bids.get(1));
+        order.verify(transaction).commit();
+        order.verify(session).setHibernateFlushMode(FlushMode.AUTO);
     }
 
     @Test
-    void retrieve_queryFails_rollsBackSoTheNextCallCanBegin() {
-        FakeTransaction fakeTransaction = new FakeTransaction();
-        when(entityManager.getTransaction()).thenReturn(fakeTransaction);
+    void retrieve_queryFails_rethrowsBeforeAnyTransactionAndTheNextCallStillWorks() {
         when(entityManager.createQuery(anyString(), eq(Bid.class))).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenThrow(new PersistenceException("boom")).thenReturn(bids);
 
         assertThatThrownBy(() -> repository.retrieve(new GetBidsQuery(YEAR))).isInstanceOf(PersistenceException.class);
+        verify(entityManager, never()).getTransaction();
         List<Bid> second = repository.retrieve(new GetBidsQuery(YEAR));
 
         assertThat(second).isEqualTo(bids);
-        assertThat(fakeTransaction.getRollbacks()).isEqualTo(1);
-        assertThat(fakeTransaction.getCommits()).isEqualTo(1);
+    }
+
+    @Test
+    void retrieve_refreshFails_rollsBackAndRestoresFlushMode() {
+        stubBidQuery(bids);
+        PersistenceException failure = new PersistenceException("row gone");
+        doThrow(failure).when(entityManager).refresh(bids.get(0));
+        when(transaction.isActive()).thenReturn(true);
+
+        assertThatThrownBy(() -> repository.retrieve(new GetBidsQuery(YEAR))).isSameAs(failure);
+
+        verify(transaction).rollback();
+        verify(transaction, never()).commit();
+        verify(session).setHibernateFlushMode(FlushMode.AUTO);
     }
 
     @Test
@@ -190,7 +211,7 @@ class BidsRepositoryTest {
         assertThat(result).isEqualByComparingTo("99.99");
         verify(scalarQuery).setParameter("bidType", BidType.SERVICES);
         verify(scalarQuery).setParameter("finances", financeDepartment);
-        verify(transaction).commit();
+        verify(entityManager, never()).getTransaction();
     }
 
     @Test

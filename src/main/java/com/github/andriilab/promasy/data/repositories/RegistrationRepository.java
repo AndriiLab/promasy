@@ -16,7 +16,7 @@ public class RegistrationRepository {
     }
 
     public int getRegistrationsLeft() {
-        return Repository.inTransaction(entityManager, () -> {
+        return Repository.readOnly(entityManager, () -> {
             RegistrationTicket model = entityManager.find(RegistrationTicket.class, 1);
 
             return model != null ? model.getRegistrationTicketNumber() : 0;

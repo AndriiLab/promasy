@@ -14,7 +14,6 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -27,7 +26,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
@@ -43,8 +41,6 @@ class EmployeeRepositoryTest {
     @Mock
     private EntityManager entityManager;
     @Mock
-    private EntityTransaction transaction;
-    @Mock
     private CriteriaBuilder criteriaBuilder;
     @Mock
     private CriteriaQuery<Employee> criteriaQuery;
@@ -59,7 +55,6 @@ class EmployeeRepositoryTest {
     @BeforeEach
     void setUp() {
         loginData = mockStatic(LoginData.class);
-        lenient().when(entityManager.getTransaction()).thenReturn(transaction);
         when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(Employee.class)).thenReturn(criteriaQuery);
         when(criteriaQuery.from(Employee.class)).thenReturn(root);

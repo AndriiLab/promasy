@@ -60,7 +60,8 @@ public class CPVRepository {
         criteria.orderBy(cb.asc(root.get(Cpv_.cpvId)));
 
         // getting only first 100 results
-        List<Cpv> list = entityManager.createQuery(criteria).setMaxResults(100).getResultList();
+        List<Cpv> list = Repository.readOnly(entityManager,
+                () -> entityManager.createQuery(criteria).setMaxResults(100).getResultList());
 
         return Collections.unmodifiableList(list);
     }
@@ -112,7 +113,8 @@ public class CPVRepository {
         Root<Cpv> root = criteria.from(Cpv.class);
         criteria.select(root);
         criteria.where(cb.equal(root.get(Cpv_.cpvId), cpvCode));
-        List<Cpv> list = entityManager.createQuery(criteria).setMaxResults(100).getResultList();
+        List<Cpv> list = Repository.readOnly(entityManager,
+                () -> entityManager.createQuery(criteria).setMaxResults(100).getResultList());
         if (list.size() == 1) {
             return list.get(0);
         } else {

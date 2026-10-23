@@ -32,7 +32,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     private List<FinanceDepartment> retrieveByFinance(Finance finance, int year) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.finances where fdm.finances = :finance and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
                     FinanceDepartment.class);
             query.setParameter("finance", finance);
@@ -42,7 +42,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     private List<FinanceDepartment> retrieveBySubdepartment(Subdepartment subdepartment, int year) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.subdepartment = :subdepartment and fdm.active = true and EXTRACT(YEAR from fdm.finances.startDate) <= :year and EXTRACT(YEAR from fdm.finances.endDate) >= :year order by fdm.finances.financeNumber, fdm.subdepartment.subdepName",
                     FinanceDepartment.class);
             query.setParameter("subdepartment", subdepartment);
@@ -53,7 +53,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
 
     @Override
     public List<FinanceDepartment> getResults() {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<FinanceDepartment> query = entityManager.createQuery("select fdm from FinanceDepartment fdm join fdm.subdepartment.department where fdm.active = true order by fdm.finances.financeNumber, fdm.subdepartment.department.depName, fdm.subdepartment.subdepName",
                     FinanceDepartment.class);
             return Collections.unmodifiableList(query.getResultList());
@@ -61,7 +61,7 @@ public class FinanceDepartmentRepository extends Repository<FinanceDepartment> {
     }
 
     public BigDecimal retrieveSpentAmount(GetFinanceDepartmentSpentAmountQuery query) {
-        BigDecimal spentAmount = inTransaction(() -> {
+        BigDecimal spentAmount = readOnly(() -> {
             Query q = entityManager.createQuery("select sum(b.onePrice * b.amount) from Bid b where b.active = true and b.finances = :financeDepartment and b.type = :bidType");
 
             q.setParameter("financeDepartment", query.getModel())

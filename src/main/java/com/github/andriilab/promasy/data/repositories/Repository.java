@@ -3,6 +3,7 @@ package com.github.andriilab.promasy.data.repositories;
 import com.github.andriilab.promasy.data.authorization.LoginData;
 import com.github.andriilab.promasy.domain.IEntity;
 import com.github.andriilab.promasy.domain.organization.entities.Employee;
+import org.hibernate.FlushMode;
 import org.hibernate.JDBCException;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
@@ -55,6 +56,32 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
         });
     }
 
+    /**
+     * Runs a select-only query without a transaction; writes go through {@link #inTransaction}. A resource-local
+     * {@link EntityManager} needs no transaction to read, and Hibernate flushes only inside one, so a read no longer
+     * writes the pending edits of the shared {@link EntityManager} as a side effect. Outside a transaction Hibernate
+     * returns the connection to the pool after each query, so no database transaction is left open either.
+     */
+    static <R> R readOnly(EntityManager entityManager, Supplier<R> query) {
+        return query.get();
+    }
+
+    /**
+     * For reads that are not queries, such as {@code refresh}. Outside a transaction Hibernate keeps the connection
+     * after those, and with it an open database transaction holding table locks, until the next commit. So they run
+     * in a transaction that never flushes: the commit releases the connection without writing pending edits.
+     */
+    static <R> R readOnlyInTransaction(EntityManager entityManager, Supplier<R> work) {
+        Session session = entityManager.unwrap(Session.class);
+        FlushMode previousFlushMode = session.getHibernateFlushMode();
+        session.setHibernateFlushMode(FlushMode.MANUAL);
+        try {
+            return inTransaction(entityManager, work);
+        } finally {
+            session.setHibernateFlushMode(previousFlushMode);
+        }
+    }
+
     static void rollbackAfterFailure(EntityTransaction transaction, RuntimeException cause) {
         try {
             if (transaction.isActive()) {
@@ -89,6 +116,14 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
         inTransaction(entityManager, work);
     }
 
+    protected <R> R readOnly(Supplier<R> query) {
+        return readOnly(entityManager, query);
+    }
+
+    protected <R> R readOnlyInTransaction(Supplier<R> work) {
+        return readOnlyInTransaction(entityManager, work);
+    }
+
     @Override
     public void create(T object) throws JDBCException {
         object.setCreatedDate(ServerRepository.getServerTimestamp());
@@ -115,11 +150,9 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     }
 
     /**
-     * Opens the transaction and prepares the criteria query. The transaction is closed by {@link #getList()}.
+     * Prepares the criteria query that {@link #getList()} runs.
      */
     void retrieve() throws JDBCException {
-        entityManager.getTransaction().begin();
-
         criteriaBuilder = entityManager.getCriteriaBuilder();
         criteriaQuery = criteriaBuilder.createQuery(entityClass);
         root = criteriaQuery.from(entityClass);
@@ -127,16 +160,7 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     }
 
     public List<T> getList() throws JDBCException {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            List<T> list = entityManager.createQuery(criteriaQuery).getResultList();
-            transaction.commit();
-            return Collections.unmodifiableList(list);
-        } catch (RuntimeException e) {
-            rollbackAfterFailure(transaction, e);
-            reattachLoggedInEmployee(entityManager, e);
-            throw e;
-        }
+        return readOnly(() -> Collections.unmodifiableList(entityManager.createQuery(criteriaQuery).getResultList()));
     }
 
     public Class<T> getEntityClass() {

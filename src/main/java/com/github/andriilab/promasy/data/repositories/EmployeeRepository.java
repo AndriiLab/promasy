@@ -39,7 +39,7 @@ public class EmployeeRepository extends Repository<Employee> {
     }
 
     private List<Employee> retrieve(Role role, long departmentId) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId and em.role = :empRole order by em.empLName, em.empFName", Employee.class)
                     .setParameter("empRole", role)
                     .setParameter("departmentId", departmentId);
@@ -57,7 +57,7 @@ public class EmployeeRepository extends Repository<Employee> {
     }
 
     private List<Employee> retrieve(long departmentId) {
-        return inTransaction(() -> {
+        return readOnly(() -> {
             TypedQuery<Employee> query = entityManager.createQuery("select em from Employee em where em.active = true and em.subdepartment.department.modelId = :departmentId order by em.empLName, em.empFName", Employee.class)
                     .setParameter("departmentId", departmentId);
             return query.getResultList();
@@ -105,7 +105,7 @@ public class EmployeeRepository extends Repository<Employee> {
 
     //if no users exist - return true
     public boolean isFirstRun() {
-        long numberOfUsers = inTransaction(() -> {
+        long numberOfUsers = readOnly(() -> {
             Query query = entityManager.createQuery("select count(em) from Employee em where em.login is not null");
             return (long) query.getSingleResult();
         });
@@ -114,6 +114,6 @@ public class EmployeeRepository extends Repository<Employee> {
     }
 
     public Employee getUserWithId(long id) {
-        return inTransaction(() -> entityManager.find(Employee.class, id));
+        return readOnly(() -> entityManager.find(Employee.class, id));
     }
 }
