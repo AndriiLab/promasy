@@ -180,7 +180,7 @@ tasks.register('setConsoleCyrillicSupport') {
     dependsOn processResources
     doLast {
         Properties props = new Properties()
-        File propsFile = layout.buildDirectory.file('/resources/main/log4j2.properties').get().asFile
+        File propsFile = layout.buildDirectory.file('resources/main/log4j2.properties').get().asFile
         // with* closes the streams; leaked handles keep the daemon locking the file and break `clean`
         propsFile.withInputStream { props.load(it) }
         props.setProperty('appender.console.layout.charset', 'CP866')
