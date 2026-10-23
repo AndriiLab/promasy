@@ -16,13 +16,11 @@ public class SubdepartmentRepository extends Repository<Subdepartment> {
     }
 
     public List<Subdepartment> get(long departmentId) {
-        entityManager.getTransaction().begin();
-        TypedQuery<Subdepartment> query = entityManager.createQuery("select sdm from Subdepartment sdm join sdm.department where sdm.department.modelId = :departmentId and sdm.active = true order by sdm.subdepName", Subdepartment.class);
-        query.setParameter("departmentId", departmentId);
-        List<Subdepartment> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return inTransaction(() -> {
+            TypedQuery<Subdepartment> query = entityManager.createQuery("select sdm from Subdepartment sdm join sdm.department where sdm.department.modelId = :departmentId and sdm.active = true order by sdm.subdepName", Subdepartment.class);
+            query.setParameter("departmentId", departmentId);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     @Override

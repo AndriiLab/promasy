@@ -820,29 +820,8 @@ public class Controller {
     private List<CpvAmount> retrieveCpvAmount(int year) {
         try {
             List<Bid> bidModels = storage.BIDS.retrieve(new GetBidsQuery(year));
-            Map<String, CpvAmount> map = new HashMap<>();
-
-            for (Bid bidModel : bidModels) {
-                String cpv = bidModel.getCpv().getCpvId().substring(0, 4);
-                BidType type = bidModel.getType();
-                BigDecimal bidAmount = bidModel.getTotalPrice();
-
-                String key = cpv + "0000 " + type.toString();
-                if (map.containsKey(key)) {
-                    CpvAmount cpvAmount = map.get(key);
-                    cpvAmount.addBidModel(bidModel);
-                    cpvAmount.addToTotalAmount(bidAmount);
-                    map.put(key, cpvAmount);
-                } else {
-                    Cpv fourDigitCpv = storage.CPV.get(new CpvRequestQuery(key, 0)).get(0);
-                    map.put(key, new CpvAmount(fourDigitCpv, type, bidAmount, bidModel));
-                }
-            }
-
-            return Collections.unmodifiableList(map.values().stream()
-                    .sorted(Comparator.comparing(CpvAmount::getType)
-                            .thenComparing(m -> m.getCpv().getCpvId()))
-                    .collect(Collectors.toList()));
+            return CpvAmount.groupByCpvAndType(bidModels,
+                    cpvCode -> storage.CPV.get(new CpvRequestQuery(cpvCode, 0)).get(0));
         } catch (JDBCException e) {
             Logger.errorEvent(this.getClass(), mainFrame, Labels.withColon("request") +
                     Labels.withSpaceBefore("cpvAmounts"), e);

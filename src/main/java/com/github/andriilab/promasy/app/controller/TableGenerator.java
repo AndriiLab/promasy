@@ -30,17 +30,18 @@ public class TableGenerator {
         this.parent = parent;
     }
 
-    private static List<Bid> preSort(List<Bid> bids) {
-        Map<Integer, Bid> map = new HashMap<>();
+    static List<Bid> preSort(List<Bid> bids) {
+        Map<String, Bid> map = new HashMap<>();
         for (Bid bid : bids) {
-            int key = (bid.getCpv().getCpvId() + bid.getKEKV() + bid.getAmountUnit() + bid.getOnePrice()).hashCode();
+            String key = String.join("|", bid.getCpv().getCpvId(), String.valueOf(bid.getKEKV()),
+                    String.valueOf(bid.getAmountUnit()), String.valueOf(bid.getOnePrice()));
             if (map.containsKey(key)) {
                 map.get(key).setTransientAmount(map.get(key).getTransientAmount() + bid.getTransientAmount());
             } else {
                 map.put(key, bid);
             }
         }
-        return map.entrySet().stream().map(Map.Entry::getValue).sorted(Comparator.comparing(Bid::getKEKV)
+        return map.values().stream().sorted(Comparator.comparing(Bid::getKEKV)
                 .thenComparing(bm -> bm.getCpv().getCpvId())
                 .thenComparing(bm -> bm.getAmountUnit().getModelId())).collect(Collectors.toList());
     }

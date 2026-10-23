@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -91,6 +92,10 @@ public abstract class AbstractEntity implements IEntity {
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof IEntity)) {
+            return false;
+        }
+        // Hibernate.getClass unwraps lazy proxies, so a proxy equals the entity it stands for
+        if (Hibernate.getClass(this) != Hibernate.getClass(obj)) {
             return false;
         }
         IEntity otherEntity = (IEntity) obj;

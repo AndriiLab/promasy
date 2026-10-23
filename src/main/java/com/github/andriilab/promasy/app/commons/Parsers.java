@@ -30,6 +30,15 @@ public final class Parsers {
         return integer;
     }
 
+    /**
+     * Converts user-entered finance text (comma or dot separator, optional spaces) to a number.
+     *
+     * @throws NumberFormatException if the text is not a number or has more than 2 decimal places
+     */
+    static BigDecimal toFinanceAmount(String text) {
+        return new BigDecimal(Formatters.formatFinanceString(text));
+    }
+
     public static BigDecimal parseBigDecimal(JFrame parent, JTextField jTextField, String fieldName) {
         String targetBigDecimalText = jTextField.getText();
 
@@ -42,9 +51,7 @@ public final class Parsers {
         BigDecimal targetBigDecimal;
 
         try {
-            targetBigDecimalText = Formatters.formatFinanceString(targetBigDecimalText);
-
-            targetBigDecimal = new BigDecimal(targetBigDecimalText);
+            targetBigDecimal = toFinanceAmount(targetBigDecimalText);
         } catch (NumberFormatException ex) {
             Logger.warnEvent(Utils.class, ex);
             JOptionPane.showMessageDialog(parent,

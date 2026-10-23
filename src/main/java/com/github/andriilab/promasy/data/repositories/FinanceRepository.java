@@ -36,51 +36,46 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     private List<Finance> retrieve(long departmentId, int year) {
-        entityManager.getTransaction().begin();
-        TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
-                Finance.class);
-        query.setParameter("departmentId", departmentId);
-        query.setParameter("year", year);
-        List<Finance> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return inTransaction(() -> {
+            TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm join fm.financeDepartmentModels fdm where fdm.subdepartment.department.modelId = :departmentId and fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
+                    Finance.class);
+            query.setParameter("departmentId", departmentId);
+            query.setParameter("year", year);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     private List<Finance> retrieve(int year) {
-        entityManager.getTransaction().begin();
-        TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm where fm.active = true and EXTRACT(YEAR from fm.startDate) >= :year and EXTRACT(YEAR from fm.endDate) <= :year order by fm.financeNumber",
-                Finance.class);
-        query.setParameter("year", year);
-        List<Finance> list = query.getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        return inTransaction(() -> {
+            TypedQuery<Finance> query = entityManager.createQuery("select fm from Finance fm where fm.active = true and EXTRACT(YEAR from fm.startDate) <= :year and EXTRACT(YEAR from fm.endDate) >= :year order by fm.financeNumber",
+                    Finance.class);
+            query.setParameter("year", year);
+            return Collections.unmodifiableList(query.getResultList());
+        });
     }
 
     public BigDecimal retrieveAssignedAmount(GetFinanceAssignedAmountQuery query) {
-        entityManager.getTransaction().begin();
-        Query q;
+        String field;
 
         switch (query.getType()) {
             case MATERIALS:
-                q = entityManager.createQuery("select sum(dfm.totalMaterialsAmount) from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
+                field = "totalMaterialsAmount";
                 break;
             case EQUIPMENT:
-                q = entityManager.createQuery("select sum(dfm.totalEquipmentAmount) from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
+                field = "totalEquipmentAmount";
                 break;
             case SERVICES:
-                q = entityManager.createQuery("select sum(dfm.totalServicesAmount) from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
+                field = "totalServicesAmount";
                 break;
             default:
                 return BigDecimal.ZERO;
         }
 
-        q.setParameter("finances", query.getModel());
-        BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
-        entityManager.getTransaction().commit();
-
-        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
+        return inTransaction(() -> {
+            Query q = entityManager.createQuery("select sum(dfm." + field + ") from FinanceDepartment dfm where dfm.active = true and dfm.finances = :finances");
+            q.setParameter("finances", query.getModel());
+            return amountOrZero((BigDecimal) q.getSingleResult());
+        });
     }
 
     public BigDecimal retrieveUnassignedAmount(GetFinanceUnassignedAmountQuery query) {
@@ -91,15 +86,13 @@ public class FinanceRepository extends Repository<Finance> {
     }
 
     public BigDecimal retrieveSpentAmount(GetFinanceSpentAmountQuery query) {
-        entityManager.getTransaction().begin();
-        Query q = entityManager.createQuery("select sum(bd.onePrice * bd.amount) from Bid bd inner join FinanceDepartment fd on bd.finances = fd where bd.active = true and bd.type=:bidType and fd.finances=:finance");
+        return inTransaction(() -> {
+            Query q = entityManager.createQuery("select sum(bd.onePrice * bd.amount) from Bid bd inner join FinanceDepartment fd on bd.finances = fd where bd.active = true and bd.type=:bidType and fd.finances=:finance");
 
-        q.setParameter("finance", query.getModel())
-                .setParameter("bidType", query.getType());
-        BigDecimal assignedAmount = (BigDecimal) q.getSingleResult();
-        entityManager.getTransaction().commit();
-
-        return assignedAmount != null ? assignedAmount : BigDecimal.ZERO;
+            q.setParameter("finance", query.getModel())
+                    .setParameter("bidType", query.getType());
+            return amountOrZero((BigDecimal) q.getSingleResult());
+        });
     }
 
     public BigDecimal retrieveLeftAmount(GetFinanceLeftAmountQuery query) {
@@ -107,5 +100,9 @@ public class FinanceRepository extends Repository<Finance> {
         BigDecimal spentAmount = retrieveSpentAmount(new GetFinanceSpentAmountQuery(query.getModel(), query.getType()));
 
         return totalAmount.subtract(spentAmount);
+    }
+
+    private static BigDecimal amountOrZero(BigDecimal amount) {
+        return amount != null ? amount : BigDecimal.ZERO;
     }
 }

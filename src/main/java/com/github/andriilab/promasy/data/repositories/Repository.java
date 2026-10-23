@@ -5,12 +5,13 @@ import com.github.andriilab.promasy.domain.IEntity;
 import org.hibernate.JDBCException;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class Repository<T extends IEntity> implements IRepository<T> {
 
@@ -18,12 +19,54 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     CriteriaBuilder criteriaBuilder;
     CriteriaQuery<T> criteriaQuery;
     Root<T> root;
-    private List<T> list = new LinkedList<>();
     protected final EntityManager entityManager;
 
     public Repository(Class<T> entityClass, EntityManager entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
+    }
+
+    /**
+     * Runs the work between begin and commit of the given manager's transaction. If the work (or the commit) fails
+     * with a {@link RuntimeException}, an active transaction is rolled back before the exception is rethrown, so the
+     * shared {@link EntityManager} stays usable for the next call.
+     */
+    static <R> R inTransaction(EntityManager entityManager, Supplier<R> work) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        try {
+            R result = work.get();
+            transaction.commit();
+            return result;
+        } catch (RuntimeException e) {
+            rollbackAfterFailure(transaction, e);
+            throw e;
+        }
+    }
+
+    static void inTransaction(EntityManager entityManager, Runnable work) {
+        inTransaction(entityManager, () -> {
+            work.run();
+            return null;
+        });
+    }
+
+    static void rollbackAfterFailure(EntityTransaction transaction, RuntimeException cause) {
+        try {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        } catch (RuntimeException rollbackFailure) {
+            cause.addSuppressed(rollbackFailure);
+        }
+    }
+
+    protected <R> R inTransaction(Supplier<R> work) {
+        return inTransaction(entityManager, work);
+    }
+
+    protected void inTransaction(Runnable work) {
+        inTransaction(entityManager, work);
     }
 
     @Override
@@ -48,11 +91,12 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
 
     @Override
     public void refresh(T object) throws JDBCException {
-        entityManager.getTransaction().begin();
-        entityManager.refresh(object);
-        entityManager.getTransaction().commit();
+        inTransaction(() -> entityManager.refresh(object));
     }
 
+    /**
+     * Opens the transaction and prepares the criteria query. The transaction is closed by {@link #getList()}.
+     */
     void retrieve() throws JDBCException {
         entityManager.getTransaction().begin();
 
@@ -63,12 +107,15 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     }
 
     public List<T> getList() throws JDBCException {
-        list.clear();
-
-        list = entityManager.createQuery(criteriaQuery).getResultList();
-        entityManager.getTransaction().commit();
-
-        return Collections.unmodifiableList(list);
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            List<T> list = entityManager.createQuery(criteriaQuery).getResultList();
+            transaction.commit();
+            return Collections.unmodifiableList(list);
+        } catch (RuntimeException e) {
+            rollbackAfterFailure(transaction, e);
+            throw e;
+        }
     }
 
     public Class<T> getEntityClass() {
@@ -76,8 +123,6 @@ public abstract class Repository<T extends IEntity> implements IRepository<T> {
     }
 
     private void createOrUpdate(T object) throws JDBCException {
-        entityManager.getTransaction().begin();
-        entityManager.persist(object);
-        entityManager.getTransaction().commit();
+        inTransaction(() -> entityManager.persist(object));
     }
 }

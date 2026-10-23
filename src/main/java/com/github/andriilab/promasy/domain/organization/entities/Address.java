@@ -89,7 +89,7 @@ public class Address extends AbstractEntity {
 
     @Override
     public String toString() {
-        return streetType.getShortName() + " " + street + ", " + buildingNumber + ", " +
+        return (streetType == null ? "" : streetType.getShortName() + " ") + street + ", " + buildingNumber + ", " +
                 (corpusNumber == null ? "" : corpusNumber + ", ") +
                 city + ", " +
                 region + Labels.withSpaceBefore("region") + ", " + country + ", " +

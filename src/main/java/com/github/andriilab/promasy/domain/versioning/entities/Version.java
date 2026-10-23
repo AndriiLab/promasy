@@ -60,4 +60,24 @@ public class Version implements Comparable<Version> {
     public boolean equals(Object that) {
         return this == that || that != null && this.getClass() == that.getClass() && this.compareTo((Version) that) == 0;
     }
+
+    /**
+     * Consistent with {@link #compareTo}: trailing ".0" parts are ignored, so "1.0" and "1.0.0" hash alike.
+     */
+    @Override
+    public int hashCode() {
+        if (version == null) {
+            return 0;
+        }
+        String[] parts = version.split("\\.");
+        int last = parts.length - 1;
+        while (last >= 0 && Integer.parseInt(parts[last]) == 0) {
+            last--;
+        }
+        int result = 1;
+        for (int i = 0; i <= last; i++) {
+            result = 31 * result + Integer.parseInt(parts[i]);
+        }
+        return result;
+    }
 }

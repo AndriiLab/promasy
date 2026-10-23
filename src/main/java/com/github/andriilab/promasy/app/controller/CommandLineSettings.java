@@ -7,16 +7,16 @@ public class CommandLineSettings {
 
     public CommandLineSettings(String[] args){
         for (String arg : args) {
-            if (arg.contains("-c") || arg.contains("--config")) {
+            if (arg.equals("-c") || arg.equals("--config")) {
                 showConnectionSettingsDialog = true;
             }
-            if (arg.contains("-g") || arg.contains("--generate")) {
+            if (arg.equals("-g") || arg.equals("--generate")) {
                 enableModifyTableSchemas = true;
             }
-            if (arg.contains("-s") || arg.contains("--statistics")) {
+            if (arg.equals("-s") || arg.equals("--statistics")) {
                 showConnectionStatistics = true;
             }
-            if (arg.contains("-l") || arg.contains("--log")) {
+            if (arg.equals("-l") || arg.equals("--log")) {
                 saveLogToFile = true;
             }
         }
