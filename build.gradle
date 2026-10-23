@@ -125,6 +125,14 @@ test {
     finalizedBy jacocoTestReport
 }
 
+// XML is consumed by the coverage step in .github/workflows/ci.yml
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
 jar {
     exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
     manifest {

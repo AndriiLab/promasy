@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# checks/pull-requests: write lets the report steps create a check run and comment on PRs.
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      # Gradle itself runs on JDK 27; compileJava and the tests run on a JDK 8 toolchain,
+      # which the foojay resolver in settings.gradle downloads when it is missing.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 27
+
+      # The wrapper jar is gitignored (/gradle/ in .gitignore), so install the Gradle version
+      # from gradle/wrapper/gradle-wrapper.properties instead of calling ./gradlew.
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.8.2
+
+      - name: Test and build jar
+        run: gradle test jar --no-daemon
+
+      # Tests run/passed/failed/skipped in the job summary, a "Test Results" check and a PR comment.
+      - name: Publish test results
+        if: ${{ !cancelled() }}
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: build/test-results/test/**/*.xml
+
+      # Overall and changed-files coverage from the JaCoCo XML report, in the job summary and a PR comment.
+      - name: Publish coverage
+        if: ${{ !cancelled() }}
+        uses: madrapps/jacoco-report@v1.7.2
+        with:
+          paths: build/reports/jacoco/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Code Coverage
+          update-comment: true
+          comment-type: both
+
+      - name: Upload test and coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            build/reports/tests/test
+            build/reports/jacoco/test/html
+          if-no-files-found: ignore
