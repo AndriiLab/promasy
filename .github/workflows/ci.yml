@@ -16,7 +16,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -67,7 +67,9 @@ jobs:
           if-no-files-found: ignore
 
   # Runs src/integrationTest against PostgreSQL in a Testcontainers container (Docker is preinstalled on the runner).
-  integration-test:
+  # Only starts when the unit tests passed, so a broken build doesn't spend time on pulling and starting a database.
+  integration-tests:
+    needs: unit-tests
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
